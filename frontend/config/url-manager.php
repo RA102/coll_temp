@@ -3,8 +3,9 @@
 return [
     'class'           => 'yii\web\UrlManager',
     'baseUrl'         => '',
-    'enablePrettyUrl' => false,
+    'enablePrettyUrl' => true,
     'showScriptName'  => false,
     'rules'           => [
+        '<a:\w+>' => 'site/<a>'
     ],
 ];
