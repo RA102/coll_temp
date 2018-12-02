@@ -11,6 +11,7 @@ return [
     'name' => 'Бiлiмал',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'timeZone' => 'Asia/Almaty',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
