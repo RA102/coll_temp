@@ -7,7 +7,7 @@ class m130524_201442_person extends Migration
     public function up()
     {
         $this->execute("
-            create schema person;
+            CREATE SCHEMA person;
         ");
 
         $this->createTable('person.person', [
@@ -47,8 +47,7 @@ class m130524_201442_person extends Migration
         $this->dropTable('person.person');
 
         $this->execute("
-            drop schema person;
+            DROP SCHEMA person;
         ");
-
     }
 }
