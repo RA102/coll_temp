@@ -35,6 +35,7 @@ class m130524_201442_person extends Migration
             'is_subscribed' => $this->boolean(),
             'portal_uid' => $this->bigInteger(),
             'photo' => $this->string(255),
+            'type' => $this->smallInteger()->null()->defaultValue(1),
             'create_ts' => $this->dateTime()->notNull()->defaultValue('now()'),
             'delete_ts' => $this->dateTime()->null(),
             'import_ts' => $this->timestamp(),

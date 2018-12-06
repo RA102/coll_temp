@@ -23,7 +23,7 @@
                         'url' => '#',
                         'items' => [
                             ['label' => Yii::t('app','Сотрудники'), 'icon' => 'file-code-o', 'url' => ['/']],
-                            ['label' => Yii::t('app','Студенты'), 'icon' => 'dashboard', 'url' => ['/']],
+                            ['label' => Yii::t('app','Студенты'), 'icon' => 'dashboard', 'url' => ['/student/index']],
                         ],
                     ],
                     [

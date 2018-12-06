@@ -6,6 +6,7 @@ return [
     'enablePrettyUrl' => true,
     'showScriptName'  => false,
     'rules'           => [
-        '<a:\w+>' => 'site/<a>'
+        'student' => '/student/index',
+        '<a:\w+>' => 'site/<a>',
     ],
 ];
