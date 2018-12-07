@@ -44,6 +44,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName'  => false,
             'rules'           => [
+                'institution' => '/institution/index',
                 '<a:\w+>' => 'site/<a>'
             ],
         ],
