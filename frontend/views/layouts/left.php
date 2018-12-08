@@ -28,7 +28,7 @@
                     ],
                     [
                         'label' => Yii::t('app','Учебный процесс'),
-                        'icon' => 'fa fa-chalkboard',
+                        'icon' => 'book',
                         'url' => '#',
                         'items' => [
                             ['label' => Yii::t('app','Группы'), 'icon' => 'file-code-o', 'url' => ['/']],
@@ -46,7 +46,7 @@
                     ],
                     [
                         'label' => Yii::t('app','Настройки'),
-                        'icon' => 'fa fa-cog',
+                        'icon' => 'cog',
                         'url' => '#',
                         'items' => [
                             ['label' => Yii::t('app','Специальности'), 'icon' => 'file-code-o', 'url' => ['/']],

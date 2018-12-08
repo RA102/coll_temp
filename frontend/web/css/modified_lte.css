@@ -45,7 +45,7 @@
     color: #ccc;
     z-index: 2;
     font-family: PT Sans,sans-serif !important;
-    font-size: 1.266rem !important;
+    font-size: 16px !important;
     letter-spacing: .07em;
     top: -5px;
     left: auto;
@@ -64,16 +64,19 @@
     font-weight: normal !important;
     background: #dbf3e2 !important;
     margin-left: -5px !important;
+    text-indent: 5px;
 }
 
 .skin-black-light .sidebar-menu>li>a {
     padding-top: 20px;
     padding-bottom: 20px;
+    display: flex;
 }
 
 .skin-black-light .sidebar-menu .treeview-menu>li>a {
     padding-top: 15px;
     padding-bottom: 15px;
+    padding-left: 40px;
 }
 
 .sidebar {
@@ -85,4 +88,22 @@
     color: #000;
     background: #fff;
     box-shadow: 3px 3px 2px 0 rgba(0,0,0,.1);
+}
+
+.skin-black-light .sidebar-menu .treeview-menu>li>a>i {
+    display: none;
+}
+
+.sidebar-menu>li>a>.fa, .sidebar-menu>li>a>.glyphicon, .sidebar-menu>li>a>.ion{
+    color: #536c79;
+    font-size: 19px;
+    width: 30px !important;
+}
+
+.main-sidebar {
+    width: 250px !important;
+}
+
+.content-wrapper {
+    margin-left: 250px !important;
 }
