@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2018 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="water" unicode="&#xe800;" d="M168 844q10-86 50-155t73-123 33-112q0-66-48-113t-114-47-114 47-48 113q0 58 33 112t73 123 50 155q2 4 7 4t5-4z m616 0q10-86 50-155t73-123 33-112q0-66-48-113t-114-47-114 47-48 113q0 48 21 93t48 78 53 92 34 127q2 4 7 4t5-4z m-320-444q2 4 7 4t5-4q10-86 50-155t73-123 33-112q0-66-48-113t-114-47-114 47-48 113q0 58 33 112t73 123 50 155z" horiz-adv-x="940" />
+</font>
+</defs>
+</svg>

@@ -8,7 +8,7 @@
                 'items' => [
                     [
                         'label' => Yii::t('app','Приемная комиссия'),
-                        'icon' => 'share',
+                        'icon' => 'far fa-id-card',
                         'url' => '#',
                         'items' => [
                             ['label' => Yii::t('app','Текушая комиссия'), 'icon' => 'file-code-o', 'url' => ['/']],
@@ -19,7 +19,7 @@
                     ],
                     [
                         'label' => Yii::t('app','Картотека'),
-                        'icon' => 'share',
+                        'icon' => 'far fa-list-alt',
                         'url' => '#',
                         'items' => [
                             ['label' => Yii::t('app','Сотрудники'), 'icon' => 'file-code-o', 'url' => ['/']],
@@ -28,7 +28,7 @@
                     ],
                     [
                         'label' => Yii::t('app','Учебный процесс'),
-                        'icon' => 'share',
+                        'icon' => 'fa fa-chalkboard',
                         'url' => '#',
                         'items' => [
                             ['label' => Yii::t('app','Группы'), 'icon' => 'file-code-o', 'url' => ['/']],
@@ -38,7 +38,7 @@
                     ],
                     [
                         'label' => Yii::t('app','Хозяйственная часть'),
-                        'icon' => 'share',
+                        'icon' => 'far fa-building',
                         'url' => '#',
                         'items' => [
                             ['label' => Yii::t('app','Здания'), 'icon' => 'file-code-o', 'url' => ['/']],
@@ -46,7 +46,7 @@
                     ],
                     [
                         'label' => Yii::t('app','Настройки'),
-                        'icon' => 'share',
+                        'icon' => 'fa fa-cog',
                         'url' => '#',
                         'items' => [
                             ['label' => Yii::t('app','Специальности'), 'icon' => 'file-code-o', 'url' => ['/']],

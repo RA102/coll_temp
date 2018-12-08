@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'Roboto2';
+    src: url('#{$roboto_path}/light/Roboto-Light-webfont.eot');
+    src: url('#{$roboto_path}/light/Roboto-Light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('#{$roboto_path}/light/Roboto-Light-webfont.woff') format('woff'),
+         url('#{$roboto_path}/light/Roboto-Light-webfont.ttf') format('truetype'),
+         url('#{$roboto_path}/light/Roboto-Light-webfont.svg#robotolight') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}

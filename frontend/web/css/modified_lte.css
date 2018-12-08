@@ -1,0 +1,88 @@
+
+.main-header .navbar {
+    margin-left: 0 !important;
+}
+
+.skin-black-light .main-header .navbar>.sidebar-toggle {
+    border-right: 0 !important;
+}
+
+.skin-black-light .wrapper, .skin-black-light .main-sidebar, .skin-black-light .left-side {
+    background-color: #FFF !important;
+}
+
+.skin-black-light .sidebar-menu>li>a {
+    font-weight: normal !important;
+}
+
+.breadcrumb {
+    background-color: #FFF !important;
+    border-radius: 0 !important;
+    box-shadow: 3px 3px 2px 0 rgba(0,0,0,.1);
+    padding: 1rem 1rem;
+    margin-bottom: 1.8rem;
+}
+
+.content-wrapper {
+    background-color: #e4e5e6 !important;
+}
+
+.content {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+}
+
+.content-header {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+}
+
+.sidebar-menu .treeview:not(:first-child):before {
+    content: "....................................................................................................................................................................................................................................................................";
+    line-height: 0;
+    height: 7px;
+    position: absolute;
+    color: #ccc;
+    z-index: 2;
+    font-family: PT Sans,sans-serif !important;
+    font-size: 1.266rem !important;
+    letter-spacing: .07em;
+    top: -5px;
+    left: auto;
+    right: 0;
+}
+
+.body {
+    font-family: PT Sans,sans-serif !important;
+}
+
+.main-sidebar {
+    font-family: Proxima Nova,sans-serif !important;
+}
+
+.skin-black-light .sidebar-menu .treeview-menu>li.active>a {
+    font-weight: normal !important;
+    background: #dbf3e2 !important;
+    margin-left: -5px !important;
+}
+
+.skin-black-light .sidebar-menu>li>a {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.skin-black-light .sidebar-menu .treeview-menu>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.sidebar {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 0;
+    color: #000;
+    background: #fff;
+    box-shadow: 3px 3px 2px 0 rgba(0,0,0,.1);
+}
