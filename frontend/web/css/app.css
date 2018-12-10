@@ -2,3 +2,13 @@ h1 {
     font-size: 32px !important;
     font-family: Proxima Nova,sans-serif !important;
 }
+
+.content h1 {
+    margin-top: 0 !important;
+}
+
+.title-action {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

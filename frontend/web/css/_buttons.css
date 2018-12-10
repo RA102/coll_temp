@@ -1,7 +1,7 @@
 .btn {
     font-family: Proxima Nova,sans-serif;
     display: inline-block;
-    font-weight: 400;
+    font-weight: 700;
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
@@ -10,7 +10,7 @@
     -ms-user-select: none;
     user-select: none;
     border: 1px solid transparent;
-    padding: .5rem .875rem;
+    padding: 9px 14px;
     font-size: 11px;
     line-height: 1.5;
     border-radius: 0;

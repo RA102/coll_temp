@@ -130,8 +130,15 @@
     .main-sidebar {
         width: 230px !important;
     }
+    .main-footer {
+        margin-left: 230px !important;
+    }
 }
 
 .skin-black-light .sidebar-menu>li:hover>a, .skin-black-light .sidebar-menu>li.active>a {
     background: #dbf3e2 !important;
+}
+
+.main-footer {
+    margin-left: 250px !important;
 }

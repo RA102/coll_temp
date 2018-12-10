@@ -10,6 +10,12 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Students');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<div style="position: relative;">
+    <h1>Студенты</h1>
+    <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
+</div>
+
 <?php $this->beginBlock('content') ?>
     <div class="person-index">
 
