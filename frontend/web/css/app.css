@@ -27,3 +27,81 @@ h1 {
     background-image: url('/img/logo.png')!important;
     background-size: contain!important;
 }
+
+.navbar-title span {
+    display: block;
+    font-size: 70%;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+
+.languages__list {
+    list-style: none !important;
+    font-size: 12px;
+    margin-right: 20px;
+    padding: 0;
+}
+
+.languages__item {
+    border-bottom: 1px solid #c2cfd6;
+    margin-bottom: 3px;
+    padding-bottom: 3px;
+}
+
+.languages__item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.languages__link {
+    color: #536c79;
+}
+
+.languages__link--active {
+    color: #ae7dd1;
+    cursor: text;
+}
+
+.navbar-username {
+    font-weight: 700;
+    color: #536c79 !important;
+}
+
+
+
+.skin-black-light .main-header .navbar .navbar-custom-menu .navbar-nav>li>a, .skin-black-light .main-header .navbar .navbar-right>li>a {
+    border-left: none;
+}
+
+.navbar-title {
+    font-size: 16px;
+}
+
+.sidebar-toggle {
+    font-size: 20px;
+}
+
+.nav-help {
+    color: #c2cfd6 !important;
+    font-size: 30px;
+    padding: 0 !important;
+}
+
+.navbar-username {
+    line-height: 45px !important;
+    padding-bottom: 0!important;
+    padding-top: 0 !important;
+}
+
+.navbar-nav>.user-menu .user-image {
+    width: 48px;
+    height: 48px;
+    border-color: #ae7dd1 !important;
+    border-radius: 50em;
+    border: 2px solid;
+}
