@@ -2,6 +2,7 @@
 
 namespace common\models\person;
 
+use common\models\helpers\SchemeHelper;
 use Yii;
 
 /**
@@ -47,7 +48,7 @@ class Person extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'person.person';
+        return SchemeHelper::PERSON . 'person';
     }
 
     /**

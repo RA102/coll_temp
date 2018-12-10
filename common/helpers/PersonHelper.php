@@ -1,7 +1,8 @@
 <?php
 
-namespace common\models\person;
+namespace common\models\helpers;
 
+use common\models\person\Person;
 use Yii;
 
 class PersonHelper
