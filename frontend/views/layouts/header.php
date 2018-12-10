@@ -11,7 +11,12 @@ use yii\helpers\Html;
         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
         </a>
-        <?= Html::tag('span', Yii::$app->name, ['class' => 'navbar-text']) ?>
+        <a href="/" class=" navbar-brand">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <span class="navbar-text px-3 navbar-title">
+            Бiлiмал. Электронды колледж
+        </span>
         <div class="navbar-custom-menu">
 
             <ul class="nav navbar-nav">

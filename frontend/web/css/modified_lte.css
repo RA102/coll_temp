@@ -142,3 +142,7 @@
 .main-footer {
     margin-left: 250px !important;
 }
+
+.skin-black-light .main-header .navbar-brand {
+    border-right: none !important;
+}
