@@ -38,6 +38,10 @@ use Yii;
  */
 class Person extends \yii\db\ActiveRecord
 {
+    const SEX_NONE = 0;
+    const SEX_MALE = 1;
+    const SEX_FEMALE = 2;
+
     /**
      * {@inheritdoc}
      */
