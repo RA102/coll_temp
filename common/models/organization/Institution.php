@@ -2,7 +2,7 @@
 
 namespace common\models\organization;
 
-use common\models\helpers\SchemeHelper;
+use common\helpers\SchemeHelper;
 use Yii;
 
 /**

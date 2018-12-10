@@ -2,7 +2,7 @@
 
 namespace common\models;
 
-use common\models\helpers\SchemeHelper;
+use common\helpers\SchemeHelper;
 use Yii;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace common\models\person;
 
-use common\models\helpers\SchemeHelper;
+use common\helpers\SchemeHelper;
 use Yii;
 
 /**
@@ -39,6 +39,10 @@ use Yii;
  */
 class Person extends \yii\db\ActiveRecord
 {
+    const TYPE_UNDEFINED = 0;
+    const TYPE_STUDENT = 1;
+    const TYPE_EMPLOYEE = 2;
+
     const SEX_NONE = 0;
     const SEX_MALE = 1;
     const SEX_FEMALE = 2;

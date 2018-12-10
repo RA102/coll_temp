@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models\helpers;
+namespace common\helpers;
 
 use Yii;
 
