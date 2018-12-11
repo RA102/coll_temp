@@ -2,6 +2,7 @@
 
 namespace common\models\organization;
 
+use common\helpers\SchemeHelper;
 use Yii;
 
 /**
@@ -46,7 +47,7 @@ class Institution extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'organization.institution';
+        return SchemeHelper::ORGANIZATION . 'institution';
     }
 
     /**
