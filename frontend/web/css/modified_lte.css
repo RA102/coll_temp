@@ -146,3 +146,24 @@
 .skin-black-light .main-header .navbar-brand {
     border-right: none !important;
 }
+
+.sidebar-mini:not(.sidebar-mini-expand-feature).sidebar-collapse .sidebar-menu>li:hover>a>.pull-right-container {
+    left: 149px !important;
+    top: -13px !important;
+}
+
+@media (min-width: 768px) {
+    .sidebar-mini.sidebar-collapse .main-sidebar {
+        -webkit-transform: translate(0, 0);
+        -ms-transform: translate(0, 0);
+        -o-transform: translate(0, 0);
+        transform: translate(0, 0);
+        width: 0 !important;
+        z-index: 850;
+    }
+
+    .sidebar-mini.sidebar-collapse .content-wrapper, .sidebar-mini.sidebar-collapse .right-side, .sidebar-mini.sidebar-collapse .main-footer {
+        margin-left: 0 !important;
+        z-index: 840;
+    }
+}
