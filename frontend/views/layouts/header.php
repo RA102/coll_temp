@@ -15,7 +15,7 @@ use yii\helpers\Html;
             <a href="/" class=" navbar-brand">
                 <span class="sr-only">Toggle navigation</span>
             </a>
-            <span class="navbar-text px-3 navbar-title">
+            <span class="navbar-text px-3 navbar-title hidden-xs">
                 Бiлiмал. Электронды колледж
                 <span>Шахтинский технологический колледж</span>
             </span>
