@@ -1,13 +1,16 @@
 <?php
+
 namespace frontend\controllers;
 
+use common\forms\auth\LoginForm;
+use common\services\auth\LoginService;
 use Yii;
 use yii\base\InvalidParamException;
+use yii\base\Module;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -18,6 +21,8 @@ use frontend\models\ContactForm;
  */
 class SiteController extends Controller
 {
+    private $loginService;
+
     /**
      * {@inheritdoc}
      */
@@ -26,15 +31,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'contact'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'contact'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -65,6 +65,12 @@ class SiteController extends Controller
         ];
     }
 
+    public function __construct(string $id, Module $module, LoginService $loginService, array $config = [])
+    {
+        $this->loginService = $loginService;
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * Displays homepage.
      *
@@ -86,16 +92,16 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        $model = new LoginForm($this->loginService);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             return $this->goBack();
-        } else {
-            $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
         }
+
+        $model->password = '';
+
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
 
     /**
