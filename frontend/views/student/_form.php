@@ -9,11 +9,11 @@ use yii\jui\AutoComplete;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\forms\PersonGeneralForm */
+/* @var $model frontend\models\forms\StudentGeneralForm */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="person-form">
+<div class="student-form">
 
     <?php $form = ActiveForm::begin(); ?>
 

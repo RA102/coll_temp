@@ -5,12 +5,12 @@ namespace frontend\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\person\Person;
+use common\models\person\Student;
 
 /**
- * StudentSearch represents the model behind the search form of `common\models\person\Person`.
+ * StudentSearch represents the model behind the search form of `common\models\person\Student`.
  */
-class StudentSearch extends Person
+class StudentSearch extends Student
 {
     /**
      * {@inheritdoc}
@@ -42,7 +42,7 @@ class StudentSearch extends Person
      */
     public function search($params)
     {
-        $query = Person::find();
+        $query = Student::find();
 
         // add conditions that should always apply here
 

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\search\StudentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -17,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <?php $this->beginBlock('content') ?>
-    <div class="person-index">
+    <div class="student-index">
 
         <?php Pjax::begin(); ?>
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

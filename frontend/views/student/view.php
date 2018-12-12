@@ -1,19 +1,19 @@
 <?php
 
 use common\helpers\PersonHelper;
-use common\models\person\Person;
+use common\models\person\Student;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\person\Person */
+/* @var $model common\models\person\Student */
 
-$this->title = $model->id;
+$this->title = $model->firstname;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'People'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php $this->beginBlock('content') ?>
-    <div class="person-view">
+    <div class="student-view">
 
         <p>
             <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                'id',
                 'status',
                 'nickname',
                 'firstname',
@@ -38,30 +37,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'birth_date',
                 [
                     'attribute' => 'sex',
-                    'value' => function(Person $model) {
+                    'value' => function(Student $model) {
                         return PersonHelper::getSexList()[$model->sex];
                     }
                 ],
                 'nationality_id',
                 'iin',
-                'is_pluralist',
-                'birth_country_id',
-                'birth_city_id',
                 'birth_place',
                 'language',
-                'oid',
-                'alledu_id',
-                'alledu_server_id',
-                'pupil_id',
-                'owner_id',
-                'server_id',
-                'is_subscribed:boolean',
-                'portal_uid',
-                'photo',
-                'type',
-                'create_ts',
-                'delete_ts',
-                'import_ts',
             ],
         ]) ?>
 

@@ -4,14 +4,14 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\forms\PersonGeneralForm */
+/* @var $model frontend\models\forms\StudentGeneralForm */
 
 $this->title = Yii::t('app', 'Create Student');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'People'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php $this->beginBlock('content') ?>
-    <div class="person-create">
+    <div class="student-create">
 
         <?= $this->render('_form', [
             'model' => $model,

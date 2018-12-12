@@ -6,7 +6,7 @@ use common\models\person\Person;
 use Yii;
 use yii\base\Model;
 
-class PersonGeneralForm extends Model
+class StudentGeneralForm extends Model
 {
     public $firstname;
     public $lastname;

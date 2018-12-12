@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\person\Person */
+/* @var $model common\models\person\Student */
 
 $this->title = Yii::t('app', 'Update Student: ' . $model->id, [
     'nameAttribute' => '' . $model->id,
@@ -16,9 +16,9 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 
 <?php $this->beginBlock('content') ?>
-    <div class="person-update">
+    <div class="student-update">
 
-        <div class="person-form">
+        <div class="student-form">
 
             <?php $form = ActiveForm::begin(); ?>
 

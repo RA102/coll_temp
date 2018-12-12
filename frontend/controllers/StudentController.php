@@ -2,16 +2,16 @@
 
 namespace frontend\controllers;
 
-use frontend\models\forms\PersonGeneralForm;
+use common\models\person\Student;
+use frontend\models\forms\StudentGeneralForm;
 use Yii;
-use common\models\person\Person;
 use frontend\search\StudentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * StudentController implements the CRUD actions for Person model.
+ * StudentController implements the CRUD actions for Student model.
  */
 class StudentController extends Controller
 {
@@ -31,7 +31,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Lists all Person models.
+     * Lists all Student models.
      * @return mixed
      */
     public function actionIndex()
@@ -46,7 +46,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Displays a single Person model.
+     * Displays a single Student model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -59,22 +59,21 @@ class StudentController extends Controller
     }
 
     /**
-     * Creates a new Person model.
+     * Creates a new Student model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new PersonGeneralForm();
+        $model = new StudentGeneralForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $person = new Person();
-            $person->status = 1;
-            $person->type = Person::TYPE_STUDENT;
-            $person->setAttributes($model->attributes);
-            $person->save();
+            $student = new Student();
+            $student->status = 1;
+            $student->setAttributes($model->attributes);
+            $student->save();
 
-            return $this->redirect(['view', 'id' => $person->id]);
+            return $this->redirect(['view', 'id' => $student->id]);
         }
 
         return $this->render('create', [
@@ -83,7 +82,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Updates an existing Person model.
+     * Updates an existing Student model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -91,20 +90,20 @@ class StudentController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = new PersonGeneralForm();
+        $model = new StudentGeneralForm();
 
-        $person = $this->findModel($id);
+        $student = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $person->setAttributes($model->attributes);
-            $person->save();
+            $student->setAttributes($model->attributes);
+            $student->save();
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
-            'person' => $person,
+            'student' => $student,
         ]);
     }
 
@@ -122,7 +121,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Deletes an existing Person model.
+     * Deletes an existing Student model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -138,15 +137,15 @@ class StudentController extends Controller
     }
 
     /**
-     * Finds the Person model based on its primary key value.
+     * Finds the Student model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Person the loaded model
+     * @return Student the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Person::findOne($id)) !== null) {
+        if (($model = Student::findOne($id)) !== null) {
             return $model;
         }
 
