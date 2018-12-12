@@ -2,6 +2,7 @@
 
 namespace frontend\search;
 
+use common\models\person\Person;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -12,6 +13,11 @@ use common\models\person\Student;
  */
 class StudentSearch extends Student
 {
+    public function formName()
+    {
+        return '';
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -58,10 +64,18 @@ class StudentSearch extends Student
             return $dataProvider;
         }
 
+        if (isset($this->status)) {
+            if ($this->status == Person::STATUS_DELETED) {
+                $query->andWhere(['NOT', ['delete_ts' => null]]);
+            } else {
+                $query->andFilterWhere(['status' => $this->status]);
+                $query->andWhere(['delete_ts' => null]);
+            }
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
             'birth_date' => $this->birth_date,
             'sex' => $this->sex,
             'nationality_id' => $this->nationality_id,

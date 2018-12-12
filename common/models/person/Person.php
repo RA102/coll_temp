@@ -47,6 +47,10 @@ class Person extends \yii\db\ActiveRecord
     const SEX_MALE = 1;
     const SEX_FEMALE = 2;
 
+    const STATUS_ACTIVE = 1;
+    const STATUS_FIRED = 2;
+    const STATUS_DELETED = 0;
+
     /**
      * {@inheritdoc}
      */
@@ -106,5 +110,20 @@ class Person extends \yii\db\ActiveRecord
             'delete_ts' => Yii::t('app', 'Delete Ts'),
             'import_ts' => Yii::t('app', 'Import Ts'),
         ];
+    }
+
+    public function isActive()
+    {
+        return $this->status == self::STATUS_ACTIVE  && !$this->isDeleted();
+    }
+
+    public function isFired()
+    {
+        return $this->status == self::STATUS_FIRED && !$this->isDeleted();
+    }
+
+    public function isDeleted()
+    {
+        return $this->delete_ts != null;
     }
 }

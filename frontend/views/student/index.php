@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use \common\models\person\Person;
+use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\search\StudentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -21,18 +24,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <div class="card-header">
         <ul class="nav nav-tabs">
-            <li role="presentation" class="active"><a href="#">Текущие студенты</a></li>
-            <li role="presentation"><a href="#">Исключенные студенты</a></li>
-            <li role="presentation"><a href="#">Удаленные студенты</a></li>
+            <li role="presentation" class="<?=$searchModel->isActive() ? 'active' : ''?>">
+                <?= Html::a('Текущие студенты', Url::current([
+                    Html::getInputName($searchModel, 'status') => Person::STATUS_ACTIVE,
+                ])) ?>
+            </li>
+            <li role="presentation" class="<?=$searchModel->isFired() ? 'active' : ''?>">
+                <?= Html::a('Исключенные студенты', Url::current([
+                    Html::getInputName($searchModel, 'status') => Person::STATUS_FIRED,
+                ])) ?>
+            </li>
+            <li role="presentation" class="<?=$searchModel->status == Person::STATUS_DELETED ? 'active' : ''?>">
+                <?= Html::a('Удаленные студенты', Url::current([
+                    Html::getInputName($searchModel, 'status') => Person::STATUS_DELETED,
+                ])) ?>
+            </li>
         </ul>
     </div>
 
 
     <div class="card-body">
         <?= GridView::widget([
+            'layout' =>  "{items}\n{pager}",
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
