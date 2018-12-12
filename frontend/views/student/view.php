@@ -1,5 +1,7 @@
 <?php
 
+use common\helpers\PersonHelper;
+use common\models\person\Person;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -12,7 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php $this->beginBlock('content') ?>
     <div class="person-view">
-
 
         <p>
             <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -35,7 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'lastname',
                 'middlename',
                 'birth_date',
-                'sex',
+                [
+                    'attribute' => 'sex',
+                    'value' => function(Person $model) {
+                        return PersonHelper::getSexList()[$model->sex];
+                    }
+                ],
                 'nationality_id',
                 'iin',
                 'is_pluralist',

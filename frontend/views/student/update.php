@@ -3,13 +3,14 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\person\Person */
+/* @var $model frontend\models\forms\PersonGeneralForm */
+/* @var $person common\models\person\Person */
 
-$this->title = Yii::t('app', 'Update Student: ' . $model->id, [
-    'nameAttribute' => '' . $model->id,
+$this->title = Yii::t('app', 'Update Student: ' . $person->id, [
+    'nameAttribute' => '' . $person->id,
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'People'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $person->id, 'url' => ['view', 'id' => $person->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 

@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use frontend\models\forms\PersonGeneralForm;
 use Yii;
 use common\models\person\Person;
 use frontend\search\StudentSearch;
@@ -64,10 +65,16 @@ class StudentController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Person();
+        $model = new PersonGeneralForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $person = new Person();
+            $person->status = 1;
+            $person->type = Person::TYPE_STUDENT;
+            $person->setAttributes($model->attributes);
+            $person->save();
+
+            return $this->redirect(['view', 'id' => $person->id]);
         }
 
         return $this->render('create', [
@@ -84,13 +91,32 @@ class StudentController extends Controller
      */
     public function actionUpdate($id)
     {
+        $model = new PersonGeneralForm();
+
+        $person = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $person->setAttributes($model->attributes);
+            $person->save();
+
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+            'person' => $person,
+        ]);
+    }
+
+    public function actionStep1($id)
+    {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        return $this->render('step-1', [
             'model' => $model,
         ]);
     }

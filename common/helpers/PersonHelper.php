@@ -7,7 +7,7 @@ use Yii;
 
 class PersonHelper
 {
-    public function getTypeList()
+    public static function getTypeList()
     {
         return [
             Person::TYPE_UNDEFINED => Yii::t('app', 'PersonType Undefined'),
@@ -16,7 +16,7 @@ class PersonHelper
         ];
     }
 
-    public function getSexList()
+    public static function getSexList()
     {
         return [
             Person::SEX_NONE => Yii::t('app', 'Sex None'),

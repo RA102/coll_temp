@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\person\Person */
+/* @var $model frontend\models\forms\PersonGeneralForm */
 
 $this->title = Yii::t('app', 'Create Student');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'People'), 'url' => ['index']];
