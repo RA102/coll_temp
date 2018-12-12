@@ -109,3 +109,40 @@ h1 {
 .main-sidebar {
     padding-top: 68px !important;
 }
+
+.nav-tabs a {
+    color: #6c757d !important;
+}
+
+.nav-tabs .active > a{
+    color: #212529 !important;
+}
+
+.nav-tabs .active:before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background: #ae7dd1;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    background-color: #fff;
+    border: none;
+}
+
+.nav-tabs {
+    border-bottom: none;
+}
+
+.nav>li>a:hover, .nav>li>a:active, .nav>li>a:focus {
+    background-color: #FFF;
+    color: #212529 !important;
+}
+
+.nav-tabs > li > a:hover {
+    border-color: #FFF;
+}

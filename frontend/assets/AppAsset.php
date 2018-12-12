@@ -18,6 +18,7 @@ class AppAsset extends AssetBundle
         'css/_buttons.css',
         'css/_card.css',
         'css/app.css',
+        'css/_students.css',
     ];
     public $js = [
     ];

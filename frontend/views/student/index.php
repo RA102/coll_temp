@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\search\StudentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -13,25 +12,35 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
-    <h1>Студенты</h1>
+    <h1>Студенты (<?=$dataProvider->count?>)</h1>
     <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 
-<?php $this->beginBlock('content') ?>
-    <div class="student-index">
 
-        <?php Pjax::begin(); ?>
-        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<div class="student-index" style="background-color: #FFF;">
 
+    <?php Pjax::begin(); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <div class="card-header">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#">Текущие студенты</a></li>
+            <li role="presentation"><a href="#">Исключенные студенты</a></li>
+            <li role="presentation"><a href="#">Удаленные студенты</a></li>
+        </ul>
+    </div>
+
+
+    <div class="card-body">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-//                'id',
-//                'status',
-//                'nickname',
+                //                'id',
+                //                'status',
+                //                'nickname',
                 'firstname',
                 'lastname',
                 'middlename',
@@ -58,15 +67,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'delete_ts',
                 //'import_ts',
 
-                ['class' => 'yii\grid\ActionColumn'],
+                ['class' => 'yii\grid\ActionColumn', 'template' => '{view}',],
             ],
         ]); ?>
-        <?php Pjax::end(); ?>
     </div>
-<?php $this->endBlock() ?>
+    <?php Pjax::end(); ?>
+</div>
+
 
 <?php $this->beginBlock('tools') ?>
-    <?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['create'], ['class' => 'btn btn-default']) ?>
+<?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['create'], ['class' => 'btn btn-default']) ?>
 <?php $this->endBlock() ?>
-
-<?= $this->render('_layout') ?>
