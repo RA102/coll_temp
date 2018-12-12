@@ -152,4 +152,40 @@ class StudentController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
+
+    public function actionAjaxAddress($term = null)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = [];
+
+        if (!is_null($term)) {
+            $ch = curl_init(); // TODO use Guzzle instead
+            $url = 'https://api.post.kz/api/byAddress/' . $term .  '?from=0';
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.1) Gecko/2008070208');
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            if($response === false) {
+                throw new \Exception();
+            }
+
+            $response = json_decode($response, true);
+
+            $count = 0;
+            foreach ($response['data'] as $address) {
+                $count++;
+                $out[] = $address['addressRus'];
+
+                if ($count >= 10) {
+                    break;
+                }
+            }
+        }
+        return $out;
+    }
 }

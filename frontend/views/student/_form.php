@@ -4,6 +4,8 @@ use common\helpers\PersonHelper;
 use common\models\Nationality;
 use kartik\date\DatePicker;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\jui\AutoComplete;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -29,7 +31,13 @@ use yii\widgets\ActiveForm;
         ]
     ]); ?>
 
-    <?= $form->field($model, 'birth_place')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'birth_place')->widget(AutoComplete::class, [
+        'options' => ['class' => 'form-control'],
+        'clientOptions' => [
+            'source' => Url::to(['student/ajax-address']),
+            'minLength' => '5',
+        ],
+    ]); ?>
 
 
     <?= $form->field($model, 'nationality_id')->dropDownList(\yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name')) ?>
