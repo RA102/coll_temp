@@ -4,6 +4,8 @@ namespace common\models\person;
 
 use common\helpers\SchemeHelper;
 use Yii;
+use yii\base\NotSupportedException;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "person.person".
@@ -37,7 +39,7 @@ use Yii;
  * @property string $delete_ts
  * @property string $import_ts
  */
-class Person extends \yii\db\ActiveRecord
+class Person extends \yii\db\ActiveRecord implements IdentityInterface
 {
     const TYPE_UNDEFINED = 0;
     const TYPE_STUDENT = 1;
@@ -46,6 +48,9 @@ class Person extends \yii\db\ActiveRecord
     const SEX_NONE = 0;
     const SEX_MALE = 1;
     const SEX_FEMALE = 2;
+
+    const STATUS_DISABLED = 0;
+    const STATUS_ENABLED = 10;
 
     /**
      * {@inheritdoc}
@@ -106,5 +111,68 @@ class Person extends \yii\db\ActiveRecord
             'delete_ts' => Yii::t('app', 'Delete Ts'),
             'import_ts' => Yii::t('app', 'Import Ts'),
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['id' => $id]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+    }
+
+    /**
+     * Returns Person by portal_uid
+     * @param int $uid
+     * @return Person|null
+     */
+    public static function findIdentityByUID(int $uid)
+    {
+        return static::findOne(['portal_uid' => $uid]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthKey()
+    {
+        throw new NotSupportedException('"getAuthKey" is not implemented.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    public static function add($portal_uid, $firstname, $lastname, $middlename, $iin): Person
+    {
+        $model = new Person();
+        $model->portal_uid = $portal_uid;
+        $model->status = static::STATUS_ENABLED;
+        $model->firstname = $firstname;
+        $model->lastname = $lastname;
+        $model->middlename = $middlename;
+        $model->iin = $iin;
+
+        return $model;
     }
 }

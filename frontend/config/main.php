@@ -18,8 +18,9 @@ return [
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\person\Person',
             'enableAutoLogin' => true,
+            'absoluteAuthTimeout' => \Yii::$app->params['session_timeout'],
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
         'session' => [
