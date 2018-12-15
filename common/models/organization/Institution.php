@@ -76,7 +76,7 @@ class Institution extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
+            'name' => Yii::t('app', 'Title'),
             'country_id' => Yii::t('app', 'Country ID'),
             'city_id' => Yii::t('app', 'City ID'),
             'parent_id' => Yii::t('app', 'Parent ID'),
