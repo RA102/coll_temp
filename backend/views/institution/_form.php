@@ -12,65 +12,86 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'educational_form_id')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'type_id')->textInput() ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'country_id')->textInput() ?>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'max_shift')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'languages_iso')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'organizational_legal_form_id')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'enable_fraction')->checkbox() ?>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-3">
+            <?= $form->field($model, 'min_grade')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'max_grade')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'foundation_year')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'bin')->textInput() ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'city_id')->textInput() ?>
+    <div class="row">
+        <div class="col-md-3">
+            <?= $form->field($model, 'country_id')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'city_id')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'street_id')->textInput() ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'house_number')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'parent_id')->textInput() ?>
+    <div class="row">
+        <div class="col-md-3">
+            <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'fax')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-3">
+            <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'type_id')->textInput() ?>
-
-    <?= $form->field($model, 'educational_form_id')->textInput() ?>
-
-    <?= $form->field($model, 'organizational_legal_form_id')->textInput() ?>
-
-    <?= $form->field($model, 'oid')->textInput() ?>
-
-    <?= $form->field($model, 'server_id')->textInput() ?>
-
-    <?= $form->field($model, 'street_id')->textInput() ?>
-
-    <?= $form->field($model, 'house_number')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'fax')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'languages_iso')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'bin')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'foundation_year')->textInput() ?>
-
-    <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'max_grade')->textInput() ?>
-
-    <?= $form->field($model, 'info')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'domain')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'db_name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'db_user')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'db_password')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'initialization')->checkbox() ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'create_ts')->textInput() ?>
-
-    <?= $form->field($model, 'update_ts')->textInput() ?>
-
-    <?= $form->field($model, 'delete_ts')->textInput() ?>
+    <div class="row">
+        <div class="col-md-3">
+            <?= $form->field($model, 'status')->textInput() ?>
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
