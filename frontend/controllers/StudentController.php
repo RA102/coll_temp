@@ -6,6 +6,7 @@ use common\models\person\Student;
 use frontend\models\forms\StudentGeneralForm;
 use Yii;
 use frontend\search\StudentSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,6 +22,16 @@ class StudentController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['*'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -108,6 +119,9 @@ class StudentController extends Controller
         ]);
     }
 
+    /**
+     * @TODO Rename action. "Step 1" of what?
+     */
     public function actionStep1($id)
     {
         $model = $this->findModel($id);
@@ -153,6 +167,9 @@ class StudentController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
+    /**
+     * @TODO Move to a service
+     */
     public function actionAjaxAddress($term = null)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
