@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 use common\models\person\Student;
+use frontend\models\forms\PersonContactsForm;
+use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
 use Yii;
 use frontend\search\StudentSearch;
@@ -80,8 +82,12 @@ class StudentController extends Controller
      */
     public function actionViewDocuments($id)
     {
+        $model = $this->findModel($id);
+        $form = new PersonDocumentsForm($model);
+
         return $this->render('view/view_documents', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'form' => $form,
         ]);
     }
 
@@ -130,15 +136,14 @@ class StudentController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = new StudentGeneralForm();
-
         $student = $this->findModel($id);
+        $model = new StudentGeneralForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $student->setAttributes($model->attributes);
             $student->save();
 
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $student->id]);
         }
 
         return $this->render('update', [
@@ -147,15 +152,19 @@ class StudentController extends Controller
         ]);
     }
 
-    public function actionStep1($id)
+    public function actionUpdateDocuments($id)
     {
         $model = $this->findModel($id);
+        $form = new PersonDocumentsForm($model);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $form->apply($model);
+
+            return $this->redirect(['view-documents', 'id' => $model->id]);
         }
 
-        return $this->render('step-1', [
+        return $this->render('update/update_documents', [
+            'form' => $form,
             'model' => $model,
         ]);
     }
