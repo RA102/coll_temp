@@ -38,6 +38,7 @@ return [
     'Authorization Records' => 'Авторизационные записи',
     'Nickname' => '',
     'Update' => 'Редактировать',
+    'Students' => 'Студенты',
 
     // ORGANIZATION
     'Title' => 'Название',

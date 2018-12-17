@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $model common\models\person\Student */
 
 $this->title = $model->firstname;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'People'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Students'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $action = $this->context->action->id;
 ?>
