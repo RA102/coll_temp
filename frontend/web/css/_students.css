@@ -1,13 +1,13 @@
-.student-index {
+.student-block {
     background-color: #FFF;
 }
 
-.student-index .card-header {
+.student-block .card-header {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     margin-top: 30px;
 }
 
-.student-index .nav > li > a {
+.student-block .nav > li > a {
     padding: 20px 15px
 }

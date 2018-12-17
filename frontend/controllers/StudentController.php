@@ -54,7 +54,46 @@ class StudentController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->render('view/view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Displays Student contacts information
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionViewContacts($id)
+    {
+        return $this->render('view/view_contacts', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Displays Student documents information
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionViewDocuments($id)
+    {
+        return $this->render('view/view_documents', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Displays Student authorization information
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionViewAuthorization($id)
+    {
+        return $this->render('view/view_authorization', [
             'model' => $this->findModel($id),
         ]);
     }

@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 
-<div class="student-index" style="background-color: #FFF;">
+<div class="student-index student-block">
 
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

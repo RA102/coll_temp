@@ -22,11 +22,22 @@ return [
     'Организация',
     'Система рейтинга',
 
+    // STUDENTS
     'Firstname' => 'Имя',
     'Lastname' => 'Фамилия',
     'Middlename' => 'Отчество',
     'Birth Date' => 'Дата рождения',
     'Iin' => 'Иин',
+    'Sex' => 'Пол',
+    'Nationality ID' => 'Национальность',
+    'Birth Place' => 'Место рождения',
+    'Language' => 'Язык',
+    'Personal Data' => 'Личные данные',
+    'Contacts' => 'Контакты',
+    'Documents' => 'Документы',
+    'Authorization Records' => 'Авторизационные записи',
+    'Nickname' => '',
+    'Update' => 'Редактировать',
 
     // ORGANIZATION
     'Title' => 'Название',

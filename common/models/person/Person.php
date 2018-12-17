@@ -3,6 +3,7 @@
 namespace common\models\person;
 
 use common\helpers\SchemeHelper;
+use common\models\Nationality;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\web\IdentityInterface;
@@ -38,6 +39,8 @@ use yii\web\IdentityInterface;
  * @property string $create_ts
  * @property string $delete_ts
  * @property string $import_ts
+ *
+ * @property Nationality $nationality
  */
 class Person extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -112,6 +115,11 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
             'delete_ts' => Yii::t('app', 'Delete Ts'),
             'import_ts' => Yii::t('app', 'Import Ts'),
         ];
+    }
+
+    public function getNationality()
+    {
+        return $this->hasOne(Nationality::className(), ['id' => 'nationality_id']);
     }
 
     public function isActive()
