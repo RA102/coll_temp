@@ -41,6 +41,7 @@ use yii\web\IdentityInterface;
  * @property string $import_ts
  *
  * @property Nationality $nationality
+ * @property PersonInfo[] $personInfos
  */
 class Person extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -120,6 +121,11 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function getNationality()
     {
         return $this->hasOne(Nationality::className(), ['id' => 'nationality_id']);
+    }
+
+    public function getPersonInfos()
+    {
+        return $this->hasMany(PersonInfo::class, ['person_id' => 'id']);
     }
 
     public function isActive()
