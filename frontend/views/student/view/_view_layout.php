@@ -11,6 +11,11 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'People'), 'url' => [
 $this->params['breadcrumbs'][] = $this->title;
 $action = $this->context->action->id;
 ?>
+
+<div>
+    <h1>Просмотр студента</h1>
+</div>
+
 <div class="student-view student-block">
 
     <div class="card-header">
