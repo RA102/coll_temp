@@ -8,6 +8,7 @@ use Yii;
 /**
  * This is the model class for table "person.person_info".
  *
+ * @property int $id
  * @property int $person_id
  * @property string $name
  * @property string $value
@@ -51,6 +52,7 @@ class PersonInfo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'id' => Yii::t('app', 'ID'),
             'person_id' => Yii::t('app', 'Person ID'),
             'name' => Yii::t('app', 'Name'),
             'value' => Yii::t('app', 'Value'),
