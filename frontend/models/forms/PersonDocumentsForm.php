@@ -4,7 +4,7 @@ namespace frontend\models\forms;
 
 use common\helpers\PersonInfoHelper;
 use common\models\person\Person;
-use Yii;
+use common\services\person\PersonInfoService;
 use yii\base\Model;
 
 class PersonDocumentsForm extends Model
@@ -18,16 +18,16 @@ class PersonDocumentsForm extends Model
     public $passport_issued_date;
     public $passport_valid_date;
 
-    public function __construct(Person $person, array $config = [])
+    public function __construct(Person $person, PersonInfoService $personInfoService, array $config = [])
     {
-        $this->identity_card_number = $person->getPersonInfoValue(PersonInfoHelper::IDENTITY_CARD_NUMBER);
-        $this->identity_card_issued_date = $person->getPersonInfoValue(PersonInfoHelper::IDENTITY_CARD_ISSUED_DATE);
-        $this->identity_card_valid_date = $person->getPersonInfoValue(PersonInfoHelper::IDENTITY_CARD_VALID_DATE);
+        $this->identity_card_number = $personInfoService->getInfoValue($person, PersonInfoHelper::IDENTITY_CARD_NUMBER);
+        $this->identity_card_issued_date = $personInfoService->getInfoValue($person, PersonInfoHelper::IDENTITY_CARD_ISSUED_DATE);
+        $this->identity_card_valid_date = $personInfoService->getInfoValue($person, PersonInfoHelper::IDENTITY_CARD_VALID_DATE);
 
-        $this->passport_series = $person->getPersonInfoValue(PersonInfoHelper::PASSPORT_SERIES);
-        $this->passport_number = $person->getPersonInfoValue(PersonInfoHelper::PASSPORT_NUMBER);
-        $this->passport_issued_date = $person->getPersonInfoValue(PersonInfoHelper::PASSPORT_ISSUED_DATE);
-        $this->passport_valid_date = $person->getPersonInfoValue(PersonInfoHelper::PASSPORT_VALID_DATE);
+        $this->passport_series = $personInfoService->getInfoValue($person, PersonInfoHelper::PASSPORT_SERIES);
+        $this->passport_number = $personInfoService->getInfoValue($person, PersonInfoHelper::PASSPORT_NUMBER);
+        $this->passport_issued_date = $personInfoService->getInfoValue($person, PersonInfoHelper::PASSPORT_ISSUED_DATE);
+        $this->passport_valid_date = $personInfoService->getInfoValue($person, PersonInfoHelper::PASSPORT_VALID_DATE);
 
         parent::__construct($config);
     }
@@ -66,15 +66,15 @@ class PersonDocumentsForm extends Model
         ];
     }
 
-    public function apply(Person $person)
+    public function apply(Person $person, PersonInfoService $personInfoService)
     {
-        $person->setPersonInfoValue(PersonInfoHelper::IDENTITY_CARD_NUMBER, $this->identity_card_number);
-        $person->setPersonInfoValue(PersonInfoHelper::IDENTITY_CARD_ISSUED_DATE, $this->identity_card_issued_date);
-        $person->setPersonInfoValue(PersonInfoHelper::IDENTITY_CARD_VALID_DATE, $this->identity_card_valid_date);
+        $personInfoService->setInfoValue($person, PersonInfoHelper::IDENTITY_CARD_NUMBER, $this->identity_card_number);
+        $personInfoService->setInfoValue($person, PersonInfoHelper::IDENTITY_CARD_ISSUED_DATE, $this->identity_card_issued_date);
+        $personInfoService->setInfoValue($person, PersonInfoHelper::IDENTITY_CARD_VALID_DATE, $this->identity_card_valid_date);
 
-        $person->setPersonInfoValue(PersonInfoHelper::PASSPORT_SERIES, $this->passport_series);
-        $person->setPersonInfoValue(PersonInfoHelper::PASSPORT_NUMBER, $this->passport_number);
-        $person->setPersonInfoValue(PersonInfoHelper::PASSPORT_ISSUED_DATE, $this->passport_issued_date);
-        $person->setPersonInfoValue(PersonInfoHelper::PASSPORT_VALID_DATE, $this->passport_valid_date);
+        $personInfoService->setInfoValue($person, PersonInfoHelper::PASSPORT_SERIES, $this->passport_series);
+        $personInfoService->setInfoValue($person, PersonInfoHelper::PASSPORT_NUMBER, $this->passport_number);
+        $personInfoService->setInfoValue($person, PersonInfoHelper::PASSPORT_ISSUED_DATE, $this->passport_issued_date);
+        $personInfoService->setInfoValue($person, PersonInfoHelper::PASSPORT_VALID_DATE, $this->passport_valid_date);
     }
 }

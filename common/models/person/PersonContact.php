@@ -6,7 +6,7 @@ use common\helpers\SchemeHelper;
 use Yii;
 
 /**
- * This is the model class for table "person.person_info".
+ * This is the model class for table "person.person_contact".
  *
  * @property int $id
  * @property int $person_id
@@ -16,17 +16,15 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
- *
- * @property Person $person
  */
-class PersonInfo extends \yii\db\ActiveRecord
+class PersonContact extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return SchemeHelper::PERSON . 'person_info';
+        return SchemeHelper::PERSON . 'person_contact';
     }
 
     /**
@@ -68,7 +66,7 @@ class PersonInfo extends \yii\db\ActiveRecord
         return $this->hasOne(Person::class, ['id' => 'person_id']);
     }
 
-    public static function add(Person $person, $name, $value, $status = 1): PersonInfo
+    public static function add(Person $person, $name, $value, $status = 1): PersonContact
     {
         $model = new static();
         $model->person_id = $person->id;

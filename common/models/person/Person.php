@@ -42,6 +42,7 @@ use yii\web\IdentityInterface;
  *
  * @property Nationality $nationality
  * @property PersonInfo[] $personInfos
+ * @property PersonContact[] $personContacts
  */
 class Person extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -123,40 +124,14 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasOne(Nationality::className(), ['id' => 'nationality_id']);
     }
 
-    public function getPersonInfo($name)
-    {
-        foreach ($this->personInfos as $personInfo) {
-            if ($personInfo->name == $name) {
-                return $personInfo;
-            }
-        }
-
-        return null;
-    }
-
-    public function getPersonInfoValue($name)
-    {
-        if (($personInfo = $this->getPersonInfo($name)) !== null) {
-            return $personInfo->value;
-        }
-
-        return null;
-    }
-
-    public function setPersonInfoValue($name, $value)
-    {
-        if (($personInfo = $this->getPersonInfo($name)) !== null) {
-            $personInfo->value = $value;
-        } else {
-            $personInfo = PersonInfo::add($this, $name, $value);
-        }
-
-        $personInfo->save();
-    }
-
     public function getPersonInfos()
     {
         return $this->hasMany(PersonInfo::class, ['person_id' => 'id']);
+    }
+
+    public function getPersonContacts()
+    {
+        return $this->hasMany(PersonContact::class, ['person_id' => 'id']);
     }
 
     public function isActive()

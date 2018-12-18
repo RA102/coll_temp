@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 use common\models\person\Student;
+use common\services\person\PersonContactService;
+use common\services\person\PersonInfoService;
 use frontend\models\forms\PersonContactsForm;
 use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
@@ -11,12 +13,16 @@ use frontend\search\StudentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Module;
 
 /**
  * StudentController implements the CRUD actions for Student model.
  */
 class StudentController extends Controller
 {
+    private $personInfoService;
+    private $personContactService;
+
     /**
      * {@inheritdoc}
      */
@@ -30,6 +36,13 @@ class StudentController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function __construct(string $id, Module $module, PersonInfoService $personInfoService, PersonContactService $personContactService, array $config = [])
+    {
+        $this->personInfoService = $personInfoService;
+        $this->personContactService = $personContactService;
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -69,8 +82,12 @@ class StudentController extends Controller
      */
     public function actionViewContacts($id)
     {
+        $model = $this->findModel($id);
+        $form = new PersonContactsForm($model, $this->personContactService);
+
         return $this->render('view/view_contacts', [
             'model' => $this->findModel($id),
+            'form' => $form,
         ]);
     }
 
@@ -83,7 +100,7 @@ class StudentController extends Controller
     public function actionViewDocuments($id)
     {
         $model = $this->findModel($id);
-        $form = new PersonDocumentsForm($model);
+        $form = new PersonDocumentsForm($model, $this->personInfoService);
 
         return $this->render('view/view_documents', [
             'model' => $model,
@@ -152,13 +169,30 @@ class StudentController extends Controller
         ]);
     }
 
+    public function actionUpdateContacts($id)
+    {
+        $model = $this->findModel($id);
+        $form = new PersonContactsForm($model, $this->personContactService);
+
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $form->apply($model, $this->personContactService);
+
+            return $this->redirect(['view-contacts', 'id' => $model->id]);
+        }
+
+        return $this->render('update/update_contacts', [
+            'form' => $form,
+            'model' => $model,
+        ]);
+    }
+
     public function actionUpdateDocuments($id)
     {
         $model = $this->findModel($id);
-        $form = new PersonDocumentsForm($model);
+        $form = new PersonDocumentsForm($model, $this->personInfoService);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $form->apply($model);
+            $form->apply($model, $this->personInfoService);
 
             return $this->redirect(['view-documents', 'id' => $model->id]);
         }
