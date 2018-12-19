@@ -18,36 +18,54 @@ use yii\widgets\ActiveForm;
 
     <?php $activeForm = ActiveForm::begin(); ?>
 
-    <?= $activeForm->field($form, 'firstname')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="col-md-4">
+                <?= $activeForm->field($form, 'firstname')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-4">
+                <?= $activeForm->field($form, 'lastname')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-4">
+                <?= $activeForm->field($form, 'middlename')->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
 
-    <?= $activeForm->field($form, 'lastname')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="col-md-4">
+                <?= $activeForm->field($form, 'sex')->dropDownList(PersonHelper::getSexList()) ?>
+            </div>
+            <div class="col-md-4">
+                <?= $activeForm->field($form, 'birth_date')->widget(DatePicker::class, [
+                    'language' => 'ru',
+                    'pluginOptions' => [
+                        'autoclose' => true
+                    ]
+                ]); ?>
+            </div>
+            <div class="col-md-4">
+                <?= $activeForm->field($form, 'birth_place')->widget(AutoComplete::class, [
+                    'options' => ['class' => 'form-control'],
+                    'clientOptions' => [
+                        'source' => Url::to(['employee/ajax-address']),
+                        'minLength' => '5',
+                    ],
+                ]); ?>
+            </div>
+        </div>
 
-    <?= $activeForm->field($form, 'middlename')->textInput(['maxlength' => true]) ?>
-
-    <?= $activeForm->field($form, 'sex')->dropDownList(PersonHelper::getSexList()) ?>
-
-    <?= $activeForm->field($form, 'birth_date')->widget(DatePicker::class, [
-        'pluginOptions' => [
-            'autoclose' => true
-        ]
-    ]); ?>
-
-    <?= $activeForm->field($form, 'birth_place')->widget(AutoComplete::class, [
-        'options' => ['class' => 'form-control'],
-        'clientOptions' => [
-            'source' => Url::to(['employee/ajax-address']),
-            'minLength' => '5',
-        ],
-    ]); ?>
-
-
-    <?= $activeForm
-        ->field($form, 'nationality_id')
-        ->dropDownList(\yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name')) ?>
-
-    <?= $activeForm->field($form, 'iin')->textInput(['maxlength' => true]) ?>
-
-    <?= $activeForm->field($form, 'language')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="col-md-4">
+                <?= $activeForm
+                    ->field($form, 'nationality_id')
+                    ->dropDownList(\yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name')) ?>
+            </div>
+            <div class="col-md-4">
+                <?= $activeForm->field($form, 'iin')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-4">
+                <?= $activeForm->field($form, 'language')->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
 
         <div class="form-group">
             <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

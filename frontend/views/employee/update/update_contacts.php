@@ -13,13 +13,18 @@ use yii\widgets\ActiveForm;
 
     <?php $activeForm = ActiveForm::begin(); ?>
 
-    <?= $activeForm->field($form, 'contact_phone_home')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="col-md-4">
+                <?= $activeForm->field($form, 'contact_phone_home')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-4">
+                <?= $activeForm->field($form, 'contact_phone_mobile')->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
 
-    <?= $activeForm->field($form, 'contact_phone_mobile')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
-    </div>
+        <div class="form-group">
+            <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        </div>
 
     <?php ActiveForm::end(); ?>
 

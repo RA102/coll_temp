@@ -17,37 +17,54 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'lastname')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'middlename')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'lastname')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'sex')->dropDownList(PersonHelper::getSexList()) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'birth_date')->widget(DatePicker::class, [
+                'pluginOptions' => [
+                    'autoclose' => true
+                ]
+            ]); ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'birth_place')->widget(AutoComplete::class, [
+                'options' => ['class' => 'form-control'],
+                'clientOptions' => [
+                    'source' => Url::to(['employee/ajax-address']),
+                    'minLength' => '5',
+                ],
+            ]); ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'middlename')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'sex')->dropDownList(PersonHelper::getSexList()) ?>
-
-    <?= $form->field($model, 'birth_date')->widget(DatePicker::class, [
-        'pluginOptions' => [
-            'autoclose' => true
-        ]
-    ]); ?>
-
-    <?= $form->field($model, 'birth_place')->widget(AutoComplete::class, [
-        'options' => ['class' => 'form-control'],
-        'clientOptions' => [
-            'source' => Url::to(['employee/ajax-address']),
-            'minLength' => '5',
-        ],
-    ]); ?>
-
-
-    <?= $form
-        ->field($model, 'nationality_id')
-        ->dropDownList(\yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name'))
-    ?>
-
-    <?= $form->field($model, 'iin')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form
+                ->field($model, 'nationality_id')
+                ->dropDownList(\yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name'))
+            ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'iin')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
