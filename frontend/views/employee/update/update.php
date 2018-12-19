@@ -60,7 +60,9 @@ use yii\widgets\ActiveForm;
                     ->dropDownList(\yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name')) ?>
             </div>
             <div class="col-md-4">
-                <?= $activeForm->field($form, 'iin')->textInput(['maxlength' => true]) ?>
+                <?= $activeForm->field($model, 'iin')
+                    ->widget(\yii\widgets\MaskedInput::class, ['mask' => '999999999999'])
+                ?>
             </div>
             <div class="col-md-4">
                 <?= $activeForm->field($form, 'language')->textInput(['maxlength' => true]) ?>

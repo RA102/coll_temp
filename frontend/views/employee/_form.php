@@ -60,7 +60,9 @@ use yii\widgets\ActiveForm;
             ?>
         </div>
         <div class="col-md-4">
-            <?= $form->field($model, 'iin')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'iin')
+                ->widget(\yii\widgets\MaskedInput::class, ['mask' => '999999999999'])
+            ?>
         </div>
         <div class="col-md-4">
             <?= $form->field($model, 'language')->textInput(['maxlength' => true]) ?>

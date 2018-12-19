@@ -15,10 +15,16 @@ use yii\widgets\ActiveForm;
 
         <div class="row">
             <div class="col-md-4">
-                <?= $activeForm->field($form, 'contact_phone_home')->textInput(['maxlength' => true]) ?>
+                <?= $activeForm->field($form, 'contact_phone_home')
+                    ->textInput(['maxlength' => true])
+                    ->widget(\yii\widgets\MaskedInput::class, ['mask' => '+7 (999) 999-99-99',])
+                ?>
             </div>
             <div class="col-md-4">
-                <?= $activeForm->field($form, 'contact_phone_mobile')->textInput(['maxlength' => true]) ?>
+                <?= $activeForm->field($form, 'contact_phone_mobile')
+                    ->textInput(['maxlength' => true])
+                    ->widget(\yii\widgets\MaskedInput::class, ['mask' => '+7 (999) 999-99-99',])
+                ?>
             </div>
         </div>
 
