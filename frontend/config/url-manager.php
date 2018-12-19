@@ -7,6 +7,7 @@ return [
     'showScriptName'  => false,
     'rules'           => [
         'student' => '/student/index',
+        'employee' => '/employee/index',
         '<a:\w+>' => 'site/<a>',
     ],
 ];
