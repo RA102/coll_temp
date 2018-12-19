@@ -128,19 +128,18 @@ class StudentController extends Controller
      */
     public function actionCreate()
     {
-        $model = new StudentGeneralForm();
+        $form = new StudentGeneralForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $student = new Student();
-            $student->status = 1;
-            $student->setAttributes($model->attributes);
-            $student->save();
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $model = Student::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
+            $model->setAttributes($form->attributes);
+            $model->save();
 
-            return $this->redirect(['view', 'id' => $student->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $form,
         ]);
     }
 
@@ -153,19 +152,20 @@ class StudentController extends Controller
      */
     public function actionUpdate($id)
     {
-        $student = $this->findModel($id);
-        $model = new StudentGeneralForm();
+        $model = $this->findModel($id);
+        $form = new StudentGeneralForm();
+        $form->setAttributes($model->attributes);
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $student->setAttributes($model->attributes);
-            $student->save();
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $model->setAttributes($form->attributes);
+            $model->save();
 
-            return $this->redirect(['view', 'id' => $student->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        return $this->render('update/update', [
+            'form' => $form,
             'model' => $model,
-            'student' => $student,
         ]);
     }
 

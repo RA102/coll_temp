@@ -204,7 +204,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function add($portal_uid, $firstname, $lastname, $middlename, $iin): Person
     {
-        $model = new Person();
+        $model = new static;
         $model->portal_uid = $portal_uid;
         $model->status = static::STATUS_ACTIVE;
         $model->firstname = $firstname;
