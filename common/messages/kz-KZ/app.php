@@ -39,6 +39,11 @@ return [
     'Nickname' => '',
     'Update' => 'Редактировать',
     'Students' => 'Студенты',
+    'Create Student' => 'Добавление студента',
+
+    // EMPLOYEES
+    'Employees' => 'Сотрудники',
+    'Create Employee' => 'Добавление сотрудника',
 
     // ORGANIZATION
     'Title' => 'Название',
