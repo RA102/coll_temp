@@ -35,6 +35,7 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="col-md-4">
             <?= $form->field($model, 'birth_date')->widget(DatePicker::class, [
+                'language' => 'ru',
                 'pluginOptions' => [
                     'autoclose' => true
                 ]
