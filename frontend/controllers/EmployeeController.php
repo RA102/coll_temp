@@ -140,7 +140,7 @@ class EmployeeController extends Controller
             $model->setAttributes($form->attributes);
             $model->save();
 
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update-contacts', 'id' => $model->id]);
         }
 
         return $this->render('create', [
