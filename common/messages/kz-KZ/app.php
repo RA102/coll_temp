@@ -86,4 +86,9 @@ return [
     'Delete' => 'Удалить',
     'Institution Applications' => 'Заявки',
     'Update Institution Application' => 'Редактирование заявки',
+
+    // GENERAL
+    'Login' => 'Войти',
+    'Forgot password?' => 'Забыли пароль?',
+    'Password' => 'Пароль'
 ];

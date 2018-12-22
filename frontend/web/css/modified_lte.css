@@ -167,3 +167,8 @@
         z-index: 840;
     }
 }
+
+
+.login-page, .register-page {
+    background: #e4e5e6 !important;
+}
