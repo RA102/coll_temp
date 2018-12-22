@@ -23,7 +23,7 @@
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
-                            ['label' => Yii::t('app','Заявки'), 'icon' => 'file-code-o', 'url' => ['/']],
+                            ['label' => Yii::t('app','Заявки'), 'icon' => 'file-code-o', 'url' => ['/application']],
                             ['label' => Yii::t('app','Список'), 'icon' => 'dashboard', 'url' => ['/institution']],
                             ['label' => Yii::t('app','Типы'), 'icon' => 'dashboard', 'url' => ['/']],
                             ['label' => Yii::t('app','Типы помещений'), 'icon' => 'dashboard', 'url' => ['/']],

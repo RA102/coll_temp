@@ -45,6 +45,7 @@ return [
             'showScriptName'  => false,
             'rules'           => [
                 'institution' => '/institution/index',
+                'application' => '/application/index',
                 '<a:\w+>' => 'site/<a>'
             ],
         ],
