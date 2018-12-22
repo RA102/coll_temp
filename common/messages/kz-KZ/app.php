@@ -76,4 +76,14 @@ return [
     'Delete Ts' => 'Дата удаления',
     'Update Institution: ' => 'Редактирование: ',
     'Enable Fraction' => 'Поддержка числитель/знаменатель в расписании',
+
+    // APPLICATIONS
+    'Street' => 'Улица',
+    'New Application' => 'Новая заявка',
+    'Sex None' => 'Пол не указан',
+    'Sex Male' => 'Мужской',
+    'Sex Female' => 'Женский',
+    'Delete' => 'Удалить',
+    'Institution Applications' => 'Заявки',
+    'Update Institution Application' => 'Редактирование заявки',
 ];

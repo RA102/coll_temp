@@ -10,45 +10,45 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Institution Applications'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="institution-application-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<?php $this->beginBlock('content') ?>
+    <div class="institution-application-view">
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
+        <p>
+            <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
+        </p>
+
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                'iin',
+                'sex',
+                'email:email',
+                'phone',
+                'name',
+                'city_id',
+                'type_id',
+                'firstname',
+                'lastname',
+                'middlename',
+                'street',
+                'birth_date',
+                'house_number',
+                'educational_form_id',
+                'organizational_legal_form_id',
+                'create_ts',
+                'update_ts',
             ],
         ]) ?>
-    </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'iin',
-            'sex',
-            'email:email',
-            'phone',
-            'name',
-            'city_id',
-            'type_id',
-            'firstname',
-            'lastname',
-            'middlename',
-            'street',
-            'birth_date',
-            'house_number',
-            'educational_form_id',
-            'organizational_legal_form_id',
-            'status',
-            'create_ts',
-            'update_ts',
-            'delete_ts',
-        ],
-    ]) ?>
-
-</div>
+    </div>
+<?php $this->endBlock() ?>
+<?= $this->render('_layout') ?>

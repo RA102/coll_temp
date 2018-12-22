@@ -66,7 +66,7 @@ class InstitutionApplication extends \yii\db\ActiveRecord
             'sex' => Yii::t('app', 'Sex'),
             'email' => Yii::t('app', 'Email'),
             'phone' => Yii::t('app', 'Phone'),
-            'name' => Yii::t('app', 'Name'),
+            'name' => Yii::t('app', 'Title'),
             'city_id' => Yii::t('app', 'City ID'),
             'type_id' => Yii::t('app', 'Type ID'),
             'firstname' => Yii::t('app', 'Firstname'),
