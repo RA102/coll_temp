@@ -2,24 +2,23 @@
 
 namespace frontend\controllers;
 
-use common\models\person\Student;
+use common\models\person\Employee;
 use common\services\person\PersonContactService;
 use common\services\person\PersonInfoService;
 use frontend\models\forms\PersonContactsForm;
 use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
+use frontend\search\EmployeeSearch;
 use Yii;
-use frontend\search\StudentSearch;
-use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\base\Module;
 
 /**
- * StudentController implements the CRUD actions for Student model.
+ * EmployeeController implements the CRUD actions for Employee model.
  */
-class StudentController extends Controller
+class EmployeeController extends Controller
 {
     private $personInfoService;
     private $personContactService;
@@ -30,16 +29,6 @@ class StudentController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['*'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -49,21 +38,26 @@ class StudentController extends Controller
         ];
     }
 
-    public function __construct(string $id, Module $module, PersonInfoService $personInfoService, PersonContactService $personContactService, array $config = [])
-    {
+    public function __construct(
+        string $id,
+        Module $module,
+        PersonInfoService $personInfoService,
+        PersonContactService $personContactService,
+        array $config = []
+    ) {
         $this->personInfoService = $personInfoService;
         $this->personContactService = $personContactService;
         parent::__construct($id, $module, $config);
     }
 
     /**
-     * Lists all Student models.
+     * Lists all Employee models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new StudentSearch();
-        $searchModel->status = Student::STATUS_ACTIVE;
+        $searchModel = new EmployeeSearch();
+        $searchModel->status = Employee::STATUS_ACTIVE;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -73,7 +67,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Displays a single Student model.
+     * Displays a single Employee model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -86,7 +80,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Displays Student contacts information
+     * Displays Employee contacts information
      * @param $id
      * @return string
      * @throws NotFoundHttpException
@@ -103,7 +97,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Displays Student documents information
+     * Displays Employee documents information
      * @param $id
      * @return string
      * @throws NotFoundHttpException
@@ -120,7 +114,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Displays Student authorization information
+     * Displays Employee authorization information
      * @param $id
      * @return string
      * @throws NotFoundHttpException
@@ -133,7 +127,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Creates a new Student model.
+     * Creates a new Employee model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -142,11 +136,11 @@ class StudentController extends Controller
         $form = new StudentGeneralForm();
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $model = Student::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
+            $model = Employee::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
             $model->setAttributes($form->attributes);
             $model->save();
 
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update-contacts', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -155,7 +149,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Updates an existing Student model.
+     * Updates an existing EmployeeEmployee model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -180,6 +174,11 @@ class StudentController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionUpdateContacts($id)
     {
         $model = $this->findModel($id);
@@ -197,6 +196,11 @@ class StudentController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionUpdateDocuments($id)
     {
         $model = $this->findModel($id);
@@ -215,7 +219,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Deletes an existing Student model.
+     * Deletes an existing Employee model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -231,24 +235,21 @@ class StudentController extends Controller
     }
 
     /**
-     * Finds the Student model based on its primary key value.
+     * Finds the Employee model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Student the loaded model
+     * @return Employee the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Student::findOne($id)) !== null) {
+        if (($model = Employee::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
-    /**
-     * @TODO Move to a service
-     */
     public function actionAjaxAddress($term = null)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

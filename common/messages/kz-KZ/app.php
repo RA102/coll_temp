@@ -22,11 +22,28 @@ return [
     'Организация',
     'Система рейтинга',
 
+    // STUDENTS
     'Firstname' => 'Имя',
     'Lastname' => 'Фамилия',
     'Middlename' => 'Отчество',
     'Birth Date' => 'Дата рождения',
     'Iin' => 'Иин',
+    'Sex' => 'Пол',
+    'Nationality ID' => 'Национальность',
+    'Birth Place' => 'Место рождения',
+    'Language' => 'Язык',
+    'Personal Data' => 'Личные данные',
+    'Contacts' => 'Контакты',
+    'Documents' => 'Документы',
+    'Authorization Records' => 'Авторизационные записи',
+    'Nickname' => '',
+    'Update' => 'Редактировать',
+    'Students' => 'Студенты',
+    'Create Student' => 'Добавление студента',
+
+    // EMPLOYEES
+    'Employees' => 'Сотрудники',
+    'Create Employee' => 'Добавление сотрудника',
 
     // ORGANIZATION
     'Title' => 'Название',
@@ -59,4 +76,19 @@ return [
     'Delete Ts' => 'Дата удаления',
     'Update Institution: ' => 'Редактирование: ',
     'Enable Fraction' => 'Поддержка числитель/знаменатель в расписании',
+
+    // APPLICATIONS
+    'Street' => 'Улица',
+    'New Application' => 'Новая заявка',
+    'Sex None' => 'Пол не указан',
+    'Sex Male' => 'Мужской',
+    'Sex Female' => 'Женский',
+    'Delete' => 'Удалить',
+    'Institution Applications' => 'Заявки',
+    'Update Institution Application' => 'Редактирование заявки',
+
+    // GENERAL
+    'Login' => 'Войти',
+    'Forgot password?' => 'Забыли пароль?',
+    'Password' => 'Пароль'
 ];

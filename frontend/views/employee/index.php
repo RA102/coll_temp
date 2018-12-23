@@ -7,10 +7,10 @@ use \common\models\person\Person;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $searchModel frontend\search\StudentSearch */
+/* @var $searchModel frontend\search\EmployeeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Students');
+$this->title = Yii::t('app', 'Employees');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -20,24 +20,24 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 
-<div class="student-index student-block">
+<div class="employee-index student-block">
 
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="card-header">
         <ul class="nav nav-tabs">
             <li role="presentation" class="<?=$searchModel->isActive() ? 'active' : ''?>">
-                <?= Html::a('Текущие студенты', Url::current([
+                <?= Html::a('Текущие сотрудники', Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_ACTIVE,
                 ])) ?>
             </li>
             <li role="presentation" class="<?=$searchModel->isFired() ? 'active' : ''?>">
-                <?= Html::a('Исключенные студенты', Url::current([
+                <?= Html::a('Уволенные сотрудники', Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_FIRED,
                 ])) ?>
             </li>
             <li role="presentation" class="<?=$searchModel->status == Person::STATUS_DELETED ? 'active' : ''?>">
-                <?= Html::a('Удаленные студенты', Url::current([
+                <?= Html::a('Удаленные сотрудники', Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_DELETED,
                 ])) ?>
             </li>

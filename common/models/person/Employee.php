@@ -23,4 +23,20 @@ class Employee extends Person
             'type' => Person::TYPE_EMPLOYEE,
         ]);
     }
+
+    /**
+     * @param $portal_uid
+     * @param $firstname
+     * @param $lastname
+     * @param $middlename
+     * @param $iin
+     * @return Person
+     */
+    public static function add($portal_uid, $firstname, $lastname, $middlename, $iin): Person
+    {
+        $model = parent::add($portal_uid, $firstname, $lastname, $middlename, $iin);
+        $model->type = Person::TYPE_EMPLOYEE;
+
+        return $model;
+    }
 }

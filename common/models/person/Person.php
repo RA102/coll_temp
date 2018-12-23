@@ -3,6 +3,7 @@
 namespace common\models\person;
 
 use common\helpers\SchemeHelper;
+use common\models\Nationality;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\web\IdentityInterface;
@@ -41,6 +42,9 @@ use yii\web\IdentityInterface;
  *
  * @property AccessToken[] $accessTokens
  * @property AccessToken $activeAccessToken
+ * @property Nationality $nationality
+ * @property PersonInfo[] $personInfos
+ * @property PersonContact[] $personContacts
  */
 class Person extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -115,6 +119,21 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
             'delete_ts' => Yii::t('app', 'Delete Ts'),
             'import_ts' => Yii::t('app', 'Import Ts'),
         ];
+    }
+
+    public function getNationality()
+    {
+        return $this->hasOne(Nationality::className(), ['id' => 'nationality_id']);
+    }
+
+    public function getPersonInfos()
+    {
+        return $this->hasMany(PersonInfo::class, ['person_id' => 'id']);
+    }
+
+    public function getPersonContacts()
+    {
+        return $this->hasMany(PersonContact::class, ['person_id' => 'id']);
     }
 
     public function isActive()
@@ -202,7 +221,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function add($portal_uid, $firstname, $lastname, $middlename, $iin): Person
     {
-        $model = new Person();
+        $model = new static;
         $model->portal_uid = $portal_uid;
         $model->status = static::STATUS_ACTIVE;
         $model->firstname = $firstname;

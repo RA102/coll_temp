@@ -1,19 +1,18 @@
 <?php
 
-use common\helpers\PersonHelper;
-use common\models\person\Student;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\person\Student */
+/* @var $model common\models\organization\InstitutionApplication */
 
-$this->title = $model->firstname;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'People'), 'url' => ['index']];
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Institution Applications'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <?php $this->beginBlock('content') ?>
-    <div class="student-view">
+    <div class="institution-application-view">
 
         <p>
             <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -29,22 +28,24 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                'status',
-                'nickname',
+                'id',
+                'iin',
+                'sex',
+                'email:email',
+                'phone',
+                'name',
+                'city_id',
+                'type_id',
                 'firstname',
                 'lastname',
                 'middlename',
+                'street',
                 'birth_date',
-                [
-                    'attribute' => 'sex',
-                    'value' => function(Student $model) {
-                        return PersonHelper::getSexList()[$model->sex];
-                    }
-                ],
-                'nationality_id',
-                'iin',
-                'birth_place',
-                'language',
+                'house_number',
+                'educational_form_id',
+                'organizational_legal_form_id',
+                'create_ts',
+                'update_ts',
             ],
         ]) ?>
 
