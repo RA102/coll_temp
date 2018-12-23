@@ -15,6 +15,8 @@ use Yii;
  * @property string $create_ts
  * @property string $expire_ts
  * @property string $delete_ts
+ *
+ * @property Person $person
  */
 class AccessToken extends \yii\db\ActiveRecord
 {
@@ -56,6 +58,11 @@ class AccessToken extends \yii\db\ActiveRecord
             'expire_ts' => Yii::t('app', 'Expire Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
+    }
+
+    public function getPerson()
+    {
+        return $this->hasOne(Person::class, ['id' => 'person_id']);
     }
 
     public static function add(Person $person, $token, $hash = '', $isTemporary = true): AccessToken

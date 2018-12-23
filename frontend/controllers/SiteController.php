@@ -3,7 +3,7 @@
 namespace frontend\controllers;
 
 use common\forms\auth\LoginForm;
-use common\services\auth\LoginService;
+use common\services\pds\LoginService;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\base\Module;

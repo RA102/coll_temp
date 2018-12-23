@@ -1,6 +1,6 @@
 <?php
 
-namespace common\services\auth;
+namespace common\services\pds;
 
 use common\models\person\AccessToken;
 use common\models\person\Person;
@@ -8,6 +8,11 @@ use yii\helpers\Json;
 
 class LoginService
 {
+    /**
+     * @param string $username
+     * @param string $password
+     * @return bool
+     */
     public function login(string $username, string $password): bool
     {
         try {
@@ -35,7 +40,7 @@ class LoginService
         }
 
         curl_setopt_array($connection, [
-            CURLOPT_URL => \Yii::$app->params['pds_auth_url'],
+            CURLOPT_URL => \Yii::$app->params['pds_url'] . '/auth',
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode(['indentity' => $username, 'password' => $password]),
             CURLOPT_HTTPHEADER => [
@@ -63,20 +68,37 @@ class LoginService
         return Json::decode($data);
     }
 
+    /**
+     * @param Person $person
+     * @param array $data
+     */
     private function saveToken(Person $person, array $data)
     {
-        $accessToken = AccessToken::add(
-            $person,
-            $data['token'],
-            $data['hash'],
-            $data['is_temporary']
-        );
+        $accessToken = AccessToken::find()
+            ->where([
+                'person_id' => $person->id,
+                'token' => $data['token']
+            ])
+            ->one();
 
-        if (!$accessToken->save()) {
-            throw new \DomainException($accessToken->getErrorSummary(true)[0]);
+        if (!$accessToken) {
+            $accessToken = AccessToken::add(
+                $person,
+                $data['token'],
+                $data['hash'],
+                $data['is_temporary']
+            );
+
+            if (!$accessToken->save()) {
+                throw new \DomainException($accessToken->getErrorSummary(true)[0]);
+            }
         }
     }
 
+    /**
+     * @param array $personData
+     * @return Person
+     */
     private function getPerson(array $personData): Person
     {
         $person = Person::findIdentityByUID($personData['id']);

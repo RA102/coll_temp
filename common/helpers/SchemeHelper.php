@@ -2,8 +2,6 @@
 
 namespace common\helpers;
 
-use Yii;
-
 class SchemeHelper
 {
     const PERSON = 'person.';

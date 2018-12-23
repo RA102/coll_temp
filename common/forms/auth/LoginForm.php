@@ -2,7 +2,7 @@
 
 namespace common\forms\auth;
 
-use common\services\auth\LoginService;
+use common\services\pds\LoginService;
 use yii\base\Model;
 
 class LoginForm extends Model
