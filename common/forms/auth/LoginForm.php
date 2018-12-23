@@ -4,6 +4,7 @@ namespace common\forms\auth;
 
 use common\services\auth\LoginService;
 use yii\base\Model;
+use Yii;
 
 class LoginForm extends Model
 {
@@ -26,6 +27,17 @@ class LoginForm extends Model
         return [
             [['username', 'password'], 'required'],
             ['password', 'validatePassword'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'username' => Yii::t('app', 'E-mail'),
+            'password' => Yii::t('app', 'Password'),
         ];
     }
 

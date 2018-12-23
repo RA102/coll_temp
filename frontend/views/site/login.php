@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <h2>Регистрация</h2>
                                     <p>Если вы образовательное учреждение,
                                         то можете оставить заявку на подключение к системе.</p>
-                                    <a href="/register" class="btn active mt-3 btn-primary" target="_self">
+                                    <a href="/signup" class="btn active mt-3 btn-primary" target="_self">
                                         Подключиться!
                                     </a>
                                 </div>
