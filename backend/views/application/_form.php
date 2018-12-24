@@ -16,33 +16,37 @@ use common\helpers\PersonHelper;
 
     <div class="row">
         <div class="col-md-6">
-            <legend>ДАННЫЕ ОРГАНИЗАЦИИ</legend>
-            <div class="col-md-12">
-                <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-            </div>
-            <div class="col-md-12">
-                <?= $form->field($model, 'organizational_legal_form_id')->textInput() ?>
-            </div>
-            <div class="col-md-6">
-                <?= $form->field($model, 'educational_form_id')->textInput() ?>
-            </div>
-            <div class="col-md-6">
-                <?= $form->field($model, 'type_id')->textInput() ?>
-            </div>
+            <fieldset>
+                <legend>ДАННЫЕ ОРГАНИЗАЦИИ</legend>
+                <div class="col-md-12">
+                    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="col-md-12">
+                    <?= $form->field($model, 'organizational_legal_form_id')->textInput() ?>
+                </div>
+                <div class="col-md-6">
+                    <?= $form->field($model, 'educational_form_id')->textInput() ?>
+                </div>
+                <div class="col-md-6">
+                    <?= $form->field($model, 'type_id')->textInput() ?>
+                </div>
+            </fieldset>
 
             <div class="col-md-12">
-                <legend>АДРЕСНЫЕ ДАННЫЕ</legend>
-                <div class="row">
-                    <div class="col-md-6">
-                        <?= $form->field($model, 'city_id')->textInput() ?>
+                <fieldset>
+                    <legend>АДРЕСНЫЕ ДАННЫЕ</legend>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'city_id')->textInput() ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'street')->textInput(['maxlength' => true]) ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?= $form->field($model, 'house_number')->textInput(['maxlength' => true]) ?>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <?= $form->field($model, 'street')->textInput(['maxlength' => true]) ?>
-                    </div>
-                    <div class="col-md-6">
-                        <?= $form->field($model, 'house_number')->textInput(['maxlength' => true]) ?>
-                    </div>
-                </div>
+                </fieldset>
             </div>
 
             <div class="col-md-12">

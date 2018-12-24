@@ -159,11 +159,7 @@ class SiteController extends Controller
         $this->layout = 'main-login';
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
-            }
+            // @TODO make application service, which holds registration
         }
 
         return $this->render('signup', [

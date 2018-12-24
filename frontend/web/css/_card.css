@@ -454,9 +454,9 @@
     color: #ccc;
     z-index: 2;
     left: 0;
-    font-size: 1rem!important;
+    font-size: 18px !important;
     font-family: PT Sans, sans-serif!important;
-    top: -3px
+    top: -4px
 }
 
 .card-footer:after,
