@@ -27,7 +27,20 @@ use yii\widgets\DetailView;
             ],
             [
                 'label' => 'Адрес прописки',
-                'value' => null
+                'value' => function ($model) use ($form) {
+                    $result = [];
+                    if (($id = $form->residence_country_id) !== null) {
+                        $result[] = \common\models\Country::findOne($id)->name;
+                    }
+                    if (($ids = $form->residence_city_ids)) {
+                        $result[] = \common\models\CountryUnit::findOne(end($ids))->name;
+                    }
+                    if (($id = $form->residence_street_id) !== null) {
+                        $result[] = \common\models\Street::findOne($id)->caption;
+                    }
+
+                    return implode(', ', $result);
+                },
             ],
             [
                 'label' => 'Домашний адрес',

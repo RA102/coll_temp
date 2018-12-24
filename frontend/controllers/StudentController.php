@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\person\Student;
 use common\services\person\PersonContactService;
 use common\services\person\PersonInfoService;
+use common\services\person\PersonLocationService;
 use frontend\models\forms\PersonContactsForm;
 use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
@@ -22,6 +23,7 @@ class StudentController extends Controller
 {
     private $personInfoService;
     private $personContactService;
+    private $personLocationService;
 
     /**
      * {@inheritdoc}
@@ -38,10 +40,16 @@ class StudentController extends Controller
         ];
     }
 
-    public function __construct(string $id, Module $module, PersonInfoService $personInfoService, PersonContactService $personContactService, array $config = [])
+    public function __construct(
+        string $id, Module $module,
+        PersonInfoService $personInfoService,
+        PersonContactService $personContactService,
+        PersonLocationService $personLocationService,
+        array $config = [])
     {
         $this->personInfoService = $personInfoService;
         $this->personContactService = $personContactService;
+        $this->personLocationService = $personLocationService;
         parent::__construct($id, $module, $config);
     }
 
@@ -83,7 +91,7 @@ class StudentController extends Controller
     public function actionViewContacts($id)
     {
         $model = $this->findModel($id);
-        $form = new PersonContactsForm($model, $this->personContactService);
+        $form = new PersonContactsForm($model, $this->personContactService, $this->personLocationService);
 
         return $this->render('view/view_contacts', [
             'model' => $this->findModel($id),
@@ -172,10 +180,10 @@ class StudentController extends Controller
     public function actionUpdateContacts($id)
     {
         $model = $this->findModel($id);
-        $form = new PersonContactsForm($model, $this->personContactService);
+        $form = new PersonContactsForm($model, $this->personContactService, $this->personLocationService);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $form->apply($model, $this->personContactService);
+            $form->apply($model, $this->personContactService, $this->personLocationService);
 
             return $this->redirect(['view-contacts', 'id' => $model->id]);
         }
