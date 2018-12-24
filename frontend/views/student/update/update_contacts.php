@@ -1,5 +1,6 @@
 <?php
 
+use common\models\CountryUnit;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use common\components\ActiveForm;
@@ -32,17 +33,59 @@ use yii\widgets\Pjax;
 
     <?= $activeForm->field($form, 'contact_phone_mobile')->textInput(['maxlength' => true]) ?>
 
-    <?= $activeForm->field($form, 'person_id')->dropDownList(
-        ArrayHelper::map(\common\models\person\Person::find()->all(), 'id', 'firstname'), [
+    <?= $activeForm->field($form, 'residence_country_id')->dropDownList(
+        ArrayHelper::map(\common\models\Country::find()->all(), 'id', 'name'), [
             'class' => 'form-control active-form-refresh-control',
             'prompt' => ''
         ]) ?>
 
-    <?php if ($form->person_id): ?>
-    <?= $activeForm->field($form, 'person_contact_id')->dropDownList(
-            ArrayHelper::map(\common\models\person\Person::findOne($form->person_id)->personContacts, 'id', 'value')
-    ) ?>
-    <?php endif; ?>
+    <?php
+    if ($form->residence_country_id) {
+        $parent_id = null;
+        $children = [];
+        $count = 0;
+        while (true) {
+            $children = CountryUnit::find()->andWhere([
+                'country_id' => $form->residence_country_id,
+                'parent_id' => $parent_id,
+            ])->all();
+            if ($children) {
+                $form->hasCountryUnit = true;
+                echo $activeForm->field($form, "residence_city_ids[{$count}]")->dropDownList(
+                    ArrayHelper::map($children, 'id', 'name'), [
+                    'class' => 'form-control active-form-refresh-control',
+                    'prompt' => ''
+                ]);
+
+                if (isset($form->residence_city_ids[$count]) && $form->residence_city_ids[$count]) {
+                    $parent_id = $form->residence_city_ids[$count];
+                    $count++;
+
+                    continue;
+                }
+            }
+
+            break;
+        }
+
+        if ($parent_id && !$children) {
+            $form->hasStreet = true;
+            echo $activeForm->field($form, "residence_street_id")->dropDownList(
+                ArrayHelper::map(\common\models\Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption'), [
+                'class' => 'form-control',
+                'prompt' => ''
+            ]);
+        }
+    }
+
+    if (!$form->hasCountryUnit) {
+        echo $activeForm->field($form, 'residence_city_ids[]')->hiddenInput(['value' => null])->label(false);
+    }
+    if (!$form->hasStreet) {
+        echo $activeForm->field($form, "residence_street_id")->hiddenInput(['value' => null])->label(false);
+    }
+
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

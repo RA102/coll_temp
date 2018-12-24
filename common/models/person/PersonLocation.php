@@ -29,12 +29,6 @@ use Yii;
  */
 class PersonLocation extends \yii\db\ActiveRecord
 {
-    const TYPE_REGISTRATION = 1; // регистрация
-    const TYPE_RESIDENCE = 2; // место проживание
-    const TYPE_CITIZENSHIP = 3; // гражданство
-    const TYPE_FOREIGNER = 4; // если место откуда прибыл (иностранец)
-    const TYPE_RETURNER = 5; // оралман
-
     /**
      * {@inheritdoc}
      */
@@ -92,6 +86,19 @@ class PersonLocation extends \yii\db\ActiveRecord
     public function getCountryUnit()
     {
         return $this->hasOne(CountryUnit::class, ['id' => 'country_unit_id']);
+    }
+
+    public function getCountryUnitIds()
+    {
+        $ids = [];
+        $item = $this->countryUnit;
+        while ($item != null) {
+            $ids[] = $item->id;
+
+            $item = $item->parent;
+        }
+
+        return array_reverse($ids);
     }
 
     public function getStreet()
