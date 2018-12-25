@@ -33,6 +33,7 @@ class SignupForm extends Model
 
     public $hasCountryUnit = false;
     public $hasStreet = false;
+    public $hasHouseNumber = false;
 
     /**
      * {@inheritdoc}

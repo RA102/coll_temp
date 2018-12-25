@@ -90,6 +90,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'prompt' => ''
                                         ]);
                                     }
+                                    if ($parent_id && !$children && $model->hasStreet) {
+                                        $model->hasHouseNumber = true;
+                                        echo $form->field($model, 'house_number');
+                                    }
                                 }
 
                                 if (!$model->hasCountryUnit) {
@@ -97,6 +101,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
                                 if (!$model->hasStreet) {
                                     echo $form->field($model, "street_id")->hiddenInput(['value' => null])->label(false);
+                                }
+                                if (!$model->hasHouseNumber) {
+                                    echo $form->field($model, "house_number")->hiddenInput(['value' => null])->label(false);
                                 }
 
                                 ?>
