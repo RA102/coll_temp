@@ -5,29 +5,30 @@ namespace common\services\pds;
 use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
 
-class PersonCreateService extends PersonService
+class PersonUpdateSearchService extends PersonSearchService
 {
     /**
+     * @param int $person_id
      * @param PdsPersonInterface $person
      * @return PdsPersonInterface
-     * @throws \yii\web\ForbiddenHttpException
+     * @throws ForbiddenHttpException
      * @throws \yii\web\ServerErrorHttpException
      * @throws \yii\web\UnauthorizedHttpException
      */
-    public function create(PdsPersonInterface $person): PdsPersonInterface
+    public function update(int $person_id, PdsPersonInterface $person): PdsPersonInterface
     {
-        $query = array_filter($person->getAttributes());
-        $persons = $this->findAll($query);
-        if (!empty($persons)) {
-            throw new ForbiddenHttpException('Person already exists');
+        $persons = $this->findAll(['id' => $person_id]);
+        if (empty($persons)) {
+            throw new ForbiddenHttpException('Person not exists');
         }
 
         $userToken = $this->getAccessToken();
-        $response = $this->createPdsPerson($query, $userToken);
+        $query = array_filter($person->getAttributes());
+        $response = $this->updatePdsPerson($person_id, $query, $userToken);
         return $this->getPersonObject($response);
     }
 
-    private function createPdsPerson(array $attributes, $token)
+    private function updatePdsPerson(int $person_id, array $attributes, $token)
     {
         $connection = curl_init();
         if (!$connection) {
@@ -35,8 +36,8 @@ class PersonCreateService extends PersonService
         }
 
         curl_setopt_array($connection, [
-            CURLOPT_URL => \Yii::$app->params['pds_url'] . '/person',
-            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_URL => \Yii::$app->params['pds_url'] . '/person/' . $person_id,
+            CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
                 'Access: Bearer ' . \Yii::$app->params['college_pds_access_token'],
