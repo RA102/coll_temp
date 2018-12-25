@@ -66,7 +66,7 @@ class PersonService
      */
     public function update(Person $model)
     {
-        if (!empty($model->portal_uid)) {
+        if (empty($model->portal_uid)) {
             throw new ForbiddenHttpException('Person has not `portal_uid`');
         }
 
@@ -74,8 +74,11 @@ class PersonService
         $person->lastname = $model->lastname;
         $person->middlename = $model->middlename;
         $person->firstname = $model->firstname;
-        $person->birth_date = $model->birth_date;
         $person->iin = $model->iin;
+        if ($model->birth_date) {
+            $birthDate = new \DateTime($model->birth_date);
+            $person->birth_date = $birthDate->format('Y-m-d');
+        }
 
         return $this->updateService->update($model->portal_uid, $person);
     }

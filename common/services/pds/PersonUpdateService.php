@@ -2,8 +2,12 @@
 
 namespace common\services\pds;
 
+use common\services\pds\exceptions\PersonNotExistException;
 use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
+use yii\web\MethodNotAllowedHttpException;
+use yii\web\NotFoundHttpException;
+use yii\web\UnprocessableEntityHttpException;
 
 class PersonUpdateService extends PersonSearchService
 {
@@ -18,9 +22,9 @@ class PersonUpdateService extends PersonSearchService
      */
     public function update(int $person_id, PdsPersonInterface $person): PdsPersonInterface
     {
-        $persons = $this->findAll(['id' => $person_id]);
+        $persons = $this->findOne(['id' => $person_id]);
         if (empty($persons)) {
-            throw new ForbiddenHttpException('Person not exists');
+            throw new PersonNotExistException('Person not exists');
         }
 
         $userToken = $this->getAccessToken();
@@ -36,8 +40,9 @@ class PersonUpdateService extends PersonSearchService
             throw new \Exception('Could not connect to remote server');
         }
 
+        $url = \Yii::$app->params['pds_url'] . 'person?id=' . $person_id;
         curl_setopt_array($connection, [
-            CURLOPT_URL => \Yii::$app->params['pds_url'] . '/person/' . $person_id,
+            CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
@@ -45,7 +50,7 @@ class PersonUpdateService extends PersonSearchService
                 'Authorization: Bearer ' . $token,
                 'Access-Role: superadmin'
             ],
-            CURLOPT_POSTFIELDS => Json::encode($attributes),
+            CURLOPT_POSTFIELDS => json_encode($attributes),
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_HEADER => false,
@@ -58,6 +63,18 @@ class PersonUpdateService extends PersonSearchService
 
         if ($data === false) {
             throw new \yii\web\ServerErrorHttpException('Server not responding');
+        }
+
+        if ($info['http_code'] === 404) {
+            throw new NotFoundHttpException('Person not found');
+        }
+
+        if ($info['http_code'] === 405) {
+            throw new MethodNotAllowedHttpException('Method not allowed');
+        }
+
+        if ($info['http_code'] !== 200) {
+            throw new UnprocessableEntityHttpException('Error occurred');
         }
 
         return Json::decode($data);

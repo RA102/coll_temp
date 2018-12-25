@@ -38,7 +38,10 @@ class StudentController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['*'],
+                        'actions' => [
+                            'index', 'view', 'view-contacts', 'view-documents', 'view-authorization', 'create',
+                            'update', 'update-contacts', 'update-documents', 'delete'
+                        ],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -181,7 +184,7 @@ class StudentController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model->setAttributes($form->attributes);
-            $model->save();
+            $this->personService->update($model);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }

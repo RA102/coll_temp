@@ -49,7 +49,11 @@ class PersonService
 
         $this->transactionManager->execute(function () use ($model) {
             $this->pdsService->update($model);
-            $model->save();
+            if (!$model->save()) {
+                throw new \RuntimeException('Saving error.');
+            }
         });
+
+        return $model;
     }
 }
