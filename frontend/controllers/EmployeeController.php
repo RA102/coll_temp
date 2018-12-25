@@ -207,7 +207,7 @@ class EmployeeController extends Controller
         $form = new PersonContactsForm($model, $this->personContactService, $this->personLocationService);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $form->apply($model, $this->personContactService);
+            $form->apply($model, $this->personContactService, $this->personLocationService);
 
             return $this->redirect(['view-contacts', 'id' => $model->id]);
         }
