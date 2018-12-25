@@ -22,6 +22,7 @@ use frontend\models\ContactForm;
 class SiteController extends Controller
 {
     private $loginService;
+    private $applicationService;
 
     /**
      * {@inheritdoc}
@@ -65,8 +66,12 @@ class SiteController extends Controller
         ];
     }
 
-    public function __construct(string $id, Module $module, LoginService $loginService, array $config = [])
-    {
+    public function __construct(
+        string $id,
+        Module $module,
+        LoginService $loginService,
+        array $config = []
+    ) {
         $this->loginService = $loginService;
         parent::__construct($id, $module, $config);
     }
@@ -158,8 +163,8 @@ class SiteController extends Controller
     {
         $this->layout = 'main-login';
         $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post())) {
-            // @TODO make application service, which holds registration
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            //@TODO write create method
         }
 
         return $this->render('signup', [

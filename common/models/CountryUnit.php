@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "country_unit".
@@ -29,6 +30,8 @@ use Yii;
  */
 class CountryUnit extends \yii\db\ActiveRecord
 {
+    public $caption_current;
+
     /**
      * {@inheritdoc}
      */
@@ -108,5 +111,13 @@ class CountryUnit extends \yii\db\ActiveRecord
     public function getStreets()
     {
         return $this->hasMany(Street::class, ['city_id' => 'id'])->inverseOf('city');
+    }
+
+    public function afterFind()
+    {
+        $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
+        $this->caption_current = Json::decode($this->getAttribute('caption'))[$currentLanguage];
+
+        parent::afterFind();
     }
 }

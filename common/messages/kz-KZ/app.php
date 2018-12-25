@@ -90,5 +90,6 @@ return [
     // GENERAL
     'Login' => 'Войти',
     'Forgot password?' => 'Забыли пароль?',
-    'Password' => 'Пароль'
+    'Password' => 'Пароль',
+    'Address' => 'Адрес',
 ];

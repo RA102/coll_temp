@@ -4,10 +4,15 @@
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \frontend\models\SignupForm */
 
+use common\models\Country;
+use common\models\CountryUnit;
+use common\models\Street;
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use common\components\ActiveForm;
 use kartik\date\DatePicker;
 use common\helpers\PersonHelper;
+use yii\helpers\ArrayHelper;
+use yii\widgets\Pjax;
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
@@ -19,7 +24,20 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row justify-content-center">
                 <div class="col-md-8 col-lg-6">
                     <div class="card mx-4 mt-4">
-                        <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+                        <?php
+                        Pjax::begin([
+                            'id' => 'list-pjax',
+                            'formSelector' => '#js-update',
+                            'scrollTo' => 'false',
+                        ]);
+                        ?>
+                        <?php $form = ActiveForm::begin([
+                            'id' => 'js-update',
+                            'enableClientValidation' => false,
+                            'options' => [
+                                'validateOnSubmit' => true,
+                            ],
+                        ]); ?>
                         <div class="card-body p-4">
                             <h1>Регистрация</h1>
                             <p class="text-muted">Оформить заявку на регистрацию в системе «Бiлiмал».</p>
@@ -29,9 +47,59 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?= $form->field($model, 'educational_form_id') ?>
                                 <?= $form->field($model, 'organizational_legal_form_id') ?>
                                 <?= $form->field($model, 'name') ?>
-                                <?= $form->field($model, 'city_id') ?>
-                                <?= $form->field($model, 'street') ?>
-                                <?= $form->field($model, 'house_number') ?>
+                                <?= $form->field($model, 'country_id')->dropDownList(
+                                    ArrayHelper::map(Country::find()->all(), 'id', 'caption_current'), [
+                                    'class' => 'form-control active-form-refresh-control',
+                                    'prompt' => ''
+                                ]) ?>
+
+                                <?php
+                                if ($model->country_id) {
+                                    $parent_id = null;
+                                    $children = [];
+                                    $count = 0;
+                                    while (true) {
+                                        $children = CountryUnit::find()->andWhere([
+                                            'country_id' => $model->country_id,
+                                            'parent_id' => $parent_id,
+                                        ])->all();
+                                        if ($children) {
+                                            $model->hasCountryUnit = true;
+                                            echo $form->field($model, "city_ids[{$count}]")->dropDownList(
+                                                ArrayHelper::map($children, 'id', 'caption_current'), [
+                                                'class' => 'form-control active-form-refresh-control',
+                                                'prompt' => ''
+                                            ])->label(false);
+
+                                            if (isset($model->city_ids[$count]) && $model->city_ids[$count]) {
+                                                $parent_id = $model->city_ids[$count];
+                                                $count++;
+
+                                                continue;
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+                                    if ($parent_id && !$children) {
+                                        $model->hasStreet = true;
+                                        echo $form->field($model, "street_id")->dropDownList(
+                                            ArrayHelper::map(Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption'), [
+                                            'class' => 'form-control',
+                                            'prompt' => ''
+                                        ]);
+                                    }
+                                }
+
+                                if (!$model->hasCountryUnit) {
+                                    echo $form->field($model, 'city_ids[]')->hiddenInput(['value' => null])->label(false);
+                                }
+                                if (!$model->hasStreet) {
+                                    echo $form->field($model, "street_id")->hiddenInput(['value' => null])->label(false);
+                                }
+
+                                ?>
                             </fieldset>
 
                             <fieldset>
@@ -65,6 +133,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ) ?>
                         </div>
                         <?php ActiveForm::end(); ?>
+                        <?php Pjax::end(); ?>
                     </div>
                 </div>
             </div>

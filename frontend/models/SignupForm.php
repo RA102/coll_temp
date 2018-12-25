@@ -3,6 +3,8 @@ namespace frontend\models;
 
 use yii\base\Model;
 use Yii;
+use yii\web\Application;
+use common\components\ActiveForm;
 
 /**
  * Signup form
@@ -24,6 +26,13 @@ class SignupForm extends Model
     public $street;
     public $birth_date;
     public $house_number;
+
+    public $country_id;
+    public $city_ids = [];
+    public $street_id;
+
+    public $hasCountryUnit = false;
+    public $hasStreet = false;
 
     /**
      * {@inheritdoc}
@@ -49,7 +58,10 @@ class SignupForm extends Model
                     'street', 'birth_date', 'house_number'
                 ],
                 'required'
-            ]
+            ],
+            [['country_id', 'city_ids', 'street_id'], 'default', 'value' => null],
+            [['country_id'], 'required'],
+            [['country_id', 'city_ids', 'street_id'], 'safe'],
         ];
     }
 
@@ -79,6 +91,21 @@ class SignupForm extends Model
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
+            'country_id' => Yii::t('app', 'Address'),
+            'street_id' => Yii::t('app', 'Street ID'),
         ];
+    }
+
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        if (Yii::$app instanceof Application && (
+                Yii::$app->request->post(ActiveForm::$refreshParam)
+                || Yii::$app->request->get(ActiveForm::$refreshParam)
+            )
+        ) {
+            return false;
+        }
+
+        return parent::validate($attributeNames, $clearErrors);
     }
 }
