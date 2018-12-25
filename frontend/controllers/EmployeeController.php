@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\person\Employee;
 use common\services\person\PersonContactService;
 use common\services\person\PersonInfoService;
+use common\services\person\PersonLocationService;
 use frontend\models\forms\PersonContactsForm;
 use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
@@ -22,6 +23,7 @@ class EmployeeController extends Controller
 {
     private $personInfoService;
     private $personContactService;
+    private $personLocationService;
 
     /**
      * {@inheritdoc}
@@ -43,10 +45,12 @@ class EmployeeController extends Controller
         Module $module,
         PersonInfoService $personInfoService,
         PersonContactService $personContactService,
+        PersonLocationService $personLocationService,
         array $config = []
     ) {
         $this->personInfoService = $personInfoService;
         $this->personContactService = $personContactService;
+        $this->personLocationService = $personLocationService;
         parent::__construct($id, $module, $config);
     }
 
@@ -88,7 +92,7 @@ class EmployeeController extends Controller
     public function actionViewContacts($id)
     {
         $model = $this->findModel($id);
-        $form = new PersonContactsForm($model, $this->personContactService);
+        $form = new PersonContactsForm($model, $this->personContactService, $this->personLocationService);
 
         return $this->render('view/view_contacts', [
             'model' => $this->findModel($id),
@@ -182,7 +186,7 @@ class EmployeeController extends Controller
     public function actionUpdateContacts($id)
     {
         $model = $this->findModel($id);
-        $form = new PersonContactsForm($model, $this->personContactService);
+        $form = new PersonContactsForm($model, $this->personContactService, $this->personLocationService);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $form->apply($model, $this->personContactService);

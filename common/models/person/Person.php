@@ -45,6 +45,7 @@ use yii\web\IdentityInterface;
  * @property Nationality $nationality
  * @property PersonInfo[] $personInfos
  * @property PersonContact[] $personContacts
+ * @property PersonLocation[] $personLocations
  */
 class Person extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -134,6 +135,11 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function getPersonContacts()
     {
         return $this->hasMany(PersonContact::class, ['person_id' => 'id']);
+    }
+
+    public function getPersonLocations()
+    {
+        return $this->hasMany(PersonLocation::class, ['person_id' => 'id']);
     }
 
     public function isActive()
