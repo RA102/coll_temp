@@ -18,13 +18,14 @@ class PersonContactsForm extends Model
     public $contact_phone_home;
     public $contact_phone_mobile;
 
+    public $registration_country_id;
+    public $registration_city_ids = [];
+    public $registration_street_id;
+
     public $residence_country_id;
     public $residence_city_ids = [];
     public $residence_street_id;
 
-
-    public $hasCountryUnit = false;
-    public $hasStreet = false;
 
     public function __construct(
         Person $person,
@@ -35,11 +36,20 @@ class PersonContactsForm extends Model
         $this->contact_phone_home = $personContactService->getContactValue($person, PersonContactHelper::PHONE_HOME);
         $this->contact_phone_mobile = $personContactService->getContactValue($person, PersonContactHelper::PHONE_MOBILE);
 
-        $personLocation = $personLocationService->getLocation($person, PersonLocationHelper::TYPE_REGISTRATION);
-        if ($personLocation) {
-            $this->residence_country_id = $personLocation->country_id;
-            $this->residence_city_ids = $personLocation->getCountryUnitIds();
-            $this->residence_street_id = $personLocation->street_id;
+        // registration
+        $personLocationRegistration = $personLocationService->getLocation($person, PersonLocationHelper::TYPE_REGISTRATION);
+        if ($personLocationRegistration) {
+            $this->registration_country_id = $personLocationRegistration->country_id;
+            $this->registration_city_ids = $personLocationRegistration->getCountryUnitIds();
+            $this->registration_street_id = $personLocationRegistration->street_id;
+        }
+
+        // residence
+        $personLocationResidence = $personLocationService->getLocation($person, PersonLocationHelper::TYPE_RESIDENCE);
+        if ($personLocationResidence) {
+            $this->residence_country_id = $personLocationResidence->country_id;
+            $this->residence_city_ids = $personLocationResidence->getCountryUnitIds();
+            $this->residence_street_id = $personLocationResidence->street_id;
         }
 
         parent::__construct($config);
@@ -53,7 +63,8 @@ class PersonContactsForm extends Model
         return [
             [['contact_phone_home'], 'string'],
             [['contact_phone_mobile'], 'string'],
-            [['residence_country_id', 'residence_city_ids', 'residence_street_id'], 'default', 'value' => null],
+            [['registration_country_id'], 'required'],
+            [['registration_country_id', 'registration_city_ids', 'registration_street_id'], 'safe'],
             [['residence_country_id'], 'required'],
             [['residence_country_id', 'residence_city_ids', 'residence_street_id'], 'safe'],
         ];
@@ -67,6 +78,10 @@ class PersonContactsForm extends Model
         return [
             'contact_phone_home' => 'Домашний телефон',
             'contact_phone_mobile' => 'Мобильный телефон',
+            'location_registration' => 'Адрес прописки',
+            'registration_country_id' => 'Адрес прописки',
+            'location_residence' => 'Домашний адрес',
+            'residence_country_id' => 'Домашний адрес',
         ];
     }
 
@@ -75,16 +90,29 @@ class PersonContactsForm extends Model
         $personContactService->setContactValue($person, PersonContactHelper::PHONE_HOME, $this->contact_phone_home);
         $personContactService->setContactValue($person, PersonContactHelper::PHONE_MOBILE, $this->contact_phone_mobile);
 
-        $personLocation = $personLocationService->getLocation($person, PersonLocationHelper::TYPE_REGISTRATION);
-        if (!$personLocation) {
-            $personLocation = new PersonLocation();
+        // registration
+        $personLocationRegistration = $personLocationService->getLocation($person, PersonLocationHelper::TYPE_REGISTRATION);
+        if (!$personLocationRegistration) {
+            $personLocationRegistration = new PersonLocation();
         }
-        $personLocation->country_id = $this->residence_country_id;
-        $personLocation->country_unit_id = end($this->residence_city_ids);
-        $personLocation->street_id = $this->residence_street_id;
-        $personLocation->type = PersonLocationHelper::TYPE_REGISTRATION;
+        $personLocationRegistration->country_id = $this->registration_country_id;
+        $personLocationRegistration->country_unit_id = end($this->registration_city_ids);
+        $personLocationRegistration->street_id = $this->registration_street_id;
+        $personLocationRegistration->type = PersonLocationHelper::TYPE_REGISTRATION;
 
-        $personLocationService->setLocation($person, $personLocation);
+        $personLocationService->setLocation($person, $personLocationRegistration);
+
+        // residence
+        $personLocationResidence = $personLocationService->getLocation($person, PersonLocationHelper::TYPE_RESIDENCE);
+        if (!$personLocationResidence) {
+            $personLocationResidence = new PersonLocation();
+        }
+        $personLocationResidence->country_id = $this->residence_country_id;
+        $personLocationResidence->country_unit_id = end($this->residence_city_ids);
+        $personLocationResidence->street_id = $this->residence_street_id;
+        $personLocationResidence->type = PersonLocationHelper::TYPE_RESIDENCE;
+
+        $personLocationService->setLocation($person, $personLocationResidence);
     }
 
     public function validate($attributeNames = null, $clearErrors = true)

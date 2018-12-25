@@ -26,7 +26,24 @@ use yii\widgets\DetailView;
                 'value' => null
             ],
             [
-                'label' => 'Адрес прописки',
+                'label' => $form->getAttributeLabel('location_registration'),
+                'value' => function ($model) use ($form) {
+                    $result = [];
+                    if (($id = $form->registration_country_id) !== null) {
+                        $result[] = \common\models\Country::findOne($id)->name;
+                    }
+                    if (($ids = $form->registration_city_ids)) {
+                        $result[] = \common\models\CountryUnit::findOne(end($ids))->name;
+                    }
+                    if (($id = $form->registration_street_id) !== null) {
+                        $result[] = \common\models\Street::findOne($id)->caption;
+                    }
+
+                    return implode(', ', $result);
+                },
+            ],
+            [
+                'label' => $form->getAttributeLabel('location_residence'),
                 'value' => function ($model) use ($form) {
                     $result = [];
                     if (($id = $form->residence_country_id) !== null) {
@@ -41,10 +58,6 @@ use yii\widgets\DetailView;
 
                     return implode(', ', $result);
                 },
-            ],
-            [
-                'label' => 'Домашний адрес',
-                'value' => null
             ],
             [
                 'label' => 'Место рождения',
