@@ -5,7 +5,7 @@ namespace common\services\pds;
 use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
 
-class PersonUpdateSearchService extends PersonSearchService
+class PersonUpdateService extends PersonSearchService
 {
     /**
      * @param int $person_id

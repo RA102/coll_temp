@@ -7,6 +7,21 @@ use yii\web\ForbiddenHttpException;
 
 class PersonService
 {
+    private $createService;
+    private $updateService;
+    private $searchService;
+
+    public function __construct(
+        PersonCreateService $createService,
+        PersonUpdateService $updateService,
+        PersonSearchService $searchService
+    )
+    {
+        $this->createService = $createService;
+        $this->updateService = $updateService;
+        $this->searchService = $searchService;
+    }
+
     /**
      * @param Person $model
      * @return PdsPersonInterface
@@ -27,8 +42,7 @@ class PersonService
         $person->birth_date = $model->birth_date;
         $person->iin = $model->iin;
 
-        $service = new PersonCreateSearchService();
-        return $service->create($person);
+        return $this->createService->create($person);
     }
 
     /**
@@ -51,8 +65,7 @@ class PersonService
         $person->birth_date = $model->birth_date;
         $person->iin = $model->iin;
 
-        $service = new PersonUpdateSearchService();
-        return $service->update($model->portal_uid, $person);
+        return $this->updateService->update($model->portal_uid, $person);
     }
 
     /**
@@ -64,6 +77,6 @@ class PersonService
      */
     public function findAll(array $query)
     {
-        return (new PersonSearchService())->findAll($query);
+        return $this->searchService->findAll($query);
     }
 }
