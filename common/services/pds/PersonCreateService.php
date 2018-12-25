@@ -2,6 +2,7 @@
 
 namespace common\services\pds;
 
+use common\services\pds\exceptions\PersonAlreadyExistException;
 use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
 
@@ -10,31 +11,32 @@ class PersonCreateService extends PersonSearchService
     /**
      * @param PdsPersonInterface $person
      * @return PdsPersonInterface
-     * @throws \yii\web\ForbiddenHttpException
+     * @throws ForbiddenHttpException
+     * @throws \Throwable
      * @throws \yii\web\ServerErrorHttpException
      * @throws \yii\web\UnauthorizedHttpException
      */
     public function create(PdsPersonInterface $person): PdsPersonInterface
     {
         $query = array_filter($person->getAttributes());
-        $persons = $this->findAll($query);
-        if (!empty($persons)) {
-            throw new ForbiddenHttpException('Person already exists');
+        $person = $this->findOne($query);
+        if ($person !== null) {
+            throw new PersonAlreadyExistException('Person already exists');
         }
 
         $userToken = $this->getAccessToken();
-        $response = $this->createPdsPerson($query, $userToken);
-        return $this->getPersonObject($response);
+        $respons = $this->createPdsPerson($query, $userToken->token);
+        return $this->getPersonObject($respons);
     }
 
-    private function createPdsPerson(array $attributes, $token)
+    private function createPdsPerson(array $attributes, string $token)
     {
         $connection = curl_init();
         if (!$connection) {
             throw new \Exception('Could not connect to remote server');
         }
 
-        curl_setopt_array($connection, [
+        $options = [
             CURLOPT_URL => \Yii::$app->params['pds_url'] . '/person',
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_HTTPHEADER => [
@@ -43,19 +45,25 @@ class PersonCreateService extends PersonSearchService
                 'Authorization: Bearer ' . $token,
                 'Access-Role: superadmin'
             ],
-            CURLOPT_POSTFIELDS => Json::encode($attributes),
+            CURLOPT_POSTFIELDS => json_encode($attributes),
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_HEADER => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 20
-        ]);
+        ];
+        curl_setopt_array($connection, $options);
+        var_dump($options);
         $data = curl_exec($connection);
         $info = curl_getinfo($connection);
         curl_close($connection);
 
         if ($data === false) {
             throw new \yii\web\ServerErrorHttpException('Server not responding');
+        }
+
+        if ($info['http_code'] !== 200) {
+            throw new \yii\web\UnprocessableEntityHttpException('Error occurred');
         }
 
         return Json::decode($data);

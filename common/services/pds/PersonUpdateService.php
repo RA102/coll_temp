@@ -12,6 +12,7 @@ class PersonUpdateService extends PersonSearchService
      * @param PdsPersonInterface $person
      * @return PdsPersonInterface
      * @throws ForbiddenHttpException
+     * @throws \Throwable
      * @throws \yii\web\ServerErrorHttpException
      * @throws \yii\web\UnauthorizedHttpException
      */
@@ -24,11 +25,11 @@ class PersonUpdateService extends PersonSearchService
 
         $userToken = $this->getAccessToken();
         $query = array_filter($person->getAttributes());
-        $response = $this->updatePdsPerson($person_id, $query, $userToken);
+        $response = $this->updatePdsPerson($person_id, $query, $userToken->token);
         return $this->getPersonObject($response);
     }
 
-    private function updatePdsPerson(int $person_id, array $attributes, $token)
+    private function updatePdsPerson(int $person_id, array $attributes, string $token)
     {
         $connection = curl_init();
         if (!$connection) {

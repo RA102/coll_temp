@@ -3,6 +3,7 @@
 namespace common\services\pds;
 
 use common\models\person\Person;
+use common\services\pds\exceptions\PersonAlreadyExistException;
 use yii\web\ForbiddenHttpException;
 
 class PersonService
@@ -24,25 +25,35 @@ class PersonService
 
     /**
      * @param Person $model
-     * @return PdsPersonInterface
-     * @throws \yii\web\ForbiddenHttpException
+     * @return int
+     * @throws ForbiddenHttpException
+     * @throws \Throwable
      * @throws \yii\web\ServerErrorHttpException
      * @throws \yii\web\UnauthorizedHttpException
      */
-    public function create(Person $model)
+    public function create(Person $model): int
     {
         if (!empty($model->portal_uid)) {
             throw new ForbiddenHttpException('Person already exists');
         }
 
-        $person = new PdsPersonInterface();
-        $person->lastname = $model->lastname;
-        $person->middlename = $model->middlename;
-        $person->firstname = $model->firstname;
-        $person->birth_date = $model->birth_date;
-        $person->iin = $model->iin;
+        $newPerson = new PdsPersonInterface();
+        $newPerson->lastname = $model->lastname;
+        $newPerson->middlename = $model->middlename;
+        $newPerson->firstname = $model->firstname;
+        $newPerson->iin = $model->iin;
+        if ($model->birth_date) {
+            $birthDate = new \DateTime($model->birth_date);
+            $newPerson->birth_date = $birthDate->format('Y-m-d');
+        }
 
-        return $this->createService->create($person);
+        try {
+            $person = $this->createService->create($newPerson);
+        } catch (PersonAlreadyExistException $e) {
+            $person = $this->searchService->findOne(array_filter($newPerson->getAttributes()));
+        }
+
+        return $person->id;
     }
 
     /**
@@ -51,6 +62,7 @@ class PersonService
      * @throws ForbiddenHttpException
      * @throws \yii\web\ServerErrorHttpException
      * @throws \yii\web\UnauthorizedHttpException
+     * @throws \Throwable
      */
     public function update(Person $model)
     {
@@ -74,6 +86,7 @@ class PersonService
      * @throws ForbiddenHttpException
      * @throws \yii\web\ServerErrorHttpException
      * @throws \yii\web\UnauthorizedHttpException
+     * @throws \Throwable
      */
     public function findAll(array $query)
     {

@@ -216,10 +216,14 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getActiveAccessToken()
     {
-        return $this->hasOne(AccessToken::class, ['id' => 'person_id'])
+        return $this->hasOne(AccessToken::class, ['person_id' => 'id'])
             ->orderBy(['expire_ts' => SORT_DESC])
             ->andWhere(['delete_ts' => null])
-            ->andWhere(['>', 'expire_ts', time()]);
+            ->andWhere([
+                'OR',
+                ['expire_ts' => null],
+                ['>', 'expire_ts', date('Y-m-d H:i:s')]
+            ]);
     }
 
     /**

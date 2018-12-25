@@ -6,6 +6,7 @@ use common\models\person\Student;
 use common\services\person\PersonContactService;
 use common\services\person\PersonInfoService;
 use common\services\person\PersonLocationService;
+use common\services\person\PersonService;
 use frontend\models\forms\PersonContactsForm;
 use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
@@ -25,6 +26,7 @@ class StudentController extends Controller
     private $personInfoService;
     private $personContactService;
     private $personLocationService;
+    private $personService;
 
     /**
      * {@inheritdoc}
@@ -56,11 +58,13 @@ class StudentController extends Controller
         PersonInfoService $personInfoService,
         PersonContactService $personContactService,
         PersonLocationService $personLocationService,
+        PersonService $personService,
         array $config = [])
     {
         $this->personInfoService = $personInfoService;
         $this->personContactService = $personContactService;
         $this->personLocationService = $personLocationService;
+        $this->personService = $personService;
         parent::__construct($id, $module, $config);
     }
 
@@ -152,7 +156,7 @@ class StudentController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model = Student::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
             $model->setAttributes($form->attributes);
-            $model->save();
+            $model = $this->personService->create($model);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
