@@ -40,7 +40,7 @@ class LoginService
         }
 
         curl_setopt_array($connection, [
-            CURLOPT_URL => \Yii::$app->params['pds_url'] . '/auth',
+            CURLOPT_URL => \Yii::$app->params['pds_url'] . 'auth',
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => json_encode(['indentity' => $username, 'password' => $password]),
             CURLOPT_HTTPHEADER => [

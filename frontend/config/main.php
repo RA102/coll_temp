@@ -20,7 +20,7 @@ return [
         'user' => [
             'identityClass' => 'common\models\person\Person',
             'enableAutoLogin' => true,
-            'loginUrl' => 'login',
+            'loginUrl' => 'site/login',
             'absoluteAuthTimeout' => \Yii::$app->params['session_timeout'],
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
