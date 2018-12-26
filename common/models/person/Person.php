@@ -40,6 +40,8 @@ use yii\web\IdentityInterface;
  * @property string $delete_ts
  * @property string $import_ts
  *
+ * @property AccessToken[] $accessTokens
+ * @property AccessToken $activeAccessToken
  * @property Nationality $nationality
  * @property PersonInfo[] $personInfos
  * @property PersonContact[] $personContacts
@@ -203,6 +205,25 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
+    }
+
+    public function getAccessTokens()
+    {
+        return $this->hasMany(AccessToken::class, ['id' => 'person_id'])
+            ->andWhere(['delete_ts' => null])
+            ->andWhere(['>', 'expire_ts', time()]);
+    }
+
+    public function getActiveAccessToken()
+    {
+        return $this->hasOne(AccessToken::class, ['person_id' => 'id'])
+            ->orderBy(['expire_ts' => SORT_DESC])
+            ->andWhere(['delete_ts' => null])
+            ->andWhere([
+                'OR',
+                ['expire_ts' => null],
+                ['>', 'expire_ts', date('Y-m-d H:i:s')]
+            ]);
     }
 
     /**

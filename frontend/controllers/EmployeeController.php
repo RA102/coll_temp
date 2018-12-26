@@ -6,11 +6,13 @@ use common\models\person\Employee;
 use common\services\person\PersonContactService;
 use common\services\person\PersonInfoService;
 use common\services\person\PersonLocationService;
+use common\services\person\PersonService;
 use frontend\models\forms\PersonContactsForm;
 use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
 use frontend\search\EmployeeSearch;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,6 +26,7 @@ class EmployeeController extends Controller
     private $personInfoService;
     private $personContactService;
     private $personLocationService;
+    private $personService;
 
     /**
      * {@inheritdoc}
@@ -31,6 +34,19 @@ class EmployeeController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => [
+                            'index', 'view', 'view-contacts', 'view-documents', 'view-authorization', 'create',
+                            'update', 'update-contacts', 'update-documents', 'delete'
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -46,11 +62,13 @@ class EmployeeController extends Controller
         PersonInfoService $personInfoService,
         PersonContactService $personContactService,
         PersonLocationService $personLocationService,
+        PersonService $personService,
         array $config = []
     ) {
         $this->personInfoService = $personInfoService;
         $this->personContactService = $personContactService;
         $this->personLocationService = $personLocationService;
+        $this->personService = $personService;
         parent::__construct($id, $module, $config);
     }
 
@@ -142,7 +160,7 @@ class EmployeeController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model = Employee::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
             $model->setAttributes($form->attributes);
-            $model->save();
+            $model = $this->personService->create($model);
 
             return $this->redirect(['update-contacts', 'id' => $model->id]);
         }
@@ -167,7 +185,7 @@ class EmployeeController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model->setAttributes($form->attributes);
-            $model->save();
+            $this->personService->update($model);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -189,7 +207,7 @@ class EmployeeController extends Controller
         $form = new PersonContactsForm($model, $this->personContactService, $this->personLocationService);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $form->apply($model, $this->personContactService);
+            $form->apply($model, $this->personContactService, $this->personLocationService);
 
             return $this->redirect(['view-contacts', 'id' => $model->id]);
         }

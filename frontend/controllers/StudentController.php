@@ -6,11 +6,13 @@ use common\models\person\Student;
 use common\services\person\PersonContactService;
 use common\services\person\PersonInfoService;
 use common\services\person\PersonLocationService;
+use common\services\person\PersonService;
 use frontend\models\forms\PersonContactsForm;
 use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
 use Yii;
 use frontend\search\StudentSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,6 +26,7 @@ class StudentController extends Controller
     private $personInfoService;
     private $personContactService;
     private $personLocationService;
+    private $personService;
 
     /**
      * {@inheritdoc}
@@ -31,6 +34,19 @@ class StudentController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => [
+                            'index', 'view', 'view-contacts', 'view-documents', 'view-authorization', 'create',
+                            'update', 'update-contacts', 'update-documents', 'delete'
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -45,11 +61,13 @@ class StudentController extends Controller
         PersonInfoService $personInfoService,
         PersonContactService $personContactService,
         PersonLocationService $personLocationService,
+        PersonService $personService,
         array $config = [])
     {
         $this->personInfoService = $personInfoService;
         $this->personContactService = $personContactService;
         $this->personLocationService = $personLocationService;
+        $this->personService = $personService;
         parent::__construct($id, $module, $config);
     }
 
@@ -141,7 +159,7 @@ class StudentController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model = Student::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
             $model->setAttributes($form->attributes);
-            $model->save();
+            $model = $this->personService->create($model);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -166,7 +184,7 @@ class StudentController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model->setAttributes($form->attributes);
-            $model->save();
+            $this->personService->update($model);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -243,6 +261,9 @@ class StudentController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
+    /**
+     * @TODO Move to a service
+     */
     public function actionAjaxAddress($term = null)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
