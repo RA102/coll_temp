@@ -7,6 +7,7 @@
 use common\models\Country;
 use common\models\CountryUnit;
 use common\models\Street;
+use common\models\organization\EducationalForm;
 use yii\helpers\Html;
 use common\components\ActiveForm;
 use kartik\date\DatePicker;
@@ -44,7 +45,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             <fieldset>
                                 <legend>Организация</legend>
-                                <?= $form->field($model, 'educational_form_id') ?>
+                                <?= $form->field($model, 'educational_form_id')
+                                    ->dropDownList(ArrayHelper::map(
+                                        EducationalForm::find()->all(),
+                                        'id',
+                                        'caption_current')
+                                    )
+                                ?>
                                 <?= $form->field($model, 'organizational_legal_form_id') ?>
                                 <?= $form->field($model, 'name') ?>
                                 <?= $form->field($model, 'country_id')->dropDownList(
