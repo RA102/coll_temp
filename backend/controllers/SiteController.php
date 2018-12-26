@@ -1,17 +1,21 @@
 <?php
 namespace backend\controllers;
 
+use common\forms\auth\LoginForm;
+use common\services\pds\LoginService;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use yii\base\Module;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
 
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
+    private $loginService;
+
     /**
      * {@inheritdoc}
      */
@@ -53,6 +57,16 @@ class SiteController extends Controller
         ];
     }
 
+    public function __construct(
+        string $id,
+        Module $module,
+        LoginService $loginService,
+        array $config = []
+    ) {
+        $this->loginService = $loginService;
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * Displays homepage.
      *
@@ -74,8 +88,8 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        $model = new LoginForm($this->loginService);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             return $this->goBack();
         } else {
             $model->password = '';
