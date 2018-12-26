@@ -57,9 +57,9 @@ class SignupForm extends Model
 
             [
                 [
-                    'educational_form_id', 'organizational_legal_form_id', 'name', 'city_id',
-                    'type_id', 'phone', 'sex', 'iin', 'firstname', 'lastname', 'middlename',
-                    'street', 'birth_date', 'house_number'
+                    'educational_form_id', 'organizational_legal_form_id', 'name',
+                    'phone', 'sex', 'iin', 'firstname', 'lastname', 'middlename',
+                    'birth_date', 'house_number'
                 ],
                 'required'
             ],

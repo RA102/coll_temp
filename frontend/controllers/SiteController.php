@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\forms\auth\LoginForm;
 use common\services\auth\LoginService;
+use common\services\organization\InstitutionApplicationService;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\base\Module;
@@ -70,9 +71,11 @@ class SiteController extends Controller
         string $id,
         Module $module,
         LoginService $loginService,
+        InstitutionApplicationService $applicationService,
         array $config = []
     ) {
         $this->loginService = $loginService;
+        $this->applicationService = $applicationService;
         parent::__construct($id, $module, $config);
     }
 
@@ -164,7 +167,8 @@ class SiteController extends Controller
         $this->layout = 'main-login';
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            //@TODO write create method
+            $this->applicationService->create($model);
+            return $this->renderAjax('_signup_success');
         }
 
         return $this->render('signup', [
