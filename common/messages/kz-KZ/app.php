@@ -51,6 +51,7 @@ return [
     'City ID' => 'Город',
     'Parent ID' => 'Родитель',
     'Type ID' => 'Тип',
+    'Organization type' => 'Тип организации',
     'Educational Form ID' => 'Образовательная форма',
     'Organizational Legal Form ID' => 'Организационно-правовая форма',
     'Server ID' => 'Сервер',

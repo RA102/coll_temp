@@ -8,6 +8,7 @@ use common\models\Country;
 use common\models\CountryUnit;
 use common\models\Street;
 use common\models\organization\EducationalForm;
+use \common\models\organization\OrganizationalLegalForm;
 use yii\helpers\Html;
 use common\components\ActiveForm;
 use kartik\date\DatePicker;
@@ -52,7 +53,52 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'caption_current')
                                     )
                                 ?>
-                                <?= $form->field($model, 'organizational_legal_form_id') ?>
+
+                                <?php
+                                    $type_parent_id = 0;
+                                    $type_children = [];
+                                    $type_count = 0;
+                                    while (true) {
+                                        $type_children = \common\models\organization\InstitutionType::find()->andWhere([
+                                            'parent_id' => $type_parent_id,
+                                        ])->all();
+                                        if ($type_children) {
+                                            $label = $type_parent_id === 0
+                                                ? Yii::t('app', 'Organization type')
+                                                : false;
+                                            $model->hasInstitutionType = true;
+                                            echo $form->field($model, "type_ids[{$type_count}]")->dropDownList(
+                                                ArrayHelper::map($type_children, 'id', 'caption_current'), [
+                                                'class' => 'form-control active-form-refresh-control',
+                                                'prompt' => ''
+                                            ])->label($label);
+
+                                            if (isset($model->type_ids[$type_count]) && $model->type_ids[$type_count]) {
+                                                $type_parent_id = $model->type_ids[$type_count];
+                                                $type_count++;
+
+                                                continue;
+                                            }
+                                        }
+
+                                        break;
+                                    }
+
+
+                                if (!$model->hasInstitutionType) {
+                                    echo $form->field($model, 'type_ids[]')->hiddenInput(['value' => null])->label(false);
+                                }
+
+                                ?>
+
+                                <?= $form->field($model, 'organizational_legal_form_id')
+                                    ->dropDownList(ArrayHelper::map(
+                                        OrganizationalLegalForm::find()->all(),
+                                        'id',
+                                        'caption_current')
+                                    )
+                                ?>
+
                                 <?= $form->field($model, 'name') ?>
                                 <?= $form->field($model, 'country_id')->dropDownList(
                                     ArrayHelper::map(Country::find()->all(), 'id', 'caption_current'), [

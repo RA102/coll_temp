@@ -30,10 +30,13 @@ class SignupForm extends Model
     public $country_id;
     public $city_ids = [];
     public $street_id;
+    public $type_ids = [];
 
     public $hasCountryUnit = false;
     public $hasStreet = false;
     public $hasHouseNumber = false;
+
+    public $hasInstitutionType = false;
 
     /**
      * {@inheritdoc}
@@ -62,7 +65,7 @@ class SignupForm extends Model
             ],
             [['country_id', 'city_ids', 'street_id'], 'default', 'value' => null],
             [['country_id'], 'required'],
-            [['country_id', 'city_ids', 'street_id'], 'safe'],
+            [['country_id', 'city_ids', 'street_id', 'type_ids'], 'safe'],
         ];
     }
 
