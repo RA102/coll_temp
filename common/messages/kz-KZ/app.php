@@ -90,6 +90,7 @@ return [
     'Institution Applications' => 'Заявки',
     'Update Institution Application' => 'Редактирование заявки',
     'Approve' => 'Одобрить',
+    'Reject' => 'Отклонить',
 
     // GENERAL
     'Login' => 'Войти',

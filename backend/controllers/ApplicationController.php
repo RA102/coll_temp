@@ -139,6 +139,21 @@ class ApplicationController extends Controller
     }
 
     /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
+     */
+    public function actionReject($id)
+    {
+        $model = $this->findModel($id);
+        $this->applicationService->reject($model);
+        Yii::$app->session->setFlash('warning', "Заявка отклонена");
+
+        return $this->redirect(['index']);
+    }
+
+    /**
      * Finds the InstitutionApplication model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id

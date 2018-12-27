@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?php if ($model->isNew()) { ?>
                 <?= Html::a(Yii::t('app', 'Approve'), ['approve', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
-
+                <?= Html::a(Yii::t('app', 'Reject'), ['reject', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
             <?php } ?>
             <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',

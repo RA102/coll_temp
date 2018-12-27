@@ -83,6 +83,15 @@ class InstitutionApplicationService
         });
     }
 
+    public function reject(InstitutionApplication $application)
+    {
+        $this->guardNewRecord($application);
+        $this->guardProcessed($application);
+
+        $application->status = InstitutionApplication::STATUS_REJECTED;
+        $application->save();
+    }
+
     private function guardNewRecord(InstitutionApplication $model)
     {
         if ($model->isNewRecord) {
