@@ -133,6 +133,7 @@ class ApplicationController extends Controller
     {
         $model = $this->findModel($id);
         $this->applicationService->approve($model);
+        Yii::$app->session->setFlash('success', "Заявка одобрена");
 
         return $this->redirect(['index']);
     }
