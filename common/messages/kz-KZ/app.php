@@ -40,10 +40,12 @@ return [
     'Update' => 'Редактировать',
     'Students' => 'Студенты',
     'Create Student' => 'Добавление студента',
+    'Fire Student ' => 'Отчислить студента',
 
     // EMPLOYEES
     'Employees' => 'Сотрудники',
     'Create Employee' => 'Добавление сотрудника',
+    'Fire Employee' => 'Уволить сотрудника',
 
     // ORGANIZATION
     'Title' => 'Название',
@@ -93,4 +95,5 @@ return [
     'Forgot password?' => 'Забыли пароль?',
     'Password' => 'Пароль',
     'Address' => 'Адрес',
+    'Are you sure?' => 'Вы уверены?',
 ];

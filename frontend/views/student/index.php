@@ -1,5 +1,6 @@
 <?php
 
+use common\models\person\Student;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -82,7 +83,30 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'delete_ts',
                 //'import_ts',
 
-                ['class' => 'yii\grid\ActionColumn', 'template' => '{view}',],
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view} {fire} {delete}',
+                    'buttons' => [
+                        'fire' => function ($url, Student $model) {
+                            return Html::a('<span class="glyphicon glyphicon-fire"></span>',
+                                ['student/fire', 'id' => $model->id], [
+                                    'data-confirm' => Yii::t('app', 'Are you sure?'),
+                                    'data-method' => 'post',
+                                    'title' => Yii::t('app', 'Fire Student'),
+                                ]);
+                        },
+                    ],
+                    'visibleButtons' => [
+                        'fire' => function (Student $model) {
+                            /** @see \common\services\person\PersonService::fire() */
+                            return !$model->isDeleted() && !$model->isFired();
+                        },
+                        'delete' => function (Student $model) {
+                            /** @see \common\services\person\PersonService::delete() */
+                            return !$model->isDeleted();
+                        },
+                    ],
+                ],
             ],
         ]); ?>
     </div>
