@@ -35,12 +35,15 @@ class EmployeeController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => [
-                            'index', 'view', 'view-contacts', 'view-documents', 'view-authorization', 'create',
-                            'update', 'update-contacts', 'update-documents', 'delete'
+                            'index',
+                            'view', 'view-contacts', 'view-documents', 'view-authorization',
+                            'create',
+                            'update', 'update-contacts', 'update-documents',
+                            'delete', 'fire',
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -48,9 +51,10 @@ class EmployeeController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
+                    'fire' => ['POST'],
                 ],
             ],
         ];
@@ -251,9 +255,20 @@ class EmployeeController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        $this->personService->delete($model);
 
         return $this->redirect(['index']);
+    }
+
+    public function actionFire($id)
+    {
+        $model = $this->findModel($id);
+
+        $this->personService->fire($model);
+
+        return $this->redirect(['index', 'status' => Employee::STATUS_FIRED]);
     }
 
     /**

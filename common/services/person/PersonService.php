@@ -56,4 +56,44 @@ class PersonService
 
         return $model;
     }
+
+    public function delete(Person $model)
+    {
+        if ($model->isNewRecord) {
+            throw new \yii\base\InvalidCallException('Model not created');
+        }
+
+        if ($model->isDeleted()) {
+            throw new \yii\base\InvalidCallException('Model is already deleted');
+        }
+
+        $this->transactionManager->execute(function () use ($model) {
+            $model->delete_ts = date('Y-m-d H:i:s');
+            if (!$model->save()) {
+                throw new \RuntimeException('Saving error.');
+            }
+        });
+
+        return $model;
+    }
+
+    public function fire(Person $model)
+    {
+        if ($model->isNewRecord) {
+            throw new \yii\base\InvalidCallException('Model not created');
+        }
+
+        if ($model->isDeleted() || $model->isFired()) {
+            throw new \yii\base\InvalidCallException('Not allowed');
+        }
+
+        $this->transactionManager->execute(function () use ($model) {
+            $model->status = Person::STATUS_FIRED;
+            if (!$model->save()) {
+                throw new \RuntimeException('Saving error.');
+            }
+        });
+
+        return $model;
+    }
 }
