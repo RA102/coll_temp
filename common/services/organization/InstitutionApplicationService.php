@@ -35,12 +35,16 @@ class InstitutionApplicationService
     }
 
     /**
+     * Create institution and superadmin user
      * @param InstitutionApplication $application
      * @throws \yii\db\Exception
      * @TODO use PDS
      */
     public function approve(InstitutionApplication $application)
     {
+        $this->guardNewRecord($application);
+        $this->guardProcessed($application);
+
         $application->status = InstitutionApplication::STATUS_APPROVED;
 
         $person = Employee::add(
@@ -77,5 +81,19 @@ class InstitutionApplicationService
 //                throw new \RuntimeException('Saving error.');
 //            }
         });
+    }
+
+    private function guardNewRecord(InstitutionApplication $model)
+    {
+        if ($model->isNewRecord) {
+            throw new \yii\base\InvalidCallException('Model not created');
+        }
+    }
+
+    private function guardProcessed(InstitutionApplication $model)
+    {
+        if (!$model->isNew()) {
+            throw new \yii\base\InvalidCallException('Model is already processed');
+        }
     }
 }

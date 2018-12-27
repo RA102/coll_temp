@@ -91,4 +91,14 @@ class InstitutionApplication extends \yii\db\ActiveRecord
     {
         return $this->status == self::STATUS_NEW;
     }
+
+    public function isRejected()
+    {
+        return $this->status == self::STATUS_REJECTED;
+    }
+
+    public function isApproved()
+    {
+        return $this->status == self::STATUS_APPROVED;
+    }
 }
