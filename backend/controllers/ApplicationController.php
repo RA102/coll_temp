@@ -8,12 +8,16 @@ use backend\search\InstitutionApplicationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\services\organization\InstitutionApplicationService;
+use yii\base\Module;
 
 /**
  * ApplicationController implements the CRUD actions for InstitutionApplication model.
  */
 class ApplicationController extends Controller
 {
+    private $applicationService;
+
     /**
      * {@inheritdoc}
      */
@@ -27,6 +31,16 @@ class ApplicationController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function __construct(
+        string $id,
+        Module $module,
+        InstitutionApplicationService $applicationService,
+        array $config = []
+    ) {
+        $this->applicationService = $applicationService;
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -105,6 +119,20 @@ class ApplicationController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \yii\db\Exception
+     */
+    public function actionApprove($id)
+    {
+        $model = $this->findModel($id);
+        $this->applicationService->approve($model);
 
         return $this->redirect(['index']);
     }

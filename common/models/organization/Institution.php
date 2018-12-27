@@ -111,4 +111,23 @@ class Institution extends \yii\db\ActiveRecord
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
     }
+
+    public static function add(
+        $street_id,
+        $city_id,
+        $type_id,
+        $house_number,
+        $educational_form_id,
+        $organizational_legal_form_id
+    ) {
+        $model = new Institution();
+        $model->street_id = $street_id;
+        $model->city_id = $city_id;
+        $model->type_id = $type_id;
+        $model->house_number = $house_number;
+        $model->educational_form_id = $educational_form_id;
+        $model->organizational_legal_form_id = $organizational_legal_form_id;
+
+        return $model;
+    }
 }

@@ -25,7 +25,7 @@ class m181227_171714_create_person_institution_link_table extends Migration
             'status' => $this->smallInteger()->defaultValue(1),
             'person_type' => $this->string(100),
             'index' => $this->bigInteger(),
-            'is_deleted' => $this->boolean(),
+            'is_deleted' => $this->boolean()->defaultValue(false),
             'create_ts' => $this->dateTime()->notNull()->defaultValue('now()'),
             'position' => $this->string(100),
             'document_submission_date' => $this->date(),

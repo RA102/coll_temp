@@ -87,6 +87,7 @@ return [
     'Delete' => 'Удалить',
     'Institution Applications' => 'Заявки',
     'Update Institution Application' => 'Редактирование заявки',
+    'Approve' => 'Одобрить',
 
     // GENERAL
     'Login' => 'Войти',

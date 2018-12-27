@@ -30,6 +30,9 @@ use Yii;
  */
 class InstitutionApplication extends \yii\db\ActiveRecord
 {
+    const STATUS_NEW = 0;
+    const STATUS_APPROVED = 1;
+    const STATUS_REJECTED = 2;
     /**
      * {@inheritdoc}
      */
@@ -82,5 +85,10 @@ class InstitutionApplication extends \yii\db\ActiveRecord
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
+    }
+
+    public function isNew()
+    {
+        return $this->status == self::STATUS_NEW;
     }
 }
