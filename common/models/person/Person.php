@@ -4,6 +4,7 @@ namespace common\models\person;
 
 use common\helpers\SchemeHelper;
 use common\models\Nationality;
+use common\models\organization\Institution;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\web\IdentityInterface;
@@ -82,6 +83,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
             [['nickname', 'firstname', 'lastname', 'middlename', 'iin'], 'string', 'max' => 100],
             [['birth_place', 'photo'], 'string', 'max' => 255],
             [['language'], 'string', 'max' => 2],
+            ['iin', 'unique'],
         ];
     }
 
@@ -240,5 +242,10 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         $model->iin = $iin;
 
         return $model;
+    }
+
+    public function getInstitutions()
+    {
+        return $this->hasMany(Institution::className(), ['id' => 'institution_id'])->viaTable('link.person_institution_link', ['person_id' => 'id']);
     }
 }
