@@ -132,8 +132,12 @@ class ApplicationController extends Controller
     public function actionApprove($id)
     {
         $model = $this->findModel($id);
-        $this->applicationService->approve($model);
-        Yii::$app->session->setFlash('success', "Заявка одобрена");
+        try {
+            $this->applicationService->approve($model);
+            Yii::$app->session->setFlash('success', "Заявка одобрена");
+        } catch (\Exception $e) {
+            Yii::$app->session->setFlash('error', "Произошла ошибка при сохранении");
+        }
 
         return $this->redirect(['index']);
     }
