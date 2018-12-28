@@ -18,8 +18,8 @@ class m181227_171714_create_person_institution_link_table extends Migration
 
         $this->createTable('link.person_institution_link', [
             'id' => $this->primaryKey(),
-            'person_id' => $this->bigInteger(),
-            'institution_id' => $this->bigInteger(),
+            'person_id' => $this->bigInteger()->notNull(),
+            'institution_id' => $this->bigInteger()->notNull(),
             'from_ts' => $this->dateTime()->null(),
             'to_ts' => $this->dateTime()->null(),
             'status' => $this->smallInteger()->defaultValue(1),
@@ -50,6 +50,13 @@ class m181227_171714_create_person_institution_link_table extends Migration
             'institution_id',
             'organization.institution',
             'id'
+        );
+
+        $this->createIndex(
+            'unique_person_institution',
+            'link.person_institution_link',
+            ['person_id', 'institution_id', 'is_deleted'],
+            true
         );
     }
 
