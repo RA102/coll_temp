@@ -2,6 +2,7 @@
 
 namespace common\services\person;
 
+use common\models\link\PersonInstitutionLink;
 use common\models\person\Person;
 use common\services\TransactionManager;
 use common\services\pds\PersonService as PdsService;
@@ -25,17 +26,27 @@ class PersonService
         $this->pdsService = $pdsService;
     }
 
-    public function create(Person $model)
+    /**
+     * @param Person $model
+     * @param int $institution_id
+     * @return Person
+     * @throws \yii\db\Exception
+     */
+    public function create(Person $model, int $institution_id)
     {
         if (!$model->isNewRecord) {
             throw new \yii\base\InvalidCallException('Model already created');
         }
 
-        $this->transactionManager->execute(function () use ($model) {
-            $model->portal_uid = $this->pdsService->create($model);
+        $this->transactionManager->execute(function () use ($model, $institution_id) {
+//          @TODO uncomment line below, after pds is fixed
+//            $model->portal_uid = $this->pdsService->create($model);
             if (!$model->save()) {
                 throw new \RuntimeException('Saving error.');
             }
+
+            $link = PersonInstitutionLink::add($model->id, $institution_id);
+            $link->save();
         });
 
         return $model;

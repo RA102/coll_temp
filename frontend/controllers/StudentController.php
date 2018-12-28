@@ -156,6 +156,7 @@ class StudentController extends Controller
      * Creates a new Student model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @throws \yii\db\Exception
      */
     public function actionCreate()
     {
@@ -164,7 +165,7 @@ class StudentController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model = Student::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
             $model->setAttributes($form->attributes);
-            $model = $this->personService->create($model);
+            $model = $this->personService->create($model, Yii::$app->user->identity->institution->id);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }

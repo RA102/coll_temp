@@ -156,6 +156,7 @@ class EmployeeController extends Controller
      * Creates a new Employee model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @throws \yii\db\Exception
      */
     public function actionCreate()
     {
@@ -164,7 +165,7 @@ class EmployeeController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model = Employee::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
             $model->setAttributes($form->attributes);
-            $model = $this->personService->create($model);
+            $model = $this->personService->create($model, Yii::$app->user->identity->institution->id);
 
             return $this->redirect(['update-contacts', 'id' => $model->id]);
         }
