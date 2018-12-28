@@ -65,14 +65,11 @@ class InstitutionApplicationService
             $application->organizational_legal_form_id
         );
 
-        $link = new PersonInstitutionLink();
-
         $this->transactionManager->execute(function () use ($person, $application, $link, $institution) {
             $person->save();
             $institution->save();
 
-            $link->person_id = $person->id;
-            $link->institution_id = $institution->id;
+            $link = PersonInstitutionLink::add($person->id, $institution->id);
             $link->save();
 
             $application->save();

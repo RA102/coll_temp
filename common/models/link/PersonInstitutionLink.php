@@ -81,4 +81,13 @@ class PersonInstitutionLink extends \yii\db\ActiveRecord
             'document_number' => Yii::t('app', 'Document Number'),
         ];
     }
+
+    public static function add($person_id, $institution_id)
+    {
+        $model = new self();
+        $model->person_id = $person_id;
+        $model->institution_id = $institution_id;
+
+        return $model;
+    }
 }
