@@ -47,6 +47,7 @@ use yii\web\IdentityInterface;
  * @property PersonInfo[] $personInfos
  * @property PersonContact[] $personContacts
  * @property PersonLocation[] $personLocations
+ * @property Institution $institution
  */
 class Person extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -247,5 +248,10 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function getInstitutions()
     {
         return $this->hasMany(Institution::className(), ['id' => 'institution_id'])->viaTable('link.person_institution_link', ['person_id' => 'id']);
+    }
+
+    public function getInstitution()
+    {
+        return $this->getInstitutions()->one();
     }
 }

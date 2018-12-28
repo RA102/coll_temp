@@ -13,6 +13,8 @@ use common\models\person\Student;
  */
 class StudentSearch extends Student
 {
+    public $institution_id;
+
     public function formName()
     {
         return '';
@@ -25,7 +27,7 @@ class StudentSearch extends Student
     {
         return [
             [['id', 'status', 'sex', 'nationality_id', 'is_pluralist', 'birth_country_id', 'birth_city_id', 'oid', 'alledu_id', 'alledu_server_id', 'pupil_id', 'owner_id', 'server_id', 'portal_uid', 'type'], 'integer'],
-            [['nickname', 'firstname', 'lastname', 'middlename', 'birth_date', 'iin', 'birth_place', 'language', 'photo', 'create_ts', 'delete_ts', 'import_ts'], 'safe'],
+            [['nickname', 'firstname', 'lastname', 'middlename', 'birth_date', 'iin', 'birth_place', 'language', 'photo', 'create_ts', 'delete_ts', 'import_ts', 'institution_id'], 'safe'],
             [['is_subscribed'], 'boolean'],
         ];
     }
@@ -66,11 +68,16 @@ class StudentSearch extends Student
 
         if (isset($this->status)) {
             if ($this->status == Person::STATUS_DELETED) {
-                $query->andWhere(['NOT', ['delete_ts' => null]]);
+                $query->andWhere(['NOT', [self::tableName().'.delete_ts' => null]]);
             } else {
-                $query->andFilterWhere(['status' => $this->status]);
-                $query->andWhere(['delete_ts' => null]);
+                $query->andFilterWhere([self::tableName().'.status' => $this->status]);
+                $query->andWhere([self::tableName().'.delete_ts' => null]);
             }
+        }
+
+        if (!empty($this->institution_id)) {
+            $query->joinWith('institutions');
+            $query->andFilterWhere(['person_institution_link.institution_id' => $this->institution_id]);
         }
 
         // grid filtering conditions

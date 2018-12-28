@@ -83,6 +83,7 @@ class StudentController extends Controller
     {
         $searchModel = new StudentSearch();
         $searchModel->status = Student::STATUS_ACTIVE;
+        $searchModel->institution_id = Yii::$app->user->identity->institution->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
