@@ -5,6 +5,7 @@ namespace common\services\pds;
 use common\services\pds\exceptions\PersonAlreadyExistException;
 use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
+use yii\web\MethodNotAllowedHttpException;
 
 class PersonCreateService extends PersonSearchService
 {
@@ -20,6 +21,7 @@ class PersonCreateService extends PersonSearchService
     {
         $query = array_filter($person->getAttributes());
         $person = $this->findOne($query);
+
         if ($person !== null) {
             throw new PersonAlreadyExistException('Person already exists');
         }
@@ -37,7 +39,7 @@ class PersonCreateService extends PersonSearchService
         }
 
         $options = [
-            CURLOPT_URL => \Yii::$app->params['pds_url'] . '/person',
+            CURLOPT_URL => \Yii::$app->params['pds_url'] . 'person',
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
@@ -53,13 +55,17 @@ class PersonCreateService extends PersonSearchService
             CURLOPT_TIMEOUT => 20
         ];
         curl_setopt_array($connection, $options);
-        var_dump($options);
+
         $data = curl_exec($connection);
         $info = curl_getinfo($connection);
         curl_close($connection);
 
         if ($data === false) {
             throw new \yii\web\ServerErrorHttpException('Server not responding');
+        }
+
+        if ($info['http_code'] === 405) {
+            throw new MethodNotAllowedHttpException('Method not allowed');
         }
 
         if ($info['http_code'] !== 200) {

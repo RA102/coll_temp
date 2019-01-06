@@ -29,18 +29,37 @@ class PersonService
     /**
      * @param Person $model
      * @param int $institution_id
+     * @param bool $create_identity
+     * @param string $identity
+     * @param string $credential_type
      * @return Person
      * @throws \yii\db\Exception
      */
-    public function create(Person $model, int $institution_id)
+    public function create(
+        Person $model,
+        $institution_id,
+        $create_identity,
+        $identity,
+        $credential_type
+    )
     {
         if (!$model->isNewRecord) {
             throw new \yii\base\InvalidCallException('Model already created');
         }
 
-        $this->transactionManager->execute(function () use ($model, $institution_id) {
-//          @TODO uncomment line below, after pds is fixed
-//            $model->portal_uid = $this->pdsService->create($model);
+        $this->transactionManager->execute(function () use (
+            $model,
+            $institution_id,
+            $create_identity,
+            $identity,
+            $credential_type
+        ) {
+            $model->portal_uid = $this->pdsService->create(
+                $model,
+                $create_identity,
+                $identity,
+                $credential_type
+            );
             if (!$model->save()) {
                 throw new \RuntimeException('Saving error.');
             }

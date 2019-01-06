@@ -2,6 +2,7 @@
 
 namespace common\services\pds;
 
+use common\helpers\PersonHelper;
 use common\models\person\AccessToken;
 use common\models\person\Person;
 use yii\helpers\Json;
@@ -71,6 +72,7 @@ class LoginService
     /**
      * @param Person $person
      * @param array $data
+     * @throws \yii\web\UnauthorizedHttpException
      */
     private function saveToken(Person $person, array $data)
     {
@@ -79,12 +81,18 @@ class LoginService
                 'person_id' => $person->id,
                 'token' => $data['token']
             ])
+            ->andWhere('expire_ts > NOW()')
             ->one();
 
         if (!$accessToken) {
+            $token = PersonHelper::decodeJWT($data['token']);
+            $expire = new \DateTime();
+            $expire->setTimestamp($token['exp']);
+
             $accessToken = AccessToken::add(
                 $person,
                 $data['token'],
+                $expire,
                 $data['hash'],
                 $data['is_temporary']
             );

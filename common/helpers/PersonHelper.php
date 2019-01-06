@@ -3,10 +3,14 @@
 namespace common\helpers;
 
 use common\models\person\Person;
+use Firebase\JWT\JWT;
 use Yii;
+use yii\web\UnauthorizedHttpException;
 
 class PersonHelper
 {
+    const JWT_SECRET_KEY = 'o^ieONLzxEJ69gB&aoce20eiwU6ebj';
+
     public static function getTypeList()
     {
         return [
@@ -23,5 +27,50 @@ class PersonHelper
             Person::SEX_MALE => Yii::t('app', 'Sex Male'),
             Person::SEX_FEMALE => Yii::t('app', 'Sex Female'),
         ];
+    }
+
+    /**
+     * Decode JWT token
+     * @param  string $token access token to decode
+     * @return array decoded token
+     * @throws UnauthorizedHttpException
+     */
+    public static function decodeJWT($token)
+    {
+        $secret = static::getSecretKey();
+        $errorText = "Incorrect token";
+
+        try {
+            $decoded = JWT::decode($token, $secret, [static::getAlgo()]);
+        } catch (\Exception $e) {
+            if (YII_DEBUG) {
+                throw new UnauthorizedHttpException($e->getMessage());
+            } else {
+                throw new UnauthorizedHttpException($errorText);
+            }
+        }
+        $decodedArray = (array)$decoded;
+        return $decodedArray;
+    }
+
+
+
+    /**
+     * Getter for secret key that's used for generation of JWT
+     * @return string secret key used to generate JWT
+     */
+    protected static function getSecretKey()
+    {
+        return self::JWT_SECRET_KEY;
+    }
+
+    /**
+     * Getter for encryption algorytm used in JWT generation and decoding
+     * Override this method to set up other algorytm.
+     * @return string needed algorytm
+     */
+    private static function getAlgo()
+    {
+        return 'HS256';
     }
 }

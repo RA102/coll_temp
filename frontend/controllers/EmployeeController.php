@@ -165,7 +165,13 @@ class EmployeeController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model = Employee::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
             $model->setAttributes($form->attributes);
-            $model = $this->personService->create($model, Yii::$app->user->identity->institution->id);
+            $model = $this->personService->create(
+                $model,
+                Yii::$app->user->identity->institution->id,
+                $form->generate_credential,
+                $form->indentity,
+                $form->credential_type
+            );
 
             return $this->redirect(['update-contacts', 'id' => $model->id]);
         }

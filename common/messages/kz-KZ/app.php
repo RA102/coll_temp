@@ -98,4 +98,5 @@ return [
     'Password' => 'Пароль',
     'Address' => 'Адрес',
     'Are you sure?' => 'Вы уверены?',
+    'Create a user?' => 'Создать аккаунт?',
 ];

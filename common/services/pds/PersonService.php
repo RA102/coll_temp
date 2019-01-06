@@ -25,13 +25,21 @@ class PersonService
 
     /**
      * @param Person $model
+     * @param bool $create_identity
+     * @param string $identity
+     * @param string $credential_type
      * @return int
      * @throws ForbiddenHttpException
      * @throws \Throwable
      * @throws \yii\web\ServerErrorHttpException
      * @throws \yii\web\UnauthorizedHttpException
      */
-    public function create(Person $model): int
+    public function create(
+        Person $model,
+        bool $create_identity,
+        string $identity,
+        string $credential_type
+    ): int
     {
         if (!empty($model->portal_uid)) {
             throw new ForbiddenHttpException('Person already exists');
@@ -42,6 +50,9 @@ class PersonService
         $newPerson->middlename = $model->middlename;
         $newPerson->firstname = $model->firstname;
         $newPerson->iin = $model->iin;
+        $newPerson->generate_credential = $create_identity;
+        $newPerson->indentity = $identity;
+        $newPerson->credential_type = $credential_type;
         if ($model->birth_date) {
             $birthDate = new \DateTime($model->birth_date);
             $newPerson->birth_date = $birthDate->format('Y-m-d');

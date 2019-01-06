@@ -46,6 +46,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'generate_credential')->checkbox() ?>
+
+    <?= $form->field($model, 'indentity')->textInput() ?>
+
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>

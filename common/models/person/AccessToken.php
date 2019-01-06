@@ -65,13 +65,14 @@ class AccessToken extends \yii\db\ActiveRecord
         return $this->hasOne(Person::class, ['id' => 'person_id']);
     }
 
-    public static function add(Person $person, $token, $hash = '', $isTemporary = true): AccessToken
+    public static function add(Person $person, $token, \DateTime $expire, $hash = '', $isTemporary = true): AccessToken
     {
         $model = new static();
         $model->person_id = $person->id;
         $model->token = $token;
         $model->hash = $hash;
         $model->is_temporary = $isTemporary;
+        $model->expire_ts = $expire->format('Y-m-d H:i:s');
 
         return $model;
     }

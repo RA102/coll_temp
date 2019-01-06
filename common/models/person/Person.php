@@ -147,7 +147,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function isActive()
     {
-        return $this->status == self::STATUS_ACTIVE  && !$this->isDeleted();
+        return $this->status == self::STATUS_ACTIVE && !$this->isDeleted();
     }
 
     public function isFired()
@@ -222,11 +222,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasOne(AccessToken::class, ['person_id' => 'id'])
             ->orderBy(['expire_ts' => SORT_DESC])
             ->andWhere(['delete_ts' => null])
-            ->andWhere([
-                'OR',
-                ['expire_ts' => null],
-                ['>', 'expire_ts', date('Y-m-d H:i:s')]
-            ]);
+            ->andWhere('expire_ts > NOW()');
     }
 
     /**

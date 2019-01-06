@@ -3,6 +3,7 @@
 namespace frontend\models\forms;
 
 use common\models\person\Person;
+use common\services\pds\PersonCredential;
 use Yii;
 use yii\base\Model;
 
@@ -18,6 +19,10 @@ class StudentGeneralForm extends Model
     public $nationality_id;
     public $language;
 
+    public $generate_credential = false;
+    public $credential_type = PersonCredential::TYPE_EMAIL;
+    public $indentity;
+
     /**
      * {@inheritdoc}
      */
@@ -30,6 +35,10 @@ class StudentGeneralForm extends Model
             'birthPlaceString' => [['birth_place'], 'string', 'max' => 255],
             'sexValidation' => [['sex'], 'in', 'range' => [Person::SEX_NONE, Person::SEX_MALE, Person::SEX_FEMALE]],
             'iinString' => [['iin'], 'string', 'min' => 12, 'max' => 12],
+
+            ['generate_credential', 'boolean'],
+            ['generate_credential', 'default', 'value' => false],
+            ['indentity', 'email', 'skipOnEmpty' => true],
 
             ['nationality_id', 'required'], // TODO foreign key check
             ['language', 'required'],
@@ -51,6 +60,8 @@ class StudentGeneralForm extends Model
             'nationality_id' => Yii::t('app', 'Nationality ID'),
             'iin' => Yii::t('app', 'Iin'),
             'language' => Yii::t('app', 'Language'),
+            'generate_credential' => Yii::t('app', 'Create a user?'),
+            'indentity' => Yii::t('app', 'Email'),
         ];
     }
 }

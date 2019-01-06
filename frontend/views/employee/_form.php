@@ -70,6 +70,18 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'generate_credential')->checkbox() ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'indentity')->textInput() ?>
+        </div>
+    </div>
+
+
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
