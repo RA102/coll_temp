@@ -78,62 +78,67 @@ INSTALLATION
     `php ./init --env=Development`
 * Create database
 * Setup database configurations in `common/config/main-local.php`
-    >         'db' => [
-    >              'class' => 'yii\db\Connection',
-    >              'dsn' => 'pgsql:host=localhost;dbname=college',
-    >              'username' => 'postgres',
-    >              'password' => 'postgres',
-    >              'charset' => 'utf8',
-    >         ],
+    ```
+    'db' => [
+         'class' => 'yii\db\Connection',
+         'dsn' => 'pgsql:host=localhost;dbname=college',
+         'username' => 'postgres',
+         'password' => 'postgres',
+         'charset' => 'utf8',
+    ],
+    ```
 * Run migrations <br/>
     `php ./yii migrate --interactive=0`
 * Setup local parameters in `common/config/params-local.php`
-    >       return [
-    >           'college_pds_access_token' => 'access_token',
-    >           'pds_url' => 'http://api.pds.loc/',
-    >           'session_timeout' => 3600 * 24 * 7
-    >       ];
+    ```
+    return [
+        'college_pds_access_token' => 'access_token',
+        'pds_url' => 'http://api.pds.loc/',
+        'session_timeout' => 3600 * 24 * 7
+    ];
+    ```
 * Setup nginx to run frontend
-    >       server {
-    >           charset utf-8;
-    >           client_max_body_size 128M;
-    >       
-    >           listen 80; ## listen for ipv4
-    >           #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
-    >       
-    >           server_name mysite.test;
-    >           root        /path/to/frontend/web;
-    >           index       index.php;
-    >       
-    >           access_log  /path/to/basic/log/access.log;
-    >           error_log   /path/to/basic/log/error.log;
-    >       
-    >           location / {
-    >               # Redirect everything that isn't a real file to index.php
-    >               try_files $uri $uri/ /index.php$is_args$args;
-    >           }
-    >       
-    >           # uncomment to avoid processing of calls to non-existing static files by Yii
-    >           #location ~ \.(js|css|png|jpg|gif|swf|ico|pdf|mov|fla|zip|rar)$ {
-    >           #    try_files $uri =404;
-    >           #}
-    >           #error_page 404 /404.html;
-    >       
-    >           # deny accessing php files for the /assets directory
-    >           location ~ ^/assets/.*\.php$ {
-    >               deny all;
-    >           }
-    >       
-    >           location ~ \.php$ {
-    >               include fastcgi_params;
-    >               fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    >               fastcgi_pass 127.0.0.1:9000;
-    >               #fastcgi_pass unix:/var/run/php5-fpm.sock;
-    >               try_files $uri =404;
-    >           }
-    >       
-    >           location ~* /\. {
-    >               deny all;
-    >           }
-    >       }
-
+    ```
+    server {
+        charset utf-8;
+        client_max_body_size 128M;
+    
+        listen 80; ## listen for ipv4
+        #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
+    
+        server_name mysite.test;
+        root        /path/to/frontend/web;
+        index       index.php;
+    
+        access_log  /path/to/basic/log/access.log;
+        error_log   /path/to/basic/log/error.log;
+    
+        location / {
+            # Redirect everything that isn't a real file to index.php
+            try_files $uri $uri/ /index.php$is_args$args;
+        }
+    
+        # uncomment to avoid processing of calls to non-existing static files by Yii
+        #location ~ \.(js|css|png|jpg|gif|swf|ico|pdf|mov|fla|zip|rar)$ {
+        #    try_files $uri =404;
+        #}
+        #error_page 404 /404.html;
+    
+        # deny accessing php files for the /assets directory
+        location ~ ^/assets/.*\.php$ {
+            deny all;
+        }
+    
+        location ~ \.php$ {
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_pass 127.0.0.1:9000;
+            #fastcgi_pass unix:/var/run/php5-fpm.sock;
+            try_files $uri =404;
+        }
+    
+        location ~* /\. {
+            deny all;
+        }
+    }
+    ```
