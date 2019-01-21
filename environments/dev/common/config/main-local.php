@@ -3,9 +3,9 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'pgsql:host=localhost;dbname=college',
-            'username' => 'postgres',
-            'password' => 'postgres',
+            'dsn' => 'pgsql:host=preview;dbname=db_beta_college',
+            'username' => 'betabilimal',
+            'password' => 'B1t3fahrenvu',
             'charset' => 'utf8',
         ],
         'mailer' => [
