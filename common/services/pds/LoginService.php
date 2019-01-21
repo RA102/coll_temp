@@ -23,8 +23,6 @@ class LoginService
             \Yii::$app->user->login($person);
             return true;
         } catch (\Exception $e) {
-            echo $e->getMessage();
-            die();
             return false;
         }
     }
@@ -59,6 +57,9 @@ class LoginService
         $data = curl_exec($connection);
         $info = curl_getinfo($connection);
         curl_close($connection);
+
+        var_dump($data);
+        die();
 
         if ($data === false) {
             throw new \yii\web\ServerErrorHttpException('Недоступен сервер авторизации.');
