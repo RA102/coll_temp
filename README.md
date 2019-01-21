@@ -87,6 +87,7 @@ INSTALLATION
          'charset' => 'utf8',
     ],
     ```
+
 * Run migrations <br/>
     `php ./yii migrate --interactive=0`
 * Setup local parameters in `common/config/params-local.php`
@@ -142,3 +143,31 @@ INSTALLATION
         }
     }
     ```
+
+### Beta server
+
+Address: 
+
+    host: https://beta.citorleu.kz
+
+Server:
+
+    ssh:  tickets.vpn
+    user: admin
+
+PostgresQL:
+
+    host internal: preview -> useful for code
+    host external: 192.168.2.220
+    database:      db_beta_college
+    username:      betabilimal
+    password:      B1t3fahrenvu
+
+Logs:
+
+    access_log: /var/log/nginx/beta.fs-access.log
+    error_log:  /var/log/nginx/beta.fs-error.log
+
+
+
+
