@@ -75,7 +75,7 @@ INSTALLATION
 * Install composer requirements <br/>
     `composer install`
 * Install project <br/>
-    `php ./init --env=Development`
+    `php ./init --env=Development --overwrite=All`
 * Create database
 * Setup database configurations in `common/config/main-local.php`
     ```
