@@ -37,6 +37,7 @@ class PdsController extends ActiveController
     public function beforeAction($action)
     {
         $this->getOptionsHeaders();
+        \Yii::$app->request->parsers = ['application/json' => 'yii\web\JsonParser'];
 
         return parent::beforeAction($action);
     }
@@ -55,6 +56,7 @@ class PdsController extends ActiveController
             \Yii::$app->request->getAbsoluteUrl(),
             \Yii::$app->request->getQueryParams(),
             \Yii::$app->request->getBodyParams(),
+            \Yii::$app->request->post(),
             $post
         ];
         throw new ServerErrorHttpException(json_encode($request));
