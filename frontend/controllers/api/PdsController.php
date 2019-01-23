@@ -48,6 +48,7 @@ class PdsController extends ActiveController
     public function actionSetAccessToken()
     {
         $pds_token = \Yii::$app->request->post(Setting::PDS_TOKEN_NAME);
+        throw new ServerErrorHttpException(json_encode(\Yii::$app->request->post()));
         if (!$pds_token) {
             throw new ServerErrorHttpException('No token received');
         }
