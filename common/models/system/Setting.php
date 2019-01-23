@@ -64,6 +64,17 @@ class Setting extends \yii\db\ActiveRecord
         return $model;
     }
 
+    public static function getPdsToken(): string
+    {
+        $model = Setting::findOne(['name' => self::PDS_TOKEN_NAME]);
+
+        if (!$model) {
+            return Yii::$app->params['pds_access_token'];
+        }
+
+        return $model->value;
+    }
+
     private static function guardExists($name)
     {
         $model = Setting::findOne(['name' => $name]);

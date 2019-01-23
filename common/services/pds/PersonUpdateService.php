@@ -2,6 +2,7 @@
 
 namespace common\services\pds;
 
+use common\models\system\Setting;
 use common\services\pds\exceptions\PersonNotExistException;
 use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
@@ -46,7 +47,7 @@ class PersonUpdateService extends PersonSearchService
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
-                'Access: Bearer ' . \Yii::$app->params['pds_access_token'],
+                'Access: Bearer ' . Setting::getPdsToken(),
                 'Authorization: Bearer ' . $token,
                 'Access-Role: superadmin'
             ],

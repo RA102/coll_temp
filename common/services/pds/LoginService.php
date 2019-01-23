@@ -5,6 +5,7 @@ namespace common\services\pds;
 use common\helpers\PersonHelper;
 use common\models\person\AccessToken;
 use common\models\person\Person;
+use common\models\system\Setting;
 use yii\helpers\Json;
 
 class LoginService
@@ -46,7 +47,7 @@ class LoginService
             CURLOPT_POSTFIELDS => json_encode(['indentity' => $username, 'password' => $password]),
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
-                'Access: Bearer ' . \Yii::$app->params['pds_access_token'],
+                'Access: Bearer ' . Setting::getPdsToken(),
             ],
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_SSL_VERIFYPEER => false,
@@ -64,6 +65,10 @@ class LoginService
 
         if ($info['http_code'] === 422) {
             throw new \yii\web\UnprocessableEntityHttpException('Логин или пароль не верный.');
+        }
+
+        if ($info['http_code'] === 401) {
+            throw new \yii\web\UnprocessableEntityHttpException('Токен PDS невалиден');
         }
 
         return Json::decode($data);
