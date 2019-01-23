@@ -55,6 +55,8 @@ class PdsController extends ActiveController
         if (!$this->pdsService->saveToken($pds_token)) {
             throw new ServerErrorHttpException('Failed to update the object for unknown reason.');
         }
+
+        return true;
     }
 
     /**
