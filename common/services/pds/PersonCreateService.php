@@ -43,7 +43,7 @@ class PersonCreateService extends PersonSearchService
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
-                'Access: Bearer ' . \Yii::$app->params['college_pds_access_token'],
+                'Access: Bearer ' . \Yii::$app->params['pds_access_token'],
                 'Authorization: Bearer ' . $token,
                 'Access-Role: superadmin'
             ],

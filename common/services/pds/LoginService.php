@@ -46,7 +46,7 @@ class LoginService
             CURLOPT_POSTFIELDS => json_encode(['indentity' => $username, 'password' => $password]),
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
-                'Access: Bearer ' . \Yii::$app->params['college_pds_access_token'],
+                'Access: Bearer ' . \Yii::$app->params['pds_access_token'],
             ],
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_SSL_VERIFYPEER => false,

@@ -46,7 +46,7 @@ class PersonUpdateService extends PersonSearchService
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
-                'Access: Bearer ' . \Yii::$app->params['college_pds_access_token'],
+                'Access: Bearer ' . \Yii::$app->params['pds_access_token'],
                 'Authorization: Bearer ' . $token,
                 'Access-Role: superadmin'
             ],
