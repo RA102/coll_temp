@@ -60,6 +60,7 @@ class LoginService
         curl_close($connection);
 
         var_dump($data);
+        var_dump($info);
         die();
 
         if ($data === false) {
