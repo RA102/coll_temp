@@ -59,6 +59,9 @@ class LoginService
         $info = curl_getinfo($connection);
         curl_close($connection);
 
+        var_dump($data);
+        die();
+
         if ($data === false) {
             throw new \yii\web\ServerErrorHttpException('Недоступен сервер авторизации.');
         }
