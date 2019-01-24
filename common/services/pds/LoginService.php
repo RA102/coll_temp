@@ -60,9 +60,9 @@ class LoginService
         curl_close($connection);
 
         echo Setting::getPdsToken();
-        echo '<br/>';
+        echo '<hr/>';
         var_dump($data);
-        echo '<br/>';
+        echo '<hr/>';
         var_dump($info);
         die();
 
