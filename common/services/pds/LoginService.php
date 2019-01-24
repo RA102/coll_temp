@@ -59,13 +59,6 @@ class LoginService
         $info = curl_getinfo($connection);
         curl_close($connection);
 
-        echo Setting::getPdsToken();
-        echo '<hr/>';
-        var_dump($data);
-        echo '<hr/>';
-        var_dump($info);
-        die();
-
         if ($data === false) {
             throw new \yii\web\ServerErrorHttpException('Недоступен сервер авторизации.');
         }
