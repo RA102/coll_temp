@@ -28,12 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-header">
         <ul class="nav nav-tabs">
             <li role="presentation" class="<?=$searchModel->isActive() ? 'active' : ''?>">
-                <?= Html::a('Текущие студенты', Url::current([
+                <?= Html::a('Текущие учащиеся', Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_ACTIVE,
                 ])) ?>
             </li>
             <li role="presentation" class="<?=$searchModel->isFired() ? 'active' : ''?>">
-                <?= Html::a('Исключенные студенты', Url::current([
+                <?= Html::a('Исключенные учащиеся', Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_FIRED,
                 ])) ?>
             </li>

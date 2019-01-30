@@ -38,9 +38,9 @@ return [
     'Authorization Records' => 'Авторизационные записи',
     'Nickname' => '',
     'Update' => 'Редактировать',
-    'Students' => 'Студенты',
-    'Create Student' => 'Добавление студента',
-    'Fire Student ' => 'Отчислить студента',
+    'Students' => 'Учащиеся',
+    'Create Student' => 'Добавление учащегося',
+    'Fire Student ' => 'Отчислить учащегося',
 
     // EMPLOYEES
     'Employees' => 'Сотрудники',
