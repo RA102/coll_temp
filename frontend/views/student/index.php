@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ])) ?>
             </li>
             <li role="presentation" class="<?=$searchModel->status == Person::STATUS_DELETED ? 'active' : ''?>">
-                <?= Html::a('Удаленные студенты', Url::current([
+                <?= Html::a('Удаленные учащиеся', Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_DELETED,
                 ])) ?>
             </li>
