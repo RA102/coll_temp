@@ -21,7 +21,7 @@ class m190206_093813_create_speciality_table extends Migration
             'parent_id' => $this->integer(),
             'parent_oid' => $this->integer(),
             'type' => $this->smallInteger(),
-            'code' => $this->text(),
+            'code' => $this->string(511),
             'caption' => 'jsonb',
             'msko' =>$this->string(100),
             'gkz' => $this->string(100),

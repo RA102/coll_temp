@@ -7,36 +7,35 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\handbook\Speciality */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?php $this->beginBlock('content') ?>
 <div class="speciality-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'parent_id')->textInput() ?>
-
-    <?= $form->field($model, 'parent_oid')->textInput() ?>
-
-    <?= $form->field($model, 'type')->textInput() ?>
-
-    <?= $form->field($model, 'code')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'caption')->textInput() ?>
-
-    <?= $form->field($model, 'msko')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'gkz')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'server_id')->textInput() ?>
-
-    <?= $form->field($model, 'create_ts')->textInput() ?>
-
-    <?= $form->field($model, 'is_deleted')->checkbox() ?>
-
-    <?= $form->field($model, 'subjects')->textInput() ?>
-
-    <?= $form->field($model, 'is_working')->checkbox() ?>
-
-    <?= $form->field($model, 'institution_type')->textInput() ?>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <?= $form->field($model, 'caption')->textInput() ?>
+            </div>
+            <div class="col-md-12">
+                <?= $form->field($model, 'institution_type')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-12">
+                <?= $form->field($model, 'type')->textInput() ?>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <?= $form->field($model, 'code')->textInput() ?>
+            </div>
+            <div class="col-md-12">
+                <?= $form->field($model, 'gkz')->textInput() ?>
+            </div>
+            <div class="col-md-12">
+                <?= $form->field($model, 'msko')->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
@@ -45,3 +44,5 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php $this->endBlock() ?>
+<?= $this->render('_layout') ?>

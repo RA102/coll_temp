@@ -46,6 +46,7 @@ return [
             'rules'           => [
                 'institution' => '/institution/index',
                 'application' => '/application/index',
+                'speciality' => '/speciality/index',
                 '<a:\w+>' => 'site/<a>'
             ],
         ],
