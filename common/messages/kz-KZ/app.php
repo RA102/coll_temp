@@ -112,4 +112,5 @@ return [
     'Address' => 'Адрес',
     'Are you sure?' => 'Вы уверены?',
     'Create a user?' => 'Создать аккаунт?',
+    'Are you sure you want to delete this item?' => 'Вы уверены, что хотите удалить этот элемент?',
 ];
