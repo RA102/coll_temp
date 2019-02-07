@@ -6,4 +6,5 @@ class SchemeHelper
 {
     const PERSON = 'person.';
     const ORGANIZATION = 'organization.';
+    const PUBLIC = 'public.';
 }
