@@ -46,7 +46,7 @@
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
-                            ['label' => Yii::t('app','Специальности'), 'icon' => 'file-code-o', 'url' => ['/']],
+                            ['label' => Yii::t('app','Специальности'), 'icon' => 'file-code-o', 'url' => ['/speciality']],
                             ['label' => Yii::t('app','Профессии'), 'icon' => 'dashboard', 'url' => ['/']],
                             ['label' => Yii::t('app','Предметы'), 'icon' => 'dashboard', 'url' => ['/']],
                             ['label' => Yii::t('app','Системы оценивания'), 'icon' => 'dashboard', 'url' => ['/']],
