@@ -33,14 +33,16 @@ class SpecialityController extends Controller
      * Lists all Speciality models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($parent_id = 0)
     {
         $searchModel = new SpecialitySearch();
+        $searchModel->parent_id = $parent_id > 0 ? $parent_id : null;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'parent_id' => $parent_id
         ]);
     }
 
@@ -62,12 +64,13 @@ class SpecialityController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($parent_id)
     {
         $model = new Speciality();
+        $model->parent_id = $parent_id > 0 ? $parent_id : null;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'parent_id' => $parent_id]);
         }
 
         return $this->render('create', [
@@ -85,9 +88,10 @@ class SpecialityController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $parentId = $model->parent_id > 0 ? $model->parent_id : 0;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'parent_id' => $parentId]);
         }
 
         return $this->render('update', [
