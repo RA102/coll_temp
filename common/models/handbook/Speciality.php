@@ -24,6 +24,8 @@ use Yii;
  */
 class Speciality extends \yii\db\ActiveRecord
 {
+    const INSTITUTION_TYPE_SPECIALIZED_SECONDARY = 1;
+    const INSTITUTION_TYPE_HIGHER = 2;
     /**
      * {@inheritdoc}
      */

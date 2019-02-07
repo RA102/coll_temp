@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use \common\helpers\SpecialityHelper;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\handbook\Speciality */
@@ -18,16 +19,14 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'caption')->textInput() ?>
             </div>
             <div class="col-md-12">
-                <?= $form->field($model, 'institution_type')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'institution_type')
+                    ->dropDownList(SpecialityHelper::getInstitutionTypes()) ?>
             </div>
-            <div class="col-md-12">
-                <?= $form->field($model, 'type')->textInput() ?>
-            </div>
-        </div>
-        <div class="col-md-6">
             <div class="col-md-12">
                 <?= $form->field($model, 'code')->textInput() ?>
             </div>
+        </div>
+        <div class="col-md-6">
             <div class="col-md-12">
                 <?= $form->field($model, 'gkz')->textInput() ?>
             </div>
