@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\helpers\SchemeHelper;
+use common\models\person\Person;
 use Yii;
 
 /**
@@ -16,6 +17,8 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ *
+ * @property TeacherCourse $teacherCourse
  */
 class Lesson extends \yii\db\ActiveRecord
 {
@@ -36,9 +39,9 @@ class Lesson extends \yii\db\ActiveRecord
             [['teacher_course_id', 'date_ts'], 'required'],
             [['teacher_course_id', 'teacher_id', 'duration'], 'default', 'value' => null],
             [['teacher_course_id', 'teacher_id', 'duration'], 'integer'],
-            [['date_ts', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
-            [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => PersonPerson::className(), 'targetAttribute' => ['teacher_id' => 'id']],
-            [['teacher_course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['teacher_course_id' => 'id']],
+            [['date_ts'], 'safe'],
+            [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['teacher_id' => 'id']],
+            [['teacher_course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::class, 'targetAttribute' => ['teacher_course_id' => 'id']],
         ];
     }
 
@@ -57,5 +60,13 @@ class Lesson extends \yii\db\ActiveRecord
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeacherCourse()
+    {
+        return $this->hasOne(TeacherCourse::class, ['id' => 'teacher_course_id']);
     }
 }

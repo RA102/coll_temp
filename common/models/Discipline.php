@@ -15,6 +15,8 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ *
+ * @property Course[] $courses
  */
 class Discipline extends \yii\db\ActiveRecord
 {
@@ -32,7 +34,7 @@ class Discipline extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['caption', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
+            [['caption'], 'safe'],
             [['status'], 'default', 'value' => null],
             [['status'], 'integer'],
             [['slug'], 'string', 'max' => 255],
@@ -53,5 +55,13 @@ class Discipline extends \yii\db\ActiveRecord
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCourses()
+    {
+        return $this->hasMany(Course::class, ['discipline_id' => 'id'])->inverseOf('discipline');
     }
 }

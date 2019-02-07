@@ -16,6 +16,9 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ *
+ * @property Discipline $discipline
+ * @property TeacherCourse[] $teacherCourses
  */
 class Course extends \yii\db\ActiveRecord
 {
@@ -36,9 +39,9 @@ class Course extends \yii\db\ActiveRecord
             [['discipline_id'], 'required'],
             [['discipline_id', 'status'], 'default', 'value' => null],
             [['discipline_id', 'status'], 'integer'],
-            [['caption', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
+            [['caption'], 'safe'],
             [['grades'], 'string', 'max' => 255],
-            [['discipline_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discipline::className(), 'targetAttribute' => ['discipline_id' => 'id']],
+            [['discipline_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discipline::class, 'targetAttribute' => ['discipline_id' => 'id']],
         ];
     }
 
@@ -57,5 +60,21 @@ class Course extends \yii\db\ActiveRecord
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDiscipline()
+    {
+        return $this->hasOne(Discipline::class, ['id' => 'discipline_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCourses()
+    {
+        return $this->hasMany(TeacherCourse::class, ['course_id' => 'id'])->inverseOf('course');
     }
 }

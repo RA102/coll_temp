@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\helpers\SchemeHelper;
+use common\models\person\Person;
 use Yii;
 
 /**
@@ -17,6 +18,9 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ *
+ * @property Course $course
+ * @property Lesson[] $lessons
  */
 class TeacherCourse extends \yii\db\ActiveRecord
 {
@@ -37,10 +41,10 @@ class TeacherCourse extends \yii\db\ActiveRecord
             [['course_id', 'teacher_id', 'start_ts', 'end_ts'], 'required'],
             [['course_id', 'teacher_id'], 'default', 'value' => null],
             [['course_id', 'teacher_id'], 'integer'],
-            [['start_ts', 'end_ts', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
+            [['start_ts', 'end_ts'], 'safe'],
             [['type'], 'string', 'max' => 255],
-            [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => PersonPerson::className(), 'targetAttribute' => ['teacher_id' => 'id']],
-            [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'id']],
+            [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['teacher_id' => 'id']],
+            [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::class, 'targetAttribute' => ['course_id' => 'id']],
         ];
     }
 
@@ -60,5 +64,21 @@ class TeacherCourse extends \yii\db\ActiveRecord
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCourse()
+    {
+        return $this->hasOne(Course::class, ['id' => 'course_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLessons()
+    {
+        return $this->hasMany(Lesson::class, ['teacher_course_id' => 'id'])->inverseOf('teacherCourse');
     }
 }
