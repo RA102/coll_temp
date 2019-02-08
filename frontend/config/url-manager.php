@@ -8,6 +8,7 @@ return [
     'rules'           => [
         'student' => '/student/index',
         'employee' => '/employee/index',
+        'speciality' => '/speciality/index',
         '<a:\w+>' => 'site/<a>',
 
         'POST pds/set-access-token' => 'api/pds/set-access-token',

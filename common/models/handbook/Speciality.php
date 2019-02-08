@@ -26,6 +26,9 @@ class Speciality extends \yii\db\ActiveRecord
 {
     const INSTITUTION_TYPE_SPECIALIZED_SECONDARY = 1;
     const INSTITUTION_TYPE_HIGHER = 2;
+
+    public $caption_current;
+
     /**
      * {@inheritdoc}
      */
@@ -40,13 +43,23 @@ class Speciality extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['parent_id', 'parent_oid', 'type', 'server_id', 'subjects', 'institution_type'], 'default', 'value' => null],
+            [
+                ['parent_id', 'parent_oid', 'type', 'server_id', 'subjects', 'institution_type'],
+                'default',
+                'value' => null
+            ],
             [['parent_id', 'parent_oid', 'type', 'server_id', 'subjects', 'institution_type'], 'integer'],
             [['code'], 'string'],
             [['caption', 'create_ts'], 'safe'],
             [['is_deleted', 'is_working'], 'boolean'],
             [['msko', 'gkz'], 'string', 'max' => 100],
-            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Speciality::className(), 'targetAttribute' => ['parent_id' => 'id']],
+            [
+                ['parent_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Speciality::className(),
+                'targetAttribute' => ['parent_id' => 'id']
+            ],
         ];
     }
 
@@ -71,5 +84,15 @@ class Speciality extends \yii\db\ActiveRecord
             'is_working' => Yii::t('app', 'Is Working'),
             'institution_type' => Yii::t('app', 'Institution Type'),
         ];
+    }
+
+    public function afterFind()
+    {
+        $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
+        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
+//        $this->caption_current = Json::decode($this->getAttribute('caption'))[$currentLanguage];
+
+        parent::afterFind();
+
     }
 }
