@@ -56,7 +56,10 @@ class SpecialityController extends Controller
         $model->load(Yii::$app->request->post());
 
         if ($model->is_submitted) {
-            echo end($model->speciality_ids);die();
+            $this->specialityService->link(
+                end($model->speciality_ids),
+                Yii::$app->user->identity->institution->id
+            );
         }
 
         return $this->render('index', [
@@ -65,12 +68,6 @@ class SpecialityController extends Controller
         ]);
     }
 
-    /**
-     * @param $id
-     * @return \yii\web\Response
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
     public function actionUnlink($id)
     {
         $this->specialityService->unlink($id);

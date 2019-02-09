@@ -21,6 +21,9 @@ use Yii;
  * @property int $subjects
  * @property bool $is_working
  * @property int $institution_type
+ *
+ * @property Speciality[] $children
+ * @property Speciality $parent
  */
 class Speciality extends \yii\db\ActiveRecord
 {
@@ -84,6 +87,24 @@ class Speciality extends \yii\db\ActiveRecord
             'is_working' => Yii::t('app', 'Is Working'),
             'institution_type' => Yii::t('app', 'Institution Type'),
         ];
+    }
+
+    public function getParent()
+    {
+        return $this->hasOne(Speciality::class, ['id' => 'parent_id'])->inverseOf('children');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getChildren()
+    {
+        return $this->hasMany(Speciality::class, ['parent_id' => 'id'])->inverseOf('parent');
+    }
+
+    public function hasChildren()
+    {
+        return count($this->children) > 0 ? true : false;
     }
 
     public function afterFind()
