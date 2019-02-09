@@ -42,6 +42,7 @@ use Yii;
  * @property string $delete_ts
  *
  * @property Speciality[] $specialities
+ * @property InstitutionSpecialityInfo[] $specialityInfos
  */
 class Institution extends \yii\db\ActiveRecord
 {
@@ -138,5 +139,11 @@ class Institution extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Speciality::className(), ['id' => 'speciality_id'])
             ->viaTable('organization.institution_speciality_info', ['institution_id' => 'id']);
+    }
+
+    public function getSpecialityInfos()
+    {
+        return $this->hasMany(InstitutionSpecialityInfo::className(), ['institution_id' => 'id'])
+            ->andWhere('organization.institution_speciality_info.is_deleted is not true');
     }
 }

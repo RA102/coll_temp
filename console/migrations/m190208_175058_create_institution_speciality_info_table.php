@@ -19,7 +19,7 @@ class m190208_175058_create_institution_speciality_info_table extends Migration
             'caption' => 'jsonb',
             'status' => $this->smallInteger(),
             'create_ts' => $this->timestamp(),
-            'is_deleted' => $this->boolean(),
+            'is_deleted' => $this->boolean()->defaultValue(false),
             'default_grade' => $this->smallInteger(),
             'parent_id' => $this->bigInteger(),
             'academic_year_id' => $this->smallInteger(),

@@ -20,6 +20,8 @@ use Yii;
  * @property int $academic_year_id
  * @property int $oid
  * @property int $server_id
+ *
+ * @property Speciality $speciality
  */
 class InstitutionSpecialityInfo extends \yii\db\ActiveRecord
 {
@@ -66,5 +68,13 @@ class InstitutionSpecialityInfo extends \yii\db\ActiveRecord
             'oid' => Yii::t('app', 'Oid'),
             'server_id' => Yii::t('app', 'Server ID'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSpeciality()
+    {
+        return $this->hasOne(Speciality::class, ['id' => 'speciality_id']);
     }
 }

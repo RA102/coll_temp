@@ -9,7 +9,7 @@ $this->title = Yii::t('app', 'Specialities');
 $this->params['breadcrumbs'][] = $this->title;
 
 /** @var $model \frontend\models\forms\AddSpecialityForm */
-/** @var $specialities \common\models\handbook\Speciality[] */
+/** @var $specialityInfos \common\models\organization\InstitutionSpecialityInfo [] */
 ?>
 
 <div style="position: relative;">
@@ -25,17 +25,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'scrollTo' => 'false',
     ]);
     ?>
-    <?php $form = ActiveForm::begin([
-        'id' => 'js-update',
-        'enableClientValidation' => false,
-        'options' => [
-            'validateOnSubmit' => true,
-        ],
-    ]); ?>
     <div class="card-header" style="padding: 20px 20px">
         <div>Поиск специальности</div>
     </div>
     <div class="card-body">
+        <?php $form = ActiveForm::begin([
+            'id' => 'js-update',
+            'enableClientValidation' => false,
+            'options' => [
+                'validateOnSubmit' => true,
+            ],
+        ]); ?>
+
         <?php
         $parent_id = null;
         $children = [];
@@ -84,20 +85,29 @@ $this->params['breadcrumbs'][] = $this->title;
         }
 
         ?>
+
+        <?php ActiveForm::end(); ?>
+
         <hr>
         <div>
             <strong>Привязанные квалификации</strong>
             <div class="row">
                 <div class="col">
-                    <?php foreach($specialities as $speciality):?>
+                    <?php foreach($specialityInfos as $specialityInfo):?>
                     <div class="row speciality align-items-center py-2">
                         <div class="col">
-                            <?="{$speciality->code} - {$speciality->caption_current}"?>
+                            <?="{$specialityInfo->speciality->code} - {$specialityInfo->speciality->caption_current}"?>
                         </div>
                         <div class="col-auto">
-                            <button type="button" class="btn text-white btn-danger btn-sm">
-                                <i class="far fa-trash-alt"></i>
-                            </button>
+                            <?= Html::a(Html::tag('i', '', ['class' => 'far fa-trash-alt']),
+                                ['/speciality/unlink', 'id' => $specialityInfo->id], [
+                                    'data-method' => 'POST',
+                                    'data-confirm' => "Удалить?",
+                                    'data-params' => [
+                                        'id' => $specialityInfo->id,
+                                    ],
+                                    'class' => 'btn text-white btn-danger btn-sm'
+                                ]) ?>
                         </div>
                     </div>
                     <?php endforeach;?>
@@ -105,6 +115,5 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-    <?php ActiveForm::end(); ?>
     <?php Pjax::end(); ?>
 </div>

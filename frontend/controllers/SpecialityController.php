@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 
-use common\models\handbook\Speciality;
+use common\services\organization\SpecialityService;
 use frontend\models\forms\AddSpecialityForm;
 use Yii;
 use yii\filters\AccessControl;
@@ -11,6 +11,18 @@ use yii\web\Controller;
 
 class SpecialityController extends Controller
 {
+    public $specialityService;
+
+    public function __construct(
+        string $id,
+        $module,
+        SpecialityService $specialityService,
+        array $config = []
+    ) {
+        parent::__construct($id, $module, $config);
+        $this->specialityService = $specialityService;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -22,7 +34,7 @@ class SpecialityController extends Controller
                 'rules' => [
                     [
                         'actions' => [
-                            'index',
+                            'index', 'unlink'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -32,8 +44,7 @@ class SpecialityController extends Controller
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
-                    'delete' => ['POST'],
-                    'fire' => ['POST'],
+                    'unlink' => ['POST'],
                 ],
             ],
         ];
@@ -50,7 +61,19 @@ class SpecialityController extends Controller
 
         return $this->render('index', [
             'model' => $model,
-            'specialities' => Yii::$app->user->identity->institution->specialities,
+            'specialityInfos' => Yii::$app->user->identity->institution->specialityInfos,
         ]);
+    }
+
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionUnlink($id)
+    {
+        $this->specialityService->unlink($id);
+        return $this->redirect(['index']);
     }
 }
