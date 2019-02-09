@@ -3,6 +3,7 @@
 namespace common\models\organization;
 
 use common\helpers\SchemeHelper;
+use common\models\handbook\Speciality;
 use Yii;
 
 /**
@@ -39,6 +40,8 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ *
+ * @property Speciality[] $specialities
  */
 class Institution extends \yii\db\ActiveRecord
 {
@@ -129,5 +132,11 @@ class Institution extends \yii\db\ActiveRecord
         $model->organizational_legal_form_id = $organizational_legal_form_id;
 
         return $model;
+    }
+
+    public function getSpecialities()
+    {
+        return $this->hasMany(Speciality::className(), ['id' => 'speciality_id'])
+            ->viaTable('organization.institution_speciality_info', ['institution_id' => 'id']);
     }
 }

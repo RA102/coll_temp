@@ -9,6 +9,7 @@ $this->title = Yii::t('app', 'Specialities');
 $this->params['breadcrumbs'][] = $this->title;
 
 /** @var $model \frontend\models\forms\AddSpecialityForm */
+/** @var $specialities \common\models\handbook\Speciality[] */
 ?>
 
 <div style="position: relative;">
@@ -83,6 +84,26 @@ $this->params['breadcrumbs'][] = $this->title;
         }
 
         ?>
+        <hr>
+        <div>
+            <strong>Привязанные квалификации</strong>
+            <div class="row">
+                <div class="col">
+                    <?php foreach($specialities as $speciality):?>
+                    <div class="row speciality align-items-center py-2">
+                        <div class="col">
+                            <?="{$speciality->code} - {$speciality->caption_current}"?>
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" class="btn text-white btn-danger btn-sm">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endforeach;?>
+                </div>
+            </div>
+        </div>
     </div>
     <?php ActiveForm::end(); ?>
     <?php Pjax::end(); ?>

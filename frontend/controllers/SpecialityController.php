@@ -49,7 +49,8 @@ class SpecialityController extends Controller
         }
 
         return $this->render('index', [
-            'model' => $model
+            'model' => $model,
+            'specialities' => Yii::$app->user->identity->institution->specialities,
         ]);
     }
 }
