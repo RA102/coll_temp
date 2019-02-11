@@ -20,6 +20,8 @@ use Yii;
  */
 class Discipline extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 1;
+
     /**
      * {@inheritdoc}
      */
@@ -63,5 +65,14 @@ class Discipline extends \yii\db\ActiveRecord
     public function getCourses()
     {
         return $this->hasMany(Course::class, ['discipline_id' => 'id'])->inverseOf('discipline');
+    }
+
+    public static function add($caption)
+    {
+        $model = new static;
+        $model->caption = $caption;
+        $model->status = self::STATUS_ACTIVE;
+
+        return $model;
     }
 }
