@@ -92,6 +92,22 @@ return [
     'Approve' => 'Одобрить',
     'Reject' => 'Отклонить',
 
+    // SPECIALITIES
+    'Specialities' => 'Специальности',
+    'Create Speciality' => 'Добавить специальность',
+    'Type' => 'Тип',
+    'Code' => 'Код специальности',
+    'Caption' => 'Название',
+    'Is Deleted' => 'Удален',
+    'Is Working' => 'Работает',
+    'Institution Type' => 'Тип образования',
+    'New Speciality' => 'Новая специальность',
+    'Msko' => 'Код по Международной стандартной классификации образования',
+    'Gkz' => 'Код по Государственному классификатору занятий',
+    'Specialized secondary' => 'Среднее специальное',
+    'Higher' => 'Высшее',
+    'Update speciality' => 'Редактирование специальности',
+
     // GENERAL
     'Login' => 'Войти',
     'Forgot password?' => 'Забыли пароль?',
@@ -99,4 +115,5 @@ return [
     'Address' => 'Адрес',
     'Are you sure?' => 'Вы уверены?',
     'Create a user?' => 'Создать аккаунт?',
+    'Are you sure you want to delete this item?' => 'Вы уверены, что хотите удалить этот элемент?',
 ];
