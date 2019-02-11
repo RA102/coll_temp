@@ -116,4 +116,9 @@ return [
     'Are you sure?' => 'Вы уверены?',
     'Create a user?' => 'Создать аккаунт?',
     'Are you sure you want to delete this item?' => 'Вы уверены, что хотите удалить этот элемент?',
+
+    // DISCIPLINES
+    'Disciplines' => 'Дисциплины',
+    'Create Discipline' => 'Добавить дисциплину',
+    'Update Discipline' => 'Редактировать дисциплину',
 ];
