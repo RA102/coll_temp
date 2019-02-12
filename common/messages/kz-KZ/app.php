@@ -121,6 +121,7 @@ return [
     'Disciplines' => 'Дисциплины',
     'Create Discipline' => 'Добавить дисциплину',
     'Update Discipline' => 'Редактировать дисциплину',
+    'Discipline Type' => 'Тип',
     'Discipline Type Standard' => 'Эталонный',
     'Discipline Type Optional' => 'Необязательный',
     'Discipline Type Elective' => 'Факультатив',

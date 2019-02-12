@@ -36,7 +36,9 @@ class InstitutionDisciplineController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => InstitutionDiscipline::find(),
+            'query' => InstitutionDiscipline::find()->joinWith([
+                'discipline' /** @see InstitutionDiscipline::getDiscipline() */
+            ]),
         ]);
 
         return $this->render('index', [
@@ -66,8 +68,11 @@ class InstitutionDisciplineController extends Controller
     {
         $model = new InstitutionDiscipline();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->institution_id = Yii::$app->user->identity->institution->id;
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -86,8 +91,11 @@ class InstitutionDisciplineController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->institution_id = Yii::$app->user->identity->institution->id;
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [

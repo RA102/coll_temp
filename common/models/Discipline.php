@@ -12,7 +12,7 @@ use yii\db\ArrayExpression;
  * @property int $id
  * @property array $caption
  * @property string $slug
- * @property array $types
+ * @property int[] $types
  * @property int $status
  * @property string $create_ts
  * @property string $update_ts
@@ -54,7 +54,7 @@ class Discipline extends \yii\db\ActiveRecord
     {
         return [
             [['caption'], 'safe'],
-            [['status'], 'default', 'value' => null],
+            [['status', 'types'], 'default', 'value' => null],
             [['status'], 'integer'],
             [['slug'], 'string', 'max' => 255],
             [['types'], 'each', 'rule' => ['integer']],
@@ -70,7 +70,7 @@ class Discipline extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'caption' => Yii::t('app', 'Caption'),
             'slug' => Yii::t('app', 'Slug'),
-            'types' => Yii::t('app', 'Types'),
+            'types' => Yii::t('app', 'Discipline Type'),
             'status' => Yii::t('app', 'Status'),
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
