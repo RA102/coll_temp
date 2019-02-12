@@ -123,6 +123,7 @@ return [
     'Caption Ru' => 'Название на русском',
     'Caption Kk' => 'Название на казахском',
     'Caption Current' => 'Название',
+    'View Group' => 'Просмотр группы',
 
     // GENERAL
     'Login' => 'Войти',
