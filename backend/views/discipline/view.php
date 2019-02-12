@@ -1,5 +1,7 @@
 <?php
 
+use common\helpers\DisciplineHelper;
+use common\models\Discipline;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -33,6 +35,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'caption',
                 'slug',
                 'status',
+                [
+                    'attribute' => 'types',
+                    'value' => function(Discipline $model) {
+                        return implode(', ', array_map(function ($item) {
+                            return DisciplineHelper::getTypeList()[$item];
+                        }, $model->types));
+                    }
+                ],
                 'create_ts',
                 'update_ts',
                 'delete_ts',

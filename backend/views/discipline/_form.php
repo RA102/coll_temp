@@ -1,5 +1,6 @@
 <?php
 
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -15,6 +16,19 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'caption')->textInput() ?>
 
     <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'types')->widget(Select2::class, [
+        'data' => \common\helpers\DisciplineHelper::getTypeList(),
+        'options' => [
+            'placeholder' => '...',
+            'class' => 'active-form-refresh-control',
+            'multiple' => true,
+        ],
+        'theme' => 'default',
+        'pluginOptions' => [
+            'allowClear' => true,
+        ],
+    ]) ?>
 
     <?= $form->field($model, 'status')->textInput() ?>
 
