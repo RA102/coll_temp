@@ -50,7 +50,7 @@
                         'url' => '#',
                         'items' => [
                             ['label' => Yii::t('app','Специальности'), 'icon' => 'file-code-o', 'url' => ['/']],
-                            ['label' => Yii::t('app','Предметы'), 'icon' => 'file-code-o', 'url' => ['/']],
+                            ['label' => Yii::t('app','Предметы'), 'icon' => 'file-code-o', 'url' => ['/institution-discipline/index']],
                             ['label' => Yii::t('app','Учебный процесс'), 'icon' => 'file-code-o', 'url' => ['/']],
                             ['label' => Yii::t('app','Организация'), 'icon' => 'file-code-o', 'url' => ['/']],
                             ['label' => Yii::t('app','Система рейтинга'), 'icon' => 'file-code-o', 'url' => ['/']],

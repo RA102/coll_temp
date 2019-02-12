@@ -17,6 +17,9 @@ class m190212_115050_create_institution_discipline_table extends Migration
             'institution_id' => $this->integer()->notNull(),
             'discipline_id' => $this->integer()->notNull(),
             'types' => 'SMALLINT[]',
+            'create_ts' => $this->dateTime()->notNull()->defaultValue('now()'),
+            'update_ts' => $this->dateTime()->notNull()->defaultValue('now()'),
+            'delete_ts' => $this->dateTime()->null(),
         ]);
 
         $this->createIndex('unique_institution_discipline', 'organization.institution_discipline', ['institution_id', 'discipline_id'], true);

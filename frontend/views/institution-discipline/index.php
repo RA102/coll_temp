@@ -4,28 +4,29 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\search\DisciplineSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Disciplines');
+$this->title = Yii::t('app', 'Institution Disciplines');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
+<h1><?= Html::encode($this->title) ?></h1>
 <?php $this->beginBlock('content') ?>
-    <div class="discipline-index">
+    <div class="institution-discipline-index">
 
-        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <p>
+            <?= Html::a(Yii::t('app', 'Create Institution Discipline'), ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
                 'id',
-                'caption',
-                'slug',
-                'status',
+                'institution_id',
+                'discipline_id',
+                'types',
                 'create_ts',
                 //'update_ts',
                 //'delete_ts',
@@ -34,10 +35,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
     </div>
-<?php $this->endBlock(); ?>
-
-<?php $this->beginBlock('tools') ?>
-<?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['create'], ['class' => 'btn btn-default']) ?>
 <?php $this->endBlock() ?>
-
 <?= $this->render('_layout') ?>
