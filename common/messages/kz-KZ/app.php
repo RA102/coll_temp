@@ -108,6 +108,19 @@ return [
     'Higher' => 'Высшее',
     'Update speciality' => 'Редактирование специальности',
 
+    // GROUPS
+    'Groups' => 'Группы',
+    'Speciality ID' => 'Специальность',
+    'Max Class' => 'Срок обучения',
+    'Class' => 'Курс',
+    'Create Group' => 'Добавление группы',
+    'Class Change History' => 'История курсов',
+    'Institution ID' => 'Колледж',
+    'Education Form' => 'Основа обучения',
+    'Education Pay Form' => 'Отделение',
+    'Update Group' => 'Редактирование группы',
+    'Update Group: {name}' => 'Редактирование группы: {name}',
+
     // GENERAL
     'Login' => 'Войти',
     'Forgot password?' => 'Забыли пароль?',
