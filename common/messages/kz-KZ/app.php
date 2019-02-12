@@ -120,6 +120,9 @@ return [
     'Education Pay Form' => 'Отделение',
     'Update Group' => 'Редактирование группы',
     'Update Group: {name}' => 'Редактирование группы: {name}',
+    'Caption Ru' => 'Название на русском',
+    'Caption Kk' => 'Название на казахском',
+    'Caption Current' => 'Название',
 
     // GENERAL
     'Login' => 'Войти',

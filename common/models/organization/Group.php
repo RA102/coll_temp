@@ -4,6 +4,7 @@ namespace common\models\organization;
 
 use common\models\handbook\Speciality;
 use Yii;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "organization.group".
@@ -31,6 +32,11 @@ use Yii;
  */
 class Group extends \yii\db\ActiveRecord
 {
+    public $caption_current;
+
+    public $caption_ru;
+    public $caption_kk;
+
     /**
      * {@inheritdoc}
      */
@@ -50,6 +56,7 @@ class Group extends \yii\db\ActiveRecord
             [['speciality_id', 'max_class', 'class', 'education_form', 'education_pay_form', 'institution_id', 'parent_id', 'type', 'rating_system_id', 'based_classes'], 'integer'],
             [['is_deleted'], 'boolean'],
             [['language'], 'string', 'max' => 2],
+            [['caption_ru', 'caption_kk'], 'safe'],
             [['speciality_id'], 'exist', 'skipOnError' => true, 'targetClass' => Speciality::className(), 'targetAttribute' => ['speciality_id' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['parent_id' => 'id']],
             [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::className(), 'targetAttribute' => ['institution_id' => 'id']],
@@ -64,6 +71,9 @@ class Group extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'caption' => Yii::t('app', 'Caption'),
+            'caption_ru' => Yii::t('app', 'Caption Ru'),
+            'caption_kk' => Yii::t('app', 'Caption Kk'),
+            'caption_current' => Yii::t('app', 'Caption Current'),
             'language' => Yii::t('app', 'Language'),
             'speciality_id' => Yii::t('app', 'Speciality ID'),
             'max_class' => Yii::t('app', 'Max Class'),
@@ -83,5 +93,25 @@ class Group extends \yii\db\ActiveRecord
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->caption = [
+            'ru' => $this->caption_ru,
+            'kk' => $this->caption_kk,
+        ];
+
+        return parent::beforeSave($insert);
+    }
+
+    public function afterFind()
+    {
+        $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
+        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
+        $this->caption_ru = $this->caption['ru'];
+        $this->caption_kk = $this->caption['kk'];
+
+        parent::afterFind();
     }
 }
