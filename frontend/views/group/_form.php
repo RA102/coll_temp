@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\organization\Group */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $specialities \common\models\handbook\Speciality[] */
 ?>
 
 <div class="group-form">
@@ -16,9 +17,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'caption_kk')->textInput() ?>
 
-    <?= $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
 
-    <?= $form->field($model, 'speciality_id')->textInput() ?>
+    <?= $form->field($model, 'speciality_id')->dropDownList(\yii\helpers\ArrayHelper::map(
+        $specialities, 'id', 'caption_current')) ?>
 
     <?= $form->field($model, 'max_class')->textInput() ?>
 

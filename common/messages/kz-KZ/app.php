@@ -131,6 +131,11 @@ return [
     'Contract' => 'Контракт',
     'Mixed' => 'Смешанное',
 
+    // LANGUAGE
+    'Russian' => 'Русский',
+    'Kazakh' => 'Казахский',
+    'English' => 'Английский',
+
     // GENERAL
     'Login' => 'Войти',
     'Forgot password?' => 'Забыли пароль?',

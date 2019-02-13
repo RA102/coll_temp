@@ -5,6 +5,7 @@ namespace common\models\organization;
 use common\helpers\SchemeHelper;
 use common\models\handbook\Speciality;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "organization.institution".
@@ -138,7 +139,10 @@ class Institution extends \yii\db\ActiveRecord
     public function getSpecialities()
     {
         return $this->hasMany(Speciality::className(), ['id' => 'speciality_id'])
-            ->viaTable('organization.institution_speciality_info', ['institution_id' => 'id']);
+            ->viaTable('organization.institution_speciality_info', ['institution_id' => 'id'],
+                function (ActiveQuery $query){
+                    $query->andWhere('organization.institution_speciality_info.is_deleted is not true');
+                });
     }
 
     public function getSpecialityInfos()

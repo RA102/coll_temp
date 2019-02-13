@@ -70,8 +70,11 @@ class GroupController extends Controller
             return $this->redirect(['index']);
         }
 
+        $specialities = Yii::$app->user->identity->institution->specialities;
+
         return $this->render('create', [
             'model' => $model,
+            'specialities' => $specialities,
         ]);
     }
 
@@ -90,8 +93,11 @@ class GroupController extends Controller
             return $this->redirect(['index']);
         }
 
+        $specialities = Yii::$app->user->identity->institution->specialities;
+
         return $this->render('update', [
             'model' => $model,
+            'specialities' => $specialities,
         ]);
     }
 

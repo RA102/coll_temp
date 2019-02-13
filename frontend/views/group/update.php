@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\organization\Group */
+/* @var $specialities \common\models\handbook\Speciality[] */
 
 $this->title = Yii::t('app', 'Update Group');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Groups'), 'url' => ['index']];
@@ -17,6 +18,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
         <?= $this->render('_form', [
             'model' => $model,
+            'specialities' => $specialities,
         ]) ?>
 
     </div>
