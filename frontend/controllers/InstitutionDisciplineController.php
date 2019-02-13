@@ -1,18 +1,18 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
 use Yii;
-use common\models\Discipline;
-use backend\models\search\DisciplineSearch;
+use common\models\organization\InstitutionDiscipline;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * DisciplineController implements the CRUD actions for Discipline model.
+ * InstitutionDisciplineController implements the CRUD actions for InstitutionDiscipline model.
  */
-class DisciplineController extends Controller
+class InstitutionDisciplineController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,46 +30,49 @@ class DisciplineController extends Controller
     }
 
     /**
-     * Lists all Discipline models.
+     * Lists all InstitutionDiscipline models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new DisciplineSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => InstitutionDiscipline::find()->joinWith([
+                'discipline' /** @see InstitutionDiscipline::getDiscipline() */
+            ]),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Discipline model.
+     * Displays a single InstitutionDiscipline model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-
         return $this->render('view', [
-            'model' => $model,
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Discipline model.
+     * Creates a new InstitutionDiscipline model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Discipline();
+        $model = new InstitutionDiscipline();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->institution_id = Yii::$app->user->identity->institution->id;
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -78,7 +81,7 @@ class DisciplineController extends Controller
     }
 
     /**
-     * Updates an existing Discipline model.
+     * Updates an existing InstitutionDiscipline model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -88,8 +91,11 @@ class DisciplineController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->institution_id = Yii::$app->user->identity->institution->id;
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
@@ -98,7 +104,7 @@ class DisciplineController extends Controller
     }
 
     /**
-     * Deletes an existing Discipline model.
+     * Deletes an existing InstitutionDiscipline model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -112,18 +118,18 @@ class DisciplineController extends Controller
     }
 
     /**
-     * Finds the Discipline model based on its primary key value.
+     * Finds the InstitutionDiscipline model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Discipline the loaded model
+     * @return InstitutionDiscipline the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Discipline::findOne($id)) !== null) {
+        if (($model = InstitutionDiscipline::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }

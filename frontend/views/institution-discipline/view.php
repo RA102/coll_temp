@@ -1,25 +1,26 @@
 <?php
 
 use common\helpers\DisciplineHelper;
-use common\models\Discipline;
+use common\models\organization\InstitutionDiscipline;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Discipline */
+/* @var $model common\models\organization\InstitutionDiscipline */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Disciplines'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Institution Disciplines'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 
+<h1><?= Html::encode($this->title) ?></h1>
 <?php $this->beginBlock('content') ?>
-    <div class="discipline-view">
+    <div class="institution-discipline-view">
 
         <p>
-            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+            <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -32,12 +33,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'attributes' => [
                 'id',
-                'caption',
-                'slug',
-                'status',
+                [
+                    'attribute' => 'discipline_id',
+                    'value' => function (InstitutionDiscipline $model) {
+                        return $model->discipline->caption; // TODO fix caption
+                    }
+                ],
                 [
                     'attribute' => 'types',
-                    'value' => function(Discipline $model) {
+                    'value' => function(InstitutionDiscipline $model) {
                         return implode(', ', array_map(function ($item) {
                             return DisciplineHelper::getTypeList()[$item];
                         }, $model->types));
@@ -52,4 +56,3 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 <?php $this->endBlock() ?>
 <?= $this->render('_layout') ?>
-
