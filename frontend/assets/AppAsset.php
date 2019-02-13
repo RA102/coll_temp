@@ -16,6 +16,8 @@ class AppAsset extends AssetBundle
         'css/site.css',
         'css/modified_lte.css',
         'css/_buttons.css',
+        'css/_grid.css',
+        'https://use.fontawesome.com/releases/v5.7.1/css/all.css',
         'css/_card.css',
         'css/app.css',
         'css/_students.css',
