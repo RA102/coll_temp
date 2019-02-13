@@ -27,8 +27,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 'id',
                 'caption_current',
-                'language',
-                'speciality_id',
+                [
+                    'format'    => 'html',
+                    'attribute' => 'language',
+                    'value'     => function (\common\models\organization\Group $model) {
+                        return $model->getLanguage();
+                    },
+                ],
+                [
+                    'format'    => 'html',
+                    'attribute' => 'speciality_id',
+                    'value'     => function (\common\models\organization\Group $model) {
+                        return $model->speciality->caption_current;
+                    },
+                ],
                 'class',
 
                 ['class' => 'yii\grid\ActionColumn'],

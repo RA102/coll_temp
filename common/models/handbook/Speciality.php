@@ -21,6 +21,7 @@ use Yii;
  * @property int $subjects
  * @property bool $is_working
  * @property int $institution_type
+ * @property string $caption_current
  *
  * @property Speciality[] $children
  * @property Speciality $parent

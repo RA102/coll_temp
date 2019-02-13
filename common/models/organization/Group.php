@@ -2,6 +2,8 @@
 
 namespace common\models\organization;
 
+use common\helpers\GroupHelper;
+use common\helpers\LanguageHelper;
 use common\models\handbook\Speciality;
 use Yii;
 use yii\helpers\Json;
@@ -29,6 +31,8 @@ use yii\helpers\Json;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ *
+ * @property Speciality $speciality
  */
 class Group extends \yii\db\ActiveRecord
 {
@@ -121,5 +125,25 @@ class Group extends \yii\db\ActiveRecord
         $this->caption_kk = $this->caption['kk'];
 
         parent::afterFind();
+    }
+
+    public function getSpeciality()
+    {
+        return $this->hasOne(Speciality::class, ['id' => 'speciality_id']);
+    }
+
+    public function getEducationForm()
+    {
+        return GroupHelper::getEducationFormList()[$this->education_form] ?? '';
+    }
+
+    public function getEducationPayForm()
+    {
+        return GroupHelper::getEducationPayFormList()[$this->education_pay_form] ?? '';
+    }
+
+    public function getLanguage()
+    {
+        return LanguageHelper::getLanguageList()[$this->language] ?? '';
     }
 }

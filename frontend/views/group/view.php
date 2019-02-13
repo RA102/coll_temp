@@ -22,13 +22,36 @@ $this->params['breadcrumbs'][] = $this->title;
             'attributes' => [
                 'id',
                 'caption_current',
-                'language',
-                'speciality_id',
+                [
+                    'format'    => 'html',
+                    'attribute' => 'language',
+                    'value'     => function (\common\models\organization\Group $model) {
+                        return $model->getLanguage();
+                    },
+                ],
+                [
+                    'format'    => 'html',
+                    'attribute' => 'speciality_id',
+                    'value'     => function (\common\models\organization\Group $model) {
+                        return $model->speciality->caption_current;
+                    },
+                ],
                 'max_class',
                 'class',
-                'education_form',
-                'education_pay_form',
-                'is_deleted:boolean',
+                [
+                    'format'    => 'html',
+                    'attribute' => 'education_form',
+                    'value'     => function (\common\models\organization\Group $model) {
+                        return $model->getEducationForm();
+                    },
+                ],
+                [
+                    'format'    => 'html',
+                    'attribute' => 'education_pay_form',
+                    'value'     => function (\common\models\organization\Group $model) {
+                        return $model->getEducationPayForm();
+                    },
+                ],
             ],
         ]) ?>
 
