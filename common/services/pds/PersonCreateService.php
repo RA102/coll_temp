@@ -61,11 +61,6 @@ class PersonCreateService extends PersonSearchService
         $info = curl_getinfo($connection);
         curl_close($connection);
 
-        var_dump($data);
-        echo '<br/>---<br/>';
-        var_dump($info);
-        die();
-
         if ($data === false) {
             throw new \yii\web\ServerErrorHttpException('Server not responding');
         }
@@ -74,7 +69,7 @@ class PersonCreateService extends PersonSearchService
             throw new MethodNotAllowedHttpException('Method not allowed');
         }
 
-        if ($info['http_code'] !== 200) {
+        if ($info['http_code'] !== 201) {
             throw new \yii\web\UnprocessableEntityHttpException('Error occurred');
         }
 
