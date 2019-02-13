@@ -124,6 +124,12 @@ return [
     'Caption Kk' => 'Название на казахском',
     'Caption Current' => 'Название',
     'View Group' => 'Просмотр группы',
+    'Full time' => 'Очное',
+    'Correspondence' => 'Заочное',
+    'Evening' => 'Вечернее',
+    'Budget' => 'Бюджет',
+    'Contract' => 'Контракт',
+    'Mixed' => 'Смешанное',
 
     // GENERAL
     'Login' => 'Войти',

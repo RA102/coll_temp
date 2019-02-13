@@ -32,6 +32,14 @@ use yii\helpers\Json;
  */
 class Group extends \yii\db\ActiveRecord
 {
+    const EDUCATION_FORM_FULL_TIME = 1;
+    const EDUCATION_FORM_CORRESPONDENCE = 2;
+    const EDUCATION_FORM_EVENING = 3;
+
+    const EDUCATION_PAY_FORM_BUDGET = 1;
+    const EDUCATION_PAY_FORM_CONTRACT = 2;
+    const EDUCATION_PAY_FORM_MIXED = 3;
+
     public $caption_current;
 
     public $caption_ru;

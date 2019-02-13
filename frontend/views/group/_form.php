@@ -24,33 +24,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'class')->textInput() ?>
 
-    <?= $form->field($model, 'education_form')->textInput() ?>
+    <?= $form->field($model, 'education_form')->dropDownList(\common\helpers\GroupHelper::getEducationFormList()) ?>
 
-    <?= $form->field($model, 'education_pay_form')->textInput() ?>
-
-    <?= $form->field($model, 'institution_id')->textInput() ?>
-
-    <?= $form->field($model, 'parent_id')->textInput() ?>
-
-    <?= $form->field($model, 'type')->textInput() ?>
-
-    <?= $form->field($model, 'rating_system_id')->textInput() ?>
-
-    <?= $form->field($model, 'based_classes')->textInput() ?>
-
-    <?= $form->field($model, 'class_change_history')->textInput() ?>
-
-    <?= $form->field($model, 'properties')->textInput() ?>
-
-    <?= $form->field($model, 'is_deleted')->checkbox() ?>
-
-    <?= $form->field($model, 'start_ts')->textInput() ?>
-
-    <?= $form->field($model, 'create_ts')->textInput() ?>
-
-    <?= $form->field($model, 'update_ts')->textInput() ?>
-
-    <?= $form->field($model, 'delete_ts')->textInput() ?>
+    <?= $form->field($model, 'education_pay_form')->dropDownList(\common\helpers\GroupHelper::getEducationPayFormList()) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
