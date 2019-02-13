@@ -16,10 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-        <p>
-            <?= Html::a(Yii::t('app', 'Create Discipline'), ['create'], ['class' => 'btn btn-success']) ?>
-        </p>
-
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
@@ -39,4 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); ?>
     </div>
 <?php $this->endBlock(); ?>
+
+<?php $this->beginBlock('tools') ?>
+<?= Html::a('<i class="fa fa-plus" aria-hidden="true"></i>', ['create'], ['class' => 'btn btn-default']) ?>
+<?php $this->endBlock() ?>
+
 <?= $this->render('_layout') ?>
