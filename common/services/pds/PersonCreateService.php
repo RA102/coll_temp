@@ -62,6 +62,7 @@ class PersonCreateService extends PersonSearchService
         curl_close($connection);
 
         var_dump($data);
+        echo '<br/>---<br/>';
         var_dump($info);
         die();
 
