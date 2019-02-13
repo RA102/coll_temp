@@ -3,7 +3,9 @@
 namespace common\models\organization;
 
 use common\helpers\SchemeHelper;
+use common\models\handbook\Speciality;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "organization.institution".
@@ -39,6 +41,9 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ *
+ * @property Speciality[] $specialities
+ * @property InstitutionSpecialityInfo[] $specialityInfos
  */
 class Institution extends \yii\db\ActiveRecord
 {
@@ -129,5 +134,20 @@ class Institution extends \yii\db\ActiveRecord
         $model->organizational_legal_form_id = $organizational_legal_form_id;
 
         return $model;
+    }
+
+    public function getSpecialities()
+    {
+        return $this->hasMany(Speciality::className(), ['id' => 'speciality_id'])
+            ->viaTable('organization.institution_speciality_info', ['institution_id' => 'id'],
+                function (ActiveQuery $query){
+                    $query->andWhere('organization.institution_speciality_info.is_deleted is not true');
+                });
+    }
+
+    public function getSpecialityInfos()
+    {
+        return $this->hasMany(InstitutionSpecialityInfo::className(), ['institution_id' => 'id'])
+            ->andWhere('organization.institution_speciality_info.is_deleted is not true');
     }
 }

@@ -250,4 +250,9 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->getInstitutions()->one();
     }
+
+    public function getFullName()
+    {
+        return trim("{$this->lastname} {$this->firstname} {$this->middlename}");
+    }
 }

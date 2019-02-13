@@ -21,11 +21,18 @@ use Yii;
  * @property int $subjects
  * @property bool $is_working
  * @property int $institution_type
+ * @property string $caption_current
+ *
+ * @property Speciality[] $children
+ * @property Speciality $parent
  */
 class Speciality extends \yii\db\ActiveRecord
 {
     const INSTITUTION_TYPE_SPECIALIZED_SECONDARY = 1;
     const INSTITUTION_TYPE_HIGHER = 2;
+
+    public $caption_current;
+
     /**
      * {@inheritdoc}
      */
@@ -40,13 +47,23 @@ class Speciality extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['parent_id', 'parent_oid', 'type', 'server_id', 'subjects', 'institution_type'], 'default', 'value' => null],
+            [
+                ['parent_id', 'parent_oid', 'type', 'server_id', 'subjects', 'institution_type'],
+                'default',
+                'value' => null
+            ],
             [['parent_id', 'parent_oid', 'type', 'server_id', 'subjects', 'institution_type'], 'integer'],
             [['code'], 'string'],
             [['caption', 'create_ts'], 'safe'],
             [['is_deleted', 'is_working'], 'boolean'],
             [['msko', 'gkz'], 'string', 'max' => 100],
-            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Speciality::className(), 'targetAttribute' => ['parent_id' => 'id']],
+            [
+                ['parent_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Speciality::className(),
+                'targetAttribute' => ['parent_id' => 'id']
+            ],
         ];
     }
 
@@ -71,5 +88,33 @@ class Speciality extends \yii\db\ActiveRecord
             'is_working' => Yii::t('app', 'Is Working'),
             'institution_type' => Yii::t('app', 'Institution Type'),
         ];
+    }
+
+    public function getParent()
+    {
+        return $this->hasOne(Speciality::class, ['id' => 'parent_id'])->inverseOf('children');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getChildren()
+    {
+        return $this->hasMany(Speciality::class, ['parent_id' => 'id'])->inverseOf('parent');
+    }
+
+    public function hasChildren()
+    {
+        return count($this->children) > 0 ? true : false;
+    }
+
+    public function afterFind()
+    {
+        $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
+        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
+//        $this->caption_current = Json::decode($this->getAttribute('caption'))[$currentLanguage];
+
+        parent::afterFind();
+
     }
 }

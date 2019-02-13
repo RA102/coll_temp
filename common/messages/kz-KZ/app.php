@@ -108,6 +108,34 @@ return [
     'Higher' => 'Высшее',
     'Update speciality' => 'Редактирование специальности',
 
+    // GROUPS
+    'Groups' => 'Группы',
+    'Speciality ID' => 'Специальность',
+    'Max Class' => 'Срок обучения',
+    'Class' => 'Курс',
+    'Create Group' => 'Добавление группы',
+    'Class Change History' => 'История курсов',
+    'Institution ID' => 'Колледж',
+    'Education Form' => 'Основа обучения',
+    'Education Pay Form' => 'Отделение',
+    'Update Group' => 'Редактирование группы',
+    'Update Group: {name}' => 'Редактирование группы: {name}',
+    'Caption Ru' => 'Название на русском',
+    'Caption Kk' => 'Название на казахском',
+    'Caption Current' => 'Название',
+    'View Group' => 'Просмотр группы',
+    'Full time' => 'Очное',
+    'Correspondence' => 'Заочное',
+    'Evening' => 'Вечернее',
+    'Budget' => 'Бюджет',
+    'Contract' => 'Контракт',
+    'Mixed' => 'Смешанное',
+
+    // LANGUAGE
+    'Russian' => 'Русский',
+    'Kazakh' => 'Казахский',
+    'English' => 'Английский',
+
     // GENERAL
     'Login' => 'Войти',
     'Forgot password?' => 'Забыли пароль?',
@@ -116,6 +144,8 @@ return [
     'Are you sure?' => 'Вы уверены?',
     'Create a user?' => 'Создать аккаунт?',
     'Are you sure you want to delete this item?' => 'Вы уверены, что хотите удалить этот элемент?',
+    'Sign out' => 'Выйти',
+    'Profile' => 'Профиль',
 
     // DISCIPLINES
     'Disciplines' => 'Дисциплины',

@@ -308,3 +308,12 @@ article dl, article ol, article ol ol, article ol ul, article ul, article ul ol,
 .pl-0 {
     padding-left: 0 !important;
 }
+
+.skin-white {
+    background-color: #FFF;
+}
+
+/* SPECIALITY */
+.speciality:hover {
+    background-color: #EEE;
+}
