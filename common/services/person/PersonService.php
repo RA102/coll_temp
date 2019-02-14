@@ -54,12 +54,13 @@ class PersonService
             $identity,
             $credential_type
         ) {
-            $model->portal_uid = $this->pdsService->create(
-                $model,
-                $create_identity,
-                $identity,
-                $credential_type
-            );
+            if ($create_identity) {
+                $model->portal_uid = $this->pdsService->create(
+                    $model,
+                    $identity,
+                    $credential_type
+                );
+            }
             if (!$model->save()) {
                 throw new \RuntimeException('Saving error.');
             }
