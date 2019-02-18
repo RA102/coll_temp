@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Course;
+use common\models\TeacherCourse;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -64,21 +65,33 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $teacherCourseDataProvider,
-        'filterModel' => $teacherCourseSearchModel,
+//        'filterModel' => $teacherCourseSearchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'course_id',
-            'teacher_id',
+            [
+                'attribute' => 'teacher_id',
+                'value' => function (TeacherCourse $model) {
+                    return $model->person->getFullName();
+                }
+            ],
             'type',
             'start_ts',
-            //'end_ts',
+            'end_ts',
             //'create_ts',
             //'update_ts',
             //'delete_ts',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'urlCreator' => function ($action, TeacherCourse $teacherCourse, $key, $index) {
+                    return \yii\helpers\Url::to([
+                        'teacher-course/' . $action,
+                        'id' => $teacherCourse->id,
+                        'course_id' => $teacherCourse->course_id,
+                    ]);
+                }
+            ],
         ],
     ]); ?>
 

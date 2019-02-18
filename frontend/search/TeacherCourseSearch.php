@@ -38,7 +38,9 @@ class TeacherCourseSearch extends TeacherCourse
      */
     public function search()
     {
-        $query = TeacherCourse::find();
+        $query = TeacherCourse::find()->with([
+            'person' /** @see TeacherCourse::getPerson() */
+        ]);
 
         // add conditions that should always apply here
 

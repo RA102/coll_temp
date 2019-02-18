@@ -3,7 +3,10 @@
 namespace common\models\organization;
 
 use common\helpers\SchemeHelper;
+use common\models\Course;
 use common\models\handbook\Speciality;
+use common\models\link\PersonInstitutionLink;
+use common\models\person\Person;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -44,6 +47,8 @@ use yii\db\ActiveQuery;
  *
  * @property Speciality[] $specialities
  * @property InstitutionSpecialityInfo[] $specialityInfos
+ * @property Course[] $courses
+ * @property PersonInstitutionLink[] $personInstitutionLinks
  */
 class Institution extends \yii\db\ActiveRecord
 {
@@ -136,6 +141,9 @@ class Institution extends \yii\db\ActiveRecord
         return $model;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSpecialities()
     {
         return $this->hasMany(Speciality::className(), ['id' => 'speciality_id'])
@@ -145,9 +153,28 @@ class Institution extends \yii\db\ActiveRecord
                 });
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSpecialityInfos()
     {
         return $this->hasMany(InstitutionSpecialityInfo::className(), ['institution_id' => 'id'])
             ->andWhere('organization.institution_speciality_info.is_deleted is not true');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCourses()
+    {
+        return $this->hasMany(Course::class, ['institution_id' => 'id'])->inverseOf('institution');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPersonInstitutionLinks()
+    {
+        return $this->hasMany(PersonInstitutionLink::class, ['institution_id' => 'id']);
     }
 }

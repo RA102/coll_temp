@@ -80,22 +80,27 @@ class CourseController extends Controller
     {
         $model = new Course();
 
+        // TODO move to beforeAction or _Construct (inject along with Services)
+        $institution = \Yii::$app->user->identity->institution;
+
         // TODO move disciplines and classes to Services.
-        $institution_id = \Yii::$app->user->identity->institution->id;
         $disciplines = Discipline::find()->joinWith([
             /** @see Discipline::getInstitutionDisciplines() */
-            'institutionDisciplines' => function (ActiveQuery $query) use ($institution_id) {
-                $query->andWhere(['institution_id' => $institution_id]);
+            'institutionDisciplines' => function (ActiveQuery $query) use ($institution) {
+                $query->andWhere(['institution_id' => $institution->id]);
             }
         ])->all();
 
         $classes = [];
-        for ($i = 1; $i <= \Yii::$app->user->identity->institution->max_grade; $i++) {
+        for ($i = 1; $i <= $institution->max_grade; $i++) {
             $classes[$i] = $i;
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->institution_id = $institution->id;
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -116,22 +121,27 @@ class CourseController extends Controller
     {
         $model = $this->findModel($id);
 
+        // TODO move to beforeAction or _Construct (inject along with Services)
+        $institution = \Yii::$app->user->identity->institution;
+
         // TODO move disciplines and classes to Services.
-        $institution_id = \Yii::$app->user->identity->institution->id;
         $disciplines = Discipline::find()->joinWith([
             /** @see Discipline::getInstitutionDisciplines() */
-            'institutionDisciplines' => function (ActiveQuery $query) use ($institution_id) {
-                $query->andWhere(['institution_id' => $institution_id]);
+            'institutionDisciplines' => function (ActiveQuery $query) use ($institution) {
+                $query->andWhere(['institution_id' => $institution->id]);
             }
         ])->all();
 
         $classes = [];
-        for ($i = 1; $i <= \Yii::$app->user->identity->institution->max_grade; $i++) {
+        for ($i = 1; $i <= $institution->max_grade; $i++) {
             $classes[$i] = $i;
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->institution = $institution->id;
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [

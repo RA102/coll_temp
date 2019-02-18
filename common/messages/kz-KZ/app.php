@@ -173,4 +173,8 @@ return [
     'Teacher Courses' => 'Курсы учителя',
     'Create Teacher Course' => 'Добавление курса учителя',
     'Update Teacher Course' => 'Редактирование курса учителя',
+    'Teacher ID' => 'Учитель',
+    'Teacher Course Start TS' => 'Начало курса',
+    'Teacher Course End TS' => 'Конец курса',
+    'Course ID' => 'Курс',
 ];

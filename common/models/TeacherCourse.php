@@ -21,6 +21,7 @@ use Yii;
  *
  * @property Course $course
  * @property Lesson[] $lessons
+ * @property Person $person // TODO should it be Employee?
  */
 class TeacherCourse extends \yii\db\ActiveRecord
 {
@@ -58,8 +59,8 @@ class TeacherCourse extends \yii\db\ActiveRecord
             'course_id' => Yii::t('app', 'Course ID'),
             'teacher_id' => Yii::t('app', 'Teacher ID'),
             'type' => Yii::t('app', 'Type'),
-            'start_ts' => Yii::t('app', 'Start Ts'),
-            'end_ts' => Yii::t('app', 'End Ts'),
+            'start_ts' => Yii::t('app', 'Teacher Course Start TS'),
+            'end_ts' => Yii::t('app', 'Teacher Course End TS'),
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
@@ -80,5 +81,13 @@ class TeacherCourse extends \yii\db\ActiveRecord
     public function getLessons()
     {
         return $this->hasMany(Lesson::class, ['teacher_course_id' => 'id'])->inverseOf('teacherCourse');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPerson() // TODO should it be Employee?
+    {
+        return $this->hasOne(Person::class, ['id' => 'teacher_id']);
     }
 }

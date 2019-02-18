@@ -3,6 +3,7 @@
 namespace common\models\person;
 
 use common\helpers\SchemeHelper;
+use common\models\link\PersonInstitutionLink;
 use common\models\Nationality;
 use common\models\organization\Institution;
 use Yii;
@@ -48,6 +49,7 @@ use yii\web\IdentityInterface;
  * @property PersonContact[] $personContacts
  * @property PersonLocation[] $personLocations
  * @property Institution $institution
+ * @property PersonInstitutionLink[] $personInstitutionLinks
  */
 class Person extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -254,5 +256,13 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function getFullName()
     {
         return trim("{$this->lastname} {$this->firstname} {$this->middlename}");
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPersonInstitutionLinks()
+    {
+        return $this->hasMany(PersonInstitutionLink::class, ['person_id' => 'id']);
     }
 }

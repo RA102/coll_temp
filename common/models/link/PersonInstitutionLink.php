@@ -27,6 +27,8 @@ use Yii;
  * @property bool $is_pluralist
  * @property string $import_ts
  * @property int $document_number
+ *
+ * @property Person $$person
  */
 class PersonInstitutionLink extends \yii\db\ActiveRecord
 {
@@ -89,5 +91,13 @@ class PersonInstitutionLink extends \yii\db\ActiveRecord
         $model->institution_id = $institution_id;
 
         return $model;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPerson()
+    {
+        return $this->hasOne(Person::class, ['id' => 'person_id']);
     }
 }

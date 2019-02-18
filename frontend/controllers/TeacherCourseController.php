@@ -2,8 +2,11 @@
 
 namespace frontend\controllers;
 
+use common\services\CourseService;
+use common\services\TeacherCourseService;
 use Yii;
 use common\models\TeacherCourse;
+use yii\base\Module;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -13,6 +16,21 @@ use yii\filters\VerbFilter;
  */
 class TeacherCourseController extends Controller
 {
+    private $courseService;
+    private $teacherCourseService;
+
+    public function __construct(
+        string $id,
+        Module $module,
+        CourseService $courseService,
+        TeacherCourseService $teacherCourseService,
+        array $config = []
+    ) {
+        $this->courseService = $courseService;
+        $this->teacherCourseService = $teacherCourseService;
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,14 +48,14 @@ class TeacherCourseController extends Controller
 
     /**
      * Displays a single TeacherCourse model.
+     * @param $course_id
      * @param integer $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($course_id, $id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($course_id, $id),
         ]);
     }
 
@@ -54,7 +72,7 @@ class TeacherCourseController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->course_id = $course_id;
             if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id, 'course_id' => $course_id]);
             }
         }
 
@@ -66,17 +84,17 @@ class TeacherCourseController extends Controller
     /**
      * Updates an existing TeacherCourse model.
      * If update is successful, the browser will be redirected to the 'view' page.
+     * @param $course_id
      * @param integer $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($course_id, $id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($course_id, $id);
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id, 'course_id' => $course_id]);
             }
         }
 
@@ -88,13 +106,13 @@ class TeacherCourseController extends Controller
     /**
      * Deletes an existing TeacherCourse model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param $course_id
      * @param integer $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($course_id, $id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($course_id, $id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -102,14 +120,19 @@ class TeacherCourseController extends Controller
     /**
      * Finds the TeacherCourse model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param $course_id
      * @param integer $id
      * @return TeacherCourse the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($course_id, $id)
     {
-        if (($model = TeacherCourse::findOne($id)) !== null) {
-            return $model;
+        $institution = \Yii::$app->user->identity->institution;
+
+        if (($course = $this->courseService->getCourse($institution, $course_id)) !== null) {
+            if (($teacherCourse = $this->teacherCourseService->getTeacherCourse($course, $id)) !== null) {
+                return $teacherCourse;
+            }
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));

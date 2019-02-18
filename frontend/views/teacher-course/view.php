@@ -1,23 +1,26 @@
 <?php
 
+use common\models\TeacherCourse;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\TeacherCourse */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Teacher Courses'), 'url' => ['index']];
+$this->title = $model->course->caption;
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="teacher-course-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<h1><?= Html::encode($this->title) ?></h1>
+
+<div class="group-view skin-white">
+
+    <div class="card-body">
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id, 'course_id' => $model->course_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id, 'course_id' => $model->course_id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -30,8 +33,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'course_id',
-            'teacher_id',
+            [
+                'attribute' => 'course_id',
+                'value' => function (TeacherCourse $model) {
+                    return $model->course->caption;
+                }
+            ],
+            [
+                'attribute' => 'teacher_id',
+                'value' => function (TeacherCourse $model) {
+                    return $model->person->getFullName();
+                }
+            ],
             'type',
             'start_ts',
             'end_ts',
@@ -41,4 +54,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+    </div>
 </div>

@@ -12,8 +12,8 @@ class m190218_103454_alter_courses_table extends Migration
      */
     public function safeUp()
     {
-        $this->dropColumn('course', 'grades');
-        $this->addColumn('course', 'classes', 'SMALLINT[]');
+        $this->dropColumn('public.course', 'grades');
+        $this->addColumn('public.course', 'classes', 'SMALLINT[]');
     }
 
     /**
@@ -21,8 +21,8 @@ class m190218_103454_alter_courses_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropColumn('course', 'classes');
-        $this->addColumn('course', 'grades', $this->string());
+        $this->dropColumn('public.course', 'classes');
+        $this->addColumn('public.course', 'grades', $this->string());
     }
 
     /*
