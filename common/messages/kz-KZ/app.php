@@ -130,6 +130,8 @@ return [
     'Budget' => 'Бюджет',
     'Contract' => 'Контракт',
     'Mixed' => 'Смешанное',
+    'Groups allocation' => 'Распределение по группам',
+    'Group' => 'Группа',
 
     // LANGUAGE
     'Russian' => 'Русский',

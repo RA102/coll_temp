@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use frontend\models\forms\GroupAllocationForm;
 use Yii;
 use common\models\organization\Group;
 use frontend\search\GroupSearch;
@@ -113,6 +114,17 @@ class GroupController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionAllocate()
+    {
+        $allocationModel = new GroupAllocationForm();
+        $years = Yii::$app->user->identity->institution->getYearList();
+
+        return $this->render('allocate', [
+            'allocationModel' => $allocationModel,
+            'years' => $years
+        ]);
     }
 
     /**

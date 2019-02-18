@@ -150,4 +150,14 @@ class Institution extends \yii\db\ActiveRecord
         return $this->hasMany(InstitutionSpecialityInfo::className(), ['institution_id' => 'id'])
             ->andWhere('organization.institution_speciality_info.is_deleted is not true');
     }
+
+    public function getYearList()
+    {
+        $years = [];
+        for ($i = 1; $i <= $this->max_grade; $i++) {
+            $years[$i] = $i;
+        }
+
+        return $years;
+    }
 }
