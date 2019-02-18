@@ -168,4 +168,9 @@ return [
     'Create Course' => 'Добавление курса',
     'Update Course' => 'Редактирование курса',
     'Classes' => 'Классы',
+
+    // TEACHER COURSES
+    'Teacher Courses' => 'Курсы учителя',
+    'Create Teacher Course' => 'Добавление курса учителя',
+    'Update Teacher Course' => 'Редактирование курса учителя',
 ];

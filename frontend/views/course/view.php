@@ -1,11 +1,14 @@
 <?php
 
 use common\models\Course;
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Course */
+/* @var $teacherCourseDataProvider yii\data\ActiveDataProvider */
+/* @var $teacherCourseSearchModel frontend\search\TeacherCourseSearch */
 
 $this->title = $model->discipline->caption;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Courses'), 'url' => ['index']];
@@ -52,6 +55,32 @@ $this->params['breadcrumbs'][] = $this->title;
             'delete_ts',
         ],
     ]) ?>
+
+    <hr>
+
+    <p>
+        <?= Html::a(Yii::t('app', 'Create Teacher Course'), ['teacher-course/create', 'course_id' => $model->id], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?= GridView::widget([
+        'dataProvider' => $teacherCourseDataProvider,
+        'filterModel' => $teacherCourseSearchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'course_id',
+            'teacher_id',
+            'type',
+            'start_ts',
+            //'end_ts',
+            //'create_ts',
+            //'update_ts',
+            //'delete_ts',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
 
     </div>
 </div>

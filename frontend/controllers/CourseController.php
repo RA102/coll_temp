@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Discipline;
+use frontend\search\TeacherCourseSearch;
 use Yii;
 use common\models\Course;
 use yii\data\ActiveDataProvider;
@@ -57,8 +58,16 @@ class CourseController extends Controller
      */
     public function actionView($id)
     {
+        $teacherCourseSearchModel = new TeacherCourseSearch();
+
+        $teacherCourseSearchModel->load(Yii::$app->request->queryParams);
+        $teacherCourseSearchModel->course_id = $id;
+        $teacherCourseDataProvider = $teacherCourseSearchModel->search();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'teacherCourseDataProvider' => $teacherCourseDataProvider,
+            'teacherCourseSearchModel' => $teacherCourseSearchModel,
         ]);
     }
 
