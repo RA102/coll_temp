@@ -7,6 +7,7 @@ use frontend\models\forms\GroupAllocationForm;
 use Yii;
 use common\models\organization\Group;
 use frontend\search\GroupSearch;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -131,9 +132,17 @@ class GroupController extends Controller
         $allocationModel = new GroupAllocationForm();
         $years = Yii::$app->user->identity->institution->getYearList();
 
+        $allocationModel->load(Yii::$app->request->post());
+
+        $groups = [];
+        if ($allocationModel->class) {
+            $groups = $this->groupService->getByClass($allocationModel->class);
+        }
+
         return $this->render('allocate', [
             'allocationModel' => $allocationModel,
-            'years' => $years
+            'years' => $years,
+            'groups' => $groups,
         ]);
     }
 
@@ -145,7 +154,7 @@ class GroupController extends Controller
             $class = $parents[0];
 
             return Json::encode([
-                'output' => $this->groupService->getByClass($class),
+                'output' => $this->groupService->getAssociativeByClass($class),
                 'selected' => ''
             ]);
         }

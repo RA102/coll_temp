@@ -3,10 +3,11 @@
 namespace common\services\organization;
 
 use common\models\organization\Group;
+use yii\helpers\ArrayHelper;
 
 class GroupService
 {
-    public function getByClass(int $class): array
+    public function getAssociativeByClass(int $class): array
     {
         $formattedGroups = [];
 
@@ -20,5 +21,11 @@ class GroupService
         }
 
         return $formattedGroups;
+    }
+
+    public function getByClass(int $class): array
+    {
+        $groups = Group::find()->where(['class' => $class])->all();
+        return ArrayHelper::map($groups, 'id', 'caption_current');
     }
 }

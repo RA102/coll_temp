@@ -1,14 +1,15 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 use kartik\depdrop\DepDrop;
 use yii\helpers\Url;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $allocationModel \frontend\models\forms\GroupAllocationForm */
 /* @var $years [] */
+/* @var $groups [] */
 
 $this->title = Yii::t('app', 'Groups allocation');
 $this->params['breadcrumbs'][] = $this->title;
@@ -19,13 +20,22 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div class="group-index skin-white">
-
+    <?php
+    Pjax::begin([
+        'id' => 'list-pjax',
+        'scrollTo' => false,
+        'timeout' => false,
+        'enablePushState' => true,
+    ]);
+    ?>
     <div class="card-body">
         <?php $form = ActiveForm::begin([
             'id' => 'group-allocation-form',
+            'action' => ['group/allocate'],
             'enableClientValidation' => false,
             'options' => [
                 'validateOnSubmit' => true,
+                'data-pjax' => '#list-pjax'
             ],
         ]); ?>
         <div class="row">
@@ -40,15 +50,30 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-6">
                 <?= $form->field($allocationModel, 'group_id')->widget(DepDrop::classname(), [
                     'options' => ['id' => 'group-id'],
+                    'data' => $groups,
                     'pluginOptions' => [
                         'depends' => ['class-id'],
                         'placeholder' => Yii::t('app', 'Select group'),
                         'url'=>Url::to(['/group/by-year']),
                         'loadingText' => '',
+                        'initialize' => true,
                     ]
                 ]);?>
             </div>
         </div>
+        <?= Html::submitButton(Html::tag('span', Yii::t('app', 'Search')), ['id' => 'pjax-submit', 'class' => 'hidden']) ?>
         <?php ActiveForm::end(); ?>
     </div>
+    <?php Pjax::end(); ?>
 </div>
+
+<?php
+$this->registerJs(
+/** @lang javascript */
+    '
+    $(document).on("change", "#group-id", function() {
+        $("#pjax-submit").click()
+    });
+    '
+);
+?>
