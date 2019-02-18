@@ -2,10 +2,12 @@
 
 namespace frontend\controllers;
 
+use common\services\organization\GroupService;
 use frontend\models\forms\GroupAllocationForm;
 use Yii;
 use common\models\organization\Group;
 use frontend\search\GroupSearch;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -15,6 +17,14 @@ use yii\filters\VerbFilter;
  */
 class GroupController extends Controller
 {
+    public $groupService;
+
+    public function __construct(string $id, $module, GroupService $groupService, array $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->groupService = $groupService;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -125,6 +135,22 @@ class GroupController extends Controller
             'allocationModel' => $allocationModel,
             'years' => $years
         ]);
+    }
+
+    public function actionByYear()
+    {
+        $parents = Yii::$app->request->post('depdrop_parents');
+
+        if ($parents != null) {
+            $class = $parents[0];
+
+            return Json::encode([
+                'output' => $this->groupService->getByClass($class),
+                'selected' => ''
+            ]);
+        }
+
+        return Json::encode(['output' => '', 'selected' => '']);
     }
 
     /**

@@ -132,6 +132,7 @@ return [
     'Mixed' => 'Смешанное',
     'Groups allocation' => 'Распределение по группам',
     'Group' => 'Группа',
+    'Select group' => 'Выберите группу',
 
     // LANGUAGE
     'Russian' => 'Русский',
