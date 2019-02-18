@@ -32,6 +32,8 @@ class Speciality extends \yii\db\ActiveRecord
     const INSTITUTION_TYPE_HIGHER = 2;
 
     public $caption_current;
+    public $caption_ru;
+    public $caption_kk;
 
     /**
      * {@inheritdoc}
@@ -64,6 +66,7 @@ class Speciality extends \yii\db\ActiveRecord
                 'targetClass' => Speciality::className(),
                 'targetAttribute' => ['parent_id' => 'id']
             ],
+            [['caption_ru', 'caption_kk'], 'safe'],
         ];
     }
 
@@ -79,6 +82,9 @@ class Speciality extends \yii\db\ActiveRecord
             'type' => Yii::t('app', 'Type'),
             'code' => Yii::t('app', 'Code'),
             'caption' => Yii::t('app', 'Caption'),
+            'caption_ru' => Yii::t('app', 'Caption Ru'),
+            'caption_kk' => Yii::t('app', 'Caption Kk'),
+            'caption_current' => Yii::t('app', 'Caption'),
             'msko' => Yii::t('app', 'Msko'),
             'gkz' => Yii::t('app', 'Gkz'),
             'server_id' => Yii::t('app', 'Server ID'),
@@ -108,11 +114,22 @@ class Speciality extends \yii\db\ActiveRecord
         return count($this->children) > 0 ? true : false;
     }
 
+    public function beforeSave($insert)
+    {
+        $this->caption = [
+            'ru' => $this->caption_ru,
+            'kk' => $this->caption_kk,
+        ];
+
+        return parent::beforeSave($insert);
+    }
+
     public function afterFind()
     {
         $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
         $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
-//        $this->caption_current = Json::decode($this->getAttribute('caption'))[$currentLanguage];
+        $this->caption_ru = $this->caption['ru'];
+        $this->caption_kk = $this->caption['kk'];
 
         parent::afterFind();
 

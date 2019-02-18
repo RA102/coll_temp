@@ -16,7 +16,7 @@ use \common\helpers\SpecialityHelper;
     <div class="row">
         <div class="col-md-6">
             <div class="col-md-12">
-                <?= $form->field($model, 'caption')->textInput() ?>
+                <?= $form->field($model, 'caption_ru')->textInput() ?>
             </div>
             <div class="col-md-12">
                 <?= $form->field($model, 'institution_type')
@@ -27,6 +27,9 @@ use \common\helpers\SpecialityHelper;
             </div>
         </div>
         <div class="col-md-6">
+            <div class="col-md-12">
+                <?= $form->field($model, 'caption_kk')->textInput() ?>
+            </div>
             <div class="col-md-12">
                 <?= $form->field($model, 'gkz')->textInput() ?>
             </div>
