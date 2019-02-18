@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Course;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -23,9 +24,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'discipline_id',
+                [
+                    'attribute' => 'discipline_id',
+                    'value' => function (Course $model) {
+                        return $model->discipline->caption;
+                    },
+                ],
                 'caption',
-                'grades',
+                [
+                    'attribute' => 'classes',
+                    'value' => function (Course $model) {
+                        return implode(', ', $model->classes);
+                    }
+                ],
                 //'create_ts',
                 //'update_ts',
                 //'delete_ts',

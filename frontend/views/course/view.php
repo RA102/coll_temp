@@ -41,7 +41,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             'caption',
-            'grades',
+            [
+                'attribute' => 'classes',
+                'value' => function (Course $model) {
+                    return implode(', ', $model->classes);
+                }
+            ],
             'create_ts',
             'update_ts',
             'delete_ts',

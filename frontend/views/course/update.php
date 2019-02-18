@@ -5,6 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Course */
 /* @var $disciplines common\models\Discipline[] */
+/* @var $classes array */
 
 $this->title = Yii::t('app', 'Update Course') . ': ' . $model->discipline->caption;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Courses'), 'url' => ['index']];
@@ -18,7 +19,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
         <?= $this->render('_form', [
             'model' => $model,
-            'disciplines' => $disciplines
+            'disciplines' => $disciplines,
+            'classes' => $classes,
         ]) ?>
 
     </div>

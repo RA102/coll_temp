@@ -9,6 +9,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Course */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $disciplines common\models\Discipline[] */
+/* @var $classes array */
 
 $disciplines = ArrayHelper::map($disciplines, 'id', 'caption');
 ?>
@@ -28,7 +29,18 @@ $disciplines = ArrayHelper::map($disciplines, 'id', 'caption');
 
     <?= $form->field($model, 'caption')->textInput() ?>
 
-    <?= $form->field($model, 'grades')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'classes')->widget(Select2::class, [
+        'data' => $classes,
+        'options' => [
+            'placeholder' => '...',
+            'class' => 'active-form-refresh-control',
+            'multiple' => true,
+        ],
+        'theme' => 'default',
+        'pluginOptions' => [
+            'allowClear' => true,
+        ],
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

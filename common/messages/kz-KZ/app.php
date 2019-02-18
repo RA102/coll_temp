@@ -167,4 +167,5 @@ return [
     'Courses' => 'Курсы',
     'Create Course' => 'Добавление курса',
     'Update Course' => 'Редактирование курса',
+    'Classes' => 'Классы',
 ];

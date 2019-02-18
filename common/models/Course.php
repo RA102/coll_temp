@@ -4,6 +4,7 @@ namespace common\models;
 
 use common\helpers\SchemeHelper;
 use Yii;
+use yii\db\ArrayExpression;
 
 /**
  * This is the model class for table "course".
@@ -11,7 +12,7 @@ use Yii;
  * @property int $id
  * @property int $discipline_id
  * @property array $caption
- * @property string $grades
+ * @property int[] $classes
  * @property int $status
  * @property string $create_ts
  * @property string $update_ts
@@ -40,9 +41,18 @@ class Course extends \yii\db\ActiveRecord
             [['discipline_id', 'status'], 'default', 'value' => null],
             [['discipline_id', 'status'], 'integer'],
             [['caption'], 'safe'],
-            [['grades'], 'string', 'max' => 255],
+            [['classes'], 'each', 'rule' => ['integer']],
             [['discipline_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discipline::class, 'targetAttribute' => ['discipline_id' => 'id']],
         ];
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        if ($this->classes instanceof ArrayExpression) {
+            $this->classes = $this->classes->getValue();
+        }
     }
 
     /**
@@ -54,7 +64,7 @@ class Course extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'discipline_id' => Yii::t('app', 'Discipline ID'),
             'caption' => Yii::t('app', 'Caption'),
-            'grades' => Yii::t('app', 'Grades'),
+            'classes' => Yii::t('app', 'Classes'),
             'status' => Yii::t('app', 'Status'),
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),

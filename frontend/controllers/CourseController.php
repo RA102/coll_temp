@@ -38,7 +38,9 @@ class CourseController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Course::find(),
+            'query' => Course::find()->with([
+                'discipline' /** @see Course::getDiscipline() */
+            ]),
         ]);
 
         return $this->render('index', [
@@ -69,6 +71,7 @@ class CourseController extends Controller
     {
         $model = new Course();
 
+        // TODO move disciplines and classes to Services.
         $institution_id = \Yii::$app->user->identity->institution->id;
         $disciplines = Discipline::find()->joinWith([
             /** @see Discipline::getInstitutionDisciplines() */
@@ -77,6 +80,11 @@ class CourseController extends Controller
             }
         ])->all();
 
+        $classes = [];
+        for ($i = 1; $i <= \Yii::$app->user->identity->institution->max_grade; $i++) {
+            $classes[$i] = $i;
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -84,6 +92,7 @@ class CourseController extends Controller
         return $this->render('create', [
             'model' => $model,
             'disciplines' => $disciplines,
+            'classes' => $classes,
         ]);
     }
 
@@ -98,6 +107,7 @@ class CourseController extends Controller
     {
         $model = $this->findModel($id);
 
+        // TODO move disciplines and classes to Services.
         $institution_id = \Yii::$app->user->identity->institution->id;
         $disciplines = Discipline::find()->joinWith([
             /** @see Discipline::getInstitutionDisciplines() */
@@ -106,6 +116,11 @@ class CourseController extends Controller
             }
         ])->all();
 
+        $classes = [];
+        for ($i = 1; $i <= \Yii::$app->user->identity->institution->max_grade; $i++) {
+            $classes[$i] = $i;
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -113,6 +128,7 @@ class CourseController extends Controller
         return $this->render('update', [
             'model' => $model,
             'disciplines' => $disciplines,
+            'classes' => $classes,
         ]);
     }
 
