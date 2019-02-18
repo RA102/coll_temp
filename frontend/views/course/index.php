@@ -9,29 +9,29 @@ use yii\grid\GridView;
 $this->title = Yii::t('app', 'Courses');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="course-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div style="position: relative;">
+    <h1><?=$this->title?></h1>
+    <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
+</div>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Course'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+<div class="group-index skin-white">
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+    <div class="card-body">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'discipline_id',
-            'caption',
-            'grades',
-            'status',
-            //'create_ts',
-            //'update_ts',
-            //'delete_ts',
+                'discipline_id',
+                'caption',
+                'grades',
+                //'create_ts',
+                //'update_ts',
+                //'delete_ts',
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                ['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]); ?>
+    </div>
 </div>

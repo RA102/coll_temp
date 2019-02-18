@@ -10,9 +10,10 @@ $this->title = Yii::t('app', 'Create Course');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Courses'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="course-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<h1><?= Html::encode($this->title) ?></h1>
+<?php $this->beginBlock('content') ?>
+<div class="course-create">
 
     <?= $this->render('_form', [
         'model' => $model,
@@ -20,3 +21,5 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
+<?php $this->endBlock() ?>
+<?= $this->render('_layout') ?>

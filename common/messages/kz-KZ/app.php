@@ -162,4 +162,9 @@ return [
     'Discipline ID' => 'Дисциплина',
     'Create Institution Discipline' => 'Добавление предмета',
     'Update Institution Discipline' => 'Редактирование предмета',
+
+    // COURSES
+    'Courses' => 'Курсы',
+    'Create Course' => 'Добавление курса',
+    'Update Course' => 'Редактирование курса',
 ];

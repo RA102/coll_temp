@@ -22,7 +22,7 @@ class CourseController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
+            'verbs' => [ // TODO allow only for authorized
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],

@@ -18,7 +18,7 @@ $disciplines = ArrayHelper::map($disciplines, 'id', 'caption');
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'discipline_id')->widget(Select2::class, [
-        'data' => ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 'caption'), // TODO rework to ajax
+        'data' => $disciplines, // TODO rework to ajax
         'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
         'theme' => 'default',
         'pluginOptions' => [
@@ -29,8 +29,6 @@ $disciplines = ArrayHelper::map($disciplines, 'id', 'caption');
     <?= $form->field($model, 'caption')->textInput() ?>
 
     <?= $form->field($model, 'grades')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
