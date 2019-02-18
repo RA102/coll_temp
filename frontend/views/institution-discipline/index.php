@@ -12,14 +12,14 @@ $this->title = Yii::t('app', 'Institution Disciplines');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<h1><?= Html::encode($this->title) ?></h1>
-<?php $this->beginBlock('content') ?>
-    <div class="institution-discipline-index">
+<div style="position: relative;">
+    <h1><?=$this->title?></h1>
+    <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
+</div>
 
-        <p>
-            <?= Html::a(Yii::t('app', 'Create Institution Discipline'), ['create'], ['class' => 'btn btn-success']) ?>
-        </p>
+<div class="group-index skin-white">
 
+    <div class="card-body">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'columns' => [
@@ -48,5 +48,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
     </div>
-<?php $this->endBlock() ?>
-<?= $this->render('_layout') ?>
+    </div>
+</div>

@@ -149,12 +149,17 @@ return [
 
     // DISCIPLINES
     'Disciplines' => 'Дисциплины',
-    'Create Discipline' => 'Добавить дисциплину',
-    'Update Discipline' => 'Редактировать дисциплину',
+    'Create Discipline' => 'Добавление диспицлины',
+    'Update Discipline' => 'Редактирование дисциплины',
     'Discipline Type' => 'Тип',
     'Discipline Type Standard' => 'Эталонный',
     'Discipline Type Optional' => 'Необязательный',
     'Discipline Type Elective' => 'Факультатив',
     'Discipline Type ENT' => 'Предметы для ЕНТ',
     'Discipline Type Exam' => 'Экзаменационные',
+
+    'Institution Disciplines' => 'Предметы',
+    'Discipline ID' => 'Дисциплина',
+    'Create Institution Discipline' => 'Добавление предмета',
+    'Update Institution Discipline' => 'Редактирование предмета',
 ];
