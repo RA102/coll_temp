@@ -71,6 +71,6 @@ class SpecialityController extends Controller
     public function actionUnlink($id)
     {
         $this->specialityService->unlink($id);
-        return $this->redirect(['index']);
+        $this->actionIndex();
     }
 }
