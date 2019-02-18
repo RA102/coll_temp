@@ -106,6 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'data-params' => [
                                         'id' => $specialityInfo->id,
                                     ],
+                                    'data-pjax' => '#list-pjax',
                                     'class' => 'btn text-white btn-danger btn-sm'
                                 ]) ?>
                         </div>
