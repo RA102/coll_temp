@@ -60,11 +60,7 @@ class PersonCreateService extends PersonSearchService
         $data = curl_exec($connection);
         $info = curl_getinfo($connection);
         curl_close($connection);
-
-        var_dump($data);
-        var_dump($info);
-        die();
-
+        
         if ($data === false) {
             throw new \yii\web\ServerErrorHttpException('Server not responding');
         }
