@@ -62,6 +62,9 @@ class PersonService
                 );
             }
             if (!$model->save()) {
+                if (YII_DEBUG) {
+                    throw new \RuntimeException(json_encode($model->errors));
+                }
                 throw new \RuntimeException('Saving error.');
             }
 
