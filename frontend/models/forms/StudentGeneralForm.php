@@ -42,6 +42,7 @@ class StudentGeneralForm extends Model
 
             ['nationality_id', 'required'], // TODO foreign key check
             ['language', 'required'],
+            ['language', 'string', 'min' => 2, 'max' => 2],
         ];
     }
 
