@@ -55,6 +55,9 @@ class PersonService
             $newPerson->birth_date = $birthDate->format('Y-m-d');
         }
 
+        var_dump('pds/PersonService::create');
+        die();
+
         try {
             $person = $this->createService->create($newPerson);
         } catch (PersonAlreadyExistException $e) {
