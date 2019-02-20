@@ -32,7 +32,7 @@
                         'url' => '#',
                         'items' => [
                             ['label' => Yii::t('app','Группы'), 'icon' => 'file-code-o', 'url' => ['/group']],
-                            ['label' => Yii::t('app','Расписание'), 'icon' => 'dashboard', 'url' => ['/']],
+                            ['label' => Yii::t('app','Расписание'), 'icon' => 'dashboard', 'url' => ['/lesson/index']],
                             ['label' => Yii::t('app','Распределение'), 'icon' => 'dashboard', 'url' => ['/']],
                         ],
                     ],

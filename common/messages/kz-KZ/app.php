@@ -177,4 +177,7 @@ return [
     'Teacher Course Start TS' => 'Начало курса',
     'Teacher Course End TS' => 'Конец курса',
     'Course ID' => 'Курс',
+
+    // LESSONS
+    'Lessons' => 'Занятия',
 ];
