@@ -41,6 +41,7 @@ return [
     'Students' => 'Учащиеся',
     'Create Student' => 'Добавление учащегося',
     'Fire Student ' => 'Отчислить учащегося',
+    'Language of education' => 'Язык обучения',
 
     // EMPLOYEES
     'Employees' => 'Сотрудники',

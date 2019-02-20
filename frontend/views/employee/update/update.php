@@ -66,7 +66,7 @@ use yii\widgets\ActiveForm;
                 ?>
             </div>
             <div class="col-md-4">
-                <?= $activeForm->field($form, 'language')->textInput(['maxlength' => true]) ?>
+                <?= $activeForm->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
             </div>
         </div>
 

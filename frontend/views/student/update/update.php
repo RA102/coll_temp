@@ -45,7 +45,7 @@ use yii\widgets\ActiveForm;
 
     <?= $activeForm->field($form, 'iin')->textInput(['maxlength' => true]) ?>
 
-    <?= $activeForm->field($form, 'language')->textInput(['maxlength' => true]) ?>
+    <?= $activeForm->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
 
         <div class="form-group">
             <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
