@@ -7,6 +7,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\jui\AutoComplete;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\forms\StudentGeneralForm */
@@ -55,9 +56,13 @@ use yii\widgets\ActiveForm;
 
     <div class="row">
         <div class="col-md-4">
-            <?= $form
-                ->field($model, 'nationality_id')
-                ->dropDownList(\yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name'))
+            <?= $form->field($model, 'nationality_id')->widget(Select2::classname(), [
+                    'data' => \yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name'),
+                    'options' => ['placeholder' => ''],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ]);
             ?>
         </div>
         <div class="col-md-4">
