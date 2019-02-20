@@ -14,6 +14,8 @@ use common\models\person\Student;
 class StudentSearch extends Student
 {
     public $institution_id;
+    public $group_id;
+    public $withoutGroup = false;
 
     public function formName()
     {
@@ -80,6 +82,16 @@ class StudentSearch extends Student
             $query->andFilterWhere(['person_institution_link.institution_id' => $this->institution_id]);
         }
 
+        if (!empty($this->group_id)) {
+            $query->joinWith('groups');
+            $query->andFilterWhere(['link.student_group_link.group_id' => $this->group_id]);
+        }
+
+        if ($this->withoutGroup) {
+            $query->joinWith('groups', false, 'LEFT OUTER JOIN');
+            $query->andWhere(['is', 'group_id', new \yii\db\Expression('null')]);
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -97,7 +109,7 @@ class StudentSearch extends Student
             'server_id' => $this->server_id,
             'is_subscribed' => $this->is_subscribed,
             'portal_uid' => $this->portal_uid,
-            'type' => $this->type,
+            'person.person.type' => $this->type,
             'create_ts' => $this->create_ts,
             'delete_ts' => $this->delete_ts,
             'import_ts' => $this->import_ts,
