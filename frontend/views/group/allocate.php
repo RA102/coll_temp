@@ -72,6 +72,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if($allocationModel->group_id): ?>
             <div class="row">
                 <div class="col-md-6">
+                    <div class="card-header">
+                        <?=Yii::t('app', 'Students without group')?>
+                    </div>
                     <?= GridView::widget([
                         'dataProvider' => $studentsWithoutGroupDataProvider,
                         'filterModel' => $withoutGroupSearch,
@@ -103,6 +106,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]); ?>
                 </div>
                 <div class="col-md-6">
+                    <div class="card-header">
+                        <?=Yii::t('app', 'Added to group')?> (<?=$studentsFromGroupDataProvider->count?>)
+                    </div>
                     <?= GridView::widget([
                         'dataProvider' => $studentsFromGroupDataProvider,
                         'filterModel' => $fromCurrentGroupSearch,

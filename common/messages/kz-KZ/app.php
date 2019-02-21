@@ -133,6 +133,8 @@ return [
     'Groups allocation' => 'Распределение по группам',
     'Group' => 'Группа',
     'Select group' => 'Выберите группу',
+    'Students without group' => 'Студенты без группы',
+    'Added to group' => 'Добавленные в группу',
 
     // LANGUAGE
     'Russian' => 'Русский',
