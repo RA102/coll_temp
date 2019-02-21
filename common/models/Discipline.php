@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\helpers\SchemeHelper;
+use common\models\organization\InstitutionDiscipline;
 use Yii;
 use yii\db\ArrayExpression;
 
@@ -19,6 +20,7 @@ use yii\db\ArrayExpression;
  * @property string $delete_ts
  *
  * @property Course[] $courses
+ * @property InstitutionDiscipline[] $institutionDisciplines
  */
 class Discipline extends \yii\db\ActiveRecord
 {
@@ -84,6 +86,14 @@ class Discipline extends \yii\db\ActiveRecord
     public function getCourses()
     {
         return $this->hasMany(Course::class, ['discipline_id' => 'id'])->inverseOf('discipline');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInstitutionDisciplines()
+    {
+        return $this->hasMany(InstitutionDiscipline::class, ['discipline_id' => 'id']);
     }
 
     public static function add($caption, $types)

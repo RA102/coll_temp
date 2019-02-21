@@ -41,6 +41,7 @@ return [
     'Students' => 'Учащиеся',
     'Create Student' => 'Добавление учащегося',
     'Fire Student ' => 'Отчислить учащегося',
+    'Language of education' => 'Язык обучения',
 
     // EMPLOYEES
     'Employees' => 'Сотрудники',
@@ -154,12 +155,32 @@ return [
 
     // DISCIPLINES
     'Disciplines' => 'Дисциплины',
-    'Create Discipline' => 'Добавить дисциплину',
-    'Update Discipline' => 'Редактировать дисциплину',
+    'Create Discipline' => 'Добавление диспицлины',
+    'Update Discipline' => 'Редактирование дисциплины',
     'Discipline Type' => 'Тип',
     'Discipline Type Standard' => 'Эталонный',
     'Discipline Type Optional' => 'Необязательный',
     'Discipline Type Elective' => 'Факультатив',
     'Discipline Type ENT' => 'Предметы для ЕНТ',
     'Discipline Type Exam' => 'Экзаменационные',
+
+    'Institution Disciplines' => 'Предметы',
+    'Discipline ID' => 'Дисциплина',
+    'Create Institution Discipline' => 'Добавление предмета',
+    'Update Institution Discipline' => 'Редактирование предмета',
+
+    // COURSES
+    'Courses' => 'Курсы',
+    'Create Course' => 'Добавление курса',
+    'Update Course' => 'Редактирование курса',
+    'Classes' => 'Классы',
+
+    // TEACHER COURSES
+    'Teacher Courses' => 'Курсы учителя',
+    'Create Teacher Course' => 'Добавление курса учителя',
+    'Update Teacher Course' => 'Редактирование курса учителя',
+    'Teacher ID' => 'Учитель',
+    'Teacher Course Start TS' => 'Начало курса',
+    'Teacher Course End TS' => 'Конец курса',
+    'Course ID' => 'Курс',
 ];

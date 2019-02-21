@@ -6,6 +6,7 @@ use common\models\link\PersonInstitutionLink;
 use common\models\person\Person;
 use common\services\TransactionManager;
 use common\services\pds\PersonService as PdsService;
+use yii\helpers\Json;
 
 class PersonService
 {
@@ -62,6 +63,10 @@ class PersonService
                 );
             }
             if (!$model->save()) {
+                if (YII_DEBUG) {
+                    $errors = $model->errors;
+                    throw new \RuntimeException(reset($errors)[0]);
+                }
                 throw new \RuntimeException('Saving error.');
             }
 

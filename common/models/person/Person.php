@@ -2,7 +2,9 @@
 
 namespace common\models\person;
 
+use common\helpers\LanguageHelper;
 use common\helpers\SchemeHelper;
+use common\models\link\PersonInstitutionLink;
 use common\models\Nationality;
 use common\models\organization\Institution;
 use Yii;
@@ -48,6 +50,7 @@ use yii\web\IdentityInterface;
  * @property PersonContact[] $personContacts
  * @property PersonLocation[] $personLocations
  * @property Institution $institution
+ * @property PersonInstitutionLink[] $personInstitutionLinks
  */
 class Person extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -108,7 +111,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
             'birth_country_id' => Yii::t('app', 'Birth Country ID'),
             'birth_city_id' => Yii::t('app', 'Birth City ID'),
             'birth_place' => Yii::t('app', 'Birth Place'),
-            'language' => Yii::t('app', 'Language'),
+            'language' => Yii::t('app', 'Language of education'),
             'oid' => Yii::t('app', 'Oid'),
             'alledu_id' => Yii::t('app', 'Alledu ID'),
             'alledu_server_id' => Yii::t('app', 'Alledu Server ID'),
@@ -254,5 +257,18 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function getFullName()
     {
         return trim("{$this->lastname} {$this->firstname} {$this->middlename}");
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPersonInstitutionLinks()
+    {
+        return $this->hasMany(PersonInstitutionLink::class, ['person_id' => 'id']);
+    }
+
+    public function getLanguage()
+    {
+        return LanguageHelper::getLanguageList()[$this->language] ?? '';
     }
 }

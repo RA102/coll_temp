@@ -7,6 +7,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\jui\AutoComplete;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\forms\StudentGeneralForm */
@@ -40,11 +41,18 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
 
-    <?= $form->field($model, 'nationality_id')->dropDownList(\yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name')) ?>
+    <?= $form->field($model, 'nationality_id')->widget(Select2::classname(), [
+        'data' => \yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name'),
+        'options' => ['placeholder' => ''],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);
+    ?>
 
     <?= $form->field($model, 'iin')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
 
     <?= $form->field($model, 'generate_credential')->checkbox() ?>
 

@@ -1,14 +1,13 @@
 <?php
 
-use common\helpers\DisciplineHelper;
-use common\models\organization\InstitutionDiscipline;
+use common\models\Course;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Institution Disciplines');
+$this->title = Yii::t('app', 'Courses');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -27,26 +26,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'attribute' => 'discipline_id',
-                    'value' => function (InstitutionDiscipline $model) {
-                        return $model->discipline->caption; // TODO fix caption
-                    }
+                    'value' => function (Course $model) {
+                        return $model->discipline->caption;
+                    },
                 ],
-
+                'caption',
                 [
-                    'attribute' => 'types',
-                    'value' => function(InstitutionDiscipline $model) {
-                        return implode(', ', array_map(function ($item) {
-                            return DisciplineHelper::getTypeList()[$item];
-                        }, $model->types));
+                    'attribute' => 'classes',
+                    'value' => function (Course $model) {
+                        return implode(', ', $model->classes);
                     }
                 ],
-                'create_ts',
+                //'create_ts',
                 //'update_ts',
                 //'delete_ts',
 
                 ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
-    </div>
     </div>
 </div>

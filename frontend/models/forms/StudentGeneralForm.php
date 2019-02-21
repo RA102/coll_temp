@@ -42,6 +42,7 @@ class StudentGeneralForm extends Model
 
             ['nationality_id', 'required'], // TODO foreign key check
             ['language', 'required'],
+            ['language', 'string', 'min' => 2, 'max' => 2],
         ];
     }
 
@@ -59,7 +60,7 @@ class StudentGeneralForm extends Model
             'sex' => Yii::t('app', 'Sex'),
             'nationality_id' => Yii::t('app', 'Nationality ID'),
             'iin' => Yii::t('app', 'Iin'),
-            'language' => Yii::t('app', 'Language'),
+            'language' => Yii::t('app', 'Language of education'),
             'generate_credential' => Yii::t('app', 'Create a user?'),
             'indentity' => Yii::t('app', 'Email'),
         ];
