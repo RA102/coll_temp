@@ -17,9 +17,11 @@ class StudentSearch extends Student
     public $group_id;
     public $withoutGroup = false;
 
+    public $formName;
+
     public function formName()
     {
-        return '';
+        return $this->formName ?? '';
     }
 
     /**
@@ -94,7 +96,7 @@ class StudentSearch extends Student
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'person.person.id' => $this->id,
             'birth_date' => $this->birth_date,
             'sex' => $this->sex,
             'nationality_id' => $this->nationality_id,

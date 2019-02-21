@@ -4,11 +4,13 @@ namespace frontend\controllers;
 
 use common\services\organization\GroupService;
 use frontend\models\forms\GroupAllocationForm;
+use frontend\search\StudentSearch;
 use Yii;
 use common\models\organization\Group;
 use frontend\search\GroupSearch;
-use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -132,18 +134,52 @@ class GroupController extends Controller
         $allocationModel = new GroupAllocationForm();
         $years = Yii::$app->user->identity->institution->getYearList();
 
-        $allocationModel->load(Yii::$app->request->post());
+        $allocationModel->load(Yii::$app->request->get());
 
         $groups = [];
         if ($allocationModel->class) {
             $groups = $this->groupService->getByClass($allocationModel->class);
         }
 
+        $fromCurrentGroupSearch = new StudentSearch();
+        $fromCurrentGroupSearch->formName = 'withGroup';
+        $fromCurrentGroupSearch->institution_id = Yii::$app->user->identity->institution->id;
+        $studentsFromGroupDataProvider = new ActiveDataProvider();
+
+        $withoutGroupSearch = new StudentSearch();
+        $withoutGroupSearch->formName = 'withoutGroup';
+        $withoutGroupSearch->institution_id = Yii::$app->user->identity->institution->id;
+        $studentsWithoutGroupDataProvider = new ActiveDataProvider();
+
+        if ($allocationModel->group_id) {
+            $fromCurrentGroupSearch->group_id = $allocationModel->group_id;
+            $studentsFromGroupDataProvider = $fromCurrentGroupSearch->search(Yii::$app->request->queryParams);
+
+            $withoutGroupSearch->withoutGroup = true;
+            $studentsWithoutGroupDataProvider = $withoutGroupSearch->search(Yii::$app->request->queryParams);
+        }
+
+        Url::remember();
+
         return $this->render('allocate', [
             'allocationModel' => $allocationModel,
             'years' => $years,
             'groups' => $groups,
+            'withoutGroupSearch' => $withoutGroupSearch,
+            'fromCurrentGroupSearch' => $fromCurrentGroupSearch,
+            'studentsWithoutGroupDataProvider' => $studentsWithoutGroupDataProvider,
+            'studentsFromGroupDataProvider' => $studentsFromGroupDataProvider
         ]);
+    }
+
+    public function actionAddStudent($id)
+    {
+        $this->redirect(Url::previous());
+    }
+
+    public function actionDeleteStudent($id)
+    {
+        $this->redirect(Url::previous());
     }
 
     public function actionByYear()

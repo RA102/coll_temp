@@ -5,11 +5,16 @@ use yii\widgets\ActiveForm;
 use kartik\depdrop\DepDrop;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $allocationModel \frontend\models\forms\GroupAllocationForm */
 /* @var $years [] */
 /* @var $groups [] */
+/* @var $fromCurrentGroupSearch \frontend\search\StudentSearch */
+/* @var $studentsFromGroupDataProvider yii\data\ActiveDataProvider */
+/* @var $withoutGroupSearch \frontend\search\StudentSearch */
+/* @var $studentsWithoutGroupDataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Groups allocation');
 $this->params['breadcrumbs'][] = $this->title;
@@ -33,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id' => 'group-allocation-form',
             'action' => ['group/allocate'],
             'enableClientValidation' => false,
+            'method' => 'GET',
             'options' => [
                 'validateOnSubmit' => true,
                 'data-pjax' => '#list-pjax'
@@ -63,6 +69,72 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <?= Html::submitButton(Html::tag('span', Yii::t('app', 'Search')), ['id' => 'pjax-submit', 'class' => 'hidden']) ?>
         <?php ActiveForm::end(); ?>
+        <?php if($allocationModel->group_id): ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <?= GridView::widget([
+                        'dataProvider' => $studentsWithoutGroupDataProvider,
+                        'filterModel' => $withoutGroupSearch,
+                        'layout'=>"{items}",
+                        'tableOptions' => [
+                            'class' => 'table table-striped table-condensed'
+                        ],
+                        'columns' => [
+                            'lastname',
+                            'firstname',
+                            'middlename',
+
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+                                'template' => '{add}',
+                                'buttons' => [
+                                    'add' => function ($url, \common\models\person\Student $model) {
+                                        return Html::a('<span class="glyphicon glyphicon-plus"></span>',
+                                            ['group/add-student', 'id' => $model->id], [
+                                                'data-confirm' => Yii::t('app', 'Are you sure?'),
+                                                'data-method' => 'post',
+                                                'title' => Yii::t('app', 'Add student'),
+                                            ]);
+                                    },
+                                ],
+                            ],
+
+                        ],
+                    ]); ?>
+                </div>
+                <div class="col-md-6">
+                    <?= GridView::widget([
+                        'dataProvider' => $studentsFromGroupDataProvider,
+                        'filterModel' => $fromCurrentGroupSearch,
+                        'layout'=>"{items}",
+                        'tableOptions' => [
+                            'class' => 'table table-striped table-condensed'
+                        ],
+                        'columns' => [
+                            'lastname',
+                            'firstname',
+                            'middlename',
+
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+                                'template' => '{drop}',
+                                'buttons' => [
+                                    'drop' => function ($url, \common\models\person\Student $model) {
+                                        return Html::a('<span class="glyphicon glyphicon-minus"></span>',
+                                            ['group/delete-student', 'id' => $model->id], [
+                                                'data-confirm' => Yii::t('app', 'Are you sure?'),
+                                                'data-method' => 'post',
+                                                'title' => Yii::t('app', 'Add student'),
+                                            ]);
+                                    },
+                                ],
+                            ],
+
+                        ],
+                    ]); ?>
+                </div>
+            </div>
+        <?php endif;?>
     </div>
     <?php Pjax::end(); ?>
 </div>
