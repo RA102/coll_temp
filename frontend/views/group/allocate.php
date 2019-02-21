@@ -88,11 +88,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'class' => 'yii\grid\ActionColumn',
                                 'template' => '{add}',
                                 'buttons' => [
-                                    'add' => function ($url, \common\models\person\Student $model) {
+                                    'add' => function ($url, \common\models\person\Student $model) use($allocationModel) {
                                         return Html::a('<span class="glyphicon glyphicon-plus"></span>',
-                                            ['group/add-student', 'id' => $model->id], [
-                                                'data-confirm' => Yii::t('app', 'Are you sure?'),
+                                            ['group/add-student', 'id' => $model->id, 'group_id' => $allocationModel->group_id], [
                                                 'data-method' => 'post',
+                                                'data-pjax' => '#list-pjax',
                                                 'title' => Yii::t('app', 'Add student'),
                                             ]);
                                     },
@@ -119,11 +119,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'class' => 'yii\grid\ActionColumn',
                                 'template' => '{drop}',
                                 'buttons' => [
-                                    'drop' => function ($url, \common\models\person\Student $model) {
+                                    'drop' => function ($url, \common\models\person\Student $model) use($allocationModel) {
                                         return Html::a('<span class="glyphicon glyphicon-minus"></span>',
-                                            ['group/delete-student', 'id' => $model->id], [
+                                            ['group/delete-student', 'id' => $model->id, 'group_id' => $allocationModel->group_id], [
                                                 'data-confirm' => Yii::t('app', 'Are you sure?'),
                                                 'data-method' => 'post',
+                                                'data-pjax' => '#list-pjax',
                                                 'title' => Yii::t('app', 'Add student'),
                                             ]);
                                     },

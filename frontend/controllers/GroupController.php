@@ -172,14 +172,16 @@ class GroupController extends Controller
         ]);
     }
 
-    public function actionAddStudent($id)
+    public function actionAddStudent($id, $group_id)
     {
+        $this->groupService->addStudent($id, $group_id);
         $this->redirect(Url::previous());
     }
 
-    public function actionDeleteStudent($id)
+    public function actionDeleteStudent($id, $group_id)
     {
-        $this->redirect(Url::previous());
+        $this->groupService->deleteStudent($id, $group_id);
+        return $this->redirect(Url::previous());
     }
 
     public function actionByYear()
