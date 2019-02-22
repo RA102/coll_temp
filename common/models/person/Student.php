@@ -2,6 +2,8 @@
 
 namespace common\models\person;
 
+use common\models\organization\Group;
+
 /**
  * This is the model class for table "person.person".
  */
@@ -20,7 +22,7 @@ class Student extends Person
     public static function find()
     {
         return parent::find()->andWhere([
-            'type' => Person::TYPE_STUDENT,
+            'person.person.type' => Person::TYPE_STUDENT,
         ]);
     }
 
@@ -38,5 +40,11 @@ class Student extends Person
         $model->type = Person::TYPE_STUDENT;
 
         return $model;
+    }
+
+    public function getGroups()
+    {
+        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+            ->viaTable('link.student_group_link', ['student_id' => 'id']);
     }
 }

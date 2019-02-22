@@ -2,9 +2,15 @@
 
 namespace frontend\controllers;
 
+use common\services\organization\GroupService;
+use frontend\models\forms\GroupAllocationForm;
+use frontend\search\StudentSearch;
 use Yii;
 use common\models\organization\Group;
 use frontend\search\GroupSearch;
+use yii\data\ActiveDataProvider;
+use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,6 +20,14 @@ use yii\filters\VerbFilter;
  */
 class GroupController extends Controller
 {
+    public $groupService;
+
+    public function __construct(string $id, $module, GroupService $groupService, array $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->groupService = $groupService;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -113,6 +127,77 @@ class GroupController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionAllocate()
+    {
+        $allocationModel = new GroupAllocationForm();
+        $years = Yii::$app->user->identity->institution->getYearList();
+
+        $allocationModel->load(Yii::$app->request->get());
+
+        $groups = [];
+        if ($allocationModel->class) {
+            $groups = $this->groupService->getByClass($allocationModel->class);
+        }
+
+        $fromCurrentGroupSearch = new StudentSearch();
+        $fromCurrentGroupSearch->formName = 'withGroup';
+        $fromCurrentGroupSearch->institution_id = Yii::$app->user->identity->institution->id;
+        $studentsFromGroupDataProvider = new ActiveDataProvider();
+
+        $withoutGroupSearch = new StudentSearch();
+        $withoutGroupSearch->formName = 'withoutGroup';
+        $withoutGroupSearch->institution_id = Yii::$app->user->identity->institution->id;
+        $studentsWithoutGroupDataProvider = new ActiveDataProvider();
+
+        if ($allocationModel->group_id) {
+            $fromCurrentGroupSearch->group_id = $allocationModel->group_id;
+            $studentsFromGroupDataProvider = $fromCurrentGroupSearch->search(Yii::$app->request->queryParams);
+
+            $withoutGroupSearch->withoutGroup = true;
+            $studentsWithoutGroupDataProvider = $withoutGroupSearch->search(Yii::$app->request->queryParams);
+        }
+
+        Url::remember();
+
+        return $this->render('allocate', [
+            'allocationModel' => $allocationModel,
+            'years' => $years,
+            'groups' => $groups,
+            'withoutGroupSearch' => $withoutGroupSearch,
+            'fromCurrentGroupSearch' => $fromCurrentGroupSearch,
+            'studentsWithoutGroupDataProvider' => $studentsWithoutGroupDataProvider,
+            'studentsFromGroupDataProvider' => $studentsFromGroupDataProvider
+        ]);
+    }
+
+    public function actionAddStudent($id, $group_id)
+    {
+        $this->groupService->addStudent($id, $group_id);
+        $this->redirect(Url::previous());
+    }
+
+    public function actionDeleteStudent($id, $group_id)
+    {
+        $this->groupService->deleteStudent($id, $group_id);
+        return $this->redirect(Url::previous());
+    }
+
+    public function actionByYear()
+    {
+        $parents = Yii::$app->request->post('depdrop_parents');
+
+        if ($parents != null) {
+            $class = $parents[0];
+
+            return Json::encode([
+                'output' => $this->groupService->getAssociativeByClass($class),
+                'selected' => ''
+            ]);
+        }
+
+        return Json::encode(['output' => '', 'selected' => '']);
     }
 
     /**

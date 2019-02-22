@@ -7,6 +7,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\jui\AutoComplete;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\person\Student */
@@ -41,11 +42,18 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
 
-    <?= $activeForm->field($form, 'nationality_id')->dropDownList(\yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name')) ?>
+    <?= $activeForm->field($model, 'nationality_id')->widget(Select2::classname(), [
+            'data' => \yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name'),
+            'options' => ['placeholder' => ''],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]);
+    ?>
 
     <?= $activeForm->field($form, 'iin')->textInput(['maxlength' => true]) ?>
 
-    <?= $activeForm->field($form, 'language')->textInput(['maxlength' => true]) ?>
+    <?= $activeForm->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
 
         <div class="form-group">
             <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

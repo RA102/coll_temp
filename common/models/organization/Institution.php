@@ -177,4 +177,14 @@ class Institution extends \yii\db\ActiveRecord
     {
         return $this->hasMany(PersonInstitutionLink::class, ['institution_id' => 'id']);
     }
+
+    public function getYearList()
+    {
+        $years = [];
+        for ($i = 1; $i <= $this->max_grade; $i++) {
+            $years[$i] = $i;
+        }
+
+        return $years;
+    }
 }

@@ -41,6 +41,7 @@ return [
     'Students' => 'Учащиеся',
     'Create Student' => 'Добавление учащегося',
     'Fire Student ' => 'Отчислить учащегося',
+    'Language of education' => 'Язык обучения',
 
     // EMPLOYEES
     'Employees' => 'Сотрудники',
@@ -130,6 +131,11 @@ return [
     'Budget' => 'Бюджет',
     'Contract' => 'Контракт',
     'Mixed' => 'Смешанное',
+    'Groups allocation' => 'Распределение по группам',
+    'Group' => 'Группа',
+    'Select group' => 'Выберите группу',
+    'Students without group' => 'Студенты без группы',
+    'Added to group' => 'Добавленные в группу',
 
     // LANGUAGE
     'Russian' => 'Русский',
