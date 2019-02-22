@@ -2,12 +2,15 @@
 
 namespace frontend\controllers;
 
+use common\models\organization\Group;
+use frontend\search\GroupSearch;
 use Yii;
 use common\models\Lesson;
 use frontend\search\LessonSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * LessonController implements the CRUD actions for Lesson model.
@@ -36,11 +39,26 @@ class LessonController extends Controller
     public function actionIndex()
     {
         $searchModel = new LessonSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel->load(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionGroups()
+    {
+        $searchModel = new GroupSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $lessonSearchModel = new LessonSearch();
+
+        return $this->render('groups', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'lessonSearchModel' => $lessonSearchModel,
         ]);
     }
 
@@ -123,5 +141,33 @@ class LessonController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function actionAjaxFeed($start, $end)
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $searchModel = new LessonSearch();
+        $searchModel->load(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search();
+
+        $result = [];
+        /** @var Lesson[] $lessons */
+        $lessons = $dataProvider->getModels();
+        foreach ($lessons as $lesson) {
+
+            $start = \DateTime::createFromFormat('Y-m-d H:i:s', $lesson->date_ts);
+            $end = (clone $start)->add(new \DateInterval('PT' . $lesson->duration . 'M'));
+
+            $result[] = [
+                'title' => implode(', ', array_map(function (Group $group) {
+                    return $group->caption_current;
+                }, $lesson->teacherCourse->groups)),
+                'start' => $start->format(DATE_ATOM),
+                'end' => $end->format(DATE_ATOM),
+            ];
+        }
+
+        return $result;
     }
 }

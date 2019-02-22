@@ -42,6 +42,9 @@ class Student extends Person
         return $model;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getGroups()
     {
         return $this->hasMany(Group::className(), ['id' => 'group_id'])

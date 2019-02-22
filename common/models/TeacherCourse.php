@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\helpers\SchemeHelper;
+use common\models\organization\Group;
 use common\models\person\Person;
 use Yii;
 
@@ -22,6 +23,7 @@ use Yii;
  * @property Course $course
  * @property Lesson[] $lessons
  * @property Person $person // TODO should it be Employee?
+ * @property Group[] $groups
  */
 class TeacherCourse extends \yii\db\ActiveRecord
 {
@@ -89,5 +91,14 @@ class TeacherCourse extends \yii\db\ActiveRecord
     public function getPerson() // TODO should it be Employee?
     {
         return $this->hasOne(Person::class, ['id' => 'teacher_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGroups()
+    {
+        return $this->hasMany(Group::class, ['id' => 'group_id'])
+            ->viaTable('link.teacher_course_group_link', ['teacher_course_id' => 'id']);
     }
 }

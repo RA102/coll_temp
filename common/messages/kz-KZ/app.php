@@ -186,4 +186,7 @@ return [
 
     // LESSONS
     'Lessons' => 'Занятия',
+    'Teacher Course ID' => 'Курс учителя',
+    'Date TS' => 'Дата',
+    'Duration' => 'Длительность',
 ];

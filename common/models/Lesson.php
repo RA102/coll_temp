@@ -54,7 +54,7 @@ class Lesson extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'teacher_course_id' => Yii::t('app', 'Teacher Course ID'),
             'teacher_id' => Yii::t('app', 'Teacher ID'),
-            'date_ts' => Yii::t('app', 'Date Ts'),
+            'date_ts' => Yii::t('app', 'Date TS'),
             'duration' => Yii::t('app', 'Duration'),
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
