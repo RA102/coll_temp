@@ -1,5 +1,6 @@
 var modal = $("#modal-lesson-create");
 var modalForm = $('#modal-form');
+var loader = $('.js-loader');
 
 $(document).ready(function () {
 
@@ -9,6 +10,7 @@ $(document).ready(function () {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         },
+        locale: 'ru',
         defaultView: 'agendaWeek',
         firstDay: 1,
         defaultDate: moment().format('YYYYMMDD'),
@@ -42,12 +44,9 @@ $(document).ready(function () {
             // your event source
             {
                 url: feedUrl, // use the `url` property
-                color: 'yellow',    // an option!
+                color: '#1be44f',    // an option!
                 textColor: 'black'  // an option!
             }
-
-            // any other sources...
-
         ],
         events: [],
         eventClick: function (event) {
@@ -60,12 +59,14 @@ $(document).ready(function () {
         },
         eventDrop: function (event, delta, revertFunc) {
             event.color = 'red';
+            event.unsaved = true;
             $('#calendar').fullCalendar('updateEvent', event);
 
             // TODO call revertFunc if ajax fails
         },
         eventResize: function (event, delta, revertFunc) {
             event.color = 'red';
+            event.unsaved = true;
             $('#calendar').fullCalendar('updateEvent', event);
 
             // TODO call revertFunc if ajax fails
@@ -98,6 +99,7 @@ modal.on("click", ".js-modal-cancel", function () {
 // Clicked Delete
 modal.on("click", ".js-modal-delete", function() {
     if (confirm("Do you want to remove this lesson?")) {
+        loadingEnabled();
         $.ajax({
             url: deleteUrl,
             type: 'POST',
@@ -107,12 +109,15 @@ modal.on("click", ".js-modal-delete", function() {
         }).done(function (data) {
             modal.modal('toggle');
             $('#calendar').fullCalendar('refetchEvents');
+        }).always(function () {
+            loadingDisabled();
         });
     }
 });
 
 // Prevent form submit, send ajax request
 modalForm.on('beforeSubmit', function (e) {
+    loadingEnabled();
     $.ajax({
         url: createUrl,
         type: 'POST',
@@ -125,6 +130,16 @@ modalForm.on('beforeSubmit', function (e) {
     }).done(function (data) {
         modal.modal('toggle');
         $('#calendar').fullCalendar('refetchEvents');
+    }).always(function () {
+        loadingDisabled();
     });
     return false;
 });
+
+function loadingEnabled() {
+    loader.addClass('loader--loading');
+}
+
+function loadingDisabled() {
+    loader.removeClass('loader--loading');
+}

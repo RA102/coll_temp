@@ -38,7 +38,6 @@ $deleteUrl = json_encode(Url::to(['lesson/ajax-delete']));
 $this->registerJs("
 var feedUrl = {$feedUrl};
 var createUrl = {$createUrl};
-var updateUrl = {$updateUrl};
 var deleteUrl = {$deleteUrl};
 ", View::POS_BEGIN);
 ?>

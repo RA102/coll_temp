@@ -189,4 +189,6 @@ return [
     'Teacher Course ID' => 'Курс учителя',
     'Date TS' => 'Дата',
     'Duration' => 'Длительность',
+    'Lesson Start Date' => 'Начало',
+    'Lesson End Date' => 'Конец',
 ];

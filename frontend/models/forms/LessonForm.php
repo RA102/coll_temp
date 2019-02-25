@@ -42,8 +42,8 @@ class LessonForm extends Model
     {
         return [
             'teacher_course_id' => Yii::t('app', 'Teacher Course ID'),
-            'start' => Yii::t('app', 'Start Date'),
-            'end' => Yii::t('app', 'End Date'),
+            'start' => Yii::t('app', 'Lesson Start Date'),
+            'end' => Yii::t('app', 'Lesson End Date'),
         ];
     }
 
