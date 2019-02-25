@@ -13,7 +13,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'caption')->textInput() ?>
+    <?= $form->field($model, 'caption_ru')->textInput() ?>
+
+    <?= $form->field($model, 'caption_kk')->textInput() ?>
 
     <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
 

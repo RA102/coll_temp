@@ -26,6 +26,10 @@ use yii\db\ArrayExpression;
  */
 class Course extends \yii\db\ActiveRecord
 {
+    public $caption_current;
+    public $caption_ru;
+    public $caption_kk;
+
     /**
      * {@inheritdoc}
      */
@@ -47,6 +51,7 @@ class Course extends \yii\db\ActiveRecord
             [['classes'], 'each', 'rule' => ['integer']],
             [['discipline_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discipline::class, 'targetAttribute' => ['discipline_id' => 'id']],
             [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
+            [['caption_ru', 'caption_kk'], 'string'],
         ];
     }
 
@@ -57,6 +62,21 @@ class Course extends \yii\db\ActiveRecord
         if ($this->classes instanceof ArrayExpression) {
             $this->classes = $this->classes->getValue();
         }
+
+        $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
+        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
+        $this->caption_ru = $this->caption['ru'];
+        $this->caption_kk = $this->caption['kk'];
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->caption = [
+            'ru' => $this->caption_ru,
+            'kk' => $this->caption_kk,
+        ];
+
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -69,6 +89,9 @@ class Course extends \yii\db\ActiveRecord
             'discipline_id' => Yii::t('app', 'Discipline ID'),
             'institution_id' => Yii::t('app', 'Institution ID'),
             'caption' => Yii::t('app', 'Caption'),
+            'caption_ru' => Yii::t('app', 'Caption Ru'),
+            'caption_kk' => Yii::t('app', 'Caption Kk'),
+            'caption_current' => Yii::t('app', 'Caption Current'),
             'classes' => Yii::t('app', 'Classes'),
             'status' => Yii::t('app', 'Status'),
             'create_ts' => Yii::t('app', 'Create Ts'),

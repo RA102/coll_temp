@@ -2,7 +2,6 @@
 
 namespace frontend\controllers;
 
-use common\models\organization\Group;
 use common\models\TeacherCourse;
 use frontend\models\forms\LessonForm;
 use frontend\search\GroupSearch;

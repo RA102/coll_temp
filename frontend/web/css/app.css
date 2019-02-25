@@ -317,6 +317,3 @@ article dl, article ol, article ol ol, article ol ul, article ul, article ul ol,
 .speciality:hover {
     background-color: #EEE;
 }
-.select2-container .select2-selection--single .select2-selection__rendered {
-    margin-top: 0;
-}

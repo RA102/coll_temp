@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\TeacherCourse */
 
-$this->title = $model->course->caption;
+$this->title = $model->course->caption_current;
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'course_id',
                 'value' => function (TeacherCourse $model) {
-                    return $model->course->caption;
+                    return $model->course->caption_current;
                 }
             ],
             [

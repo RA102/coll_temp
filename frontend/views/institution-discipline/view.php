@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\organization\InstitutionDiscipline */
 
-$this->title = $model->discipline->caption;
+$this->title = $model->discipline->caption_current;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Institution Disciplines'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'discipline_id',
                     'value' => function (InstitutionDiscipline $model) {
-                        return $model->discipline->caption; // TODO fix caption
+                        return $model->discipline->caption_current;
                     }
                 ],
                 [

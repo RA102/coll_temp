@@ -11,7 +11,8 @@ use yii\widgets\ActiveForm;
 /* @var $disciplines common\models\Discipline[] */
 /* @var $classes array */
 
-$disciplines = ArrayHelper::map($disciplines, 'id', 'caption');
+/** @see Discipline::caption_current $disciplines */
+$disciplines = ArrayHelper::map($disciplines, 'id', 'caption_current');
 ?>
 
 <div class="course-form">
@@ -27,7 +28,9 @@ $disciplines = ArrayHelper::map($disciplines, 'id', 'caption');
         ],
     ]) ?>
 
-    <?= $form->field($model, 'caption')->textInput() ?>
+    <?= $form->field($model, 'caption_ru')->textInput() ?>
+
+    <?= $form->field($model, 'caption_kk')->textInput() ?>
 
     <?= $form->field($model, 'classes')->widget(Select2::class, [
         'data' => $classes,

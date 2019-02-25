@@ -92,6 +92,7 @@ return [
     'Update Institution Application' => 'Редактирование заявки',
     'Approve' => 'Одобрить',
     'Reject' => 'Отклонить',
+    'Cancel' => 'Отмена',
 
     // SPECIALITIES
     'Specialities' => 'Специальности',
@@ -180,12 +181,14 @@ return [
     'Create Teacher Course' => 'Добавление курса учителя',
     'Update Teacher Course' => 'Редактирование курса учителя',
     'Teacher ID' => 'Учитель',
-    'Teacher Course Start TS' => 'Начало курса',
-    'Teacher Course End TS' => 'Конец курса',
+    'Teacher Course Start TS' => 'Начало курса учителя',
+    'Teacher Course End TS' => 'Конец курса учителя',
     'Course ID' => 'Курс',
 
     // LESSONS
     'Lessons' => 'Занятия',
+    'Lesson' => 'Занятие',
+    'Create Lesson' => 'Добавление занятия',
     'Teacher Course ID' => 'Курс учителя',
     'Date TS' => 'Дата',
     'Duration' => 'Длительность',

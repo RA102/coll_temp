@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'discipline_id',
                     'value' => function (InstitutionDiscipline $model) {
-                        return $model->discipline->caption; // TODO fix caption
+                        return $model->discipline->caption_current;
                     }
                 ],
 

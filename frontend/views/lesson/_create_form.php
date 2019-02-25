@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
     <div class="modal-dialog modal-md modal-tiny" role="document">
         <div class="modal-content modal-common">
             <div class="modal-header">
-                <h4 class="modal-title text-center"><?= Yii::t('app', 'New Lesson') ?></h4>
+                <h4 class="modal-title text-center"><?= Yii::t('app', 'Lesson') ?></h4>
             </div>
             <div class="modal-body">
 
@@ -25,6 +25,7 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
                     'data' => ArrayHelper::map($teacherCourses, 'id', 'fullname'),
                     'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+                    'theme' => 'default',
                     'pluginOptions' => [
                         'allowClear' => true,
                     ],
@@ -40,13 +41,22 @@ use yii\widgets\ActiveForm;
 
                 <?php ActiveForm::end(); ?>
 
-                <button class="btn btn-success js-modal-save" type="button">Save</button>
-                <button class="btn btn-default js-modal-cancel" data-dismiss="modal" type="button">Cancel</button>
-                <button class="btn btn-danger js-modal-delete" type="button">Delete</button>
+                <button class="btn btn-success js-modal-save" type="button">
+                    <?= Yii::t('app', 'Save') ?>
+                </button>
+                <button class="btn btn-default js-modal-cancel" data-dismiss="modal" type="button">
+                    <?= Yii::t('app', 'Cancel') ?>
+                </button>
+                <button class="btn btn-danger js-modal-delete" type="button">
+                    <?= Yii::t('app', 'Delete') ?>
+                </button>
             </div>
         </div>
         <div class="loader js-loader">
-            <div class="lds-ripple"><div></div><div></div></div>
+            <div class="lds-ripple">
+                <div></div>
+                <div></div>
+            </div>
         </div>
     </div>
 </div>
@@ -74,6 +84,7 @@ use yii\widgets\ActiveForm;
         width: 64px;
         height: 64px;
     }
+
     .lds-ripple div {
         position: absolute;
         border: 4px solid #000;
@@ -81,9 +92,11 @@ use yii\widgets\ActiveForm;
         border-radius: 50%;
         animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
     }
+
     .lds-ripple div:nth-child(2) {
         animation-delay: -0.5s;
     }
+
     @keyframes lds-ripple {
         0% {
             top: 28px;

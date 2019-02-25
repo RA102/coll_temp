@@ -138,7 +138,7 @@ class CourseController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->institution = $institution->id;
+            $model->institution_id = $institution->id;
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }

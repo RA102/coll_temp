@@ -27,7 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'id',
                 [
                     'attribute' => 'caption_current',
                     'value' => function (Group $model) use ($lessonSearchModel) {

@@ -13,8 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $this->beginBlock('content') ?>
 <div class="teacher-course-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

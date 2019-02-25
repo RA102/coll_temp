@@ -32,6 +32,10 @@ class Discipline extends \yii\db\ActiveRecord
 
     const STATUS_ACTIVE = 1;
 
+    public $caption_current;
+    public $caption_ru;
+    public $caption_kk;
+
     /**
      * {@inheritdoc}
      */
@@ -47,6 +51,21 @@ class Discipline extends \yii\db\ActiveRecord
         if ($this->types instanceof ArrayExpression) {
             $this->types = $this->types->getValue();
         }
+
+        $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
+        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
+        $this->caption_ru = $this->caption['ru'];
+        $this->caption_kk = $this->caption['kk'];
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->caption = [
+            'ru' => $this->caption_ru,
+            'kk' => $this->caption_kk,
+        ];
+
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -60,6 +79,7 @@ class Discipline extends \yii\db\ActiveRecord
             [['status'], 'integer'],
             [['slug'], 'string', 'max' => 255],
             [['types'], 'each', 'rule' => ['integer']],
+            [['caption_ru', 'caption_kk'], 'string'],
         ];
     }
 
@@ -71,6 +91,9 @@ class Discipline extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'caption' => Yii::t('app', 'Caption'),
+            'caption_ru' => Yii::t('app', 'Caption Ru'),
+            'caption_kk' => Yii::t('app', 'Caption Kk'),
+            'caption_current' => Yii::t('app', 'Caption Current'),
             'slug' => Yii::t('app', 'Slug'),
             'types' => Yii::t('app', 'Discipline Type'),
             'status' => Yii::t('app', 'Status'),

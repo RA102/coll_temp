@@ -8,6 +8,9 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\organization\InstitutionDiscipline */
 /* @var $form yii\widgets\ActiveForm */
+
+/** @see Discipline::caption_current $disciplines */
+$disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 'caption_current');
 ?>
 
 <div class="institution-discipline-form">
@@ -15,7 +18,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'discipline_id')->widget(Select2::class, [
-        'data' => ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 'caption'), // TODO rework to ajax
+        'data' => $disciplines, // TODO rework to ajax
         'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
         'theme' => 'default',
         'pluginOptions' => [
