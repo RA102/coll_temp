@@ -1,5 +1,3 @@
-
-
 $(document).ready(function() {
 
     $('#calendar').fullCalendar({
@@ -14,18 +12,23 @@ $(document).ready(function() {
         navLinks: true, // can click day/week names to navigate views
         selectable: true,
         selectHelper: true,
+        slotLabelFormat: 'HH:mm',
+        timeFormat: 'HH:mm',
         select: function(start, end) {
-            var title = prompt('Event Title:');
-            var eventData;
-            if (title) {
-                eventData = {
-                    title: title,
-                    start: start,
-                    end: end
-                };
-                $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-            }
-            $('#calendar').fullCalendar('unselect');
+            eventData = {
+                id: 'new',
+                title: '',
+                start: start,
+                end: end,
+            };
+            $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+
+            $('#modal-lesson-create').modal({backdrop: 'static', keyboard: false});
+            $('#modal-lesson-create').find('#start_date').val(start.format('YYYY-MM-DD HH:mm:ss'));
+            $('#modal-lesson-create').find('#end_date').val(end.format('YYYY-MM-DD HH:mm:ss'));
+
+            // }
+            // $('#calendar').fullCalendar('unselect');
         },
         editable: true,
         eventLimit: true, // allow "more" link when too many events
@@ -41,61 +44,7 @@ $(document).ready(function() {
             // any other sources...
 
         ],
-        events: [
-            {
-                title: 'All Day Event',
-                start: '2019-01-01'
-            },
-            {
-                title: 'Long Event',
-                start: '2019-01-07',
-                end: '2019-01-10'
-            },
-            {
-                id: 999,
-                title: 'Repeating Event',
-                start: '2019-01-09T16:00:00'
-            },
-            {
-                id: 999,
-                title: 'Repeating Event',
-                start: '2019-01-16T16:00:00'
-            },
-            {
-                title: 'Conference',
-                start: '2019-01-11',
-                end: '2019-01-13'
-            },
-            {
-                title: 'Meeting',
-                start: '2019-01-12T10:30:00',
-                end: '2019-01-12T12:30:00'
-            },
-            {
-                title: 'Lunch',
-                start: '2019-01-12T12:00:00'
-            },
-            {
-                title: 'Meeting',
-                start: '2019-01-12T14:30:00'
-            },
-            {
-                title: 'Happy Hour',
-                start: '2019-01-12T17:30:00'
-            },
-            {
-                title: 'Dinner',
-                start: '2019-01-12T20:00:00'
-            },
-            {
-                title: 'Birthday Party',
-                start: '2019-01-13T07:00:00'
-            },
-            {
-                title: 'Click for Google',
-                start: '2019-01-28'
-            }
-        ],
+        events: [],
         eventClick: function(event) {
             // opens events in a popup window
             console.log(event);
@@ -112,7 +61,37 @@ $(document).ready(function() {
 
             // TODO call revertFunc if ajax fails
         },
+        eventRender: function(event, element, view) {
+            if (event.hasOwnProperty('lesson_id')) {
+                var el = element.html();
+                element.html("<b>" + event.title + "</b><br>" + event.groups.join(", "));
+            }
+        }
     });
-
 });
 
+var modal = $("#modal-lesson-create");
+
+modal.on("hide.bs.modal", function(e) {
+    $('#calendar').fullCalendar('removeEvents', 'new');
+});
+
+
+modal.on("click",".js-modal-save", function(){
+    $.ajax({
+        url: createUrl,
+        type: 'POST',
+        data: {
+            teacher_course_id: $('#teacher_course_id').val(),
+            start_date: $('#start_date').val(),
+            end_date: $('#end_date').val(),
+        }
+    }).done(function (data) {
+        modal.modal('toggle');
+        $('#calendar').fullCalendar('refetchEvents');
+    })
+});
+
+modal.on("click",".js-modal-cancel", function(){
+    // code
+});

@@ -41,7 +41,7 @@ class Lesson extends \yii\db\ActiveRecord
             [['teacher_course_id', 'teacher_id', 'duration'], 'integer'],
             [['date_ts'], 'safe'],
             [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['teacher_id' => 'id']],
-            [['teacher_course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::class, 'targetAttribute' => ['teacher_course_id' => 'id']],
+            [['teacher_course_id'], 'exist', 'skipOnError' => true, 'targetClass' => TeacherCourse::class, 'targetAttribute' => ['teacher_course_id' => 'id']],
         ];
     }
 

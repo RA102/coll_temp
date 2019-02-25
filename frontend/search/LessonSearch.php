@@ -14,6 +14,8 @@ use yii\db\ActiveQuery;
 class LessonSearch extends Lesson
 {
     public $group_id;
+    public $from_date;
+    public $to_date;
 
     /**
      * {@inheritdoc}
@@ -24,16 +26,13 @@ class LessonSearch extends Lesson
             [['id', 'teacher_course_id', 'teacher_id', 'duration'], 'integer'],
             [['date_ts', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
             [['group_id'], 'integer'],
+            [['from_date', 'to_date'], 'filter', 'filter' => function ($value) {
+                if ($value) {
+                    return date('Y-m-d H:i:s', strtotime($value));
+                }
+                return null;
+            }],
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
     }
 
     /**
@@ -46,10 +45,10 @@ class LessonSearch extends Lesson
         $query = Lesson::find()->joinWith([
             /** @see Lesson::getTeacherCourse() */
             'teacherCourse' => function (ActiveQuery $query) {
-                /** @see TeacherCourse::getGroups() */
                 return $query
                     ->joinWith([
                         // For group_id filtration
+                        /** @see TeacherCourse::getGroups() */
                         'groups' => function (ActiveQuery $query) {
                             return $query->andFilterWhere([
                                 'group.id' => $this->group_id
@@ -58,9 +57,14 @@ class LessonSearch extends Lesson
                     ], false)
                     ->with([
                         // For group name display (in fullcalendar)
-                        'groups',
+                        'groups', /** @see TeacherCourse::getGroups() */
+                        'course', /** @see TeacherCourse::getCourse() */
                     ]);
             }
+        ])->andFilterWhere([
+            'AND',
+            ['>=', 'date_ts', $this->from_date],
+            ['<=', 'date_ts', $this->to_date],
         ]);
 
         // add conditions that should always apply here

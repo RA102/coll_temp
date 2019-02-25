@@ -3,10 +3,13 @@
 namespace frontend\controllers;
 
 use common\models\organization\Group;
+use common\models\TeacherCourse;
+use frontend\models\forms\LessonForm;
 use frontend\search\GroupSearch;
 use Yii;
 use common\models\Lesson;
 use frontend\search\LessonSearch;
+use yii\db\ActiveQuery;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -42,9 +45,24 @@ class LessonController extends Controller
         $searchModel->load(Yii::$app->request->queryParams);
         $dataProvider = $searchModel->search();
 
+        $model = new LessonForm();
+
+        $groups = Group::find()->joinWith([
+
+        ]);
+
+        $teacherCourses = TeacherCourse::find()->joinWith([
+            /** @see TeacherCourse::getGroups() */
+            'groups' => function (ActiveQuery $query) use ($searchModel) {
+                $query->andWhere(['group.id' => $searchModel->group_id]);
+            }
+        ])->all();
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'model' => $model,
+            'teacherCourses' => $teacherCourses,
         ]);
     }
 
@@ -149,6 +167,8 @@ class LessonController extends Controller
 
         $searchModel = new LessonSearch();
         $searchModel->load(Yii::$app->request->queryParams);
+        $searchModel->from_date = $start;
+        $searchModel->to_date = $end;
         $dataProvider = $searchModel->search();
 
         $result = [];
@@ -160,14 +180,41 @@ class LessonController extends Controller
             $end = (clone $start)->add(new \DateInterval('PT' . $lesson->duration . 'M'));
 
             $result[] = [
-                'title' => implode(', ', array_map(function (Group $group) {
-                    return $group->caption_current;
-                }, $lesson->teacherCourse->groups)),
+                'title' => $lesson->teacherCourse->getFullname(),
                 'start' => $start->format(DATE_ATOM),
                 'end' => $end->format(DATE_ATOM),
+                'teacher_course_id' => $lesson->teacher_course_id,
+                'groups' => array_map(function (Group $group) {
+                    return $group->caption_current;
+                }, $lesson->teacherCourse->groups),
+                'lesson_id' => $lesson->id,
             ];
         }
 
         return $result;
+    }
+
+    public function actionAjaxCreate()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $form = new LessonForm();
+        $form->load(Yii::$app->request->post());
+
+        if ($form->validate()) {
+            $model = new Lesson(); // TODO change to static add() method
+            $model->teacher_course_id = $form->teacher_course_id;
+
+            $start_date = \DateTime::createFromFormat('Y-m-d H:i:s', $form->start_date);
+            $end_date = \DateTime::createFromFormat('Y-m-d H:i:s', $form->end_date);
+
+            $model->date_ts = $start_date->format('Y-m-d H:i:s');
+            $model->duration = ($end_date->getTimestamp() - $start_date->getTimestamp()) / 60;
+            $model->save();
+
+            return $model;
+        }
+
+        return $form;
     }
 }

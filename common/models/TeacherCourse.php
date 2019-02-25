@@ -101,4 +101,9 @@ class TeacherCourse extends \yii\db\ActiveRecord
         return $this->hasMany(Group::class, ['id' => 'group_id'])
             ->viaTable('link.teacher_course_group_link', ['teacher_course_id' => 'id']);
     }
+
+    public function getFullname()
+    {
+        return $this->course->caption;
+    }
 }
