@@ -16,9 +16,11 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="modal-body">
 
-                <input type="hidden" id="event-id">
+                <?php $form = ActiveForm::begin([
+                    'id' => 'modal-form'
+                ]); ?>
 
-                <?php $form = ActiveForm::begin(); ?>
+                <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
                 <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
                     'data' => ArrayHelper::map($teacherCourses, 'id', 'fullname'),
@@ -28,18 +30,19 @@ use yii\widgets\ActiveForm;
                     ],
                 ]) ?>
 
-                <?= $form->field($model, 'start_date')->textInput([
+                <?= $form->field($model, 'start')->textInput([
                     'readonly' => true,
                 ]) ?>
 
-                <?= $form->field($model, 'end_date')->textInput([
+                <?= $form->field($model, 'end')->textInput([
                     'readonly' => true,
                 ]) ?>
 
                 <?php ActiveForm::end(); ?>
 
                 <button class="btn btn-success js-modal-save" type="button">Save</button>
-                <button class="btn btn-warning js-modal-cancel" data-dismiss="modal" type="button">Cancel</button>
+                <button class="btn btn-default js-modal-cancel" data-dismiss="modal" type="button">Cancel</button>
+                <button class="btn btn-danger js-modal-delete" type="button">Delete</button>
             </div>
         </div>
     </div>

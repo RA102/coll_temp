@@ -1,4 +1,7 @@
-$(document).ready(function() {
+var modal = $("#modal-lesson-create");
+var modalForm = $('#modal-form');
+
+$(document).ready(function () {
 
     $('#calendar').fullCalendar({
         header: {
@@ -14,7 +17,7 @@ $(document).ready(function() {
         selectHelper: true,
         slotLabelFormat: 'HH:mm',
         timeFormat: 'HH:mm',
-        select: function(start, end) {
+        select: function (start, end) {
             eventData = {
                 id: 'new',
                 title: '',
@@ -23,9 +26,11 @@ $(document).ready(function() {
             };
             $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
 
-            $('#modal-lesson-create').modal({backdrop: 'static', keyboard: false});
-            $('#modal-lesson-create').find('#start_date').val(start.format('YYYY-MM-DD HH:mm:ss'));
-            $('#modal-lesson-create').find('#end_date').val(end.format('YYYY-MM-DD HH:mm:ss'));
+            modalForm.yiiActiveForm('resetForm');
+            modal.modal({backdrop: 'static', keyboard: false});
+            modal.find('#start').val(start.format('YYYY-MM-DD HH:mm:ss'));
+            modal.find('#end').val(end.format('YYYY-MM-DD HH:mm:ss'));
+            modal.find('#teacher_course_id').val(null).trigger("change");
 
             // }
             // $('#calendar').fullCalendar('unselect');
@@ -45,53 +50,81 @@ $(document).ready(function() {
 
         ],
         events: [],
-        eventClick: function(event) {
-            // opens events in a popup window
-            console.log(event);
+        eventClick: function (event) {
+            modalForm.yiiActiveForm('resetForm');
+            modal.modal({backdrop: 'static', keyboard: false});
+            modal.find('#start').val(event.start.format('YYYY-MM-DD HH:mm:ss'));
+            modal.find('#end').val(event.end.format('YYYY-MM-DD HH:mm:ss'));
+            modal.find('#teacher_course_id').val(event.teacher_course_id).trigger("change");
+            modal.find('#id').val(event.id);
         },
-        eventDrop: function(event, delta, revertFunc) {
+        eventDrop: function (event, delta, revertFunc) {
             event.color = 'red';
             $('#calendar').fullCalendar('updateEvent', event);
 
             // TODO call revertFunc if ajax fails
         },
-        eventResize: function(event, delta, revertFunc) {
-            event.color = 'blue';
+        eventResize: function (event, delta, revertFunc) {
+            event.color = 'red';
             $('#calendar').fullCalendar('updateEvent', event);
 
             // TODO call revertFunc if ajax fails
         },
-        eventRender: function(event, element, view) {
-            if (event.hasOwnProperty('lesson_id')) {
-                var el = element.html();
-                element.html("<b>" + event.title + "</b><br>" + event.groups.join(", "));
+        eventRender: function (event, element, view) {
+            if (event.hasOwnProperty('groups')) {
+                element.find('.fc-title').append("<br/>" + "<small>" + event.groups.join(", ") + "</small>");
             }
         }
     });
 });
 
-var modal = $("#modal-lesson-create");
 
-modal.on("hide.bs.modal", function(e) {
+
+// On hide modal remove select (temporary event)
+modal.on("hide.bs.modal", function (e) {
     $('#calendar').fullCalendar('removeEvents', 'new');
 });
 
+// Clicked Save
+modal.on("click", ".js-modal-save", function () {
+    modalForm.submit();
+});
 
-modal.on("click",".js-modal-save", function(){
+// Clicked Cancel
+modal.on("click", ".js-modal-cancel", function () {
+
+});
+
+// Clicked Delete
+modal.on("click", ".js-modal-delete", function() {
+    if (confirm("Do you want to remove this lesson?")) {
+        $.ajax({
+            url: deleteUrl,
+            type: 'POST',
+            data: {
+                id: $('#id').val(),
+            }
+        }).done(function (data) {
+            modal.modal('toggle');
+            $('#calendar').fullCalendar('refetchEvents');
+        });
+    }
+});
+
+// Prevent form submit, send ajax request
+modalForm.on('beforeSubmit', function (e) {
     $.ajax({
         url: createUrl,
         type: 'POST',
         data: {
+            id: $('#id').val(),
             teacher_course_id: $('#teacher_course_id').val(),
-            start_date: $('#start_date').val(),
-            end_date: $('#end_date').val(),
+            start: $('#start').val(),
+            end: $('#end').val(),
         }
     }).done(function (data) {
         modal.modal('toggle');
         $('#calendar').fullCalendar('refetchEvents');
-    })
-});
-
-modal.on("click",".js-modal-cancel", function(){
-    // code
+    });
+    return false;
 });

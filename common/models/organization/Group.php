@@ -5,6 +5,7 @@ namespace common\models\organization;
 use common\helpers\GroupHelper;
 use common\helpers\LanguageHelper;
 use common\models\handbook\Speciality;
+use common\models\TeacherCourse;
 use Yii;
 use yii\helpers\Json;
 
@@ -33,6 +34,7 @@ use yii\helpers\Json;
  * @property string $delete_ts
  *
  * @property Speciality $speciality
+ * @property TeacherCourse[] $teacherCourses
  */
 class Group extends \yii\db\ActiveRecord
 {
@@ -145,5 +147,14 @@ class Group extends \yii\db\ActiveRecord
     public function getLanguage()
     {
         return LanguageHelper::getLanguageList()[$this->language] ?? '';
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeacherCourses()
+    {
+        return $this->hasMany(TeacherCourse::class, ['id' => 'teacher_course_id'])
+            ->viaTable('link.teacher_course_group_link', ['group_id' => 'id']);
     }
 }

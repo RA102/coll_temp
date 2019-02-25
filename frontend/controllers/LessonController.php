@@ -45,12 +45,6 @@ class LessonController extends Controller
         $searchModel->load(Yii::$app->request->queryParams);
         $dataProvider = $searchModel->search();
 
-        $model = new LessonForm();
-
-        $groups = Group::find()->joinWith([
-
-        ]);
-
         $teacherCourses = TeacherCourse::find()->joinWith([
             /** @see TeacherCourse::getGroups() */
             'groups' => function (ActiveQuery $query) use ($searchModel) {
@@ -61,7 +55,6 @@ class LessonController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'model' => $model,
             'teacherCourses' => $teacherCourses,
         ]);
     }
@@ -175,20 +168,7 @@ class LessonController extends Controller
         /** @var Lesson[] $lessons */
         $lessons = $dataProvider->getModels();
         foreach ($lessons as $lesson) {
-
-            $start = \DateTime::createFromFormat('Y-m-d H:i:s', $lesson->date_ts);
-            $end = (clone $start)->add(new \DateInterval('PT' . $lesson->duration . 'M'));
-
-            $result[] = [
-                'title' => $lesson->teacherCourse->getFullname(),
-                'start' => $start->format(DATE_ATOM),
-                'end' => $end->format(DATE_ATOM),
-                'teacher_course_id' => $lesson->teacher_course_id,
-                'groups' => array_map(function (Group $group) {
-                    return $group->caption_current;
-                }, $lesson->teacherCourse->groups),
-                'lesson_id' => $lesson->id,
-            ];
+            $result[] = LessonForm::createFromLesson($lesson);
         }
 
         return $result;
@@ -202,19 +182,29 @@ class LessonController extends Controller
         $form->load(Yii::$app->request->post());
 
         if ($form->validate()) {
-            $model = new Lesson(); // TODO change to static add() method
-            $model->teacher_course_id = $form->teacher_course_id;
+            if ($form->id) {
+                $model = $this->findModel($form->id);
+            } else {
+                $model = new Lesson();
+            }
 
-            $start_date = \DateTime::createFromFormat('Y-m-d H:i:s', $form->start_date);
-            $end_date = \DateTime::createFromFormat('Y-m-d H:i:s', $form->end_date);
-
-            $model->date_ts = $start_date->format('Y-m-d H:i:s');
-            $model->duration = ($end_date->getTimestamp() - $start_date->getTimestamp()) / 60;
+            $form->apply($model);
             $model->save();
 
             return $model;
         }
 
         return $form;
+    }
+
+    public function actionAjaxDelete()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $id = Yii::$app->request->post('id');
+        $model = $this->findModel($id);
+        $model->delete();
+
+        return true;
     }
 }

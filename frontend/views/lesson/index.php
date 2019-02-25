@@ -7,7 +7,6 @@ use yii\web\View;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\search\LessonSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $model frontend\models\forms\LessonForm */
 /* @var $teacherCourses common\models\TeacherCourse[] */
 
 \frontend\assets\FullcalendarAsset::register($this);
@@ -26,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 <?= $this->render('_create_form', [
-    'model' => $model,
+    'model' => new \frontend\models\forms\LessonForm(),
     'teacherCourses' => $teacherCourses,
 ]); ?>
 
