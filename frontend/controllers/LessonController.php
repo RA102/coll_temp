@@ -2,7 +2,9 @@
 
 namespace frontend\controllers;
 
+use common\models\organization\Group;
 use common\models\TeacherCourse;
+use common\services\person\EmployeeService;
 use frontend\models\forms\LessonForm;
 use frontend\search\GroupSearch;
 use Yii;
@@ -13,12 +15,16 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+use yii\base\Module;
 
 /**
  * LessonController implements the CRUD actions for Lesson model.
  */
 class LessonController extends Controller
 {
+    private $employeeService;
+    private $institution;
+
     /**
      * {@inheritdoc}
      */
@@ -34,27 +40,36 @@ class LessonController extends Controller
         ];
     }
 
+    public function __construct(
+        string $id,
+        Module $module,
+        EmployeeService $employeeService,
+        array $config = []
+    ) {
+        $this->employeeService = $employeeService;
+        $this->institution = \Yii::$app->user->identity->institution;
+        parent::__construct($id, $module, $config);
+    }
+
     /**
      * Lists all Lesson models.
+     * @param $group_id
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($group_id)
     {
-        $searchModel = new LessonSearch();
-        $searchModel->load(Yii::$app->request->queryParams);
-        $dataProvider = $searchModel->search();
+        $group = Group::findOne($group_id); // TODO change to GroupService::getGroup
 
         $teacherCourses = TeacherCourse::find()->joinWith([
             /** @see TeacherCourse::getGroups() */
-            'groups' => function (ActiveQuery $query) use ($searchModel) {
-                $query->andWhere(['group.id' => $searchModel->group_id]);
+            'groups' => function (ActiveQuery $query) use ($group) {
+                $query->andWhere(['group.id' => $group->id]);
             }
         ])->all();
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
             'teacherCourses' => $teacherCourses,
+            'teachers' => $this->employeeService->getTeachers($this->institution),
         ]);
     }
 
@@ -63,12 +78,9 @@ class LessonController extends Controller
         $searchModel = new GroupSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $lessonSearchModel = new LessonSearch();
-
         return $this->render('groups', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'lessonSearchModel' => $lessonSearchModel,
         ]);
     }
 

@@ -7,7 +7,6 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\search\GroupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $lessonSearchModel frontend\search\LessonSearch */
 
 $this->title = Yii::t('app', 'Lessons');
 $this->params['breadcrumbs'][] = $this->title;
@@ -29,10 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'attribute' => 'caption_current',
-                    'value' => function (Group $model) use ($lessonSearchModel) {
+                    'value' => function (Group $model) {
                         return Html::a($model->caption_current, [
                             'lesson/index',
-                            Html::getInputName($lessonSearchModel, 'group_id') => $model->id,
+                            'group_id' => $model->id,
                         ]);
                     },
                     'format' => 'html',

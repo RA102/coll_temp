@@ -8,6 +8,8 @@ use yii\helpers\ArrayHelper;
 
 class GroupService
 {
+    // TODO getGroup(Institution $institution, $id): Group
+
     public function getAssociativeByClass(int $class): array
     {
         $formattedGroups = [];

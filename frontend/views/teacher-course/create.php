@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\TeacherCourse */
+/* @var $teachers common\models\person\Employee[] */
 
 $this->title = Yii::t('app', 'Create Teacher Course');
 $this->params['breadcrumbs'][] = $this->title;
@@ -15,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'teachers' => $teachers,
     ]) ?>
 
 </div>

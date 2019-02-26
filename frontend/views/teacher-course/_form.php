@@ -10,17 +10,8 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\TeacherCourse */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $teachers common\models\person\Employee[] */
 
-$institution = \Yii::$app->user->identity->institution; // TODO move to controller/service
-$persons = Person::find()->joinWith([
-    /** @see Person::getPersonInstitutionLinks() */
-    'personInstitutionLinks' => function (\yii\db\ActiveQuery $query) use ($institution) {
-        $query->andWhere([
-            'link.person_institution_link.institution_id' => $institution->id,
-        ]);
-    },
-])->all();
-$persons = ArrayHelper::map($persons, 'id', 'fullName');
 ?>
 
 <div class="teacher-course-form">
@@ -28,7 +19,7 @@ $persons = ArrayHelper::map($persons, 'id', 'fullName');
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'teacher_id')->widget(Select2::class, [
-        'data' => $persons, // TODO rework to ajax
+        'data' => ArrayHelper::map($teachers, 'id', 'fullName'), // TODO rework to ajax
         'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
         'theme' => 'default',
         'pluginOptions' => [

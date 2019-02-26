@@ -2,7 +2,10 @@
 
 namespace frontend\controllers;
 
+use common\models\Course;
+use common\models\organization\Institution;
 use common\services\CourseService;
+use common\services\person\EmployeeService;
 use common\services\TeacherCourseService;
 use Yii;
 use common\models\TeacherCourse;
@@ -18,16 +21,21 @@ class TeacherCourseController extends Controller
 {
     private $courseService;
     private $teacherCourseService;
+    private $employeeService;
+    private $institution;
 
     public function __construct(
         string $id,
         Module $module,
         CourseService $courseService,
         TeacherCourseService $teacherCourseService,
+        EmployeeService $employeeService,
         array $config = []
     ) {
         $this->courseService = $courseService;
         $this->teacherCourseService = $teacherCourseService;
+        $this->employeeService = $employeeService;
+        $this->institution = \Yii::$app->user->identity->institution;
         parent::__construct($id, $module, $config);
     }
 
@@ -54,8 +62,11 @@ class TeacherCourseController extends Controller
      */
     public function actionView($course_id, $id)
     {
+        $course = $this->findCourse($this->institution, $course_id);
+        $teacherCourse = $this->findTeacherCourse($course, $id);
+
         return $this->render('view', [
-            'model' => $this->findModel($course_id, $id),
+            'model' => $teacherCourse,
         ]);
     }
 
@@ -67,17 +78,19 @@ class TeacherCourseController extends Controller
      */
     public function actionCreate($course_id)
     {
-        $model = new TeacherCourse();
+        $course = $this->courseService->getCourse($this->institution, $course_id);
+        $teacherCourse = new TeacherCourse();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->course_id = $course_id;
-            if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id, 'course_id' => $course_id]);
+        if ($teacherCourse->load(Yii::$app->request->post())) {
+            $teacherCourse->course_id = $course->id;
+            if ($teacherCourse->save()) {
+                return $this->redirect(['view', 'id' => $teacherCourse->id, 'course_id' => $course_id]);
             }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $teacherCourse,
+            'teachers' => $this->employeeService->getTeachers($this->institution),
         ]);
     }
 
@@ -90,16 +103,18 @@ class TeacherCourseController extends Controller
      */
     public function actionUpdate($course_id, $id)
     {
-        $model = $this->findModel($course_id, $id);
+        $course = $this->findCourse($this->institution, $course_id);
+        $teacherCourse = $this->findTeacherCourse($course, $id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id, 'course_id' => $course_id]);
+        if ($teacherCourse->load(Yii::$app->request->post())) {
+            if ($teacherCourse->save()) {
+                return $this->redirect(['view', 'id' => $teacherCourse->id, 'course_id' => $course_id]);
             }
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'model' => $teacherCourse,
+            'teachers' => $this->employeeService->getTeachers($this->institution),
         ]);
     }
 
@@ -112,29 +127,29 @@ class TeacherCourseController extends Controller
      */
     public function actionDelete($course_id, $id)
     {
-        $this->findModel($course_id, $id)->delete();
+        $course = $this->findCourse($this->institution, $course_id);
+        $teacherCourse = $this->findTeacherCourse($course, $id);
+
+        $teacherCourse->delete();
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the TeacherCourse model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param $course_id
-     * @param integer $id
-     * @return TeacherCourse the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($course_id, $id)
+    protected function findCourse(Institution $institution, $id)
     {
-        $institution = \Yii::$app->user->identity->institution;
-
-        if (($course = $this->courseService->getCourse($institution, $course_id)) !== null) {
-            if (($teacherCourse = $this->teacherCourseService->getTeacherCourse($course, $id)) !== null) {
-                return $teacherCourse;
-            }
+        $course = $this->courseService->getCourse($institution, $id);
+        if ($course !== null) {
+            return $course;
         }
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
 
+    protected function findTeacherCourse(Course $course, $id)
+    {
+        $teacherCourse = $this->teacherCourseService->getTeacherCourse($course, $id);
+        if ($teacherCourse !== null) {
+            return $teacherCourse;
+        }
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }

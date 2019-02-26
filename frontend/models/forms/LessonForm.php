@@ -16,6 +16,7 @@ class LessonForm extends Model
 
     public $id;
     public $teacher_course_id;
+    public $teacher_id;
     public $start;
     public $end;
     public $title;
@@ -28,7 +29,7 @@ class LessonForm extends Model
     {
         return [
             [['teacher_course_id'], 'required'],
-            [['teacher_course_id'], 'integer'],
+            [['teacher_course_id', 'teacher_id'], 'integer'],
             [['start', 'end'], 'required'],
             [['start', 'end'], 'string'],
             [['id'], 'integer'],
@@ -42,6 +43,7 @@ class LessonForm extends Model
     {
         return [
             'teacher_course_id' => Yii::t('app', 'Teacher Course ID'),
+            'teacher_id' => Yii::t('app', 'Teacher ID'),
             'start' => Yii::t('app', 'Lesson Start Date'),
             'end' => Yii::t('app', 'Lesson End Date'),
         ];
@@ -55,6 +57,7 @@ class LessonForm extends Model
         $model = new static();
         $model->id = $lesson->id;
         $model->teacher_course_id = $lesson->teacher_course_id;
+        $model->teacher_id = $lesson->teacher_id;
         $model->start = $startDate->format(DATE_ATOM);
         $model->end = $endDate->format(DATE_ATOM);
 
@@ -72,6 +75,7 @@ class LessonForm extends Model
         $endDate = \DateTime::createFromFormat('Y-m-d H:i:s', $this->end);
 
         $lesson->teacher_course_id = $this->teacher_course_id;
+        $lesson->teacher_id = $this->teacher_id;
         $lesson->date_ts = $startDate->format('Y-m-d H:i:s');
         $lesson->duration = ($endDate->getTimestamp() - $startDate->getTimestamp()) / 60;
 

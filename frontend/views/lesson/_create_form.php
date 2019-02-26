@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $model frontend\models\forms\LessonForm */
 /* @var $teacherCourses common\models\TeacherCourse[] */
+/* @var $teachers common\models\person\Employee[] */
 ?>
 
 <div class="modal fade" id="modal-lesson-create" tabindex="-1" role="dialog">
@@ -23,7 +24,16 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
                 <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
-                    'data' => ArrayHelper::map($teacherCourses, 'id', 'fullname'),
+                    'data' => ArrayHelper::map($teacherCourses, 'id', 'fullname'), /** @see \common\models\TeacherCourse::getFullname() */
+                    'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+                    'theme' => 'default',
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                ]) ?>
+
+                <?= $form->field($model, 'teacher_id')->widget(Select2::class, [
+                    'data' => ArrayHelper::map($teachers, 'id', 'fullName'), // TODO rework to ajax
                     'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
                     'theme' => 'default',
                     'pluginOptions' => [
