@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $model->discipline->caption_current;
                     },
                 ],
-                'caption',
+                'caption_current',
                 [
                     'attribute' => 'classes',
                     'value' => function (Course $model) {
