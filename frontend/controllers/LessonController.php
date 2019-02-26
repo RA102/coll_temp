@@ -67,9 +67,13 @@ class LessonController extends Controller
             }
         ])->all();
 
+        $searchModel = new LessonSearch();
+        $searchModel->group_id = $group_id;
+
         return $this->render('index', [
             'teacherCourses' => $teacherCourses,
             'teachers' => $this->employeeService->getTeachers($this->institution),
+            'searchModel' => $searchModel,
         ]);
     }
 

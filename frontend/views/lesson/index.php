@@ -7,6 +7,7 @@ use yii\web\View;
 /* @var $this yii\web\View */
 /* @var $teacherCourses common\models\TeacherCourse[] */
 /* @var $teachers common\models\person\Employee[] */
+/* @var $searchModel frontend\search\LessonSearch */
 
 \frontend\assets\FullcalendarAsset::register($this);
 $this->title = Yii::t('app', 'Lessons');
@@ -29,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ]); ?>
 
 <?php
-$feedUrl = json_encode(Url::to(array_merge(['lesson/ajax-feed'], \Yii::$app->request->getQueryParams())));
+$feedUrl = json_encode(Url::to(array_merge(['lesson/ajax-feed'], [Html::getInputName($searchModel, 'group_id') => $searchModel->group_id])));
 $createUrl = json_encode(Url::to(['lesson/ajax-create']));
 $deleteUrl = json_encode(Url::to(['lesson/ajax-delete']));
 
