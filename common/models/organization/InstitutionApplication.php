@@ -2,7 +2,9 @@
 
 namespace common\models\organization;
 
+use common\helpers\PersonHelper;
 use common\models\CountryUnit;
+use common\models\Street;
 use Yii;
 
 /**
@@ -137,5 +139,25 @@ class InstitutionApplication extends \yii\db\ActiveRecord
 
     public function getCountryId() {
         return $this->city->country_id ?? null;
+    }
+
+    public function getEducationalForm()
+    {
+        return $this->hasOne(EducationalForm::class, ['id' => 'educational_form_id']);
+    }
+
+    public function getOrganizationalLegalForm()
+    {
+        return $this->hasOne(OrganizationalLegalForm::class, ['id' => 'organizational_legal_form_id']);
+    }
+
+    public function getStreetModel()
+    {
+        return $this->hasOne(Street::class, ['id' => 'street']);
+    }
+
+    public function getSex()
+    {
+        return PersonHelper::getSexList()[$this->sex] ?? null;
     }
 }
