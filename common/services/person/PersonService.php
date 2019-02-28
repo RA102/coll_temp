@@ -4,25 +4,30 @@ namespace common\services\person;
 
 use common\models\link\PersonInstitutionLink;
 use common\models\person\Person;
+use common\services\NotificationService;
 use common\services\TransactionManager;
 use common\services\pds\PersonService as PdsService;
 use yii\helpers\Json;
 
 class PersonService
 {
+    private $notificationService;
     private $transactionManager;
     private $pdsService;
 
     /**
      * PersonService constructor.
+     * @param NotificationService $notificationService
      * @param PdsService $pdsService
      * @param TransactionManager $transactionManager
      */
     public function __construct(
+        NotificationService $notificationService,
         PdsService $pdsService,
         TransactionManager $transactionManager
     )
     {
+        $this->notificationService = $notificationService;
         $this->transactionManager = $transactionManager;
         $this->pdsService = $pdsService;
     }
@@ -73,6 +78,13 @@ class PersonService
             $link = PersonInstitutionLink::add($model->id, $institution_id);
             $link->save();
         });
+
+        // TODO: needs testing
+        if ($create_identity && $model->getOldAttribute('portal_uid') === null) {
+            $this->notificationService->sendPersonCreatedNotification([
+                $identity
+            ]);
+        }
 
         return $model;
     }

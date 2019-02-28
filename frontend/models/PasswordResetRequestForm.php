@@ -1,16 +1,32 @@
 <?php
 namespace frontend\models;
 
+use common\services\NotificationService;
 use Yii;
 use yii\base\Model;
 use common\models\person\Person;
+use yii\helpers\Html;
 
 /**
  * Password reset request form
  */
 class PasswordResetRequestForm extends Model
 {
+    private $notificationService;
+
     public $email;
+
+    /**
+     * PasswordResetRequestForm constructor.
+     * @param array $config
+     * @param NotificationService $notificationService
+     */
+    public function __construct(NotificationService $notificationService, array $config = [])
+    {
+        parent::__construct($config);
+
+        $this->notificationService = $notificationService;
+    }
 
 
     /**
@@ -23,7 +39,7 @@ class PasswordResetRequestForm extends Model
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'exist',
-                'targetClass' => '\common\models\User',
+                'targetClass' => '\common\models\person\Person',
                 'filter' => ['status' => Person::STATUS_ACTIVE],
                 'message' => 'There is no user with this email address.'
             ],
@@ -37,9 +53,9 @@ class PasswordResetRequestForm extends Model
      */
     public function sendEmail()
     {
-        /* @var $user User */
-        $user = User::findOne([
-            'status' => User::STATUS_ACTIVE,
+        /* @var $user Person */
+        $user = Person::findOne([
+            'status' => Person::STATUS_ACTIVE,
             'email' => $this->email,
         ]);
 
@@ -47,22 +63,14 @@ class PasswordResetRequestForm extends Model
             return false;
         }
         
-        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+        if (!Person::isPasswordResetTokenValid($user->password_reset_token)) {
             $user->generatePasswordResetToken();
             if (!$user->save()) {
                 return false;
             }
         }
 
-        return Yii::$app
-            ->mailer
-            ->compose(
-                ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($this->email)
-            ->setSubject('Password reset for ' . Yii::$app->name)
-            ->send();
+        $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['site/reset-password', 'token' => $user->password_reset_token]);
+        return $this->notificationService->sendPasswordChangedNotification([$this->email], $resetLink);
     }
 }

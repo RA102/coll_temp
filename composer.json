@@ -25,7 +25,8 @@
         "msheng/yii2-jwt": "~1.0.0",
         "ext-curl": "*",
         "ext-json": "*",
-        "kartik-v/yii2-widget-depdrop": "@dev"
+        "kartik-v/yii2-widget-depdrop": "@dev",
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

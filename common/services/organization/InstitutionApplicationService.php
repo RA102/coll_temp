@@ -7,19 +7,23 @@ use common\models\link\PersonInstitutionLink;
 use common\models\organization\Institution;
 use common\models\organization\InstitutionApplication;
 use common\models\person\Employee;
+use common\services\NotificationService;
 use common\services\person\PersonService;
 use common\services\TransactionManager;
 use frontend\models\SignupForm;
 
 class InstitutionApplicationService
 {
+    private $notificationService;
     private $transactionManager;
     private $personService;
 
     public function __construct(
+        NotificationService $notificationService,
         PersonService $personService,
         TransactionManager $transactionManager
     ) {
+        $this->notificationService = $notificationService;
         $this->transactionManager = $transactionManager;
         $this->personService = $personService;
     }
@@ -74,7 +78,7 @@ class InstitutionApplicationService
             $application->organizational_legal_form_id
         );
 
-        $this->transactionManager->execute(function () use ($person, $application, $link, $institution) {
+        $this->transactionManager->execute(function () use ($person, $application, $institution) {
             $person->save();
             $institution->save();
 
@@ -87,6 +91,10 @@ class InstitutionApplicationService
 //                throw new \RuntimeException('Saving error.');
 //            }
         });
+
+        $this->notificationService->sendRegistrationCompleteNotification(
+            [$application->email]
+        );
     }
 
     public function reject(InstitutionApplication $application)
