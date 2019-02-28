@@ -2,6 +2,7 @@
 
 namespace common\models\organization;
 
+use common\models\CountryUnit;
 use Yii;
 
 /**
@@ -100,5 +101,41 @@ class InstitutionApplication extends \yii\db\ActiveRecord
     public function isApproved()
     {
         return $this->status == self::STATUS_APPROVED;
+    }
+
+    public function getInstitutionType() {
+        return $this->hasOne(InstitutionType::class, ['id' => 'type_id']);
+    }
+
+    public function getInstitutionTypeIds() {
+        $ids = [];
+        $item = $this->institutionType;
+        while ($item != null) {
+            $ids[] = $item->id;
+
+            $item = $item->parent;
+        }
+
+        return array_reverse($ids);
+    }
+
+    public function getCity() {
+        return $this->hasOne(CountryUnit::class, ['id' => 'city_id']);
+    }
+
+    public function getCityIds() {
+        $ids = [];
+        $item = $this->city;
+        while ($item != null) {
+            $ids[] = $item->id;
+
+            $item = $item->parent;
+        }
+
+        return array_reverse($ids);
+    }
+
+    public function getCountryId() {
+        return $this->city->country_id ?? null;
     }
 }
