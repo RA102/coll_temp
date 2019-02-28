@@ -103,13 +103,7 @@ class ApplicationController extends Controller
         $form = new ApplicationForm($model);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $model->type_id = end($form->type_ids);
-            $model->city_id = end($form->city_ids);
-            $model->street = $form->street;
-//            echo $form->street;die();
-//            die('asd');
-            $model->house_number = $form->house_number;
-            $model->save();
+            $this->applicationService->update($model, $form);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

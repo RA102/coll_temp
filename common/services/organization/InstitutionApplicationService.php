@@ -2,6 +2,7 @@
 
 namespace common\services\organization;
 
+use backend\models\forms\ApplicationForm;
 use common\models\link\PersonInstitutionLink;
 use common\models\organization\Institution;
 use common\models\organization\InstitutionApplication;
@@ -32,6 +33,14 @@ class InstitutionApplicationService
         $model->city_id = end($form->city_ids) ?? null;
         $model->status = InstitutionApplication::STATUS_NEW;
         $model->save();
+    }
+
+    public function update(InstitutionApplication $application, ApplicationForm $form)
+    {
+        $application->setAttributes($form->attributes);
+        $application->type_id = end($form->type_ids);
+        $application->city_id = end($form->city_ids);
+        $application->save();
     }
 
     /**
