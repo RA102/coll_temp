@@ -63,4 +63,20 @@ class InstitutionType extends \yii\db\ActiveRecord
 
         parent::afterFind();
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParent()
+    {
+        return $this->hasOne(self::class, ['id' => 'parent_id'])->inverseOf('children');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getChildren()
+    {
+        return $this->hasMany(self::class, ['parent_id' => 'id'])->inverseOf('parent');
+    }
 }

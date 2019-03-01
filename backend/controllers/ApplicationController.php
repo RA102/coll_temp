@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\forms\ApplicationForm;
 use Yii;
 use common\models\organization\InstitutionApplication;
 use backend\search\InstitutionApplicationSearch;
@@ -99,13 +100,16 @@ class ApplicationController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $form = new ApplicationForm($model);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $this->applicationService->update($model, $form);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'form' => $form,
         ]);
     }
 

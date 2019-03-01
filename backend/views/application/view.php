@@ -34,20 +34,50 @@ $this->params['breadcrumbs'][] = $this->title;
             'attributes' => [
                 'id',
                 'iin',
-                'sex',
+                [
+                    'attribute' => 'sex',
+                    'value' => function(\common\models\organization\InstitutionApplication $model) {
+                        return $model->getSex();
+                    }
+                ],
                 'email:email',
                 'phone',
                 'name',
-                'city_id',
-                'type_id',
+                [
+                    'attribute' => 'city_id',
+                    'value' => function(\common\models\organization\InstitutionApplication $model) {
+                        return $model->city->caption_current;
+                    }
+                ],
+                [
+                    'attribute' => 'type_id',
+                    'value' => function(\common\models\organization\InstitutionApplication $model) {
+                        return $model->institutionType->caption_current;
+                    }
+                ],
                 'firstname',
                 'lastname',
                 'middlename',
-                'street',
+                [
+                    'attribute' => 'street',
+                    'value' => function(\common\models\organization\InstitutionApplication $model) {
+                        return $model->streetModel->caption;
+                    }
+                ],
                 'birth_date',
                 'house_number',
-                'educational_form_id',
-                'organizational_legal_form_id',
+                [
+                    'attribute' => 'educational_form_id',
+                    'value' => function(\common\models\organization\InstitutionApplication $model) {
+                        return $model->educationalForm->caption_current;
+                    }
+                ],
+                [
+                    'attribute' => 'organizational_legal_form_id',
+                    'value' => function(\common\models\organization\InstitutionApplication $model) {
+                        return $model->organizationalLegalForm->caption_current;
+                    }
+                ],
                 'create_ts',
                 'update_ts',
             ],
