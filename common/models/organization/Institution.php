@@ -47,7 +47,7 @@ use yii\db\ActiveQuery;
  *
  * @property Speciality[] $specialities
  * @property InstitutionSpecialityInfo[] $specialityInfos
- * @property Course[] $courses
+ * @property InstitutionDiscipline[] $institutionDisciplines
  * @property PersonInstitutionLink[] $personInstitutionLinks
  */
 class Institution extends \yii\db\ActiveRecord
@@ -165,9 +165,9 @@ class Institution extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCourses()
+    public function getInstitutionDisciplines()
     {
-        return $this->hasMany(Course::class, ['institution_id' => 'id'])->inverseOf('institution');
+        return $this->hasMany(InstitutionDiscipline::class, ['institution_id' => 'id'])->inverseOf('institution');
     }
 
     /**

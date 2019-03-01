@@ -17,17 +17,14 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'discipline_id')->widget(Select2::class, [
-        'data' => $disciplines, // TODO rework to ajax
-        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
-        'theme' => 'default',
-        'pluginOptions' => [
-            'allowClear' => true,
-        ],
-    ]) ?>
+    <?= $form->field($model, 'caption_ru')->textInput() ?>
+
+    <?= $form->field($model, 'caption_kk')->textInput() ?>
+
+    <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'types')->widget(Select2::class, [
-        'data' => \common\helpers\DisciplineHelper::getTypeList(),
+        'data' => \common\helpers\InstitutionDisciplineHelper::getTypeList(),
         'options' => [
             'placeholder' => '...',
             'class' => 'active-form-refresh-control',
@@ -38,6 +35,8 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
             'allowClear' => true,
         ],
     ]) ?>
+
+    <?= $form->field($model, 'status')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

@@ -6,8 +6,11 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\TeacherCourse */
+/* @var $course common\models\Course */
 
-$this->title = $model->course->caption_current;
+$this->title = $model->getFullname();
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Courses'), 'url' => ['course/index']];
+$this->params['breadcrumbs'][] = ['label' => $model->course->caption_current, 'url' => ['course/view', 'id' => $model->course->id]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

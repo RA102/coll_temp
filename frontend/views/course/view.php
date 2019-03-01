@@ -11,7 +11,7 @@ use yii\widgets\DetailView;
 /* @var $teacherCourseDataProvider yii\data\ActiveDataProvider */
 /* @var $teacherCourseSearchModel frontend\search\TeacherCourseSearch */
 
-$this->title = $model->discipline->caption_current;
+$this->title = $model->institutionDiscipline->caption_current;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Courses'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -39,9 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             [
-                'attribute' => 'discipline_id',
+                'attribute' => 'institution_discipline_id',
                 'value' => function (Course $model) {
-                    return $model->discipline->caption_current;
+                    return $model->institutionDiscipline->caption_current;
                 },
             ],
             'caption_current', /** @see Course::$caption_current */

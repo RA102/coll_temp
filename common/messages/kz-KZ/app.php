@@ -166,6 +166,7 @@ return [
     'Discipline Type Exam' => 'Экзаменационные',
 
     'Institution Disciplines' => 'Предметы',
+    'Institution Discipline ID' => 'Предмет',
     'Discipline ID' => 'Дисциплина',
     'Create Institution Discipline' => 'Добавление предмета',
     'Update Institution Discipline' => 'Редактирование предмета',

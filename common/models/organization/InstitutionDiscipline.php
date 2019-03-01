@@ -12,8 +12,10 @@ use yii\db\ArrayExpression;
  *
  * @property int $id
  * @property int $institution_id
- * @property int $discipline_id
+ * @property array $caption
+ * @property string $slug
  * @property int[] $types
+ * @property int $status
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
@@ -23,6 +25,16 @@ use yii\db\ArrayExpression;
  */
 class InstitutionDiscipline extends \yii\db\ActiveRecord
 {
+    const TYPE_STANDARD = 1; // эталонный
+    const TYPE_OPTIONAL = 2; // необязательный
+    const TYPE_ELECTIVE = 3; // факультатив
+    const TYPE_ENT = 4; // предметы для ент
+    const TYPE_EXAM = 5; // экзаменационные
+
+    public $caption_current;
+    public $caption_ru;
+    public $caption_kk;
+
     /**
      * {@inheritdoc}
      */
@@ -38,6 +50,21 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
         if ($this->types instanceof ArrayExpression) {
             $this->types = $this->types->getValue();
         }
+
+        $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
+        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
+        $this->caption_ru = $this->caption['ru'];
+        $this->caption_kk = $this->caption['kk'];
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->caption = [
+            'ru' => $this->caption_ru,
+            'kk' => $this->caption_kk,
+        ];
+
+        return parent::beforeSave($insert);
     }
 
     /**
@@ -46,13 +73,13 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['institution_id', 'discipline_id'], 'required'],
-            [['institution_id', 'discipline_id', 'types'], 'default', 'value' => null],
-            [['institution_id', 'discipline_id'], 'integer'],
+            [['institution_id'], 'required'],
+            [['institution_id', 'types', 'status'], 'default', 'value' => null],
+            [['institution_id', 'status'], 'integer'],
             [['types'], 'each', 'rule' => ['integer']],
-            [['institution_id', 'discipline_id'], 'unique', 'targetAttribute' => ['institution_id', 'discipline_id']],
             [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
-            [['discipline_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discipline::class, 'targetAttribute' => ['discipline_id' => 'id']],
+            [['slug'], 'string', 'max' => 255],
+            [['caption_ru', 'caption_kk'], 'string'],
         ];
     }
 
@@ -64,8 +91,13 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'institution_id' => Yii::t('app', 'Institution ID'),
-            'discipline_id' => Yii::t('app', 'Discipline ID'),
+            'caption' => Yii::t('app', 'Caption'),
+            'caption_ru' => Yii::t('app', 'Caption Ru'),
+            'caption_kk' => Yii::t('app', 'Caption Kk'),
+            'caption_current' => Yii::t('app', 'Caption Current'),
+            'slug' => Yii::t('app', 'Slug'),
             'types' => Yii::t('app', 'Discipline Type'),
+            'status' => Yii::t('app', 'Status'),
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
@@ -81,6 +113,7 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
     }
 
     /**
+     * @deprecated
      * @return \yii\db\ActiveQuery
      */
     public function getDiscipline()

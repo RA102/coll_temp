@@ -67,6 +67,7 @@ class TeacherCourseController extends Controller
 
         return $this->render('view', [
             'model' => $teacherCourse,
+            'course' => $course,
         ]);
     }
 
@@ -90,6 +91,7 @@ class TeacherCourseController extends Controller
 
         return $this->render('create', [
             'model' => $teacherCourse,
+            'course' => $course,
             'teachers' => $this->employeeService->getTeachers($this->institution),
         ]);
     }
@@ -114,6 +116,7 @@ class TeacherCourseController extends Controller
 
         return $this->render('update', [
             'model' => $teacherCourse,
+            'course' => $course,
             'teachers' => $this->employeeService->getTeachers($this->institution),
         ]);
     }
@@ -132,7 +135,7 @@ class TeacherCourseController extends Controller
 
         $teacherCourse->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['course/view', 'id' => $course->id]);
     }
 
     protected function findCourse(Institution $institution, $id)
