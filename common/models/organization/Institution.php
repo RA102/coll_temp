@@ -3,6 +3,7 @@
 namespace common\models\organization;
 
 use common\helpers\SchemeHelper;
+use common\models\CountryUnit;
 use common\models\Course;
 use common\models\handbook\Speciality;
 use common\models\link\PersonInstitutionLink;
@@ -48,7 +49,9 @@ use yii\db\ActiveQuery;
  * @property Speciality[] $specialities
  * @property InstitutionSpecialityInfo[] $specialityInfos
  * @property Course[] $courses
- * @property PersonInstitutionLink[] $personInstitutionLinks
+ * @property PersonInstitutionLink[]
+ * @property CountryUnit $city
+ * @property InstitutionType $institutionType;
  */
 class Institution extends \yii\db\ActiveRecord
 {
@@ -70,7 +73,7 @@ class Institution extends \yii\db\ActiveRecord
             [['country_id', 'city_id', 'parent_id', 'type_id', 'educational_form_id', 'organizational_legal_form_id', 'oid', 'server_id', 'street_id', 'foundation_year', 'max_grade', 'status'], 'integer'],
             [['description', 'info'], 'string'],
             [['initialization'], 'boolean'],
-            [['create_ts', 'update_ts', 'delete_ts'], 'safe'],
+            [['create_ts', 'update_ts', 'delete_ts', 'enable_fraction'], 'safe'],
             [['name'], 'string', 'max' => 511],
             [['house_number', 'email', 'domain', 'db_name', 'db_user', 'db_password'], 'string', 'max' => 255],
             [['phone', 'fax'], 'string', 'max' => 20],
@@ -186,5 +189,37 @@ class Institution extends \yii\db\ActiveRecord
         }
 
         return $years;
+    }
+
+    public function getCity() {
+        return $this->hasOne(CountryUnit::class, ['id' => 'city_id']);
+    }
+
+    public function getCityIds() {
+        $ids = [];
+        $item = $this->city;
+        while ($item != null) {
+            $ids[] = $item->id;
+
+            $item = $item->parent;
+        }
+
+        return array_reverse($ids);
+    }
+
+    public function getInstitutionType() {
+        return $this->hasOne(InstitutionType::class, ['id' => 'type_id']);
+    }
+
+    public function getInstitutionTypeIds() {
+        $ids = [];
+        $item = $this->institutionType;
+        while ($item != null) {
+            $ids[] = $item->id;
+
+            $item = $item->parent;
+        }
+
+        return array_reverse($ids);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\forms\InstitutionForm;
 use Yii;
 use common\models\organization\Institution;
 use backend\search\InstitutionSearch;
@@ -85,13 +86,19 @@ class InstitutionController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $form = new InstitutionForm($model);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $model->setAttributes($form->attributes);
+            $model->type_id = end($form->type_ids);
+            $model->city_id = end($form->city_ids);
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'form' => $form
         ]);
     }
 
