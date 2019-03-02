@@ -209,7 +209,11 @@ use yii\widgets\Pjax;
 
     <div class="row">
         <div class="col-md-3">
-            <?= $activeForm->field($form, 'status')->textInput() ?>
+            <?= $activeForm->field($form, "status")->dropDownList(
+                \common\helpers\InstitutionHelper::getStatusList(), [
+                'class' => 'form-control',
+                'prompt' => ''
+            ]);?>
         </div>
     </div>
 

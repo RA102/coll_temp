@@ -52,9 +52,15 @@ use yii\db\ActiveQuery;
  * @property PersonInstitutionLink[]
  * @property CountryUnit $city
  * @property InstitutionType $institutionType;
+ * @property int $max_shift [smallint]
+ * @property int $min_grade [smallint]
+ * @property bool $enable_fraction [boolean]
+ * @property bool $is_test [boolean]
  */
 class Institution extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 1;
+    const STATUS_DISABLED = 2;
     /**
      * {@inheritdoc}
      */
