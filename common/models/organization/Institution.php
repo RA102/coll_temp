@@ -2,12 +2,15 @@
 
 namespace common\models\organization;
 
+use common\helpers\InstitutionHelper;
 use common\helpers\SchemeHelper;
+use common\models\Country;
 use common\models\CountryUnit;
 use common\models\Course;
 use common\models\handbook\Speciality;
 use common\models\link\PersonInstitutionLink;
 use common\models\person\Person;
+use common\models\Street;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -42,6 +45,10 @@ use yii\db\ActiveQuery;
  * @property string $db_password
  * @property bool $initialization
  * @property int $status
+ * @property int $max_shift [smallint]
+ * @property int $min_grade [smallint]
+ * @property bool $enable_fraction [boolean]
+ * @property bool $is_test [boolean]
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
@@ -52,10 +59,10 @@ use yii\db\ActiveQuery;
  * @property PersonInstitutionLink[]
  * @property CountryUnit $city
  * @property InstitutionType $institutionType;
- * @property int $max_shift [smallint]
- * @property int $min_grade [smallint]
- * @property bool $enable_fraction [boolean]
- * @property bool $is_test [boolean]
+ * @property Country $country
+ * @property EducationalForm $educationalForm
+ * @property OrganizationalLegalForm $organizationalLegalForm
+ * @property Street $street
  */
 class Institution extends \yii\db\ActiveRecord
 {
@@ -197,6 +204,10 @@ class Institution extends \yii\db\ActiveRecord
         return $years;
     }
 
+    public function getCountry() {
+        return $this->hasOne(Country::class, ['id' => 'country_id']);
+    }
+
     public function getCity() {
         return $this->hasOne(CountryUnit::class, ['id' => 'city_id']);
     }
@@ -227,5 +238,25 @@ class Institution extends \yii\db\ActiveRecord
         }
 
         return array_reverse($ids);
+    }
+
+    public function getEducationalForm()
+    {
+        return $this->hasOne(EducationalForm::class, ['id' => 'educational_form_id']);
+    }
+
+    public function getOrganizationalLegalForm()
+    {
+        return $this->hasOne(OrganizationalLegalForm::class, ['id' => 'organizational_legal_form_id']);
+    }
+
+    public function getStreet()
+    {
+        return $this->hasOne(Street::class, ['id' => 'street_id']);
+    }
+
+    public function getStatusValue()
+    {
+        return InstitutionHelper::getStatusList()[$this->status] ?? null;
     }
 }
