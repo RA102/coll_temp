@@ -26,7 +26,8 @@
         "ext-curl": "*",
         "ext-json": "*",
         "kartik-v/yii2-widget-depdrop": "@dev",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "karriere/json-decoder": "^2.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

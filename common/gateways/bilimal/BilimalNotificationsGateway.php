@@ -7,7 +7,7 @@ use common\utils\httpClient\HttpClientFactory;
 class BilimalNotificationsGateway {
 
     const DEFAULT_TIMEOUT = 20; // 20 seconds
-    const DEFAULT_FROM_EMAIL = "noreply@bilimal.kz"; // TODO: maybe extract to params
+    const DEFAULT_FROM_EMAIL = "noreply@bilimal.kz";
 
     public $accessToken;
 
@@ -47,7 +47,6 @@ class BilimalNotificationsGateway {
             ]
         ]);
 
-        // FIXME: consider throwing exceptions
-        return $response->getStatusCode() === 201 ? true : false;
+        return $response->getStatusCode() === 201;
     }
 }

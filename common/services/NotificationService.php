@@ -5,8 +5,8 @@ namespace common\services;
 use common\gateways\bilimal\BilimalNotificationsGateway;
 use yii\helpers\Html;
 
-class NotificationService {
-
+class NotificationService
+{
     private $bilimalNotificationsGateway;
 
     /**
@@ -23,12 +23,14 @@ class NotificationService {
      * @param array $addresses
      * @return bool
      */
-    public function sendRegistrationCompleteNotification(array $addresses) {
+    public function sendRegistrationCompletedNotification(array $addresses)
+    {
         // TODO: add i18n
         return $this->bilimalNotificationsGateway->sendEmailNotification(
             'Регистрация на bilimal',
             'Вы успешно завершили регистрацию на сервисе bilimal.',
-            $addresses);
+            $addresses
+        );
     }
 
 
@@ -36,11 +38,13 @@ class NotificationService {
      * @param array $addresses
      * @return bool
      */
-    public function sendPersonCreatedNotification(array $addresses) {
+    public function sendPersonCreatedNotification(array $addresses)
+    {
         return $this->bilimalNotificationsGateway->sendEmailNotification(
             'Регистрация на bilimal',
             'Вы успешно завершили регистрацию на сервисе bilimal.',
-            $addresses);
+            $addresses
+        );
     }
 
     /**
@@ -48,13 +52,29 @@ class NotificationService {
      * @param string $resetUrl
      * @return bool
      */
-    public function sendPasswordChangedNotification(array $addresses, string $resetUrl) {
+    public function sendPasswordChangedNotification(array $addresses, string $resetUrl)
+    {
         // TODO: consider removing dependency on specific framework helper
         $encodedResetUrl = Html::encode($resetUrl);
         return $this->bilimalNotificationsGateway->sendEmailNotification(
             'Смена пароля',
             "Пройдите по ссылке <a href=\"{$encodedResetUrl}\">$resetUrl</a> для изменения пароля",
-            $addresses);
+            $addresses
+        );
+    }
+
+    /**
+     * @param array $addresses
+     * @param string $password
+     * @return bool
+     */
+    public function sendCredentialCreatedNotification(array $addresses, string $password)
+    {
+        return $this->bilimalNotificationsGateway->sendEmailNotification(
+            'Аккаунт на bilimal',
+            "Пароль для входа в систему {$password}",
+            $addresses
+        );
     }
 
 }
