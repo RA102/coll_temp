@@ -80,6 +80,8 @@ return [
     'Delete Ts' => 'Дата удаления',
     'Update Institution: ' => 'Редактирование: ',
     'Enable Fraction' => 'Поддержка числитель/знаменатель в расписании',
+    'Organization' => 'Организация',
+    'Country unit' => 'Населенный пункт',
 
     // APPLICATIONS
     'Street' => 'Улица',
