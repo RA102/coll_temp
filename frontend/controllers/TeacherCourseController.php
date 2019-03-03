@@ -10,6 +10,7 @@ use common\services\TeacherCourseService;
 use Yii;
 use common\models\TeacherCourse;
 use yii\base\Module;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -45,7 +46,21 @@ class TeacherCourseController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [ // TODO make authorized only
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'view',
+                            'create', 'update',
+                            'delete',
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],

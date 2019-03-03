@@ -195,4 +195,5 @@ return [
     'Duration' => 'Длительность',
     'Lesson Start Date' => 'Начало',
     'Lesson End Date' => 'Конец',
+    'Group Lessons' => 'Занятия группы',
 ];
