@@ -10,6 +10,8 @@ use yii\db\ArrayExpression;
 /**
  * This is the model class for table "discipline".
  *
+ * @deprecated properties moved to InstitutionDisciline
+ *
  * @property int $id
  * @property array $caption
  * @property string $slug
@@ -74,7 +76,6 @@ class Discipline extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['caption'], 'safe'],
             [['status', 'types'], 'default', 'value' => null],
             [['status'], 'integer'],
             [['slug'], 'string', 'max' => 255],

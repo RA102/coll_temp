@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use common\models\organization\InstitutionDiscipline;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,8 +21,22 @@ class InstitutionDisciplineController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [ // TODO allow only for authorized
-                'class' => VerbFilter::className(),
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'index', 'view',
+                            'create', 'update',
+                            'delete',
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -36,9 +51,7 @@ class InstitutionDisciplineController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => InstitutionDiscipline::find()->joinWith([
-                'discipline' /** @see InstitutionDiscipline::getDiscipline() */
-            ]),
+            'query' => InstitutionDiscipline::find(),
         ]);
 
         return $this->render('index', [
