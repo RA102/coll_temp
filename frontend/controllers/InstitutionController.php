@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 
-use backend\models\forms\InstitutionForm;
+use common\forms\InstitutionForm;
 use common\models\organization\Institution;
 use Yii;
 use yii\web\Controller;
