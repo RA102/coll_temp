@@ -9,7 +9,7 @@ use common\components\ActiveForm;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $form \backend\models\forms\InstitutionForm */
+/* @var $form \common\forms\InstitutionForm */
 /* @var $activeForm yii\widgets\ActiveForm */
 
 $this->title = Yii::t('app', 'Organization');
@@ -73,7 +73,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="row">
-<!--        <div class="col-md-12">-->
             <?= Html::tag('div', $activeForm->field($form, 'country_id')->dropDownList(
                 ArrayHelper::map(Country::find()->all(), 'id', 'caption_current'), [
                 'class' => 'form-control active-form-refresh-control',
@@ -134,7 +133,6 @@ $this->params['breadcrumbs'][] = $this->title;
             }
 
             ?>
-<!--        </div>-->
         <div class="col-md-3">
         </div>
         <div class="col-md-3">

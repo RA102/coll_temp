@@ -11,7 +11,7 @@ use common\components\ActiveForm;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $form \backend\models\forms\InstitutionForm */
+/* @var $form \common\forms\InstitutionForm */
 /* @var $activeForm yii\widgets\ActiveForm */
 ?>
 
@@ -122,12 +122,11 @@ use yii\widgets\Pjax;
     </div>
 
     <div class="row">
-        <div class="col-md-3">
-            <?= $activeForm->field($form, 'country_id')->dropDownList(
-                ArrayHelper::map(Country::find()->all(), 'id', 'caption_current'), [
-                'class' => 'form-control active-form-refresh-control',
-                'prompt' => ''
-            ]) ?>
+        <?= Html::tag('div', $activeForm->field($form, 'country_id')->dropDownList(
+            ArrayHelper::map(Country::find()->all(), 'id', 'caption_current'), [
+            'class' => 'form-control active-form-refresh-control',
+            'prompt' => ''
+        ]), ['class' => 'col-md-3']) ?>
 
             <?php
             if ($form->country_id) {
@@ -141,11 +140,11 @@ use yii\widgets\Pjax;
                     ])->all();
                     if ($children) {
                         $form->hasCountryUnit = true;
-                        echo $activeForm->field($form, "city_ids[{$count}]")->dropDownList(
+                        echo Html::tag('div', $activeForm->field($form, "city_ids[{$count}]")->dropDownList(
                             ArrayHelper::map($children, 'id', 'caption_current'), [
                             'class' => 'form-control active-form-refresh-control',
                             'prompt' => ''
-                        ])->label(false);
+                        ])->label(Yii::t('app', 'Country unit'), ['class' => 'shy']), ['class' => 'col-md-2']);
 
                         if (isset($form->city_ids[$count]) && $form->city_ids[$count]) {
                             $parent_id = $form->city_ids[$count];
@@ -160,15 +159,15 @@ use yii\widgets\Pjax;
 
                 if ($parent_id && !$children) {
                     $form->hasStreet = true;
-                    echo $activeForm->field($form, "street_id")->dropDownList(
+                    echo Html::tag('div', $activeForm->field($form, "street_id")->dropDownList(
                         ArrayHelper::map(Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption'), [
                         'class' => 'form-control',
                         'prompt' => ''
-                    ]);
+                    ]), ['class' => 'col-md-3']);
                 }
                 if ($parent_id && !$children && $form->hasStreet) {
                     $form->hasHouseNumber = true;
-                    echo $activeForm->field($form, 'house_number');
+                    echo Html::tag('div', $activeForm->field($form, 'house_number'), ['class' => 'col-md-2']);
                 }
             }
 
@@ -183,7 +182,6 @@ use yii\widgets\Pjax;
             }
 
             ?>
-        </div>
         <div class="col-md-3">
         </div>
         <div class="col-md-3">
