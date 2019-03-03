@@ -18,18 +18,6 @@ use yii\widgets\ActiveForm;
         'key'       => 'id',
         'allModels' => $model->personCredentials
     ]),
-    'columns'      => [
-        'indentity'
-    ],
-]); ?>
-
-
-<?= GridView::widget([
-    'layout'       => "{items}\n{pager}",
-    'dataProvider' => new \yii\data\ArrayDataProvider([
-        'key'       => 'id',
-        'allModels' => $model->personCredentials
-    ]),
     'showHeader'   => false,
     'columns'      => [
         'indentity'
