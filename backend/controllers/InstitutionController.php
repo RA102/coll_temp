@@ -2,7 +2,8 @@
 
 namespace backend\controllers;
 
-use backend\models\forms\InstitutionForm;
+use common\forms\InstitutionForm;
+use common\services\organization\InstitutionService;
 use Yii;
 use common\models\organization\Institution;
 use backend\search\InstitutionSearch;
@@ -15,6 +16,14 @@ use yii\filters\VerbFilter;
  */
 class InstitutionController extends Controller
 {
+    private $institutionService;
+
+    public function __construct(string $id, $module, InstitutionService $institutionService, array $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->institutionService = $institutionService;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -89,10 +98,7 @@ class InstitutionController extends Controller
         $form = new InstitutionForm($model);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $model->setAttributes($form->attributes);
-            $model->type_id = end($form->type_ids);
-            $model->city_id = end($form->city_ids);
-            $model->save();
+            $this->institutionService->update($model, $form);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

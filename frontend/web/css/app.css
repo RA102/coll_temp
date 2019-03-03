@@ -317,3 +317,6 @@ article dl, article ol, article ol ol, article ol ul, article ul, article ul ol,
 .speciality:hover {
     background-color: #EEE;
 }
+.shy {
+    opacity: 0;
+}

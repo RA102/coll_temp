@@ -1,5 +1,5 @@
 <?php
-namespace backend\models\forms;
+namespace common\forms;
 
 use common\models\organization\Institution;
 use yii\base\Model;
