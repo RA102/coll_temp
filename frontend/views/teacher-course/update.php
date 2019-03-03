@@ -4,10 +4,13 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\TeacherCourse */
+/* @var $course common\models\Course */
 /* @var $teachers common\models\person\Employee[] */
 
 $this->title = Yii::t('app', 'Update Teacher Course') . ': ' . $model->course->caption_current;
-$this->params['breadcrumbs'][] = ['label' => $model->course->caption_current, 'url' => ['view', 'id' => $model->id, 'course_id' => $model->course_id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Courses'), 'url' => ['course/index']];
+$this->params['breadcrumbs'][] = ['label' => $model->course->caption_current, 'url' => ['course/view', 'id' => $model->course->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->getFullname(), 'url' => ['view', 'id' => $model->id, 'course_id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 

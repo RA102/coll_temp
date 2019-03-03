@@ -104,6 +104,6 @@ class TeacherCourse extends \yii\db\ActiveRecord
 
     public function getFullname()
     {
-        return $this->course->caption_current;
+        return $this->course->caption_current . ' (' . $this->type . ')';
     }
 }

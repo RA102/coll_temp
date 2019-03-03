@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'types')->widget(Select2::class, [
-        'data' => \common\helpers\DisciplineHelper::getTypeList(),
+        'data' => \common\helpers\InstitutionDisciplineHelper::getTypeList(),
         'options' => [
             'placeholder' => '...',
             'class' => 'active-form-refresh-control',

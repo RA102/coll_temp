@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Course */
-/* @var $disciplines common\models\Discipline[] */
+/* @var $institutionDisciplines common\models\organization\InstitutionDiscipline[] */
 /* @var $classes array */
 
 $this->title = Yii::t('app', 'Create Course');
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'disciplines' => $disciplines,
+        'institutionDisciplines' => $institutionDisciplines,
         'classes' => $classes,
     ]) ?>
 

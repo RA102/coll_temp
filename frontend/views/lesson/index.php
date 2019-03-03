@@ -5,12 +5,14 @@ use yii\helpers\Url;
 use yii\web\View;
 
 /* @var $this yii\web\View */
+/* @var $group common\models\organization\Group */
 /* @var $teacherCourses common\models\TeacherCourse[] */
 /* @var $teachers common\models\person\Employee[] */
 /* @var $searchModel frontend\search\LessonSearch */
 
 \frontend\assets\FullcalendarAsset::register($this);
-$this->title = Yii::t('app', 'Lessons');
+$this->title = Yii::t('app', 'Group Lessons') . ': ' . $group->caption_current;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lessons'), 'url' => ['groups']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
     <div style="position: relative;">
