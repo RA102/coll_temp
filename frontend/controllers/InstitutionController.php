@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\forms\InstitutionForm;
 use common\models\organization\Institution;
+use common\services\organization\InstitutionService;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -13,16 +14,21 @@ use yii\web\NotFoundHttpException;
  */
 class InstitutionController extends Controller
 {
+    private $institutionService;
+
+    public function __construct(string $id, $module, InstitutionService $institutionService, array $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->institutionService = $institutionService;
+    }
+
     public function actionIndex()
     {
         $model = $this->findModel(Yii::$app->user->identity->institution->id);
         $form = new InstitutionForm($model);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $model->setAttributes($form->attributes);
-            $model->type_id = end($form->type_ids);
-            $model->city_id = end($form->city_ids);
-            $model->save();
+            $this->institutionService->update($model, $form);
             return $this->redirect(['index']);
         }
 
