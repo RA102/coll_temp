@@ -41,11 +41,11 @@ class PersonCredentialService
     {
         $person = Person::findIdentity($person_id);
         if (!$person) {
-            throw new TranslatableException("Person Does Not Exist");
+            throw new \RuntimeException("Person Does Not Exist");
         }
         $personCredentialExists = PersonCredential::find()->where(['indentity' => $identity])->exists();
         if ($personCredentialExists) {
-            throw new TranslatableException("Person Credential Already Exists");
+            throw new \RuntimeException("Person Credential Already Exists");
         }
 
         $personCredentialResponse = $this->pdsGateway->createPersonCredential(
@@ -63,7 +63,7 @@ class PersonCredentialService
 
         $model = PersonCredential::add($person, $identity);
         if (!$model->save()) {
-            throw new \RuntimeException('Error occured');
+            throw new \RuntimeException('Saving error');
         }
 
         return $model;

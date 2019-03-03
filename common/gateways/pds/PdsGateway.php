@@ -22,7 +22,7 @@ class PdsGateway implements \yii\base\Configurable
      */
     public function __construct(HttpClientFactory $httpClientFactory, $config = [])
     {
-        $this->httpClient = $httpClientFactory->createHttpClient([
+        $this->httpClient = $httpClientFactory->createHttpClient('pds', [
             'base_uri'    => $config['baseUrl'],
             'http_errors' => false, // disable throwing http exceptions
             'timeout'     => self::DEFAULT_TIMEOUT,

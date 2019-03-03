@@ -3,21 +3,13 @@
 namespace frontend\controllers;
 
 use common\exceptions\TranslatableException;
-use common\models\person\PersonCredential;
-use common\services\organization\GroupService;
-use common\services\pds\PersonCredentialService;
-use frontend\models\forms\GroupAllocationForm;
-use frontend\models\forms\PersonCredentialForm;
-use frontend\search\StudentSearch;
-use Yii;
 use common\models\organization\Group;
-use frontend\search\GroupSearch;
-use yii\data\ActiveDataProvider;
-use yii\helpers\Json;
-use yii\helpers\Url;
+use common\services\pds\PersonCredentialService;
+use frontend\models\forms\PersonCredentialForm;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * PersonCredentialController implements the CRUD actions for PersonCredential model.
@@ -76,8 +68,6 @@ class CredentialController extends Controller
                     $form->indentity,
                     Yii::$app->user->identity->activeAccessToken->token
                 );
-            } catch (TranslatableException $e) {
-                Yii::$app->session->setFlash('error', $e->getMessage());
             } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error', Yii::t('app/error', 'Generic'));
             }

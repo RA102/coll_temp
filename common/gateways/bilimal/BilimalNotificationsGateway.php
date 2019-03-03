@@ -19,7 +19,7 @@ class BilimalNotificationsGateway {
      */
     public function __construct(HttpClientFactory $httpClientFactory, array $config = [])
     {
-        $this->httpClient = $httpClientFactory->createHttpClient([
+        $this->httpClient = $httpClientFactory->createHttpClient('bilimal-notifications', [
             'base_uri' => 'https://api.bilimal.kz/notice',
             'http_errors' => false, // disable throwing http exceptions
             'timeout' => self::DEFAULT_TIMEOUT
