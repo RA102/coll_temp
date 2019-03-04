@@ -3,10 +3,11 @@
 namespace frontend\controllers;
 
 use common\forms\auth\LoginForm;
+use common\services\NotificationService;
 use common\services\pds\LoginService;
 use common\services\organization\InstitutionApplicationService;
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\base\Module;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -15,7 +16,6 @@ use yii\filters\AccessControl;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 
 /**
  * Site controller
@@ -24,6 +24,7 @@ class SiteController extends Controller
 {
     private $loginService;
     private $applicationService;
+    private $notificationService;
 
     /**
      * {@inheritdoc}
@@ -68,10 +69,12 @@ class SiteController extends Controller
         Module $module,
         LoginService $loginService,
         InstitutionApplicationService $applicationService,
+        NotificationService $notificationService,
         array $config = []
     ) {
         $this->loginService = $loginService;
         $this->applicationService = $applicationService;
+        $this->notificationService = $notificationService;
         parent::__construct($id, $module, $config);
     }
 
@@ -147,7 +150,8 @@ class SiteController extends Controller
     public function actionRequestPasswordReset()
     {
         $this->layout = 'main-login';
-        $model = new PasswordResetRequestForm();
+        // TODO: consider better implementation
+        $model = new PasswordResetRequestForm($this->notificationService);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
                 Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
@@ -174,7 +178,7 @@ class SiteController extends Controller
     {
         try {
             $model = new ResetPasswordForm($token);
-        } catch (InvalidParamException $e) {
+        } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
 

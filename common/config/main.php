@@ -1,4 +1,9 @@
 <?php
+$params = array_merge(
+    require(__DIR__ . '/params.php'),
+    require(__DIR__ . '/params-local.php')
+);
+
 return [
     'language' => 'kz-KZ',
     'sourceLanguage' => 'ru-RU',
@@ -20,4 +25,12 @@ return [
             ],
         ],
     ],
+    'container' => [
+        'singletons' => [
+            'common\gateways\bilimal\BilimalNotificationsGateway' => [
+                'class' => 'common\gateways\bilimal\BilimalNotificationsGateway',
+                'accessToken' => $params['bilimal_notifications_access_token']
+            ]
+        ]
+    ]
 ];

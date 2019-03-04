@@ -3,6 +3,7 @@
 namespace common\services\pds;
 
 use common\models\person\Person;
+use common\services\NotificationService;
 use common\services\pds\exceptions\PersonAlreadyExistException;
 use yii\web\ForbiddenHttpException;
 
@@ -12,6 +13,12 @@ class PersonService
     private $updateService;
     private $searchService;
 
+    /**
+     * PersonService constructor.
+     * @param PersonCreateService $createService
+     * @param PersonUpdateService $updateService
+     * @param PersonSearchService $searchService
+     */
     public function __construct(
         PersonCreateService $createService,
         PersonUpdateService $updateService,
@@ -48,7 +55,7 @@ class PersonService
         $newPerson->middlename = $model->middlename;
         $newPerson->firstname = $model->firstname;
         $newPerson->iin = $model->iin;
-        $newPerson->indentity = $identity;
+        $newPerson->indentity = $identity; // FIXME: Typo
         $newPerson->credential_type = $credential_type;
         if ($model->birth_date) {
             $birthDate = new \DateTime($model->birth_date);
