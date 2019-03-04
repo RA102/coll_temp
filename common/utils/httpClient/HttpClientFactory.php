@@ -5,6 +5,7 @@ namespace common\utils\httpClient;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use common\utils\Logger;
 
@@ -21,6 +22,13 @@ class HttpClientFactory
 
         if (YII_DEBUG) {
             $stack = HandlerStack::create();
+            // NOTE: There is a stream-related side effects and because of logging response body is empty
+            // @see https://github.com/guzzle/guzzle/issues/1582#issuecomment-397583084
+            $mapResponse = Middleware::mapResponse(function (ResponseInterface $response) {
+                $response->getBody()->rewind();
+                return $response;
+            });
+            $stack->push($mapResponse);
             $stack->push(
                 Middleware::log(
                     $this->getLogger($namespace),
