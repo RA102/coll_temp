@@ -42,6 +42,8 @@ use yii\web\IdentityInterface;
  * @property string $create_ts
  * @property string $delete_ts
  * @property string $import_ts
+ * @property string $email
+ * @property string $password_reset_token
  *
  * @property AccessToken[] $accessTokens
  * @property AccessToken $activeAccessToken
@@ -88,6 +90,8 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
             [['birth_place', 'photo'], 'string', 'max' => 255],
             [['language'], 'string', 'max' => 2],
             ['iin', 'unique'],
+            ['email', 'email'],
+            ['email', 'unique']
         ];
     }
 
@@ -125,6 +129,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
             'create_ts' => Yii::t('app', 'Create Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
             'import_ts' => Yii::t('app', 'Import Ts'),
+            'email' => Yii::t('app', 'Email')
         ];
     }
 
@@ -180,6 +185,16 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
+     * Returns Person by email
+     * @param string $email
+     * @return Person|null
+     */
+    public static function findIdentityByEmail(string $email)
+    {
+        return static::findOne(['email' => $email]);
+    }
+
+    /**
      * Returns Person by portal_uid
      * @param int $uid
      * @return Person|null
@@ -213,6 +228,47 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->getAuthKey() === $authKey;
     }
 
+    /**
+     * Finds user by password reset token
+     *
+     * @param string $token password reset token
+     * @return static|null
+     */
+    public static function findByPasswordResetToken($token)
+    {
+        if (!static::isPasswordResetTokenValid($token)) {
+            return null;
+        }
+        return static::findOne([
+            'password_reset_token' => $token,
+            'status' => self::STATUS_ACTIVE,
+        ]);
+    }
+
+    /**
+     * Finds out if password reset token is valid
+     *
+     * @param string $token password reset token
+     * @return bool
+     */
+    public static function isPasswordResetTokenValid($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        return $timestamp + $expire >= time();
+    }
+
+    /**
+     * Generates new password reset token
+     */
+    public function generatePasswordResetToken()
+    {
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
     public function getAccessTokens()
     {
         return $this->hasMany(AccessToken::class, ['id' => 'person_id'])
@@ -231,7 +287,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * @TODO Fill all attributes
      */
-    public static function add($portal_uid, $firstname, $lastname, $middlename, $iin): Person
+    public static function add($portal_uid, $firstname, $lastname, $middlename, $iin, $email): Person
     {
         $model = new static;
         $model->portal_uid = $portal_uid;
@@ -240,6 +296,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         $model->lastname = $lastname;
         $model->middlename = $middlename;
         $model->iin = $iin;
+        $model->email = $email;
 
         return $model;
     }
