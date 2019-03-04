@@ -2,10 +2,12 @@
 
 namespace frontend\controllers;
 
-use common\models\organization\InstitutionDiscipline;
+use common\services\organization\InstitutionDisciplineService;
+use common\services\TeacherCourseService;
 use frontend\search\TeacherCourseSearch;
 use Yii;
 use common\models\Course;
+use yii\base\Module;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -17,6 +19,10 @@ use yii\filters\VerbFilter;
  */
 class CourseController extends Controller
 {
+    private $institution;
+    private $institutionDisciplineService;
+    private $teacherCourseService;
+
     /**
      * {@inheritdoc}
      */
@@ -44,6 +50,19 @@ class CourseController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function __construct(
+        string $id,
+        Module $module,
+        InstitutionDisciplineService $institutionDisciplineService,
+        TeacherCourseService $teacherCourseService,
+        array $config = []
+    ) {
+        $this->institution = \Yii::$app->user->identity->institution;
+        $this->institutionDisciplineService = $institutionDisciplineService;
+        $this->teacherCourseService = $teacherCourseService;
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -94,16 +113,10 @@ class CourseController extends Controller
     {
         $model = new Course();
 
-        // TODO move to beforeAction or _Construct (inject along with Services)
-        $institution = \Yii::$app->user->identity->institution;
-
-        // TODO move disciplines and classes to Services.
-        $institutionDisciplines = InstitutionDiscipline::find()
-            ->andWhere(['institution_id' => $institution->id])
-            ->all();
+        $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
 
         $classes = [];
-        for ($i = 1; $i <= $institution->max_grade; $i++) {
+        for ($i = 1; $i <= $this->institution->max_grade; $i++) {
             $classes[$i] = $i;
         }
 
@@ -131,16 +144,10 @@ class CourseController extends Controller
     {
         $model = $this->findModel($id);
 
-        // TODO move to beforeAction or _Construct (inject along with Services)
-        $institution = \Yii::$app->user->identity->institution;
-
-        // TODO move institution disciplines and classes to Service.
-        $institutionDisciplines = InstitutionDiscipline::find()
-            ->andWhere(['institution_id' => $institution->id])
-            ->all();
+        $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
 
         $classes = [];
-        for ($i = 1; $i <= $institution->max_grade; $i++) {
+        for ($i = 1; $i <= $this->institution->max_grade; $i++) {
             $classes[$i] = $i;
         }
 

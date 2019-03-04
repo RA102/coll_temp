@@ -4,6 +4,7 @@ namespace common\services\organization;
 
 use common\models\link\StudentGroupLink;
 use common\models\organization\Group;
+use common\models\organization\Institution;
 use yii\helpers\ArrayHelper;
 
 class GroupService
@@ -14,6 +15,7 @@ class GroupService
     {
         $formattedGroups = [];
 
+        /* @var Group[] $groups */
         $groups = Group::find()->where(['class' => $class])->all();
 
         foreach ($groups as $group) {
@@ -24,6 +26,27 @@ class GroupService
         }
 
         return $formattedGroups;
+    }
+
+    public function getGroups(Institution $institution)
+    {
+        return Group::find()->andWhere([
+            'institution_id' => $institution->id,
+        ])->all();
+    }
+
+    /**
+     * @param Institution $institution
+     * @param $id
+     * @return array|null|\yii\db\ActiveRecord|Group
+     */
+    public function getGroup(Institution $institution, $id)
+    {
+        return Group::find()->andWhere([
+            'institution_id' => $institution->id,
+        ])->andWhere([
+            'id' => $id
+        ])->one();
     }
 
     public function getByClass(int $class): array
@@ -47,6 +70,7 @@ class GroupService
 
     public function deleteStudent(int $id, int $group_id)
     {
+        /* @var StudentGroupLink $link */
         $link = StudentGroupLink::find()
             ->where(['student_id' => $id])
             ->andWhere(['group_id' => $group_id])
