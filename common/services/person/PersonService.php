@@ -74,19 +74,20 @@ class PersonService
                 throw new \RuntimeException('Saving error.');
             }
 
-            // TODO: add email in contacts
+            // TODO: add email to contacts
             if ($create_identity) {
                 $personCredential = PersonCredential::add($model, $identity);
                 $personCredential->save();
+
+                // TODO: send notifications via queue
+                $this->notificationService->sendPersonCreatedNotification(
+                    $identity,
+                    $pdsPerson->validation
+                );
             }
+
             $link = PersonInstitutionLink::add($model->id, $institution_id);
             $link->save();
-
-            // TODO: send notifications via queue
-            $this->notificationService->sendPersonCreatedNotification(
-                $identity,
-                $pdsPerson->validation
-            );
         });
 
         return $model;
