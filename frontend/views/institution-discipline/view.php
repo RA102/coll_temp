@@ -1,6 +1,6 @@
 <?php
 
-use common\helpers\DisciplineHelper;
+use common\helpers\InstitutionDisciplineHelper;
 use common\models\organization\InstitutionDiscipline;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\organization\InstitutionDiscipline */
 
-$this->title = $model->discipline->caption_current;
+$this->title = $model->caption_current;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Institution Disciplines'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -34,16 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'attributes' => [
                 'id',
                 [
-                    'attribute' => 'discipline_id',
-                    'value' => function (InstitutionDiscipline $model) {
-                        return $model->discipline->caption_current;
-                    }
+                    'attribute' => 'caption_current',
                 ],
                 [
                     'attribute' => 'types',
                     'value' => function(InstitutionDiscipline $model) {
                         return implode(', ', array_map(function ($item) {
-                            return DisciplineHelper::getTypeList()[$item];
+                            return InstitutionDisciplineHelper::getTypeList()[$item];
                         }, $model->types));
                     }
                 ],

@@ -48,7 +48,7 @@
                         'items' => [
                             ['label' => Yii::t('app','Специальности'), 'icon' => 'file-code-o', 'url' => ['/speciality']],
                             ['label' => Yii::t('app','Профессии'), 'icon' => 'dashboard', 'url' => ['/']],
-                            ['label' => Yii::t('app','Предметы'), 'icon' => 'dashboard', 'url' => ['/discipline/index']],
+                            //['label' => Yii::t('app','Предметы'), 'icon' => 'dashboard', 'url' => ['/discipline/index']],
                             ['label' => Yii::t('app','Системы оценивания'), 'icon' => 'dashboard', 'url' => ['/']],
                             ['label' => Yii::t('app','Темы уроков'), 'icon' => 'dashboard', 'url' => ['/']],
                             ['label' => Yii::t('app','Типы уроков'), 'icon' => 'dashboard', 'url' => ['/']],

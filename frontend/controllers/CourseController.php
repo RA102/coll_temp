@@ -2,12 +2,12 @@
 
 namespace frontend\controllers;
 
-use common\models\Discipline;
+use common\models\organization\InstitutionDiscipline;
 use frontend\search\TeacherCourseSearch;
 use Yii;
 use common\models\Course;
 use yii\data\ActiveDataProvider;
-use yii\db\ActiveQuery;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -23,8 +23,22 @@ class CourseController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [ // TODO allow only for authorized
-                'class' => VerbFilter::className(),
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'index', 'view',
+                            'create', 'update',
+                            'delete',
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -40,7 +54,7 @@ class CourseController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Course::find()->with([
-                'discipline' /** @see Course::getDiscipline() */
+                'institutionDiscipline' /** @see Course::getInstitutionDiscipline() */
             ]),
         ]);
 
@@ -84,12 +98,9 @@ class CourseController extends Controller
         $institution = \Yii::$app->user->identity->institution;
 
         // TODO move disciplines and classes to Services.
-        $disciplines = Discipline::find()->joinWith([
-            /** @see Discipline::getInstitutionDisciplines() */
-            'institutionDisciplines' => function (ActiveQuery $query) use ($institution) {
-                $query->andWhere(['institution_id' => $institution->id]);
-            }
-        ])->all();
+        $institutionDisciplines = InstitutionDiscipline::find()
+            ->andWhere(['institution_id' => $institution->id])
+            ->all();
 
         $classes = [];
         for ($i = 1; $i <= $institution->max_grade; $i++) {
@@ -97,7 +108,6 @@ class CourseController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->institution_id = $institution->id;
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -105,7 +115,7 @@ class CourseController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'disciplines' => $disciplines,
+            'institutionDisciplines' => $institutionDisciplines,
             'classes' => $classes,
         ]);
     }
@@ -124,13 +134,10 @@ class CourseController extends Controller
         // TODO move to beforeAction or _Construct (inject along with Services)
         $institution = \Yii::$app->user->identity->institution;
 
-        // TODO move disciplines and classes to Services.
-        $disciplines = Discipline::find()->joinWith([
-            /** @see Discipline::getInstitutionDisciplines() */
-            'institutionDisciplines' => function (ActiveQuery $query) use ($institution) {
-                $query->andWhere(['institution_id' => $institution->id]);
-            }
-        ])->all();
+        // TODO move institution disciplines and classes to Service.
+        $institutionDisciplines = InstitutionDiscipline::find()
+            ->andWhere(['institution_id' => $institution->id])
+            ->all();
 
         $classes = [];
         for ($i = 1; $i <= $institution->max_grade; $i++) {
@@ -138,7 +145,6 @@ class CourseController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->institution_id = $institution->id;
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -146,7 +152,7 @@ class CourseController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'disciplines' => $disciplines,
+            'institutionDisciplines' => $institutionDisciplines,
             'classes' => $classes,
         ]);
     }

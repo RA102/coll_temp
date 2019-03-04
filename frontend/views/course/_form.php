@@ -8,19 +8,19 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Course */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $disciplines common\models\Discipline[] */
+/* @var $institutionDisciplines common\models\organization\InstitutionDiscipline[] */
 /* @var $classes array */
 
-/** @see Discipline::caption_current $disciplines */
-$disciplines = ArrayHelper::map($disciplines, 'id', 'caption_current');
+/** @see InstitutionDiscipline::caption_current */
+$institutionDisciplines = ArrayHelper::map($institutionDisciplines, 'id', 'caption_current');
 ?>
 
 <div class="course-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'discipline_id')->widget(Select2::class, [
-        'data' => $disciplines, // TODO rework to ajax
+    <?= $form->field($model, 'institution_discipline_id')->widget(Select2::class, [
+        'data' => $institutionDisciplines, // TODO rework to ajax
         'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
         'theme' => 'default',
         'pluginOptions' => [

@@ -5,6 +5,12 @@ namespace common\helpers;
 use common\models\Discipline;
 use Yii;
 
+/**
+ * Class DisciplineHelper
+ *
+ * @deprecated
+ * @package common\helpers
+ */
 class DisciplineHelper
 {
     public static function getTypeList()

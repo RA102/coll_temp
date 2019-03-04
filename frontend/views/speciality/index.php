@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     Добавить
                 </button>
                 <div style="clear: both;"></div>
-            <?}
+            <?php }
 
             break;
         }

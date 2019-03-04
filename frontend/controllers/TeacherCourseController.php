@@ -10,6 +10,7 @@ use common\services\TeacherCourseService;
 use Yii;
 use common\models\TeacherCourse;
 use yii\base\Module;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -45,7 +46,21 @@ class TeacherCourseController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [ // TODO make authorized only
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'view',
+                            'create', 'update',
+                            'delete',
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
@@ -67,6 +82,7 @@ class TeacherCourseController extends Controller
 
         return $this->render('view', [
             'model' => $teacherCourse,
+            'course' => $course,
         ]);
     }
 
@@ -90,6 +106,7 @@ class TeacherCourseController extends Controller
 
         return $this->render('create', [
             'model' => $teacherCourse,
+            'course' => $course,
             'teachers' => $this->employeeService->getTeachers($this->institution),
         ]);
     }
@@ -114,6 +131,7 @@ class TeacherCourseController extends Controller
 
         return $this->render('update', [
             'model' => $teacherCourse,
+            'course' => $course,
             'teachers' => $this->employeeService->getTeachers($this->institution),
         ]);
     }
@@ -132,7 +150,7 @@ class TeacherCourseController extends Controller
 
         $teacherCourse->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['course/view', 'id' => $course->id]);
     }
 
     protected function findCourse(Institution $institution, $id)
