@@ -67,8 +67,7 @@ class InstitutionForm extends Model
 
             [
                 [
-                    'educational_form_id', 'organizational_legal_form_id', 'name',
-                    'phone', 'house_number'
+                    'name', 'phone', 'house_number'
                 ],
                 'required'
             ],
@@ -77,7 +76,7 @@ class InstitutionForm extends Model
             [['country_id', 'city_ids', 'street_id', 'type_ids'], 'safe'],
             [[
                 'status', 'email', 'fax', 'website', 'max_grade', 'min_grade', 'max_shift', 'description',
-                'foundation_year', 'bin', 'enable_fraction'],
+                'foundation_year', 'bin', 'enable_fraction', 'educational_form_id', 'organizational_legal_form_id'],
                 'safe'],
         ];
     }
