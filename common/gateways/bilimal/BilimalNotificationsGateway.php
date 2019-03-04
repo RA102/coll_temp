@@ -6,7 +6,7 @@ use common\utils\httpClient\HttpClientFactory;
 
 class BilimalNotificationsGateway {
 
-    const DEFAULT_TIMEOUT = 20; // 20 seconds
+    const DEFAULT_TIMEOUT = 5; // 5 seconds
     const DEFAULT_FROM_EMAIL = "noreply@bilimal.kz";
 
     public $accessToken;
@@ -20,9 +20,9 @@ class BilimalNotificationsGateway {
     public function __construct(HttpClientFactory $httpClientFactory, array $config = [])
     {
         $this->httpClient = $httpClientFactory->createHttpClient('bilimal-notifications', [
-            'base_uri' => 'https://api.bilimal.kz/notice',
+            'base_uri'    => 'https://api.bilimal.kz',
             'http_errors' => false, // disable throwing http exceptions
-            'timeout' => self::DEFAULT_TIMEOUT
+            'timeout'     => self::DEFAULT_TIMEOUT
         ]);
     }
 
@@ -35,7 +35,7 @@ class BilimalNotificationsGateway {
      */
     public function sendEmailNotification( string $title, string $message, array $addresses, string $from = self::DEFAULT_FROM_EMAIL)
     {
-        $response = $this->httpClient->request('POST', 'notice/email', [
+        $response = $this->httpClient->post('notice/email', [
             'json' => [
                 'addressees' => $addresses,
                 'from' => $from,

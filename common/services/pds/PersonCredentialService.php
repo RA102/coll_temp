@@ -49,7 +49,7 @@ class PersonCredentialService
         }
 
         $personCredentialResponse = $this->pdsGateway->createPersonCredential(
-            $person_id,
+            $person->portal_uid,
             $identity,
             $token,
             self::TYPE_EMAIL
@@ -57,7 +57,7 @@ class PersonCredentialService
         $password = $personCredentialResponse->validation_clear;
         // TODO: add queue for notifications
         $this->notificationService->sendCredentialCreatedNotification(
-            [$identity],
+            $identity,
             $password
         );
 

@@ -6,10 +6,14 @@ use common\gateways\pds\dto\PersonCredentialResponse;
 use common\utils\httpClient\HttpClientFactory;
 use Karriere\JsonDecoder\JsonDecoder;
 
+/**
+ * Class PdsGateway
+ * @package common\gateways\pds
+ */
 class PdsGateway implements \yii\base\Configurable
 {
     const PERSON_CREDENTIAL_CREATED_STATUS = 1;
-    const DEFAULT_TIMEOUT = 5000; // 10 seconds
+    const DEFAULT_TIMEOUT = 20; // 20 seconds
 
     private $httpClient;
     private $jsonDecoder;
@@ -32,6 +36,28 @@ class PdsGateway implements \yii\base\Configurable
             ]
         ]);
         $this->jsonDecoder = new JsonDecoder();
+    }
+
+    /**
+     * @param array $attributes
+     * @param string $token
+     * @return mixed
+     * @throws \Exception
+     */
+    public function createPerson(array $attributes, string $token)
+    {
+        $response = $this->httpClient->post('person', [
+            'json'    => $attributes,
+            'headers' => [
+                'Authorization' => "Bearer {$token}",
+            ]
+        ]);
+
+        if ($response->getStatusCode() !== 201) {
+            throw new \Exception("Couldn't create person");
+        }
+
+        return $response->getBody()->getContents();
     }
 
     /**
@@ -100,6 +126,6 @@ class PdsGateway implements \yii\base\Configurable
             throw new \Exception('Error occurred');
         }
 
-        return $this->jsonDecoder->decode($response->getBody(), PersonCredentialResponse::class);
+        return $this->jsonDecoder->decode($response->getBody()->getContents(), PersonCredentialResponse::class);
     }
 }

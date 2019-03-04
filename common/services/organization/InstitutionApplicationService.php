@@ -92,8 +92,8 @@ class InstitutionApplicationService
 //            }
         });
 
-        $this->notificationService->sendRegistrationCompleteNotification(
-            [$application->email]
+        $this->notificationService->sendRegistrationCompletedNotification(
+            $application->email
         );
     }
 

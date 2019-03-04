@@ -13,7 +13,9 @@ class PdsPersonInterface
     public $birth_date;
     public $iin;
     public $indentity;
-    public $credential_type = PersonCredential::TYPE_EMAIL;
+    public $credential_type = PersonCredentialService::TYPE_EMAIL;
+    public $generate_credential;
+    public $validation;
 
     public function getAttributes()
     {

@@ -3,7 +3,7 @@
 namespace frontend\models\forms;
 
 use common\models\person\Person;
-use common\services\pds\PersonCredential;
+use common\services\pds\PersonCredentialService;
 use Yii;
 use yii\base\Model;
 
@@ -20,7 +20,7 @@ class StudentGeneralForm extends Model
     public $language;
 
     public $generate_credential = false;
-    public $credential_type = PersonCredential::TYPE_EMAIL;
+    public $credential_type = PersonCredentialService::TYPE_EMAIL;
     public $indentity;
 
     /**

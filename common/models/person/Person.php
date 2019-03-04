@@ -42,8 +42,6 @@ use yii\web\IdentityInterface;
  * @property string $create_ts
  * @property string $delete_ts
  * @property string $import_ts
- * @property string $email
- * @property string $password_reset_token
  *
  * @property AccessToken[] $accessTokens
  * @property AccessToken $activeAccessToken
@@ -219,14 +217,6 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
-    }
-
-    /**
-     * Generates new password reset token
-     */
-    public function generatePasswordResetToken()
-    {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     public function getAccessTokens()

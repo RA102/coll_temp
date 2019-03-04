@@ -20,60 +20,61 @@ class NotificationService
     }
 
     /**
-     * @param array $addresses
+     * @param string $email
      * @return bool
      */
-    public function sendRegistrationCompletedNotification(array $addresses)
+    public function sendRegistrationCompletedNotification(string $email)
     {
         // TODO: add i18n
         return $this->bilimalNotificationsGateway->sendEmailNotification(
             'Регистрация на bilimal',
             'Вы успешно завершили регистрацию на сервисе bilimal.',
-            $addresses
+            [$email]
         );
     }
 
 
     /**
-     * @param array $addresses
+     * @param string $email
+     * @param string $password
      * @return bool
      */
-    public function sendPersonCreatedNotification(array $addresses)
+    public function sendPersonCreatedNotification(string $email, string $password)
     {
         return $this->bilimalNotificationsGateway->sendEmailNotification(
-            'Регистрация на bilimal',
-            'Вы успешно завершили регистрацию на сервисе bilimal.',
-            $addresses
+            'Добро пожаловать на проект Bilimal!',
+            "Для Вас была создана новая учетная запись. Пароль для входа в систему: {$password}",
+            [$email]
         );
     }
 
     /**
-     * @param array $addresses
+     * @param string $email
      * @param string $resetUrl
      * @return bool
      */
-    public function sendPasswordChangedNotification(array $addresses, string $resetUrl)
+    public function sendPasswordChangedNotification(string $email, string $resetUrl)
     {
         // TODO: consider removing dependency on specific framework helper
         $encodedResetUrl = Html::encode($resetUrl);
         return $this->bilimalNotificationsGateway->sendEmailNotification(
             'Смена пароля',
             "Пройдите по ссылке <a href=\"{$encodedResetUrl}\">$resetUrl</a> для изменения пароля",
-            $addresses
+            [$email]
         );
     }
 
     /**
-     * @param array $addresses
+     * @param string $email
      * @param string $password
      * @return bool
      */
-    public function sendCredentialCreatedNotification(array $addresses, string $password)
+    public function sendCredentialCreatedNotification(string $email, string $password)
     {
         return $this->bilimalNotificationsGateway->sendEmailNotification(
-            'Аккаунт на bilimal',
-            "Пароль для входа в систему {$password}",
-            $addresses
+            'Добро пожаловать на проект Bilimal!',
+            "Для Вас была создана новая учетная запись. Пароль для входа в систему: {$password}",
+            [$email]
         );
     }
 
