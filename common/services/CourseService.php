@@ -22,6 +22,8 @@ class CourseService
                     'institution_id' => $institution->id,
                 ]);
             }
+        ])->andWhere([
+            Course::tableName() . '.id' => $id,
         ])->one();
     }
 }

@@ -6,6 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\TeacherCourse */
 /* @var $course common\models\Course */
 /* @var $teachers common\models\person\Employee[] */
+/* @var $groups common\models\organization\Group[] */
 
 $this->title = Yii::t('app', 'Create Teacher Course');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Courses'), 'url' => ['course/index']];
@@ -20,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_form', [
         'model' => $model,
         'teachers' => $teachers,
+        'groups' => $groups,
     ]) ?>
 
 </div>

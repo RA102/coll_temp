@@ -1,5 +1,6 @@
 <?php
 
+use common\models\organization\Group;
 use common\models\TeacherCourse;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -46,6 +47,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'teacher_id',
                 'value' => function (TeacherCourse $model) {
                     return $model->person->getFullName();
+                }
+            ],
+            [
+                'attribute' => 'groups',
+                'value' => function (TeacherCourse $model) {
+                    return implode(', ', array_map(function (Group $group) {
+                        return $group->caption_current;
+                    }, $model->groups));
                 }
             ],
             'type',
