@@ -9,6 +9,7 @@ use Yii;
 use common\models\organization\Group;
 use frontend\search\GroupSearch;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -34,6 +35,15 @@ class GroupController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

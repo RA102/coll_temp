@@ -6,6 +6,8 @@ use common\forms\InstitutionForm;
 use common\models\organization\Institution;
 use common\services\organization\InstitutionService;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -20,6 +22,33 @@ class InstitutionController extends Controller
     {
         parent::__construct($id, $module, $config);
         $this->institutionService = $institutionService;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'index'
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'unlink' => ['POST'],
+                ],
+            ],
+        ];
     }
 
     public function actionIndex()
