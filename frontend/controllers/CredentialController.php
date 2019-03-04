@@ -2,14 +2,12 @@
 
 namespace frontend\controllers;
 
-use common\exceptions\TranslatableException;
-use common\models\organization\Group;
 use common\services\pds\PersonCredentialService;
 use frontend\models\forms\PersonCredentialForm;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 
 /**
  * PersonCredentialController implements the CRUD actions for PersonCredential model.
@@ -41,8 +39,16 @@ class CredentialController extends Controller
     public function behaviors()
     {
         return [
-            // TODO: add access control
-            'verbs' => [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs'  => [
                 'class'   => VerbFilter::className(),
                 'actions' => [
                     'create' => ['POST'],
@@ -76,21 +82,5 @@ class CredentialController extends Controller
         }
 
         return $this->redirect(Yii::$app->request->referrer);
-    }
-
-    /**
-     * Finds the Group model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Group the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Group::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }
