@@ -2,6 +2,7 @@
 
 namespace common\services\pds;
 
+use common\gateways\pds\PdsGateway;
 use common\models\person\Person;
 use common\services\NotificationService;
 use common\services\pds\exceptions\PersonAlreadyExistException;
@@ -12,22 +13,29 @@ class PersonService
     private $createService;
     private $updateService;
     private $searchService;
+    private $notificationService;
+    private $pdsGateway;
 
     /**
      * PersonService constructor.
+     * @param NotificationService $notificationService
      * @param PersonCreateService $createService
      * @param PersonUpdateService $updateService
      * @param PersonSearchService $searchService
+     * @param PdsGateway $pdsGateway
      */
     public function __construct(
+        NotificationService $notificationService,
         PersonCreateService $createService,
         PersonUpdateService $updateService,
-        PersonSearchService $searchService
-    )
-    {
+        PersonSearchService $searchService,
+        PdsGateway $pdsGateway
+    ) {
+        $this->notificationService = $notificationService;
         $this->createService = $createService;
         $this->updateService = $updateService;
         $this->searchService = $searchService;
+        $this->pdsGateway = $pdsGateway;
     }
 
     /**
@@ -35,7 +43,7 @@ class PersonService
      * @param string $identity
      * @param string $credential_type
      * @param bool $generate_credential
-     * @return int
+     * @return PdsPersonInterface
      * @throws ForbiddenHttpException
      */
     public function create(
@@ -43,8 +51,7 @@ class PersonService
         string $identity,
         string $credential_type,
         bool $generate_credential
-    ): PdsPersonInterface
-    {
+    ): PdsPersonInterface {
         if (!empty($model->portal_uid)) {
             throw new ForbiddenHttpException('Person already exists');
         }
@@ -96,6 +103,19 @@ class PersonService
         }
 
         return $this->updateService->update($model->portal_uid, $person);
+    }
+
+    /**
+     * @param string $identity
+     */
+    public function resetPassword(string $identity)
+    {
+        // TODO: figure a better place for type constant
+        $response = $this->pdsGateway->resetPassword($identity, PersonCredentialService::TYPE_EMAIL);
+        // TODO: don't call global components in services
+        $resetLink = \Yii::$app->urlManager->createAbsoluteUrl(['site/reset-password', 'token' => $response->hash]);
+
+        $this->notificationService->sendPasswordResetNotification($identity, $resetLink);
     }
 
     /**

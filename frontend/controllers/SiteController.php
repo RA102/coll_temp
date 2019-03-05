@@ -3,19 +3,17 @@
 namespace frontend\controllers;
 
 use common\forms\auth\LoginForm;
-use common\services\NotificationService;
-use common\services\pds\LoginService;
 use common\services\organization\InstitutionApplicationService;
+use common\services\pds\LoginService;
+use common\services\pds\PersonService;
+use frontend\models\PasswordResetRequestForm;
+use frontend\models\SignupForm;
 use Yii;
-use yii\base\InvalidArgumentException;
 use yii\base\Module;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
 
 /**
  * Site controller
@@ -24,7 +22,7 @@ class SiteController extends Controller
 {
     private $loginService;
     private $applicationService;
-    private $notificationService;
+    private $pdsPersonService;
 
     /**
      * {@inheritdoc}
@@ -34,17 +32,17 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'index'],
+                'only'  => ['logout', 'index'],
                 'rules' => [
                     [
                         'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'allow'   => true,
+                        'roles'   => ['@'],
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
+            'verbs'  => [
+                'class'   => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -69,12 +67,12 @@ class SiteController extends Controller
         Module $module,
         LoginService $loginService,
         InstitutionApplicationService $applicationService,
-        NotificationService $notificationService,
+        PersonService $personService,
         array $config = []
     ) {
         $this->loginService = $loginService;
         $this->applicationService = $applicationService;
-        $this->notificationService = $notificationService;
+        $this->pdsPersonService = $personService;
         parent::__construct($id, $module, $config);
     }
 
@@ -150,15 +148,15 @@ class SiteController extends Controller
     public function actionRequestPasswordReset()
     {
         $this->layout = 'main-login';
-        // TODO: consider better implementation
-        $model = new PasswordResetRequestForm($this->notificationService);
+        $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
+            try {
+                $this->pdsPersonService->resetPassword($model->email);
                 Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-
                 return $this->goHome();
-            } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+            } catch (\Exception $e) {
+                Yii::$app->session->setFlash('error',
+                    'Sorry, we are unable to reset password for the provided email address.');
             }
         }
 
@@ -168,28 +166,29 @@ class SiteController extends Controller
     }
 
     /**
+     * // TODO: implement
      * Resets password.
      *
      * @param string $token
      * @return mixed
      * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token)
-    {
-        try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidArgumentException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
-
-            return $this->goHome();
-        }
-
-        return $this->render('resetPassword', [
-            'model' => $model,
-        ]);
-    }
+//    public function actionResetPassword($token)
+//    {
+//        try {
+//            $model = new ResetPasswordForm($token);
+//        } catch (InvalidArgumentException $e) {
+//            throw new BadRequestHttpException($e->getMessage());
+//        }
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+//            Yii::$app->session->setFlash('success', 'New password saved.');
+//
+//            return $this->goHome();
+//        }
+//
+//        return $this->render('resetPassword', [
+//            'model' => $model,
+//        ]);
+//    }
 }

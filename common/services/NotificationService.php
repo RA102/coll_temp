@@ -53,7 +53,7 @@ class NotificationService
      * @param string $resetUrl
      * @return bool
      */
-    public function sendPasswordChangedNotification(string $email, string $resetUrl)
+    public function sendPasswordResetNotification(string $email, string $resetUrl)
     {
         // TODO: consider removing dependency on specific framework helper
         $encodedResetUrl = Html::encode($resetUrl);

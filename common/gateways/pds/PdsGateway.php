@@ -3,10 +3,12 @@
 namespace common\gateways\pds;
 
 use common\gateways\pds\dto\PersonCredentialResponse;
+use common\gateways\pds\dto\ResetPasswordResponse;
 use common\utils\httpClient\HttpClientFactory;
 use Karriere\JsonDecoder\JsonDecoder;
 
 /**
+ * // TODO: split according to logic
  * Class PdsGateway
  * @package common\gateways\pds
  */
@@ -59,6 +61,30 @@ class PdsGateway implements \yii\base\Configurable
 
         return $response->getBody()->getContents();
     }
+
+    /**
+     * @param string $identity
+     * @param string $type
+     * @return ResetPasswordResponse
+     * @throws \Exception
+     */
+    public function resetPassword(string $identity, string $type): ResetPasswordResponse
+    {
+        $response = $this->httpClient->post('person/reset-password', [
+            'json' => [
+                'indentity' => $identity,
+                'type'      => $type
+            ],
+        ]);
+
+        if ($response->getStatusCode() !== 201) {
+            throw new \Exception("Couldn't create person");
+        }
+
+        // TODO: maybe better use logic like in PdsPersonInterface and remove unnecessary package
+        return $this->jsonDecoder->decode($response->getBody()->getContents(), ResetPasswordResponse::class);
+    }
+
 
     /**
      * @param int $person_id
@@ -128,4 +154,6 @@ class PdsGateway implements \yii\base\Configurable
 
         return $this->jsonDecoder->decode($response->getBody()->getContents(), PersonCredentialResponse::class);
     }
+
+
 }
