@@ -17,7 +17,7 @@ class m190302_093920_create_person_credential_table extends Migration
             'person_id'            => $this->integer()->notNull(),
             'indentity'            => $this->string()->notNull()->unique(),
             'password_reset_token' => $this->string(),
-            'delete_ts'            => $this->timestamp()->null(),
+            'delete_ts'            => $this->dateTime()->null(),
             'create_ts'            => $this->dateTime()->notNull()->defaultValue('now()'),
             'update_ts'            => $this->dateTime()->notNull()->defaultValue('now()'),
         ]);
