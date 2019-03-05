@@ -78,11 +78,35 @@ class PdsGateway implements \yii\base\Configurable
         ]);
 
         if ($response->getStatusCode() !== 201) {
-            throw new \Exception("Couldn't create person");
+            throw new \Exception("Couldn't reset password");
         }
 
-        // TODO: maybe better use logic like in PdsPersonInterface and remove unnecessary package
+        // TODO: maybe better to use logic like in PdsPersonInterface and remove unnecessary package
         return $this->jsonDecoder->decode($response->getBody()->getContents(), ResetPasswordResponse::class);
+    }
+
+    /**
+     * @param string $hash
+     * @param string $password
+     * @param string $repassword
+     * @return bool
+     * @throws \Exception
+     */
+    public function changePassword(string $hash, string $password, string $repassword)
+    {
+        $response = $this->httpClient->post('person/change-password', [
+            'json' => [
+                'hash'       => $hash,
+                'password'   => $password,
+                'repassword' => $repassword
+            ]
+        ]);
+
+        if ($response->getStatusCode() !== 201) {
+            throw new \Exception("Couldn't change password");
+        }
+
+        return true;
     }
 
 

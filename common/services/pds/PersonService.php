@@ -3,6 +3,7 @@
 namespace common\services\pds;
 
 use common\gateways\pds\PdsGateway;
+use common\helpers\PersonCredentialHelper;
 use common\models\person\Person;
 use common\services\NotificationService;
 use common\services\pds\exceptions\PersonAlreadyExistException;
@@ -110,12 +111,23 @@ class PersonService
      */
     public function resetPassword(string $identity)
     {
-        // TODO: figure a better place for type constant
-        $response = $this->pdsGateway->resetPassword($identity, PersonCredentialService::TYPE_EMAIL);
+        // TODO: consider saving hash in our db to validate token in our system
+        $response = $this->pdsGateway->resetPassword($identity, PersonCredentialHelper::TYPE_EMAIL);
         // TODO: don't call global components in services
         $resetLink = \Yii::$app->urlManager->createAbsoluteUrl(['site/reset-password', 'token' => $response->hash]);
 
         $this->notificationService->sendPasswordResetNotification($identity, $resetLink);
+    }
+
+    /**
+     * @param string $hash
+     * @param string $password
+     * @param string $repassword
+     * @return bool
+     */
+    public function changePassword(string $hash, string $password, string $repassword)
+    {
+        return $this->pdsGateway->changePassword($hash, $password, $repassword);
     }
 
     /**

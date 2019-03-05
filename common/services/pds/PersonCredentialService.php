@@ -2,20 +2,14 @@
 
 namespace common\services\pds;
 
-use common\exceptions\TranslatableException;
-use common\gateways\bilimal\BilimalNotificationsGateway;
 use common\gateways\pds\PdsGateway;
+use common\helpers\PersonCredentialHelper;
 use common\models\person\Person;
 use common\models\person\PersonCredential;
 use common\services\NotificationService;
 
 class PersonCredentialService
 {
-    const PERSON_CREDENTIAL_CREATED_STATUS = 1;
-    const PERSON_CREDENTIAL_DELETED_STATUS = 3;
-
-    const TYPE_EMAIL = 'email';
-
     private $notificationService;
     private $pdsGateway;
 
@@ -52,7 +46,7 @@ class PersonCredentialService
             $person->portal_uid,
             $identity,
             $token,
-            self::TYPE_EMAIL
+            PersonCredentialHelper::TYPE_EMAIL
         );
         $password = $personCredentialResponse->validation_clear;
         // TODO: add queue for notifications
