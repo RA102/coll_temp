@@ -9,6 +9,7 @@ use common\models\CountryUnit;
 use common\models\Street;
 use common\models\organization\EducationalForm;
 use \common\models\organization\OrganizationalLegalForm;
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use common\components\ActiveForm;
 use kartik\date\DatePicker;
@@ -100,11 +101,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ?>
 
                                 <?= $form->field($model, 'name') ?>
-                                <?= $form->field($model, 'country_id')->dropDownList(
-                                    ArrayHelper::map(Country::find()->all(), 'id', 'caption_current'), [
-                                    'class' => 'form-control active-form-refresh-control',
-                                    'prompt' => ''
-                                ]) ?>
+
+                                <?= $form->field($model, 'country_id')->widget(Select2::classname(), [
+                                    'data' => ArrayHelper::map(Country::find()->all(), 'id', 'caption_current'),
+                                    'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+                                    'theme' => 'default',
+                                    'pluginOptions' => [
+                                        'allowClear' => true,
+                                    ],
+                                ])->label(false);?>
 
                                 <?php
                                 if ($model->country_id) {
@@ -118,10 +123,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ])->all();
                                         if ($children) {
                                             $model->hasCountryUnit = true;
-                                            echo $form->field($model, "city_ids[{$count}]")->dropDownList(
-                                                ArrayHelper::map($children, 'id', 'caption_current'), [
-                                                'class' => 'form-control active-form-refresh-control',
-                                                'prompt' => ''
+
+                                            echo $form->field($model, "city_ids[{$count}]")->widget(Select2::classname(), [
+                                                'data' => ArrayHelper::map($children, 'id', 'caption_current'),
+                                                'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+                                                'theme' => 'default',
+                                                'pluginOptions' => [
+                                                    'allowClear' => true,
+                                                ],
                                             ])->label(false);
 
                                             if (isset($model->city_ids[$count]) && $model->city_ids[$count]) {
@@ -137,11 +146,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                     if ($parent_id && !$children) {
                                         $model->hasStreet = true;
-                                        echo $form->field($model, "street_id")->dropDownList(
-                                            ArrayHelper::map(Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption_current'), [
-                                            'class' => 'form-control',
-                                            'prompt' => ''
-                                        ]);
+
+                                        echo $form->field($model, "street_id")->widget(Select2::classname(), [
+                                            'data' => ArrayHelper::map(\common\models\Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption_current'),
+                                            'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+                                            'theme' => 'default',
+                                            'pluginOptions' => [
+                                                'allowClear' => true,
+                                            ],
+                                        ])->label(false);
                                     }
                                     if ($parent_id && !$children && $model->hasStreet) {
                                         $model->hasHouseNumber = true;
