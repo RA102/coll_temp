@@ -41,7 +41,7 @@ use yii\widgets\Pjax;
 
     echo Html::label($form->getAttributeLabel('location_registration'));
     echo $activeForm->field($form, 'registration_country_id')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(\common\models\Country::find()->all(), 'id', 'name'),
+        'data' => ArrayHelper::map(\common\models\Country::find()->all(), 'id', 'caption_current'),
         'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
         'theme' => 'default',
         'pluginOptions' => [
@@ -57,7 +57,7 @@ use yii\widgets\Pjax;
             $children = ArrayHelper::map(CountryUnit::find()->andWhere([
                 'country_id' => $form->registration_country_id,
                 'parent_id' => $parent_id,
-            ])->all(), 'id', 'name');
+            ])->all(), 'id', 'caption_current');
             if ($children) {
                 $registrationHasCountryUnit = true;
                 echo $activeForm->field($form, "registration_city_ids[{$count}]")->widget(Select2::classname(), [
@@ -108,7 +108,7 @@ use yii\widgets\Pjax;
 
     echo Html::label($form->getAttributeLabel('location_residence'));
     echo $activeForm->field($form, 'residence_country_id')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(\common\models\Country::find()->all(), 'id', 'name'),
+        'data' => ArrayHelper::map(\common\models\Country::find()->all(), 'id', 'caption_current'),
         'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
         'theme' => 'default',
         'pluginOptions' => [
@@ -124,7 +124,7 @@ use yii\widgets\Pjax;
             $children = ArrayHelper::map(CountryUnit::find()->andWhere([
                 'country_id' => $form->residence_country_id,
                 'parent_id' => $parent_id,
-            ])->all(), 'id', 'name');
+            ])->all(), 'id', 'caption_current');
             if ($children) {
                 $residenceHasCountryUnit = true;
                 echo $activeForm->field($form, "residence_city_ids[{$count}]")->widget(Select2::classname(), [
