@@ -36,7 +36,7 @@ use yii\widgets\DetailView;
                         $result[] = \common\models\CountryUnit::findOne(end($ids))->name;
                     }
                     if (($id = $form->registration_street_id) !== null) {
-                        $result[] = \common\models\Street::findOne($id)->caption;
+                        $result[] = \common\models\Street::findOne($id)->caption_current;
                     }
 
                     return implode(', ', $result);
@@ -53,7 +53,7 @@ use yii\widgets\DetailView;
                         $result[] = \common\models\CountryUnit::findOne(end($ids))->name;
                     }
                     if (($id = $form->residence_street_id) !== null) {
-                        $result[] = \common\models\Street::findOne($id)->caption;
+                        $result[] = \common\models\Street::findOne($id)->caption_current;
                     }
 
                     return implode(', ', $result);

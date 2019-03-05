@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 if ($parent_id && !$children) {
                     $form->hasStreet = true;
                     echo Html::tag('div', $activeForm->field($form, "street_id")->dropDownList(
-                        ArrayHelper::map(Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption'), [
+                        ArrayHelper::map(Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption_current'), [
                         'class' => 'form-control',
                         'prompt' => ''
                     ]), ['class' => 'col-md-3']);

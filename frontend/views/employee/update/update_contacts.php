@@ -83,7 +83,7 @@ use yii\widgets\Pjax;
         if ($parent_id && !$children) {
             $registrationHasStreet = true;
             echo $activeForm->field($form, "registration_street_id")->widget(Select2::classname(), [
-                'data' => ArrayHelper::map(\common\models\Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption'),
+                'data' => ArrayHelper::map(\common\models\Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption_current'),
                 'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
                 'theme' => 'default',
                 'pluginOptions' => [
@@ -150,7 +150,7 @@ use yii\widgets\Pjax;
         if ($parent_id && !$children) {
             $residenceHasStreet = true;
             echo $activeForm->field($form, "residence_street_id")->widget(Select2::classname(), [
-                'data' => ArrayHelper::map(\common\models\Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption'),
+                'data' => ArrayHelper::map(\common\models\Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption_current'),
                 'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
                 'theme' => 'default',
                 'pluginOptions' => [

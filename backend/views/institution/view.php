@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'street_id',
                     'value' => function(\common\models\organization\Institution $model) {
-                        return $model->street->caption;
+                        return $model->street->caption_current;
                     }
                 ],
                 'house_number',

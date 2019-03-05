@@ -3,12 +3,14 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "street".
  *
  * @property int $id
  * @property string $caption
+ * @property string $caption_current
  * @property int $city_id
  * @property int $type_id
  * @property int $region_city_oid
@@ -23,6 +25,10 @@ use Yii;
  */
 class Street extends \yii\db\ActiveRecord
 {
+    public $caption_current;
+    public $caption_ru;
+    public $caption_kk;
+
     /**
      * {@inheritdoc}
      */
@@ -73,5 +79,25 @@ class Street extends \yii\db\ActiveRecord
     public function getCity()
     {
         return $this->hasOne(CountryUnit::class, ['id' => 'city_id'])->inverseOf('streets');
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->caption = [
+            'ru' => $this->caption_ru,
+            'kk' => $this->caption_kk,
+        ];
+
+        return parent::beforeSave($insert);
+    }
+
+    public function afterFind()
+    {
+        $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
+        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
+        $this->caption_ru = $this->caption['ru'];
+        $this->caption_kk = $this->caption['kk'];
+
+        parent::afterFind();
     }
 }
