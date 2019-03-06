@@ -42,6 +42,12 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-4">
+            <?= $activeForm->field($form, 'identity_card_issued')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
+
     <legend class="text-semibold center-block">
         <?= 'Паспорт'?>
     </legend>
@@ -73,6 +79,9 @@ use yii\widgets\ActiveForm;
                     'format' => 'yyyy-mm-dd'
                 ]
             ]); ?>
+        </div>
+        <div class="col-md-4">
+            <?= $activeForm->field($form, 'passport_issued')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
 
