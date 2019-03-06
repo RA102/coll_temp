@@ -6,7 +6,6 @@
 
 use common\models\Country;
 use common\models\CountryUnit;
-use common\models\Street;
 use common\models\organization\EducationalForm;
 use \common\models\organization\OrganizationalLegalForm;
 use kartik\select2\Select2;
