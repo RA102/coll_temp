@@ -12,6 +12,9 @@ class InstitutionService
         $institution->setAttributes($institutionForm->attributes);
         $institution->type_id = end($institutionForm->type_ids);
         $institution->city_id = end($institutionForm->city_ids);
-        $institution->save();
+        if(!$institution->save()) {
+            print_r($institution->getErrors());
+            die();
+        }
     }
 }
