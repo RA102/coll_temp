@@ -108,7 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'pluginOptions' => [
                                         'allowClear' => true,
                                     ],
-                                ])->label(false);?>
+                                ]);?>
 
                                 <?php
                                 if ($model->country_id) {
