@@ -32,6 +32,8 @@ use yii\widgets\ActiveForm;
         ]
     ]); ?>
 
+    <?= $activeForm->field($form, 'identity_card_issued')->textInput(['maxlength' => true]) ?>
+
     <legend class="text-semibold center-block">
         <?= 'Паспорт'?>
     </legend>
@@ -51,6 +53,8 @@ use yii\widgets\ActiveForm;
             'autoclose' => true
         ]
     ]); ?>
+
+    <?= $activeForm->field($form, 'passport_issued')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

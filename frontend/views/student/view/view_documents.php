@@ -29,6 +29,10 @@ use yii\widgets\DetailView;
                 'label' => $form->getAttributeLabel('identity_card_valid_date'),
                 'value' => $form->identity_card_valid_date,
             ],
+            [
+                'label' => $form->getAttributeLabel('identity_card_issued'),
+                'value' => $form->identity_card_issued,
+            ],
         ],
     ]) ?>
 
@@ -53,6 +57,10 @@ use yii\widgets\DetailView;
             [
                 'label' => $form->getAttributeLabel('passport_valid_date'),
                 'value' => $form->passport_valid_date,
+            ],
+            [
+                'label' => $form->getAttributeLabel('passport_issued'),
+                'value' => $form->passport_issued,
             ],
         ],
     ]) ?>
