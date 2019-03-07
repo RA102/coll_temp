@@ -16,7 +16,7 @@ class PersonInfoHelper
     # свидетельство о рождении
     const BIRTH_CERTIFICATE_SERIES = 'birth_certificate_series'; // Серия свидетельства о рождении
     const BIRTH_CERTIFICATE_NUMBER = 'birth_certificate_number'; // Номер свидетельства о рождении
-    const BIRTH_CERTIFICATE_ISSUE_DATE = 'birth_certificate_issue_date'; // Дата выдачи свидетельства
+    const BIRTH_CERTIFICATE_ISSUED_DATE = 'birth_certificate_issued_date'; // Дата выдачи свидетельства
 
     # удв
     const IDENTITY_CARD_NUMBER = 'identity_card_number'; // Номер УДВ

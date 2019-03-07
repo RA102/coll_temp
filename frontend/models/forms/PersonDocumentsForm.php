@@ -9,6 +9,10 @@ use yii\base\Model;
 
 class PersonDocumentsForm extends Model
 {
+    public $birth_certificate_series;
+    public $birth_certificate_number;
+    public $birth_certificate_issued_date;
+
     public $identity_card_number;
     public $identity_card_issued_date;
     public $identity_card_valid_date;
@@ -22,6 +26,10 @@ class PersonDocumentsForm extends Model
 
     public function __construct(Person $person, PersonInfoService $personInfoService, array $config = [])
     {
+        $this->birth_certificate_series = $personInfoService->getInfoValue($person, PersonInfoHelper::BIRTH_CERTIFICATE_SERIES);
+        $this->birth_certificate_number = $personInfoService->getInfoValue($person, PersonInfoHelper::BIRTH_CERTIFICATE_NUMBER);
+        $this->birth_certificate_issued_date = $personInfoService->getInfoValue($person, PersonInfoHelper::BIRTH_CERTIFICATE_ISSUED_DATE);
+
         $this->identity_card_number = $personInfoService->getInfoValue($person, PersonInfoHelper::IDENTITY_CARD_NUMBER);
         $this->identity_card_issued_date = $personInfoService->getInfoValue($person, PersonInfoHelper::IDENTITY_CARD_ISSUED_DATE);
         $this->identity_card_valid_date = $personInfoService->getInfoValue($person, PersonInfoHelper::IDENTITY_CARD_VALID_DATE);
@@ -42,6 +50,10 @@ class PersonDocumentsForm extends Model
     public function rules()
     {
         return [
+            [['birth_certificate_series'], 'string'],
+            [['birth_certificate_number'], 'string'],
+            [['birth_certificate_issued_date'], 'string'],
+
             [['identity_card_number'], 'string'],
             [['identity_card_issued_date'], 'string'],
             [['identity_card_valid_date'], 'string'],
@@ -61,6 +73,10 @@ class PersonDocumentsForm extends Model
     public function attributeLabels()
     {
         return [
+            'birth_certificate_series' => 'Серия свидетельства о рождении',
+            'birth_certificate_number' => 'Номер свидетельства о рождении',
+            'birth_certificate_issued_date' => 'Дата выдачи',
+
             'identity_card_number' => 'Номер удостоверения личности',
             'identity_card_issued_date' => 'Дата выдачи',
             'identity_card_valid_date' => 'Действительно до',
@@ -76,6 +92,10 @@ class PersonDocumentsForm extends Model
 
     public function apply(Person $person, PersonInfoService $personInfoService)
     {
+        $personInfoService->setInfoValue($person, PersonInfoHelper::BIRTH_CERTIFICATE_SERIES, $this->birth_certificate_series);
+        $personInfoService->setInfoValue($person, PersonInfoHelper::BIRTH_CERTIFICATE_NUMBER, $this->birth_certificate_number);
+        $personInfoService->setInfoValue($person, PersonInfoHelper::BIRTH_CERTIFICATE_ISSUED_DATE, $this->birth_certificate_issued_date);
+
         $personInfoService->setInfoValue($person, PersonInfoHelper::IDENTITY_CARD_NUMBER, $this->identity_card_number);
         $personInfoService->setInfoValue($person, PersonInfoHelper::IDENTITY_CARD_ISSUED_DATE, $this->identity_card_issued_date);
         $personInfoService->setInfoValue($person, PersonInfoHelper::IDENTITY_CARD_VALID_DATE, $this->identity_card_valid_date);
