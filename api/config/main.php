@@ -34,13 +34,7 @@ return [
                 ],
             ],
         ],
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'enableStrictParsing' => false,
-            'showScriptName' => false,
-            'rules' => [
-            ],        
-        ]
+        'urlManager' => require __DIR__ . '/url-manager.php',
     ],
     'params' => $params,
 ];
