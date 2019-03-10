@@ -2,6 +2,7 @@
 
 namespace common\models\person;
 
+use common\helpers\PersonTypeHelper;
 use common\models\organization\Group;
 
 /**
@@ -38,6 +39,7 @@ class Student extends Person
     {
         $model = parent::add($portal_uid, $firstname, $lastname, $middlename, $iin);
         $model->type = Person::TYPE_STUDENT;
+        $model->person_type = PersonTypeHelper::PERSON_TYPE_STUDENT;
 
         return $model;
     }

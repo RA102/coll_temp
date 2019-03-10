@@ -31,7 +31,7 @@ class PersonCredentialService
      * @return PersonCredential
      * @throws \Exception
      */
-    public function create(int $person_id, string $identity, string $token): PersonCredential
+    public function create(int $person_id, string $identity, string $token, string $role): PersonCredential
     {
         $person = Person::findIdentity($person_id);
         if (!$person) {
@@ -46,7 +46,8 @@ class PersonCredentialService
             $person->portal_uid,
             $identity,
             $token,
-            PersonCredentialHelper::TYPE_EMAIL
+            PersonCredentialHelper::TYPE_EMAIL,
+            $role
         );
         $password = $personCredentialResponse->validation_clear;
         // TODO: add queue for notifications

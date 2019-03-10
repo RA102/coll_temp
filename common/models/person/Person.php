@@ -42,6 +42,7 @@ use yii\web\IdentityInterface;
  * @property string $create_ts
  * @property string $delete_ts
  * @property string $import_ts
+ * @property string $person_type
  *
  * @property AccessToken[] $accessTokens
  * @property AccessToken $activeAccessToken
@@ -81,11 +82,31 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['status', 'sex', 'nationality_id', 'is_pluralist', 'birth_country_id', 'birth_city_id', 'oid', 'alledu_id', 'alledu_server_id', 'pupil_id', 'owner_id', 'server_id', 'portal_uid', 'type'], 'default', 'value' => null],
+            [
+                [
+                    'status',
+                    'sex',
+                    'nationality_id',
+                    'is_pluralist',
+                    'birth_country_id',
+                    'birth_city_id',
+                    'oid',
+                    'alledu_id',
+                    'alledu_server_id',
+                    'pupil_id',
+                    'owner_id',
+                    'server_id',
+                    'portal_uid',
+                    'type',
+                    'person_type'
+                ],
+                'default',
+                'value' => null
+            ],
             [['status', 'sex', 'nationality_id', 'is_pluralist', 'birth_country_id', 'birth_city_id', 'oid', 'alledu_id', 'alledu_server_id', 'pupil_id', 'owner_id', 'server_id', 'portal_uid', 'type'], 'integer'],
             [['birth_date', 'create_ts', 'delete_ts', 'import_ts'], 'safe'],
             [['is_subscribed'], 'boolean'],
-            [['nickname', 'firstname', 'lastname', 'middlename', 'iin'], 'string', 'max' => 100],
+            [['nickname', 'firstname', 'lastname', 'middlename', 'iin', 'person_type'], 'string', 'max' => 100],
             [['birth_place', 'photo'], 'string', 'max' => 255],
             [['language'], 'string', 'max' => 2],
             ['iin', 'unique'],
@@ -152,6 +173,11 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function getPersonLocations()
     {
         return $this->hasMany(PersonLocation::class, ['person_id' => 'id']);
+    }
+
+    public function getPersonType()
+    {
+        return $this->hasOne(PersonType::class, ['name' => 'person_type']);
     }
 
     public function isActive()

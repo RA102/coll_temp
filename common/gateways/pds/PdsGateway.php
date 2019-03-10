@@ -33,11 +33,33 @@ class PdsGateway implements \yii\base\Configurable
             'http_errors' => false, // disable throwing http exceptions
             'timeout'     => self::DEFAULT_TIMEOUT,
             'headers'     => [
-                'Access'      => "Bearer {$config['accessToken']}",
-                'Access-Role' => 'superadmin'
+                'Access' => "Bearer {$config['accessToken']}",
             ]
         ]);
         $this->jsonDecoder = new JsonDecoder();
+    }
+
+    /**
+     * @param string $username
+     * @param string $password
+     * @return string
+     * @throws \Exception
+     */
+    public function login(string $username, string $password)
+    {
+        $response = $this->httpClient->post('auth', [
+            'json' => [
+                'indentity' => $username,
+                'password'  => $password
+            ]
+        ]);
+
+        // TODO: send error depending on response code (Service unavailable, Bad request)
+        if ($response->getStatusCode() !== 201) {
+            throw new \Exception("Unauthorized");
+        }
+
+        return $response->getBody()->getContents();
     }
 
     /**
@@ -46,12 +68,13 @@ class PdsGateway implements \yii\base\Configurable
      * @return mixed
      * @throws \Exception
      */
-    public function createPerson(array $attributes, string $token)
+    public function createPerson(array $attributes, string $token, string $role)
     {
         $response = $this->httpClient->post('person', [
             'json'    => $attributes,
             'headers' => [
                 'Authorization' => "Bearer {$token}",
+                'Access-Role'   => $role
             ]
         ]);
 
@@ -81,7 +104,6 @@ class PdsGateway implements \yii\base\Configurable
             throw new \Exception("Couldn't reset password");
         }
 
-        // TODO: maybe better to use logic like in PdsPersonInterface and remove unnecessary package
         return $this->jsonDecoder->decode($response->getBody()->getContents(), ResetPasswordResponse::class);
     }
 
@@ -115,6 +137,7 @@ class PdsGateway implements \yii\base\Configurable
      * @param string $email
      * @param string $token
      * @param string $type
+     * @param string $role
      * @return PersonCredentialResponse
      * @throws \Exception
      */
@@ -122,7 +145,8 @@ class PdsGateway implements \yii\base\Configurable
         int $person_id,
         string $email,
         string $token,
-        string $type
+        string $type,
+        string $role
     ): PersonCredentialResponse {
         $response = $this->httpClient->post('person-credential', [
             'json'    => [
@@ -133,6 +157,7 @@ class PdsGateway implements \yii\base\Configurable
             ],
             'headers' => [
                 'Authorization' => "Bearer {$token}",
+                'Access-Role'   => $role
             ]
         ]);
 
@@ -157,7 +182,8 @@ class PdsGateway implements \yii\base\Configurable
         string $email,
         string $token,
         string $type,
-        int $status
+        int $status,
+        string $role
     ): PersonCredentialResponse {
         $id = implode(',', [$person_id, $email, $type, $status]);
         $response = $this->httpClient->put("person-credential/{$id}", [
@@ -169,6 +195,7 @@ class PdsGateway implements \yii\base\Configurable
             ],
             'headers' => [
                 'Authorization' => "Bearer {$token}",
+                'Access-Role'   => $role
             ]
         ]);
 

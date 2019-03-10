@@ -96,6 +96,7 @@ class PersonSearchService
         $model->create_ts = $personData['create_ts'];
         $model->birth_date = $personData['birth_date'];
         $model->iin = $personData['iin'];
+        $model->validation = $personData['validation'];
 
         return $model;
     }
@@ -135,6 +136,14 @@ class PersonSearchService
         }
 
         return $accessToken;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRole()
+    {
+        return $this->getUser()->person_type;
     }
 
     /**

@@ -72,7 +72,8 @@ class CredentialController extends Controller
                 $this->pdsPersonCredentialService->create(
                     $form->person_id,
                     $form->indentity,
-                    Yii::$app->user->identity->activeAccessToken->token
+                    Yii::$app->user->identity->activeAccessToken->token,
+                    Yii::$app->user->identity->person_type
                 );
             } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error', Yii::t('app/error', 'Generic'));
