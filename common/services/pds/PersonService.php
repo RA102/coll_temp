@@ -113,10 +113,7 @@ class PersonService
     {
         // TODO: consider saving hash in our db to validate token in our system
         $response = $this->pdsGateway->resetPassword($identity, PersonCredentialHelper::TYPE_EMAIL);
-        // TODO: don't call global components in services
-        $resetLink = \Yii::$app->urlManager->createAbsoluteUrl(['site/reset-password', 'token' => $response->hash]);
-
-        $this->notificationService->sendPasswordResetNotification($identity, $resetLink);
+        $this->notificationService->sendPasswordResetNotification($identity, $response->hash);
     }
 
     /**

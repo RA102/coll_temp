@@ -2,21 +2,25 @@
 
 namespace common\services;
 
+use common\components\EmailComposer;
 use common\gateways\bilimal\BilimalNotificationsGateway;
-use yii\helpers\Html;
 
 class NotificationService
 {
     private $bilimalNotificationsGateway;
+    private $emailComposer;
 
     /**
      * NotificationsService constructor.
      * @param BilimalNotificationsGateway $bilimalNotificationsGateway
+     * @param EmailComposer $emailComposer
      */
     public function __construct(
-        BilimalNotificationsGateway $bilimalNotificationsGateway
+        BilimalNotificationsGateway $bilimalNotificationsGateway,
+        EmailComposer $emailComposer
     ) {
         $this->bilimalNotificationsGateway = $bilimalNotificationsGateway;
+        $this->emailComposer = $emailComposer;
     }
 
     /**
@@ -25,14 +29,14 @@ class NotificationService
      */
     public function sendRegistrationCompletedNotification(string $email)
     {
-        // TODO: add i18n
+        $htmlMessage = $this->emailComposer->compose('signup');
+
         return $this->bilimalNotificationsGateway->sendEmailNotification(
-            'Регистрация на bilimal',
-            'Вы успешно завершили регистрацию на сервисе bilimal.',
+            \Yii::t('app', 'Регистрация на bilimal'),
+            $htmlMessage,
             [$email]
         );
     }
-
 
     /**
      * @param string $email
@@ -41,25 +45,31 @@ class NotificationService
      */
     public function sendPersonCreatedNotification(string $email, string $password)
     {
+        $htmlMessage = $this->emailComposer->compose('welcome', [
+            'password' => $password
+        ]);
+
         return $this->bilimalNotificationsGateway->sendEmailNotification(
-            'Добро пожаловать на проект Bilimal!',
-            "Для Вас была создана новая учетная запись. Пароль для входа в систему: {$password}",
+            \Yii::t('app', 'Добро пожаловать на проект Bilimal!'),
+            $htmlMessage,
             [$email]
         );
     }
 
     /**
      * @param string $email
-     * @param string $resetUrl
+     * @param string $token
      * @return bool
      */
-    public function sendPasswordResetNotification(string $email, string $resetUrl)
+    public function sendPasswordResetNotification(string $email, string $token)
     {
-        // TODO: consider removing dependency on specific framework helper
-        $encodedResetUrl = Html::encode($resetUrl);
+        $htmlMessage = $this->emailComposer->compose('passwordReset', [
+            'token' => $token
+        ]);
+
         return $this->bilimalNotificationsGateway->sendEmailNotification(
-            'Смена пароля',
-            "Пройдите по ссылке <a href=\"{$encodedResetUrl}\">$resetUrl</a> для изменения пароля",
+            \Yii::t('app', 'Смена пароля'),
+            $htmlMessage,
             [$email]
         );
     }
@@ -71,9 +81,13 @@ class NotificationService
      */
     public function sendCredentialCreatedNotification(string $email, string $password)
     {
+        $htmlMessage = $this->emailComposer->compose('welcome', [
+            'password' => $password
+        ]);
+
         return $this->bilimalNotificationsGateway->sendEmailNotification(
-            'Добро пожаловать на проект Bilimal!',
-            "Для Вас была создана новая учетная запись. Пароль для входа в систему: {$password}",
+            \Yii::t('app', 'Добро пожаловать на проект Bilimal!'),
+            $htmlMessage,
             [$email]
         );
     }

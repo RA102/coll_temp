@@ -20,7 +20,7 @@ class BilimalNotificationsGateway {
     public function __construct(HttpClientFactory $httpClientFactory, array $config = [])
     {
         $this->httpClient = $httpClientFactory->createHttpClient('bilimal-notifications', [
-            'base_uri'    => 'https://api.bilimal.kz',
+            'base_uri'    => 'https://api.bilimal.kz/notice/',
             'http_errors' => false, // disable throwing http exceptions
             'timeout'     => self::DEFAULT_TIMEOUT
         ]);
@@ -35,7 +35,7 @@ class BilimalNotificationsGateway {
      */
     public function sendEmailNotification( string $title, string $message, array $addresses, string $from = self::DEFAULT_FROM_EMAIL)
     {
-        $response = $this->httpClient->post('notice/email', [
+        $response = $this->httpClient->post('email', [
             'json' => [
                 'addressees' => $addresses,
                 'from' => $from,
