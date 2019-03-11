@@ -46,6 +46,8 @@ class PersonService
      * @param bool $generate_credential
      * @return PdsPersonInterface
      * @throws ForbiddenHttpException
+     * @throws \Throwable
+     * @throws \yii\web\UnauthorizedHttpException
      */
     public function create(
         Person $model,
@@ -108,6 +110,7 @@ class PersonService
 
     /**
      * @param string $identity
+     * @throws \Exception
      */
     public function resetPassword(string $identity)
     {
@@ -124,22 +127,10 @@ class PersonService
      * @param string $password
      * @param string $repassword
      * @return bool
+     * @throws \Exception
      */
     public function changePassword(string $hash, string $password, string $repassword)
     {
         return $this->pdsGateway->changePassword($hash, $password, $repassword);
-    }
-
-    /**
-     * @param array $query
-     * @return null
-     * @throws ForbiddenHttpException
-     * @throws \yii\web\ServerErrorHttpException
-     * @throws \yii\web\UnauthorizedHttpException
-     * @throws \Throwable
-     */
-    public function findAll(array $query)
-    {
-        return $this->searchService->findAll($query);
     }
 }

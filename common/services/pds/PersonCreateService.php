@@ -8,21 +8,13 @@ use yii\helpers\Json;
 
 class PersonCreateService extends PersonSearchService
 {
-    private $pdsGateway;
-
-    /**
-     * PersonCreateService constructor.
-     * @param PdsGateway $pdsGateway
-     */
-    public function __construct(PdsGateway $pdsGateway)
-    {
-        $this->pdsGateway = $pdsGateway;
-    }
-
     /**
      * @param PdsPersonInterface $person
      * @return PdsPersonInterface
-     * @throws \Exception
+     * @throws PersonAlreadyExistException
+     * @throws \Throwable
+     * @throws \yii\web\ForbiddenHttpException
+     * @throws \yii\web\UnauthorizedHttpException
      */
     public function create(PdsPersonInterface $person): PdsPersonInterface
     {
@@ -44,6 +36,7 @@ class PersonCreateService extends PersonSearchService
      * @param string $token
      * @param string $role
      * @return mixed
+     * @throws \yii\base\Exception
      */
     private function createPdsPerson(array $attributes, string $token, string $role)
     {

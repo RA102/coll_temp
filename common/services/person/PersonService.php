@@ -2,6 +2,7 @@
 
 namespace common\services\person;
 
+use common\helpers\PersonCredentialHelper;
 use common\models\link\PersonInstitutionLink;
 use common\models\person\Person;
 use common\models\person\PersonCredential;
@@ -45,7 +46,7 @@ class PersonService
         $institution_id,
         $create_identity,
         $identity,
-        $credential_type
+        $credential_type = PersonCredentialHelper::TYPE_EMAIL
     ) {
         if (!$model->isNewRecord) {
             throw new \yii\base\InvalidCallException('Model already created');

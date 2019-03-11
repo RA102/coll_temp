@@ -2,47 +2,24 @@
 
 namespace common\services\pds;
 
+use common\gateways\pds\PdsGateway;
 use common\models\person\Person;
 use common\models\system\Setting;
-use common\services\pds\exceptions\PersonNotExistException;
 use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
 use yii\web\UnauthorizedHttpException;
 
 class PersonSearchService
 {
+    protected $pdsGateway;
+
     /**
-     * @param array $query
-     * @return array|null
-     * @throws ForbiddenHttpException
-     * @throws UnauthorizedHttpException
-     * @throws \yii\web\ServerErrorHttpException
-     * @throws \Throwable
+     * PersonCreateService constructor.
+     * @param PdsGateway $pdsGateway
      */
-    public function findAll(array $query)
+    public function __construct(PdsGateway $pdsGateway)
     {
-        try {
-            $userToken = $this->getAccessToken();
-
-            $persons = $this->findByID($query, $userToken->token);
-            if (!empty($persons)) {
-                return $this->getPersonsObject($persons);
-            }
-
-            $persons = $this->findByIIN($query, $userToken->token);
-            if (!empty($persons)) {
-                return $this->getPersonsObject($persons);
-            }
-
-            $persons = $this->findBy($query, $userToken->token);
-            if (!empty($persons)) {
-                return $this->getPersonsObject($persons);
-            }
-
-            throw new PersonNotExistException('Person not found');
-        } catch (PersonNotExistException $e) {
-            return [];
-        }
+        $this->pdsGateway = $pdsGateway;
     }
 
     /**
@@ -50,40 +27,29 @@ class PersonSearchService
      * @return PdsPersonInterface|null
      * @throws ForbiddenHttpException
      * @throws UnauthorizedHttpException
-     * @throws \yii\web\ServerErrorHttpException
      * @throws \Throwable
      */
     public function findOne(array $query)
     {
-        try {
-            $userToken = $this->getAccessToken();
+        $userToken = $this->getAccessToken();
+        $user = $this->getUser();
 
-            $persons = $this->findByID($query, $userToken->token);
-            if (!empty($persons)) {
-                return $this->getPersonObject($persons[0]);
-            }
-
-            $persons = $this->findByIIN($query, $userToken->token);
-            if (!empty($persons)) {
-                return $this->getPersonObject($persons[0]);
-            }
-
-            $persons = $this->findBy($query, $userToken->token);
-            if (!empty($persons)) {
-                return $this->getPersonObject($persons[0]);
-            }
-
-            throw new PersonNotExistException('Person not found');
-        } catch (PersonNotExistException $e) {
-            return null;
+        $persons = $this->findByID($query, $userToken->token, $user->person_type);
+        if (!empty($persons)) {
+            return $this->getPersonObject($persons[0]);
         }
-    }
 
-    protected function getPersonsObject(array $persons): array
-    {
-        return array_map(function ($personData) {
-            return $this->getPersonObject($personData);
-        }, $persons);
+        $persons = $this->findByIIN($query, $userToken->token, $user->person_type);
+        if (!empty($persons)) {
+            return $this->getPersonObject($persons[0]);
+        }
+
+        $persons = $this->findBy($query, $userToken->token, $user->person_type);
+        if (!empty($persons)) {
+            return $this->getPersonObject($persons[0]);
+        }
+
+        return null;
     }
 
     protected function getPersonObject(array $personData): PdsPersonInterface
@@ -99,11 +65,6 @@ class PersonSearchService
         $model->validation = $personData['validation'];
 
         return $model;
-    }
-
-    protected function getUrlQuery(array $query): string
-    {
-        return http_build_query($query);
     }
 
     /**
@@ -140,6 +101,8 @@ class PersonSearchService
 
     /**
      * @return string
+     * @throws UnauthorizedHttpException
+     * @throws \Throwable
      */
     protected function getRole()
     {
@@ -149,94 +112,51 @@ class PersonSearchService
     /**
      * @param array $query
      * @param string $token
+     * @param string $role
      * @return mixed
-     * @throws \yii\web\ServerErrorHttpException
-     * @throws \yii\web\UnprocessableEntityHttpException
-     * @throws \Exception
-     */
-    private function getPdsPersons(array $query, string $token)
-    {
-        $connection = curl_init();
-        if (!$connection) {
-            throw new \Exception('Could not connect to remote server');
-        }
-
-        curl_setopt_array($connection, [
-            CURLOPT_URL => \Yii::$app->params['pds_url'] . '/person?' . $this->getUrlQuery($query),
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
-                'Access: Bearer ' . Setting::getPdsToken(),
-                'Authorization: Bearer ' . $token,
-                'Access-Role: superadmin'
-            ],
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_HEADER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 20
-        ]);
-        $data = curl_exec($connection);
-        $info = curl_getinfo($connection);
-        curl_close($connection);
-        
-        if ($data === false) {
-            throw new \yii\web\ServerErrorHttpException('Server not responding');
-        }
-
-        if ($info['http_code'] === 404) {
-            throw new \yii\web\UnprocessableEntityHttpException('Person not found');
-        }
-
-        if ($info['http_code'] !== 200) {
-            throw new \yii\web\UnprocessableEntityHttpException('Error occurred');
-        }
-
-        return Json::decode($data);
-    }
-
-    /**
-     * @param $query
-     * @param $token
-     * @return mixed
-     * @throws \yii\web\ServerErrorHttpException
      * @throws \yii\web\UnprocessableEntityHttpException
      */
-    private function findByID($query, $token)
+    private function findByID(array $query, string $token, string $role)
     {
         if (!isset($query['id'])) {
             return null;
         }
-        return $this->getPdsPersons(['id' => $query['id']], $token);
+
+        $data = $this->pdsGateway->search(['id' => $query['id']], $token, $role);
+        return Json::decode($data);
     }
 
     /**
-     * @param $query
-     * @param $token
+     * @param array $query
+     * @param string $token
+     * @param string $role
      * @return mixed
-     * @throws \yii\web\ServerErrorHttpException
      * @throws \yii\web\UnprocessableEntityHttpException
      */
-    private function findByIIN($query, $token)
+    private function findByIIN(array $query, string $token, string $role)
     {
         if (!isset($query['iin'])) {
             return null;
         }
-        return $this->getPdsPersons(['iin' => $query['iin']], $token);
+
+        $data = $this->pdsGateway->search(['iin' => $query['iin']], $token, $role);
+        return Json::decode($data);
     }
 
     /**
-     * @param $query
-     * @param $token
+     * @param array $query
+     * @param string $token
+     * @param string $role
      * @return mixed
-     * @throws \yii\web\ServerErrorHttpException
      * @throws \yii\web\UnprocessableEntityHttpException
      */
-    private function findBy($query, $token)
+    private function findBy(array $query, string $token, string $role)
     {
         if (empty($query)) {
             return null;
         }
-        return $this->getPdsPersons($query, $token);
+
+        $data = $this->pdsGateway->search($query, $token, $role);
+        return Json::decode($data);
     }
 }

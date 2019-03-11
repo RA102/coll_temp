@@ -63,6 +63,30 @@ class PdsGateway implements \yii\base\Configurable
     }
 
     /**
+     * @param array $query
+     * @param string $token
+     * @param string $role
+     * @return string
+     * @throws \yii\web\UnprocessableEntityHttpException
+     */
+    public function search(array $query, string $token, string $role)
+    {
+        $query_string = http_build_query($query);
+        $response = $this->httpClient->get("/person?{$query_string}", [
+            'headers' => [
+                'Authorization' => "Bearer {$token}",
+                'Access-Role'   => $role
+            ]
+        ]);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new \yii\web\UnprocessableEntityHttpException('Error occurred');
+        }
+
+        return $response->getBody()->getContents();
+    }
+
+    /**
      * @param array $attributes
      * @param string $token
      * @return mixed
