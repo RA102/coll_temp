@@ -3,7 +3,7 @@
 namespace common\services\organization;
 
 use backend\models\forms\ApplicationForm;
-use common\models\link\PersonInstitutionLink;
+use common\helpers\PersonCredentialHelper;
 use common\models\organization\Institution;
 use common\models\organization\InstitutionApplication;
 use common\models\person\Employee;
@@ -79,17 +79,16 @@ class InstitutionApplicationService
         );
 
         $this->transactionManager->execute(function () use ($person, $application, $institution) {
-            $person->save();
             $institution->save();
-
-            $link = PersonInstitutionLink::add($person->id, $institution->id);
-            $link->save();
-
             $application->save();
-//            $person->portal_uid = $this->personService->create($person);
-//            if (!$person->save()) {
-//                throw new \RuntimeException('Saving error.');
-//            }
+
+            $this->personService->create(
+                $person,
+                $institution->id,
+                true,
+                $application->email,
+                PersonCredentialHelper::TYPE_EMAIL
+            );
         });
 
         $this->notificationService->sendRegistrationCompletedNotification(
