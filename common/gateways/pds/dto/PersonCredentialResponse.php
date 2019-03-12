@@ -4,9 +4,8 @@ namespace common\gateways\pds\dto;
 
 class PersonCredentialResponse
 {
-
     /**
-     * @var string|null
+     * @var string
      */
     public $create_ts;
 
@@ -36,7 +35,7 @@ class PersonCredentialResponse
     public $indentity;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $validation_clear;
 
@@ -51,7 +50,7 @@ class PersonCredentialResponse
     public $enc_type;
 
     /**
-     * @var boolean|integer
+     * @var boolean
      */
     public $is_deleted;
 

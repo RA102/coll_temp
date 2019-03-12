@@ -2,8 +2,12 @@
 
 namespace common\gateways\pds;
 
+use common\gateways\pds\dto\LoginResponse;
 use common\gateways\pds\dto\PersonCredentialResponse;
 use common\gateways\pds\dto\ResetPasswordResponse;
+use common\gateways\pds\transformers\LoginTransformer;
+use common\gateways\pds\transformers\PersonTransformer;
+use common\models\person\Person;
 use common\utils\httpClient\HttpClientFactory;
 use Karriere\JsonDecoder\JsonDecoder;
 
@@ -37,6 +41,8 @@ class PdsGateway implements \yii\base\Configurable
             ]
         ]);
         $this->jsonDecoder = new JsonDecoder();
+        $this->jsonDecoder->register(new PersonTransformer());
+        $this->jsonDecoder->register(new LoginTransformer());
     }
 
     /**
@@ -60,6 +66,34 @@ class PdsGateway implements \yii\base\Configurable
         }
 
         return $response->getBody()->getContents();
+    }
+
+    /**
+     * @param string $token
+     * @return LoginResponse
+     * @throws \Exception
+     */
+    public function loginByToken(string $token): LoginResponse
+    {
+        $response = $this->httpClient->post('auth', [
+            'json' => [
+                'authToken' => $token
+            ]
+        ]);
+
+        if ($response->getStatusCode() !== 201) {
+            throw new \Exception("Unauthorized");
+        }
+
+        $loginResponse = $this->jsonDecoder->decode(
+            $response->getBody()->getContents(),
+            LoginResponse::class
+        );
+        if (!isset($loginResponse->person) || !isset($loginResponse->person->id)) {
+            throw new \Exception("Unauthorized");
+        }
+
+        return $loginResponse;
     }
 
     /**
@@ -191,44 +225,4 @@ class PdsGateway implements \yii\base\Configurable
 
         return $this->jsonDecoder->decode($response->getBody()->getContents(), PersonCredentialResponse::class);
     }
-
-    /**
-     * @param int $person_id
-     * @param string $email
-     * @param string $token
-     * @param string $type
-     * @param int $status
-     * @return PersonCredentialResponse
-     * @throws \Exception
-     */
-    public function setPersonCredentialStatus(
-        int $person_id,
-        string $email,
-        string $token,
-        string $type,
-        int $status,
-        string $role
-    ): PersonCredentialResponse {
-        $id = implode(',', [$person_id, $email, $type, $status]);
-        $response = $this->httpClient->put("person-credential/{$id}", [
-            'json'    => [
-                'person_id' => $person_id,
-                'indentity' => $email,
-                'name'      => $type,
-                'status'    => $status
-            ],
-            'headers' => [
-                'Authorization' => "Bearer {$token}",
-                'Access-Role'   => $role
-            ]
-        ]);
-
-        if ($response->getStatusCode() !== 201) {
-            throw new \Exception('Error occurred');
-        }
-
-        return $this->jsonDecoder->decode($response->getBody()->getContents(), PersonCredentialResponse::class);
-    }
-
-
 }

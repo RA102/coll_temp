@@ -41,6 +41,22 @@ class LoginService
     }
 
     /**
+     * @param string $token
+     * @return Person|null
+     */
+    public function loginByToken(string $token): ?Person
+    {
+        try {
+            $loginResponse = $this->pdsGateway->loginByToken($token);
+            $person = Person::findIdentityByUID($loginResponse->person->id);
+
+            return $person;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
      * @param string $username
      * @param string $password
      * @return mixed
