@@ -8,6 +8,7 @@ use common\gateways\pds\dto\ResetPasswordResponse;
 use common\gateways\pds\transformers\LoginTransformer;
 use common\gateways\pds\transformers\PersonTransformer;
 use common\models\person\Person;
+use common\models\system\Setting;
 use common\utils\httpClient\HttpClientFactory;
 use Karriere\JsonDecoder\JsonDecoder;
 
@@ -37,7 +38,7 @@ class PdsGateway implements \yii\base\Configurable
             'http_errors' => false, // disable throwing http exceptions
             'timeout'     => self::DEFAULT_TIMEOUT,
             'headers'     => [
-                'Access' => "Bearer {$config['accessToken']}",
+                'Access' => 'Bearer ' . Setting::getPdsToken(),
             ]
         ]);
         $this->jsonDecoder = new JsonDecoder();
