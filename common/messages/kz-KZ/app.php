@@ -80,6 +80,8 @@ return [
     'Delete Ts' => 'Дата удаления',
     'Update Institution: ' => 'Редактирование: ',
     'Enable Fraction' => 'Поддержка числитель/знаменатель в расписании',
+    'Organization' => 'Организация',
+    'Country unit' => 'Населенный пункт',
 
     // APPLICATIONS
     'Street' => 'Улица',
@@ -166,6 +168,7 @@ return [
     'Discipline Type Exam' => 'Экзаменационные',
 
     'Institution Disciplines' => 'Предметы',
+    'Institution Discipline ID' => 'Предмет',
     'Discipline ID' => 'Дисциплина',
     'Create Institution Discipline' => 'Добавление предмета',
     'Update Institution Discipline' => 'Редактирование предмета',
@@ -194,4 +197,5 @@ return [
     'Duration' => 'Длительность',
     'Lesson Start Date' => 'Начало',
     'Lesson End Date' => 'Конец',
+    'Group Lessons' => 'Занятия группы',
 ];

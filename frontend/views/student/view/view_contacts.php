@@ -30,13 +30,13 @@ use yii\widgets\DetailView;
                 'value' => function ($model) use ($form) {
                     $result = [];
                     if (($id = $form->registration_country_id) !== null) {
-                        $result[] = \common\models\Country::findOne($id)->name;
+                        $result[] = \common\models\Country::findOne($id)->caption_current;
                     }
                     if (($ids = $form->registration_city_ids)) {
-                        $result[] = \common\models\CountryUnit::findOne(end($ids))->name;
+                        $result[] = \common\models\CountryUnit::findOne(end($ids))->caption_current;
                     }
                     if (($id = $form->registration_street_id) !== null) {
-                        $result[] = \common\models\Street::findOne($id)->caption;
+                        $result[] = \common\models\Street::findOne($id)->caption_current;
                     }
 
                     return implode(', ', $result);
@@ -47,13 +47,13 @@ use yii\widgets\DetailView;
                 'value' => function ($model) use ($form) {
                     $result = [];
                     if (($id = $form->residence_country_id) !== null) {
-                        $result[] = \common\models\Country::findOne($id)->name;
+                        $result[] = \common\models\Country::findOne($id)->caption_current;
                     }
                     if (($ids = $form->residence_city_ids)) {
-                        $result[] = \common\models\CountryUnit::findOne(end($ids))->name;
+                        $result[] = \common\models\CountryUnit::findOne(end($ids))->caption_current;
                     }
                     if (($id = $form->residence_street_id) !== null) {
-                        $result[] = \common\models\Street::findOne($id)->caption;
+                        $result[] = \common\models\Street::findOne($id)->caption_current;
                     }
 
                     return implode(', ', $result);

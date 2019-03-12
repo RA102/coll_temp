@@ -15,6 +15,28 @@ use yii\widgets\ActiveForm;
     <?php $activeForm = ActiveForm::begin(); ?>
 
     <legend class="text-semibold center-block">
+        <?= 'Свидетельство о рождении'?>
+    </legend>
+
+    <div class="row">
+        <div class="col-md-4">
+            <?= $activeForm->field($form, 'birth_certificate_series')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $activeForm->field($form, 'birth_certificate_number')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-md-4">
+            <?= $activeForm->field($form, 'birth_certificate_issued_date')->widget(DatePicker::class, [
+                'language' => 'ru',
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'format' => 'yyyy-mm-dd'
+                ]
+            ]); ?>
+        </div>
+    </div>
+
+    <legend class="text-semibold center-block">
         <?= 'Удостоверение личности'?>
     </legend>
 
@@ -39,6 +61,12 @@ use yii\widgets\ActiveForm;
                     'format' => 'yyyy-mm-dd'
                 ]
             ]); ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <?= $activeForm->field($form, 'identity_card_issued')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
 
@@ -73,6 +101,9 @@ use yii\widgets\ActiveForm;
                     'format' => 'yyyy-mm-dd'
                 ]
             ]); ?>
+        </div>
+        <div class="col-md-4">
+            <?= $activeForm->field($form, 'passport_issued')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
 

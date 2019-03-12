@@ -10,6 +10,26 @@ use yii\widgets\DetailView;
 ?>
 
 <?php $this->beginBlock('view-content') ?>
+    <legend class="text-semibold center-block">
+        <?= 'Свидетельство о рождении'?>
+    </legend>
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            [
+                'label' => $form->getAttributeLabel('birth_certificate_series'),
+                'value' => $form->birth_certificate_series,
+            ],
+            [
+                'label' => $form->getAttributeLabel('birth_certificate_number'),
+                'value' => $form->birth_certificate_number,
+            ],
+            [
+                'label' => $form->getAttributeLabel('birth_certificate_issued_date'),
+                'value' => $form->birth_certificate_issued_date,
+            ],
+        ],
+    ]) ?>
 
     <legend class="text-semibold center-block">
         <?= 'Удостоверение личности'?>
@@ -28,6 +48,10 @@ use yii\widgets\DetailView;
             [
                 'label' => $form->getAttributeLabel('identity_card_valid_date'),
                 'value' => $form->identity_card_valid_date,
+            ],
+            [
+                'label' => $form->getAttributeLabel('identity_card_issued'),
+                'value' => $form->identity_card_issued,
             ],
         ],
     ]) ?>
@@ -53,6 +77,10 @@ use yii\widgets\DetailView;
             [
                 'label' => $form->getAttributeLabel('passport_valid_date'),
                 'value' => $form->passport_valid_date,
+            ],
+            [
+                'label' => $form->getAttributeLabel('passport_issued'),
+                'value' => $form->passport_issued,
             ],
         ],
     ]) ?>

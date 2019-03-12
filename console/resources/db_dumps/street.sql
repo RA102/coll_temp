@@ -1,1 +1,1 @@
-INSERT INTO public.street (id, caption, city_id, type_id, region_city_oid, oid, server_id, kaz_post_id, create_ts, update_ts, delete_ts) VALUES (1, 'Достык', 2, 1, null, null, null, null, '2018-12-24 15:18:36', '2018-12-24 15:18:36', null);
+INSERT INTO public.street (id, caption, city_id, type_id, region_city_oid, oid, server_id, kaz_post_id, create_ts, update_ts, delete_ts) VALUES (1, '{"kk": "", "ru": ""}', 1, 1, null, null, null, null, '2018-12-24 15:18:36', '2018-12-24 15:18:36', null);

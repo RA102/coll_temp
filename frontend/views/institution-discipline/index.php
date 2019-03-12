@@ -1,6 +1,6 @@
 <?php
 
-use common\helpers\DisciplineHelper;
+use common\helpers\InstitutionDisciplineHelper;
 use common\models\organization\InstitutionDiscipline;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -26,17 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 [
-                    'attribute' => 'discipline_id',
-                    'value' => function (InstitutionDiscipline $model) {
-                        return $model->discipline->caption_current;
-                    }
+                    'attribute' => 'caption_current',
                 ],
 
                 [
                     'attribute' => 'types',
                     'value' => function(InstitutionDiscipline $model) {
                         return implode(', ', array_map(function ($item) {
-                            return DisciplineHelper::getTypeList()[$item];
+                            return InstitutionDisciplineHelper::getTypeList()[$item];
                         }, $model->types));
                     }
                 ],

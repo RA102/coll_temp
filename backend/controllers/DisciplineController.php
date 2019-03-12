@@ -25,13 +25,18 @@ class DisciplineController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow'   => true,
-                        'roles'   => ['@'],
+                        'actions' => [
+                            'index', 'view',
+                            'create', 'update',
+                            'delete',
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],

@@ -25,9 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 [
-                    'attribute' => 'discipline_id',
+                    'attribute' => 'institution_discipline_id',
                     'value' => function (Course $model) {
-                        return $model->discipline->caption_current;
+                        return $model->institutionDiscipline->caption_current;
                     },
                 ],
                 'caption_current',

@@ -3,7 +3,7 @@
 namespace common\models;
 
 use common\helpers\SchemeHelper;
-use common\models\organization\Institution;
+use common\models\organization\InstitutionDiscipline;
 use Yii;
 use yii\db\ArrayExpression;
 
@@ -11,8 +11,6 @@ use yii\db\ArrayExpression;
  * This is the model class for table "course".
  *
  * @property int $id
- * @property int $discipline_id
- * @property int $institution_id
  * @property array $caption
  * @property int[] $classes
  * @property int $status
@@ -20,8 +18,7 @@ use yii\db\ArrayExpression;
  * @property string $update_ts
  * @property string $delete_ts
  *
- * @property Discipline $discipline
- * @property Institution $institution
+ * @property InstitutionDiscipline $institutionDiscipline
  * @property TeacherCourse[] $teacherCourses
  */
 class Course extends \yii\db\ActiveRecord
@@ -44,14 +41,12 @@ class Course extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['discipline_id', 'institution_id'], 'required'],
-            [['discipline_id', 'status'], 'default', 'value' => null],
-            [['discipline_id', 'institution_id', 'status'], 'integer'],
-            [['caption'], 'safe'],
+            [['institution_discipline_id'], 'required'],
+            [['status'], 'default', 'value' => null],
+            [['institution_discipline_id', 'status'], 'integer'],
             [['classes'], 'each', 'rule' => ['integer']],
-            [['discipline_id'], 'exist', 'skipOnError' => true, 'targetClass' => Discipline::class, 'targetAttribute' => ['discipline_id' => 'id']],
-            [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
             [['caption_ru', 'caption_kk'], 'string'],
+            [['institution_discipline_id'], 'exist', 'skipOnError' => true, 'targetClass' => InstitutionDiscipline::class, 'targetAttribute' => ['institution_discipline_id' => 'id']],
         ];
     }
 
@@ -86,8 +81,7 @@ class Course extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'discipline_id' => Yii::t('app', 'Discipline ID'),
-            'institution_id' => Yii::t('app', 'Institution ID'),
+            'institution_discipline_id' => Yii::t('app', 'Institution Discipline ID'),
             'caption' => Yii::t('app', 'Caption'),
             'caption_ru' => Yii::t('app', 'Caption Ru'),
             'caption_kk' => Yii::t('app', 'Caption Kk'),
@@ -103,17 +97,9 @@ class Course extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDiscipline()
+    public function getInstitutionDiscipline()
     {
-        return $this->hasOne(Discipline::class, ['id' => 'discipline_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getInstitution()
-    {
-        return $this->hasOne(Institution::class, ['id' => 'institution_id']);
+        return $this->hasOne(InstitutionDiscipline::class, ['id' => 'institution_discipline_id']);
     }
 
     /**

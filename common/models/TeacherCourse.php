@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\helpers\SchemeHelper;
+use common\models\link\TeacherCourseGroupLink;
 use common\models\organization\Group;
 use common\models\person\Person;
 use Yii;
@@ -96,14 +97,31 @@ class TeacherCourse extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getGroups()
+    public function getGroupsVia()
     {
         return $this->hasMany(Group::class, ['id' => 'group_id'])
             ->viaTable('link.teacher_course_group_link', ['teacher_course_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGroups()
+    {
+        return $this->hasMany(Group::class, ['id' => 'group_id'])->via('teacherCourseGroupLinks');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeacherCourseGroupLinks()
+    {
+        return $this->hasMany(TeacherCourseGroupLink::class, ['teacher_course_id' => 'id'])
+            ->andWhere([TeacherCourseGroupLink::tableName() . '.delete_ts' => null]);
+    }
+
     public function getFullname()
     {
-        return $this->course->caption_current;
+        return $this->course->caption_current . ' (' . $this->type . ')';
     }
 }

@@ -324,3 +324,7 @@ article dl, article ol, article ol ol, article ol ul, article ul, article ul ol,
     top: 0;
     right: 0;
 }
+
+.shy {
+    opacity: 0;
+}

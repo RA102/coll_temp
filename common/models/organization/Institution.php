@@ -2,11 +2,15 @@
 
 namespace common\models\organization;
 
+use common\helpers\InstitutionHelper;
 use common\helpers\SchemeHelper;
+use common\models\Country;
+use common\models\CountryUnit;
 use common\models\Course;
 use common\models\handbook\Speciality;
 use common\models\link\PersonInstitutionLink;
 use common\models\person\Person;
+use common\models\Street;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -41,17 +45,29 @@ use yii\db\ActiveQuery;
  * @property string $db_password
  * @property bool $initialization
  * @property int $status
+ * @property int $max_shift [smallint]
+ * @property int $min_grade [smallint]
+ * @property bool $enable_fraction [boolean]
+ * @property bool $is_test [boolean]
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
  *
  * @property Speciality[] $specialities
  * @property InstitutionSpecialityInfo[] $specialityInfos
- * @property Course[] $courses
+ * @property InstitutionDiscipline[] $institutionDisciplines
  * @property PersonInstitutionLink[] $personInstitutionLinks
+ * @property CountryUnit $city
+ * @property InstitutionType $institutionType;
+ * @property Country $country
+ * @property EducationalForm $educationalForm
+ * @property OrganizationalLegalForm $organizationalLegalForm
+ * @property Street $street
  */
 class Institution extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 1;
+    const STATUS_DISABLED = 2;
     /**
      * {@inheritdoc}
      */
@@ -70,7 +86,7 @@ class Institution extends \yii\db\ActiveRecord
             [['country_id', 'city_id', 'parent_id', 'type_id', 'educational_form_id', 'organizational_legal_form_id', 'oid', 'server_id', 'street_id', 'foundation_year', 'max_grade', 'status'], 'integer'],
             [['description', 'info'], 'string'],
             [['initialization'], 'boolean'],
-            [['create_ts', 'update_ts', 'delete_ts'], 'safe'],
+            [['create_ts', 'update_ts', 'delete_ts', 'enable_fraction'], 'safe'],
             [['name'], 'string', 'max' => 511],
             [['house_number', 'email', 'domain', 'db_name', 'db_user', 'db_password'], 'string', 'max' => 255],
             [['phone', 'fax'], 'string', 'max' => 20],
@@ -165,9 +181,9 @@ class Institution extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCourses()
+    public function getInstitutionDisciplines()
     {
-        return $this->hasMany(Course::class, ['institution_id' => 'id'])->inverseOf('institution');
+        return $this->hasMany(InstitutionDiscipline::class, ['institution_id' => 'id'])->inverseOf('institution');
     }
 
     /**
@@ -186,5 +202,61 @@ class Institution extends \yii\db\ActiveRecord
         }
 
         return $years;
+    }
+
+    public function getCountry() {
+        return $this->hasOne(Country::class, ['id' => 'country_id']);
+    }
+
+    public function getCity() {
+        return $this->hasOne(CountryUnit::class, ['id' => 'city_id']);
+    }
+
+    public function getCityIds() {
+        $ids = [];
+        $item = $this->city;
+        while ($item != null) {
+            $ids[] = $item->id;
+
+            $item = $item->parent;
+        }
+
+        return array_reverse($ids);
+    }
+
+    public function getInstitutionType() {
+        return $this->hasOne(InstitutionType::class, ['id' => 'type_id']);
+    }
+
+    public function getInstitutionTypeIds() {
+        $ids = [];
+        $item = $this->institutionType;
+        while ($item != null) {
+            $ids[] = $item->id;
+
+            $item = $item->parent;
+        }
+
+        return array_reverse($ids);
+    }
+
+    public function getEducationalForm()
+    {
+        return $this->hasOne(EducationalForm::class, ['id' => 'educational_form_id']);
+    }
+
+    public function getOrganizationalLegalForm()
+    {
+        return $this->hasOne(OrganizationalLegalForm::class, ['id' => 'organizational_legal_form_id']);
+    }
+
+    public function getStreet()
+    {
+        return $this->hasOne(Street::class, ['id' => 'street_id']);
+    }
+
+    public function getStatusValue()
+    {
+        return InstitutionHelper::getStatusList()[$this->status] ?? null;
     }
 }

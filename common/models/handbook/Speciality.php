@@ -128,8 +128,8 @@ class Speciality extends \yii\db\ActiveRecord
     {
         $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
         $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
-        $this->caption_ru = $this->caption['ru'];
-        $this->caption_kk = $this->caption['kk'];
+        $this->caption_ru = $this->caption['ru'] ?? '';
+        $this->caption_kk = $this->caption['kk'] ?? $this->caption['ru'] ?? '';
 
         parent::afterFind();
 

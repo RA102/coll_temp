@@ -1,13 +1,17 @@
 <?php
 
+use common\models\organization\Group;
 use common\models\TeacherCourse;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\TeacherCourse */
+/* @var $course common\models\Course */
 
-$this->title = $model->course->caption_current;
+$this->title = $model->getFullname();
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Courses'), 'url' => ['course/index']];
+$this->params['breadcrumbs'][] = ['label' => $model->course->caption_current, 'url' => ['course/view', 'id' => $model->course->id]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -43,6 +47,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'teacher_id',
                 'value' => function (TeacherCourse $model) {
                     return $model->person->getFullName();
+                }
+            ],
+            [
+                'attribute' => 'groups',
+                'value' => function (TeacherCourse $model) {
+                    return implode(', ', array_map(function (Group $group) {
+                        return $group->caption_current;
+                    }, $model->groups));
                 }
             ],
             'type',
