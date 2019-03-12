@@ -31,6 +31,10 @@ return [
     ],
     'container' => [
         'singletons' => [
+            'common\components\EmailComposer'                     => [
+                'view'     => ['class' => 'yii\web\View'],
+                'viewPath' => '@common/mail',
+            ],
             'common\gateways\bilimal\BilimalNotificationsGateway' => [
                 'accessToken' => $params['bilimal_notifications_access_token']
             ],
