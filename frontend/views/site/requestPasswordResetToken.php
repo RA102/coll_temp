@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="form-group">
         <?= Html::submitButton('Send', ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('На главную', ['/'], ['class' => 'pull-right btn px-0']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
