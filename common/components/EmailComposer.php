@@ -7,7 +7,7 @@ use yii\base\ViewContextInterface;
 
 class EmailComposer implements Configurable, ViewContextInterface
 {
-    private const LAYOUT = 'layouts/html';
+    const LAYOUT = 'layouts/html';
 
     /** @var string */
     private $_viewPath;
