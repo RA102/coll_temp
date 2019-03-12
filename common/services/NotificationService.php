@@ -25,13 +25,13 @@ class NotificationService
 
     /**
      * @param string $email
-     * @return bool
+     * @throws \Exception
      */
     public function sendRegistrationCompletedNotification(string $email)
     {
         $htmlMessage = $this->emailComposer->compose('signup');
 
-        return $this->bilimalNotificationsGateway->sendEmailNotification(
+        $this->bilimalNotificationsGateway->sendEmailNotification(
             \Yii::t('app', 'Регистрация на bilimal'),
             $htmlMessage,
             [$email]
@@ -41,7 +41,7 @@ class NotificationService
     /**
      * @param string $email
      * @param string $password
-     * @return bool
+     * @throws \Exception
      */
     public function sendPersonCreatedNotification(string $email, string $password)
     {
@@ -49,7 +49,7 @@ class NotificationService
             'password' => $password
         ]);
 
-        return $this->bilimalNotificationsGateway->sendEmailNotification(
+        $this->bilimalNotificationsGateway->sendEmailNotification(
             \Yii::t('app', 'Добро пожаловать на проект Bilimal!'),
             $htmlMessage,
             [$email]
@@ -59,7 +59,7 @@ class NotificationService
     /**
      * @param string $email
      * @param string $token
-     * @return bool
+     * @throws \Exception
      */
     public function sendPasswordResetNotification(string $email, string $token)
     {
@@ -67,7 +67,7 @@ class NotificationService
             'token' => $token
         ]);
 
-        return $this->bilimalNotificationsGateway->sendEmailNotification(
+        $this->bilimalNotificationsGateway->sendEmailNotification(
             \Yii::t('app', 'Смена пароля'),
             $htmlMessage,
             [$email]
@@ -77,7 +77,7 @@ class NotificationService
     /**
      * @param string $email
      * @param string $password
-     * @return bool
+     * @throws \Exception
      */
     public function sendCredentialCreatedNotification(string $email, string $password)
     {
@@ -85,7 +85,7 @@ class NotificationService
             'password' => $password
         ]);
 
-        return $this->bilimalNotificationsGateway->sendEmailNotification(
+        $this->bilimalNotificationsGateway->sendEmailNotification(
             \Yii::t('app', 'Добро пожаловать на проект Bilimal!'),
             $htmlMessage,
             [$email]

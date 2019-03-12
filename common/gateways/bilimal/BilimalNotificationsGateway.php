@@ -31,7 +31,8 @@ class BilimalNotificationsGateway {
      * @param string $message
      * @param array $addresses
      * @param string $from
-     * @return bool
+     * @return void
+     * @throws \Exception
      */
     public function sendEmailNotification( string $title, string $message, array $addresses, string $from = self::DEFAULT_FROM_EMAIL)
     {
@@ -47,6 +48,8 @@ class BilimalNotificationsGateway {
             ]
         ]);
 
-        return $response->getStatusCode() === 201;
+        if ($response->getStatusCode() !== 201) {
+            throw new \Exception('Notification not sent');
+        }
     }
 }

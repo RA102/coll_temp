@@ -317,3 +317,10 @@ article dl, article ol, article ol ol, article ol ul, article ul, article ul ol,
 .speciality:hover {
     background-color: #EEE;
 }
+
+.alerts-container {
+    position: absolute;
+    margin: 1%;
+    top: 0;
+    right: 0;
+}

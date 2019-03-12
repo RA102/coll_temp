@@ -1,4 +1,5 @@
 <?php
+
 use backend\assets\AppAsset;
 use yii\helpers\Html;
 
@@ -22,7 +23,37 @@ frontend\assets\AppAsset::register($this);
 
 <?php $this->beginBody() ?>
 
-    <?= $content ?>
+<div class="app flex-row align-items-center">
+
+    <div class="alerts-container">
+        <?php if (Yii::$app->session->hasFlash('success')): ?>
+            <div class="alert alert-success alert-dismissable fade in text-center" role="alert">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <?= Yii::$app->session->getFlash('success') ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (Yii::$app->session->hasFlash('error')): ?>
+            <div class="alert alert-danger alert-dismissable fade in text-center" role="alert">
+                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                <?= Yii::$app->session->getFlash('error') ?>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <div class="container">
+        <div class="site-login">
+
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card-group">
+                        <?= $content ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php $this->endBody() ?>
 </body>
