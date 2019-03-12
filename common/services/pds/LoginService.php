@@ -44,7 +44,7 @@ class LoginService
      * @param string $token
      * @return Person|null
      */
-    public function loginByToken(string $token): ?Person
+    public function loginByToken(string $token)
     {
         try {
             $loginResponse = $this->pdsGateway->loginByToken($token);
