@@ -35,6 +35,9 @@ $action = $this->context->action->id;
                     Url::to(['/student/view-authorization/', 'id' => $model->id])
                 ) ?>
             </li>
+            <li role="presentation" class="<?=$action == 'view-relatives' ? 'active' : ''?>">
+                <?= Html::a(Yii::t('app', 'Relatives'), Url::to(['/student/view-documents/', 'id' => $model->id])) ?>
+            </li>
         </ul>
     </div>
 

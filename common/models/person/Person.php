@@ -7,6 +7,7 @@ use common\helpers\SchemeHelper;
 use common\models\link\PersonInstitutionLink;
 use common\models\Nationality;
 use common\models\organization\Institution;
+use common\models\PersonRelative;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\web\IdentityInterface;
@@ -53,6 +54,7 @@ use yii\web\IdentityInterface;
  * @property PersonLocation[] $personLocations
  * @property Institution $institution
  * @property PersonInstitutionLink[] $personInstitutionLinks
+ * @property PersonRelative[] $relatives
  */
 class Person extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -302,5 +304,10 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function getLanguage()
     {
         return LanguageHelper::getLanguageList()[$this->language] ?? '';
+    }
+
+    public function getRelatives()
+    {
+        return $this->hasMany(PersonRelative::class, ['person_id' => 'id']);
     }
 }
