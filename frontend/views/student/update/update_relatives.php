@@ -1,5 +1,6 @@
 <?php
 
+use common\helpers\PersonRelativeHelper;
 use kartik\date\DatePicker;
 use wbraganca\dynamicform\DynamicFormWidget;
 use yii\helpers\Html;
@@ -61,6 +62,41 @@ use yii\widgets\ActiveForm;
                             </div>
                             <div class="col-sm-4">
                                 <?= $activeForm->field($relative, "[{$i}]middlename")->textInput(['maxlength' => true]) ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <?= $activeForm->field($relative, "[{$i}]relation_type")
+                                    ->dropDownList(PersonRelativeHelper::getRelationTypeList()) ?>
+                            </div>
+                            <div class="col-sm-4">
+                                <?= $activeForm->field($relative, "[{$i}]birth_date")
+                                    ->widget(DatePicker::class, [
+                                        'language' => 'ru',
+                                        'pluginOptions' => [
+                                            'autoclose' => true,
+                                            'format' => 'yyyy-mm-dd'
+                                        ]
+                                    ]); ?>
+                            </div>
+                            <div class="col-sm-4">
+                                <?= $activeForm->field($relative, "[{$i}]iin")
+                                    ->widget(\yii\widgets\MaskedInput::class, ['mask' => '999999999999'])
+                                ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <?= $activeForm->field($relative, "[{$i}]home_phone")
+                                    ->textInput(['maxlength' => true]) ?>
+                            </div>
+                            <div class="col-sm-4">
+                                <?= $activeForm->field($relative, "[{$i}]mobile_phone")
+                                    ->textInput(['maxlength' => true]) ?>
+                            </div>
+                            <div class="col-sm-4">
+                                <?= $activeForm->field($relative, "[{$i}]email")
+                                    ->textInput(['maxlength' => true]) ?>
                             </div>
                         </div>
                     </div>

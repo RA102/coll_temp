@@ -31,6 +31,18 @@ use Yii;
  */
 class PersonRelative extends \yii\db\ActiveRecord
 {
+    const RELATION_TYPE_FATHER = 1; //father
+    const RELATION_TYPE_MOTHER = 2; //mother
+    const RELATION_TYPE_FATHER_GUARDIAN = 3; //guardian father
+    const RELATION_TYPE_MOTHER_GUARDIAN = 4; //guardian mother
+    const RELATION_TYPE_JUST_GUARDIAN = 5; //guardian no relation опекун без указания родственной связи
+    const RELATION_TYPE_HUSBAND = 6; //husband
+    const RELATION_TYPE_WIFE = 7; //wife
+    const RELATION_TYPE_SON = 8; //son
+    const RELATION_TYPE_DAUGHTER = 9; //daughter
+    const RELATION_TYPE_BROTHER = 10; //brother
+    const RELATION_TYPE_SISTER = 11; //sister
+
     /**
      * {@inheritdoc}
      */
@@ -52,9 +64,10 @@ class PersonRelative extends \yii\db\ActiveRecord
             [['firstname', 'lastname', 'middlename', 'email', 'guardian_document_number'], 'string', 'max' => 100],
             [['residence_address'], 'string', 'max' => 511],
             [['iin'], 'string', 'max' => 12],
+            [['email'], 'email'],
             [['home_phone', 'mobile_phone'], 'string', 'max' => 20],
-            [['person_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::className(), 'targetAttribute' => ['person_id' => 'id']],
-            [['residence_city_id'], 'exist', 'skipOnError' => true, 'targetClass' => CountryUnit::className(), 'targetAttribute' => ['residence_city_id' => 'id']],
+            [['person_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['person_id' => 'id']],
+            [['residence_city_id'], 'exist', 'skipOnError' => true, 'targetClass' => CountryUnit::class, 'targetAttribute' => ['residence_city_id' => 'id']],
         ];
     }
 
