@@ -34,6 +34,18 @@ return [
                 ],
             ],
         ],
+        'errorHandler' => [
+            'errorAction' => 'site/error',
+        ],
+        'request' => [
+            'class' => 'yii\web\Request',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
+        ],
+        'response' => [
+            'format' =>  \yii\web\Response::FORMAT_JSON
+        ],
         'urlManager' => require __DIR__ . '/url-manager.php',
     ],
     'params' => $params,
