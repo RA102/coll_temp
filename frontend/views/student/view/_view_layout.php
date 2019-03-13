@@ -36,7 +36,7 @@ $action = $this->context->action->id;
                 ) ?>
             </li>
             <li role="presentation" class="<?=$action == 'view-relatives' ? 'active' : ''?>">
-                <?= Html::a(Yii::t('app', 'Relatives'), Url::to(['/student/view-documents/', 'id' => $model->id])) ?>
+                <?= Html::a(Yii::t('app', 'Relatives'), Url::to(['/student/view-relatives/', 'id' => $model->id])) ?>
             </li>
         </ul>
     </div>
