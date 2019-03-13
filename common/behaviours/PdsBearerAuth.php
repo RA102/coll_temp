@@ -57,6 +57,8 @@ class PdsBearerAuth extends HttpHeaderAuth
             if ($identity === null) {
                 $this->challenge($response);
                 $this->handleFailure($response);
+            } else {
+                $user->login($identity);
             }
 
             return $identity;
