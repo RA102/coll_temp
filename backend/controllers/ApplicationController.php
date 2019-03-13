@@ -6,6 +6,7 @@ use backend\models\forms\ApplicationForm;
 use Yii;
 use common\models\organization\InstitutionApplication;
 use backend\search\InstitutionApplicationSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -25,8 +26,17 @@ class ApplicationController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow'   => true,
+                        'roles'   => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],

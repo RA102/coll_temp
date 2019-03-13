@@ -2,6 +2,7 @@
 
 namespace common\services\pds;
 
+use common\helpers\PersonCredentialHelper;
 
 class PdsPersonInterface
 {
@@ -13,7 +14,9 @@ class PdsPersonInterface
     public $birth_date;
     public $iin;
     public $indentity;
-    public $credential_type = PersonCredential::TYPE_EMAIL;
+    public $credential_type = PersonCredentialHelper::TYPE_EMAIL;
+    public $generate_credential;
+    public $validation;
 
     public function getAttributes()
     {

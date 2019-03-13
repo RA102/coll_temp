@@ -2,12 +2,13 @@
 
 namespace common\services\person;
 
+use common\helpers\PersonCredentialHelper;
 use common\models\link\PersonInstitutionLink;
 use common\models\person\Person;
+use common\models\person\PersonCredential;
 use common\services\NotificationService;
-use common\services\TransactionManager;
 use common\services\pds\PersonService as PdsService;
-use yii\helpers\Json;
+use common\services\TransactionManager;
 
 class PersonService
 {
@@ -25,8 +26,7 @@ class PersonService
         NotificationService $notificationService,
         PdsService $pdsService,
         TransactionManager $transactionManager
-    )
-    {
+    ) {
         $this->notificationService = $notificationService;
         $this->transactionManager = $transactionManager;
         $this->pdsService = $pdsService;
@@ -46,9 +46,8 @@ class PersonService
         $institution_id,
         $create_identity,
         $identity,
-        $credential_type
-    )
-    {
+        $credential_type = PersonCredentialHelper::TYPE_EMAIL
+    ) {
         if (!$model->isNewRecord) {
             throw new \yii\base\InvalidCallException('Model already created');
         }
@@ -60,13 +59,14 @@ class PersonService
             $identity,
             $credential_type
         ) {
-            if ($create_identity) {
-                $model->portal_uid = $this->pdsService->create(
-                    $model,
-                    $identity,
-                    $credential_type
-                );
-            }
+            $pdsPerson = $this->pdsService->create(
+                $model,
+                $identity,
+                $credential_type,
+                $create_identity
+            );
+            $model->portal_uid = $pdsPerson->id;
+
             if (!$model->save()) {
                 if (YII_DEBUG) {
                     $errors = $model->errors;
@@ -75,16 +75,21 @@ class PersonService
                 throw new \RuntimeException('Saving error.');
             }
 
+            // TODO: add email to contacts
+            if ($create_identity) {
+                $personCredential = PersonCredential::add($model, $identity);
+                $personCredential->save();
+
+                // TODO: send notifications via queue
+                $this->notificationService->sendPersonCreatedNotification(
+                    $identity,
+                    $pdsPerson->validation
+                );
+            }
+
             $link = PersonInstitutionLink::add($model->id, $institution_id);
             $link->save();
         });
-
-        // TODO: needs testing
-        if ($create_identity && $model->getOldAttribute('portal_uid') === null) {
-            $this->notificationService->sendPersonCreatedNotification([
-                $identity
-            ]);
-        }
 
         return $model;
     }

@@ -2,6 +2,7 @@
 
 namespace common\models\person;
 
+use common\helpers\PersonTypeHelper;
 use common\models\organization\Group;
 
 /**
@@ -32,13 +33,13 @@ class Student extends Person
      * @param $lastname
      * @param $middlename
      * @param $iin
-     * @param $email
      * @return Person
      */
-    public static function add($portal_uid, $firstname, $lastname, $middlename, $iin, $email): Person
+    public static function add($portal_uid, $firstname, $lastname, $middlename, $iin): Person
     {
-        $model = parent::add($portal_uid, $firstname, $lastname, $middlename, $iin, $email);
+        $model = parent::add($portal_uid, $firstname, $lastname, $middlename, $iin);
         $model->type = Person::TYPE_STUDENT;
+        $model->person_type = PersonTypeHelper::PERSON_TYPE_STUDENT;
 
         return $model;
     }

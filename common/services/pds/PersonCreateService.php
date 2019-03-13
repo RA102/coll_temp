@@ -2,20 +2,18 @@
 
 namespace common\services\pds;
 
-use common\models\system\Setting;
+use common\gateways\pds\PdsGateway;
 use common\services\pds\exceptions\PersonAlreadyExistException;
 use yii\helpers\Json;
-use yii\web\ForbiddenHttpException;
-use yii\web\MethodNotAllowedHttpException;
 
 class PersonCreateService extends PersonSearchService
 {
     /**
      * @param PdsPersonInterface $person
      * @return PdsPersonInterface
-     * @throws ForbiddenHttpException
+     * @throws PersonAlreadyExistException
      * @throws \Throwable
-     * @throws \yii\web\ServerErrorHttpException
+     * @throws \yii\web\ForbiddenHttpException
      * @throws \yii\web\UnauthorizedHttpException
      */
     public function create(PdsPersonInterface $person): PdsPersonInterface
@@ -28,51 +26,24 @@ class PersonCreateService extends PersonSearchService
         }
 
         $userToken = $this->getAccessToken();
-        $respons = $this->createPdsPerson($query, $userToken->token);
-        return $this->getPersonObject($respons);
+        $userRole = $this->getRole();
+        $response = $this->createPdsPerson($query, $userToken->token, $userRole);
+        return $this->getPersonObject($response);
     }
 
-    private function createPdsPerson(array $attributes, string $token)
+    /**
+     * @param array $attributes
+     * @param string $token
+     * @param string $role
+     * @return mixed
+     * @throws \yii\base\Exception
+     */
+    private function createPdsPerson(array $attributes, string $token, string $role)
     {
-        $connection = curl_init();
-        if (!$connection) {
-            throw new \Exception('Could not connect to remote server');
-        }
-
-        $options = [
-            CURLOPT_URL => \Yii::$app->params['pds_url'] . 'person',
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
-                'Access: Bearer ' . Setting::getPdsToken(),
-                'Authorization: Bearer ' . $token,
-                'Access-Role: superadmin'
-            ],
-            CURLOPT_POSTFIELDS => json_encode($attributes),
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_HEADER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 20
-        ];
-        curl_setopt_array($connection, $options);
-
-        $data = curl_exec($connection);
-        $info = curl_getinfo($connection);
-        curl_close($connection);
-
-        if ($data === false) {
-            throw new \yii\web\ServerErrorHttpException('Server not responding');
-        }
-
-        if ($info['http_code'] === 405) {
-            throw new MethodNotAllowedHttpException('Method not allowed');
-        }
-
-        if ($info['http_code'] !== 201) {
-            throw new \yii\web\UnprocessableEntityHttpException('Error occurred');
-        }
-
-        return Json::decode($data);
+        // NOTE: we need to generate password for user, which we will send to user via email
+        // TODO: Temporary solution
+        $attributes['validation'] = \Yii::$app->security->generateRandomString(8);
+        $data = $this->pdsGateway->createPerson($attributes, $token, $role);
+        return array_merge(Json::decode($data), ['validation' => $attributes['validation']]);
     }
 }

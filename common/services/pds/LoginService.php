@@ -2,6 +2,7 @@
 
 namespace common\services\pds;
 
+use common\gateways\pds\PdsGateway;
 use common\helpers\PersonHelper;
 use common\models\person\AccessToken;
 use common\models\person\Person;
@@ -10,6 +11,17 @@ use yii\helpers\Json;
 
 class LoginService
 {
+    private $pdsGateway;
+
+    /**
+     * LoginService constructor.
+     * @param PdsGateway $pdsGateway
+     */
+    public function __construct(PdsGateway $pdsGateway)
+    {
+        $this->pdsGateway = $pdsGateway;
+    }
+
     /**
      * @param string $username
      * @param string $password
@@ -29,6 +41,22 @@ class LoginService
     }
 
     /**
+     * @param string $token
+     * @return Person|null
+     */
+    public function loginByToken(string $token)
+    {
+        try {
+            $loginResponse = $this->pdsGateway->loginByToken($token);
+            $person = Person::findIdentityByUID($loginResponse->person->id);
+
+            return $person;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
      * @param string $username
      * @param string $password
      * @return mixed
@@ -36,40 +64,7 @@ class LoginService
      */
     private function getPdsAuthData(string $username, string $password)
     {
-        $connection = curl_init();
-        if (!$connection) {
-            throw new \Exception('Не удалось инициализировать соединение');
-        }
-
-        curl_setopt_array($connection, [
-            CURLOPT_URL => \Yii::$app->params['pds_url'] . 'auth',
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode(['indentity' => $username, 'password' => $password]),
-            CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
-                'Access: Bearer ' . Setting::getPdsToken(),
-            ],
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_HEADER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 20
-        ]);
-        $data = curl_exec($connection);
-        $info = curl_getinfo($connection);
-        curl_close($connection);
-
-        if ($data === false) {
-            throw new \yii\web\ServerErrorHttpException('Недоступен сервер авторизации.');
-        }
-
-        if ($info['http_code'] === 422) {
-            throw new \yii\web\UnprocessableEntityHttpException('Логин или пароль не верный.');
-        }
-
-        if ($info['http_code'] === 401) {
-            throw new \yii\web\UnprocessableEntityHttpException('Токен PDS невалиден');
-        }
+        $data = $this->pdsGateway->login($username, $password);
 
         return Json::decode($data);
     }
@@ -84,7 +79,7 @@ class LoginService
         $accessToken = AccessToken::find()
             ->where([
                 'person_id' => $person->id,
-                'token' => $data['token']
+                'token'     => $data['token']
             ])
             ->andWhere('expire_ts > NOW()')
             ->one();

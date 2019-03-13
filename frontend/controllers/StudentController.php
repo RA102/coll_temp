@@ -163,7 +163,7 @@ class StudentController extends Controller
         $form = new StudentGeneralForm();
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            $model = Student::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin, $form->indentity);
+            $model = Student::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
             $model->setAttributes($form->attributes);
             $model = $this->personService->create(
                 $model,

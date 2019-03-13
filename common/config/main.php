@@ -19,18 +19,29 @@ return [
         'i18n' => [
             'translations' => [
                 'app*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
+                    'class'    => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',
+                    'fileMap'  => [
+                        'app'       => 'app.php',
+                        'app/error' => 'error.php'
+                    ]
                 ],
             ],
         ],
     ],
     'container' => [
         'singletons' => [
+            'common\components\EmailComposer'                     => [
+                'view'     => ['class' => 'yii\web\View'],
+                'viewPath' => '@common/mail',
+            ],
             'common\gateways\bilimal\BilimalNotificationsGateway' => [
-                'class' => 'common\gateways\bilimal\BilimalNotificationsGateway',
                 'accessToken' => $params['bilimal_notifications_access_token']
-            ]
+            ],
+            'common\gateways\pds\PdsGateway'                      => [
+                'accessToken' => $params['pds_access_token'],
+                'baseUrl'     => $params['pds_url']
+            ],
         ]
     ]
 ];
