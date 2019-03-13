@@ -22,7 +22,7 @@ return [
     ],
     'components' => [
         'user' => [
-            'identityClass' => 'common\models\person\Person',
+            'identityClass'   => 'common\models\person\Person',
             'enableAutoLogin' => false,
         ],
         'log' => [
@@ -36,6 +36,7 @@ return [
         ],
         'request' => [
             'class' => 'yii\web\Request',
+            'enableCookieValidation' => false,
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ],
