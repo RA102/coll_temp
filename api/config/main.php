@@ -20,9 +20,9 @@ return [
 	'aliases' => [
         '@api' => dirname(dirname(__DIR__)) . '/api',
     ],
-    'components' => [        
+    'components' => [
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\person\Person',
             'enableAutoLogin' => false,
         ],
         'log' => [
@@ -33,9 +33,6 @@ return [
                     'levels' => ['error', 'warning'],
                 ],
             ],
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
         ],
         'request' => [
             'class' => 'yii\web\Request',
