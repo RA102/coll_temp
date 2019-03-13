@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\person\Student;
+use common\models\PersonRelative;
 use common\services\person\PersonContactService;
 use common\services\person\PersonInfoService;
 use common\services\person\PersonLocationService;
@@ -12,7 +13,9 @@ use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
 use Yii;
 use frontend\search\StudentSearch;
+use common\components\Model;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,9 +43,9 @@ class StudentController extends Controller
                     [
                         'actions' => [
                             'index',
-                            'view', 'view-contacts', 'view-documents', 'view-authorization',
+                            'view', 'view-contacts', 'view-documents', 'view-authorization', 'view-relatives',
                             'create',
-                            'update', 'update-contacts', 'update-documents',
+                            'update', 'update-contacts', 'update-documents', 'update-relatives',
                             'delete', 'fire',
                         ],
                         'allow' => true,
@@ -238,6 +241,52 @@ class StudentController extends Controller
         return $this->render('update/update_documents', [
             'form' => $form,
             'model' => $model,
+        ]);
+    }
+
+    public function actionUpdateRelatives($id)
+    {
+        $model = $this->findModel($id);
+        $relatives = count($model->relatives) ?  $model->relatives : [new PersonRelative()];
+
+        if (Yii::$app->request->post()) {
+            $oldIDs = ArrayHelper::map($relatives, 'id', 'id');
+            $relatives = Model::createMultiple(PersonRelative::class, $relatives);
+            Model::loadMultiple($relatives, Yii::$app->request->post());
+            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($relatives, 'id', 'id')));
+
+            foreach($relatives as $relative) {
+                $relative->person_id = $model->id;
+            }
+
+            $valid = Model::validateMultiple($relatives);
+
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    $flag = true;
+                    if (! empty($deletedIDs)) {
+                        PersonRelative::deleteAll(['id' => $deletedIDs]);
+                    }
+                    foreach ($relatives as $relative) {
+                        if (! ($flag = $relative->save(false))) {
+                            $transaction->rollBack();
+                            break;
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['view-relatives', 'id' => $model->id]);
+                    }
+                } catch (\Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
+        }
+
+        return $this->render('update/update_relatives', [
+            'model' => $model,
+            'relatives' => $relatives
         ]);
     }
 
