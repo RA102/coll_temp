@@ -156,6 +156,21 @@ class StudentController extends Controller
     }
 
     /**
+     * Displays Student documents information
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionViewRelatives($id)
+    {
+        $model = $this->findModel($id);
+
+        return $this->render('view/view_relatives', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
      * Creates a new Student model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed

@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\helpers\PersonRelativeHelper;
 use common\models\person\Person;
 use Yii;
 
@@ -98,5 +99,15 @@ class PersonRelative extends \yii\db\ActiveRecord
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
+    }
+
+    public function getRelationType()
+    {
+        return PersonRelativeHelper::getRelationTypeList()[$this->relation_type] ?? null;
+    }
+
+    public function getFullName()
+    {
+        return trim("{$this->lastname} $this->firstname $this->middlename");
     }
 }
