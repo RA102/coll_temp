@@ -42,7 +42,23 @@ return [
             ],
         ],
         'response' => [
-            'format' =>  \yii\web\Response::FORMAT_JSON
+            'format' =>  \yii\web\Response::FORMAT_JSON,
+            'on beforeSend' => function ($event) {
+                $response = $event->sender;
+                if ($response->data !== null && is_array($response->data)) {
+
+                    if (!$response->isSuccessful) {
+                        unset($response->data['type']);
+                        unset($response->data['code']);
+                        unset($response->data['previous']);
+                    }
+
+                    $response->data = [
+                        'success' => $response->isSuccessful,
+                        'data' => $response->data,
+                    ];
+                }
+            },
         ],
         'urlManager' => require __DIR__ . '/url-manager.php',
     ],

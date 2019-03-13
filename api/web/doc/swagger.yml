@@ -1,0 +1,193 @@
+swagger: '2.0'
+info:
+  description: COLLEGE API
+  version: 1.0.0
+  title: COLLEGE API
+schemes:
+- https
+paths:
+  /groups:
+    get:
+      summary: Get list of all institution groups
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: Authorization
+        description: "auth token"
+        required: true
+        type: string
+        default: Bearer dummy_token
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/getInstitutionGroups'
+        401:
+          description: Your request was made with invalid credentials.
+  /groups/<group_id>/students:
+    get:
+      summary: Get list of all group students
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: Authorization
+        description: "auth token"
+        required: true
+        type: string
+        default: Bearer dummy_token
+      - in: path
+        name: group_id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/getGroupStudents'
+        401:
+          description: Your request was made with invalid credentials.
+        404:
+          description: Not Found
+definitions:
+  getInstitutionGroups:
+    type: object
+    required:
+    - success
+    - data
+    properties:
+      success:
+        type: boolean
+        example: true
+      data:
+        type: object
+        example: [
+          {
+            "id": 2,
+            "caption": {
+              "kk": "ВТИПО111k",
+              "ru": "CSSE111k"
+            },
+            "language": "ru",
+            "speciality_id": null,
+            "max_class": 3,
+            "class": 1,
+            "education_form": 1,
+            "education_pay_form": 1,
+            "institution_id": 1,
+            "parent_id": null,
+            "type": null,
+            "rating_system_id": null,
+            "based_classes": null,
+            "class_change_history": null,
+            "properties": null,
+            "is_deleted": false,
+            "start_ts": null,
+            "create_ts": null,
+            "update_ts": null,
+            "delete_ts": null
+          },
+          {
+            "id": 1,
+            "caption": {
+              "kk": "Название на казахском",
+              "ru": "Название на русском"
+            },
+            "language": "ru",
+            "speciality_id": null,
+            "max_class": 3,
+            "class": 1,
+            "education_form": 1,
+            "education_pay_form": 1,
+            "institution_id": 1,
+            "parent_id": null,
+            "type": null,
+            "rating_system_id": null,
+            "based_classes": null,
+            "class_change_history": null,
+            "properties": null,
+            "is_deleted": false,
+            "start_ts": null,
+            "create_ts": null,
+            "update_ts": null,
+            "delete_ts": null
+          }
+        ]
+  getGroupStudents:
+    type: object
+    required:
+    - success
+    - data
+    properties:
+      success:
+        type: boolean
+        example: true
+      data:
+        type: object
+        example: [
+          {
+            "type": 1,
+            "id": 19,
+            "status": 1,
+            "nickname": null,
+            "firstname": "Еркебулан",
+            "lastname": "Казыкенов",
+            "middlename": "Student",
+            "birth_date": "2018-12-11",
+            "sex": 2,
+            "nationality_id": 1,
+            "iin": "",
+            "is_pluralist": null,
+            "birth_country_id": null,
+            "birth_city_id": null,
+            "birth_place": "Астана, ПРОСПЕКТ Абай, дом 12А",
+            "language": "kz",
+            "oid": null,
+            "alledu_id": null,
+            "alledu_server_id": null,
+            "pupil_id": null,
+            "owner_id": null,
+            "server_id": null,
+            "is_subscribed": null,
+            "portal_uid": null,
+            "photo": null,
+            "create_ts": "2018-12-10 17:49:00",
+            "delete_ts": "2018-12-27 16:34:24",
+            "import_ts": null,
+            "person_type": "superadmin"
+          },
+          {
+            "type": 1,
+            "id": 20,
+            "status": 1,
+            "nickname": null,
+            "firstname": "Айдар",
+            "lastname": "Дауылбай",
+            "middlename": "Student",
+            "birth_date": "2018-12-11",
+            "sex": 2,
+            "nationality_id": 1,
+            "iin": "",
+            "is_pluralist": null,
+            "birth_country_id": null,
+            "birth_city_id": null,
+            "birth_place": "Астана, ПРОСПЕКТ Абай, дом 12А",
+            "language": "kz",
+            "oid": null,
+            "alledu_id": null,
+            "alledu_server_id": null,
+            "pupil_id": null,
+            "owner_id": null,
+            "server_id": null,
+            "is_subscribed": null,
+            "portal_uid": null,
+            "photo": null,
+            "create_ts": "2018-12-10 17:49:00",
+            "delete_ts": "2018-12-27 16:34:24",
+            "import_ts": null,
+            "person_type": "superadmin"
+          }
+        ]
+host: localhost
+basePath: /v1

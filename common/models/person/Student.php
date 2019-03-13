@@ -3,10 +3,13 @@
 namespace common\models\person;
 
 use common\helpers\PersonTypeHelper;
+use common\models\link\StudentGroupLink;
 use common\models\organization\Group;
 
 /**
  * This is the model class for table "person.person".
+ *
+ * @property StudentGroupLink[] $studentGroupLinks
  */
 class Student extends Person
 {
@@ -49,7 +52,15 @@ class Student extends Person
      */
     public function getGroups()
     {
-        return $this->hasMany(Group::className(), ['id' => 'group_id'])
+        return $this->hasMany(Group::class, ['id' => 'group_id'])
             ->viaTable('link.student_group_link', ['student_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudentGroupLinks()
+    {
+        return $this->hasMany(StudentGroupLink::class, ['student_id' => 'id']);
     }
 }
