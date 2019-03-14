@@ -167,7 +167,3 @@ INSTALLATION
 
     access_log: /var/log/nginx/beta.fs-access.log
     error_log:  /var/log/nginx/beta.fs-error.log
-
-
-
-
