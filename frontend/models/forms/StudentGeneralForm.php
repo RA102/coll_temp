@@ -41,7 +41,7 @@ class StudentGeneralForm extends Model
             ['generate_credential', 'default', 'value' => false],
             ['indentity', 'email', 'skipOnEmpty' => true],
 
-            ['nationality_id', 'required'], // TODO foreign key check
+            [['nationality_id', 'iin'], 'required'], // TODO foreign key check
             ['language', 'required'],
             ['language', 'string', 'min' => 2, 'max' => 2],
         ];
