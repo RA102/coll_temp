@@ -56,7 +56,7 @@ return [
     'Wife' => 'Жена',
     'Son' => 'Сын',
     'Daughter' => 'Дочь',
-    'Brother' => 'Дочь',
+    'Brother' => 'Брат',
     'Sister' => 'Сестра',
 
     // EMPLOYEES
