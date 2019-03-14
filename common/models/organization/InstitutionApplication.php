@@ -30,6 +30,8 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ *
+ * @property Street $streetModel
  */
 class InstitutionApplication extends \yii\db\ActiveRecord
 {
