@@ -146,16 +146,16 @@ INSTALLATION
 
 ### Beta server
 
-Address: 
+**Address:** 
 
     host: https://beta.citorleu.kz
 
-Server:
+**Server:**
 
     ssh:  tickets.vpn
     user: admin
 
-PostgresQL:
+**PostgresQL:**
 
     host internal: preview -> useful for code
     host external: 192.168.2.220
@@ -163,7 +163,7 @@ PostgresQL:
     username:      betabilimal
     password:      B1t3fahrenvu
 
-Logs:
+**Logs:**
 
     access_log: /var/log/nginx/beta.fs-access.log
     error_log:  /var/log/nginx/beta.fs-error.log
