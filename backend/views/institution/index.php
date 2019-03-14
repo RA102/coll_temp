@@ -23,35 +23,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 'id',
                 'name',
-//                'country_id',
-                'city_id',
-                'parent_id',
-                //'type_id',
-                'educational_form_id',
-                //'organizational_legal_form_id',
-                //'oid',
-                //'server_id',
-                //'street_id',
-                //'house_number',
-                //'phone',
-                //'fax',
-                //'email:email',
-                //'languages_iso',
-                //'description:ntext',
-                //'bin',
-                //'foundation_year',
-                //'website',
-                //'max_grade',
-                //'info:ntext',
-                //'domain',
-                //'db_name',
-                //'db_user',
-                //'db_password',
-                //'initialization:boolean',
-                //'status',
-                //'create_ts',
-                //'update_ts',
-                //'delete_ts',
+                [
+                    'attribute' => 'city_id',
+                    'value' => function(\common\models\organization\Institution $model) {
+                        return $model->city->caption_current;
+                    }
+                ],
+                [
+                    'attribute' => 'educational_form_id',
+                    'value' => function(\common\models\organization\Institution $model) {
+                        return $model->educationalForm->caption_current;
+                    }
+                ],
 
                 ['class' => 'yii\grid\ActionColumn'],
             ],

@@ -98,6 +98,7 @@ return [
     'Enable Fraction' => 'Поддержка числитель/знаменатель в расписании',
     'Organization' => 'Организация',
     'Country unit' => 'Населенный пункт',
+    'Institutions' => 'Колледжи',
 
     // APPLICATIONS
     'Street' => 'Улица',
