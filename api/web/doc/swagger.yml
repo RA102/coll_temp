@@ -8,7 +8,7 @@ schemes:
 paths:
   /groups:
     get:
-      summary: Get list of all institution groups
+      summary: Get list of all Groups of the logged user Institution
       produces:
       - application/json
       parameters:
@@ -27,7 +27,7 @@ paths:
           description: Your request was made with invalid credentials.
   /groups/<group_id>/students:
     get:
-      summary: Get list of all group students
+      summary: Get list of all Students of the given Group
       produces:
       - application/json
       parameters:
@@ -46,6 +46,54 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/getGroupStudents'
+        401:
+          description: Your request was made with invalid credentials.
+        404:
+          description: Not Found
+  /courses:
+    get:
+      summary: Get list of all Courses of the logged user Institution. Teacher Courses are included in each Course
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: Authorization
+        description: "auth token"
+        required: true
+        type: string
+        default: Bearer dummy_token
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/getInstitutionCourses'
+        401:
+          description: Your request was made with invalid credentials.
+  /courses/<course_id>/teacher-course/<teacher_course_id>/lessons:
+    get:
+      summary: Get list of all lessons of the given Teacher Course
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: Authorization
+        description: "auth token"
+        required: true
+        type: string
+        default: Bearer dummy_token
+      - in: path
+        name: course_id
+        required: true
+        type: integer
+      - in: path
+        name: teacher_course_id
+        required: true
+        type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/getTeacherCourseLessons'
         401:
           description: Your request was made with invalid credentials.
         404:
@@ -187,6 +235,131 @@ definitions:
             "delete_ts": "2018-12-27 16:34:24",
             "import_ts": null,
             "person_type": "superadmin"
+          }
+        ]
+  getInstitutionCourses:
+    type: object
+    required:
+    - success
+    - data
+    properties:
+      success:
+        type: boolean
+        example: true
+      data:
+        type: object
+        example: {
+          "success": true,
+          "data": [
+            {
+              "id": 8,
+              "caption": {
+                "kk": "Math 2019",
+                "ru": "Математика 2019"
+              },
+              "status": null,
+              "create_ts": "2019-02-07 11:01:55",
+              "update_ts": "2019-02-07 11:01:55",
+              "delete_ts": null,
+              "classes": [
+                3
+              ],
+              "teacherCourses": [
+                {
+                  "id": 11,
+                  "course_id": 8,
+                  "teacher_id": 23,
+                  "type": "Практика",
+                  "start_ts": "2019-03-29 00:00:00",
+                  "end_ts": "2019-04-25 00:00:00",
+                  "create_ts": "2019-02-07 11:01:55",
+                  "update_ts": "2019-02-07 11:01:55",
+                  "delete_ts": null
+                }
+              ]
+            },
+            {
+              "id": 7,
+              "caption": {
+                "kk": "Paya 2011",
+                "ru": "Пайа 2011"
+              },
+              "status": null,
+              "create_ts": "2019-02-07 11:01:55",
+              "update_ts": "2019-02-07 11:01:55",
+              "delete_ts": null,
+              "classes": [
+                2
+              ],
+              "teacherCourses": [
+                {
+                  "id": 12,
+                  "course_id": 7,
+                  "teacher_id": 23,
+                  "type": "Type",
+                  "start_ts": "2019-03-04 00:00:00",
+                  "end_ts": "2019-04-19 00:00:00",
+                  "create_ts": "2019-02-07 11:01:55",
+                  "update_ts": "2019-02-07 11:01:55",
+                  "delete_ts": null
+                },
+                {
+                  "id": 7,
+                  "course_id": 7,
+                  "teacher_id": 23,
+                  "type": "Практика",
+                  "start_ts": "2019-03-18 00:00:00",
+                  "end_ts": "2019-03-30 00:00:00",
+                  "create_ts": "2019-02-07 11:01:55",
+                  "update_ts": "2019-02-07 11:01:55",
+                  "delete_ts": null
+                },
+                {
+                  "id": 10,
+                  "course_id": 7,
+                  "teacher_id": 23,
+                  "type": "Лекция",
+                  "start_ts": "2019-03-17 00:00:00",
+                  "end_ts": "2019-03-30 00:00:00",
+                  "create_ts": "2019-02-07 11:01:55",
+                  "update_ts": "2019-02-07 11:01:55",
+                  "delete_ts": null
+                }
+              ]
+            }
+          ]
+        }
+  getTeacherCourseLessons:
+    type: object
+    required:
+    - success
+    - data
+    properties:
+      success:
+        type: boolean
+        example: true
+      data:
+        type: object
+        example: [
+          {
+            "id": 14,
+            "teacher_course_id": 7,
+            "teacher_id": 23,
+            "date_ts": "2019-02-26 00:00:00",
+            "duration": 120,
+            "create_ts": "2019-02-07 11:01:55",
+            "update_ts": "2019-02-07 11:01:55",
+            "delete_ts": null
+          },
+          {
+            "id": 17,
+            "teacher_course_id": 7,
+            "teacher_id": 23,
+            "date_ts": "2019-03-05 05:00:00",
+            "duration": 120,
+            "create_ts": "2019-02-07 11:01:55",
+            "update_ts": "2019-02-07 11:01:55",
+            "delete_ts": null
           }
         ]
 host: localhost
