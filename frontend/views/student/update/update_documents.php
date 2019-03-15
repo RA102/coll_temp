@@ -14,18 +14,14 @@ use yii\widgets\ActiveForm;
 
     <?php $activeForm = ActiveForm::begin(); ?>
 
-    <legend class="text-semibold center-block">
-        <?= 'Свидетельство о рождении'?>
-    </legend>
-
     <div class="row">
         <div class="col-md-4">
-            <?= $activeForm->field($form, 'birth_certificate_series')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-4">
+            <legend class="text-semibold center-block">
+                <?= 'Свидетельство о рождении'?>
+            </legend>
+
             <?= $activeForm->field($form, 'birth_certificate_number')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-4">
+
             <?= $activeForm->field($form, 'birth_certificate_issued_date')->widget(DatePicker::class, [
                 'language' => 'ru',
                 'pluginOptions' => [
@@ -33,69 +29,52 @@ use yii\widgets\ActiveForm;
                     'format' => 'yyyy-mm-dd'
                 ]
             ]); ?>
+
+            <?= $activeForm->field($form, 'birth_certificate_series')->textInput(['maxlength' => true]) ?>
         </div>
-    </div>
-
-    <legend class="text-semibold center-block">
-        <?= 'Удостоверение личности'?>
-    </legend>
-
-    <div class="row">
         <div class="col-md-4">
+            <legend class="text-semibold center-block">
+                <?= 'Удостоверение личности'?>
+            </legend>
+
             <?= $activeForm->field($form, 'identity_card_number')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-4">
+
             <?= $activeForm->field($form, 'identity_card_issued_date')->widget(DatePicker::class, [
                 'pluginOptions' => [
                     'autoclose' => true
                 ]
             ]); ?>
-        </div>
-        <div class="col-md-4">
+
             <?= $activeForm->field($form, 'identity_card_valid_date')->widget(DatePicker::class, [
                 'pluginOptions' => [
                     'autoclose' => true
                 ]
             ]); ?>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-4">
             <?= $activeForm->field($form, 'identity_card_issued')->textInput(['maxlength' => true]) ?>
         </div>
-    </div>
-
-    <legend class="text-semibold center-block">
-        <?= 'Паспорт'?>
-    </legend>
-
-    <div class="row">
         <div class="col-md-4">
-            <?= $activeForm->field($form, 'passport_series')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-4">
+            <legend class="text-semibold center-block">
+                <?= 'Паспорт'?>
+            </legend>
+
             <?= $activeForm->field($form, 'passport_number')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-4">
+
             <?= $activeForm->field($form, 'passport_issued_date')->widget(DatePicker::class, [
                 'pluginOptions' => [
                     'autoclose' => true
                 ]
             ]); ?>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-4">
             <?= $activeForm->field($form, 'passport_valid_date')->widget(DatePicker::class, [
                 'pluginOptions' => [
                     'autoclose' => true
                 ]
             ]); ?>
-        </div>
-        <div class="col-md-4">
+
             <?= $activeForm->field($form, 'passport_issued')->textInput(['maxlength' => true]) ?>
+
+            <?= $activeForm->field($form, 'passport_series')->textInput(['maxlength' => true]) ?>
         </div>
     </div>
 
