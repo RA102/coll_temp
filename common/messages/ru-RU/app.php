@@ -58,6 +58,7 @@ return [
     'Daughter' => 'Дочь',
     'Brother' => 'Брат',
     'Sister' => 'Сестра',
+    'Update {name}' => 'Редактирование {name}',
 
     // EMPLOYEES
     'Employees' => 'Сотрудники',
