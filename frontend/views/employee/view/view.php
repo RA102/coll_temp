@@ -13,9 +13,12 @@ use yii\widgets\DetailView;
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                'firstname',
-                'lastname',
-                'middlename',
+                [
+                    'attribute' => 'firstname',
+                    'value' => function(Employee $model) {
+                        return $model->getFullName();
+                    }
+                ],
                 'iin',
                 'birth_date',
                 [

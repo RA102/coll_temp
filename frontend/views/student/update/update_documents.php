@@ -41,13 +41,15 @@ use yii\widgets\ActiveForm;
 
             <?= $activeForm->field($form, 'identity_card_issued_date')->widget(DatePicker::class, [
                 'pluginOptions' => [
-                    'autoclose' => true
+                    'autoclose' => true,
+                    'format' => 'yyyy-mm-dd'
                 ]
             ]); ?>
 
             <?= $activeForm->field($form, 'identity_card_valid_date')->widget(DatePicker::class, [
                 'pluginOptions' => [
-                    'autoclose' => true
+                    'autoclose' => true,
+                    'format' => 'yyyy-mm-dd'
                 ]
             ]); ?>
 
@@ -62,13 +64,15 @@ use yii\widgets\ActiveForm;
 
             <?= $activeForm->field($form, 'passport_issued_date')->widget(DatePicker::class, [
                 'pluginOptions' => [
-                    'autoclose' => true
+                    'autoclose' => true,
+                    'format' => 'yyyy-mm-dd'
                 ]
             ]); ?>
 
             <?= $activeForm->field($form, 'passport_valid_date')->widget(DatePicker::class, [
                 'pluginOptions' => [
-                    'autoclose' => true
+                    'autoclose' => true,
+                    'format' => 'yyyy-mm-dd'
                 ]
             ]); ?>
 

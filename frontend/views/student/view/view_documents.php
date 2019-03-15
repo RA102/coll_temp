@@ -19,16 +19,16 @@ use yii\widgets\DetailView;
                 'model' => $model,
                 'attributes' => [
                     [
-                        'label' => $form->getAttributeLabel('birth_certificate_series'),
-                        'value' => $form->birth_certificate_series,
-                    ],
-                    [
                         'label' => $form->getAttributeLabel('birth_certificate_number'),
                         'value' => $form->birth_certificate_number,
                     ],
                     [
                         'label' => $form->getAttributeLabel('birth_certificate_issued_date'),
                         'value' => $form->birth_certificate_issued_date,
+                    ],
+                    [
+                        'label' => $form->getAttributeLabel('birth_certificate_series'),
+                        'value' => $form->birth_certificate_series,
                     ],
                 ],
             ]) ?>
@@ -67,10 +67,6 @@ use yii\widgets\DetailView;
                 'model' => $model,
                 'attributes' => [
                     [
-                        'label' => $form->getAttributeLabel('passport_series'),
-                        'value' => $form->passport_series,
-                    ],
-                    [
                         'label' => $form->getAttributeLabel('passport_number'),
                         'value' => $form->passport_number,
                     ],
@@ -85,6 +81,10 @@ use yii\widgets\DetailView;
                     [
                         'label' => $form->getAttributeLabel('passport_issued'),
                         'value' => $form->passport_issued,
+                    ],
+                    [
+                        'label' => $form->getAttributeLabel('passport_series'),
+                        'value' => $form->passport_series,
                     ],
                 ],
             ]) ?>
