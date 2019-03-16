@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\exceptions\ValidationException;
 use common\services\pds\PersonCredentialService;
 use frontend\models\forms\PersonCredentialForm;
 use Yii;
@@ -75,10 +76,14 @@ class CredentialController extends Controller
                     Yii::$app->user->identity->activeAccessToken->token,
                     Yii::$app->user->identity->person_type
                 );
+            } catch (ValidationException $e) {
+                $form->addErrors($e->errors);
             } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error', Yii::t('app/error', 'Generic'));
             }
-        } else {
+        }
+
+        if ($form->hasErrors()) {
             Yii::$app->session->setFlash('error', current($form->firstErrors));
         }
 

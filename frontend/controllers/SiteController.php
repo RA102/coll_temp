@@ -189,7 +189,7 @@ class SiteController extends Controller
                 Yii::$app->session->setFlash('success', 'New password saved.');
                 return $this->goHome();
             } catch (\Exception $e) {
-                Yii::$app->session->setFlash('error', \Yii::t('app', 'Generic'));
+                Yii::$app->session->setFlash('error', \Yii::t('app/error', 'Generic'));
             }
         }
 
