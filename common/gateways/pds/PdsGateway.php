@@ -5,7 +5,6 @@ namespace common\gateways\pds;
 use common\exceptions\ValidationException;
 use common\gateways\pds\dto\LoginResponse;
 use common\gateways\pds\dto\PersonCredentialResponse;
-use common\gateways\pds\dto\PersonResponse;
 use common\gateways\pds\dto\ResetPasswordResponse;
 use common\gateways\pds\transformers\LoginTransformer;
 use common\gateways\pds\transformers\PersonTransformer;
@@ -106,17 +105,35 @@ class PdsGateway implements \yii\base\Configurable
      * @param array $attributes
      * @param string $token
      * @param string $role
-     * @return PersonResponse
+     * @return string
      */
-    public function createPerson(array $attributes, string $token, string $role): PersonResponse
+    public function createPerson(array $attributes, string $token, string $role)
     {
         $headers = [
             'Authorization' => "Bearer {$token}",
             'Access-Role'   => $role
         ];
-        $request = $this->requestFactory->create('post', 'auth', $headers, json_encode($attributes));
+        $request = $this->requestFactory->create('post', 'person', $headers, json_encode($attributes));
         $response = $this->send($request);
-        return $this->jsonDecoder->decode($response->getBody()->getContents(), PersonResponse::class);
+        return $response->getBody()->getContents();
+    }
+
+    /**
+     * @param int $person_id
+     * @param array $attributes
+     * @param string $token
+     * @param string $role
+     * @return string
+     */
+    public function updatePerson(int $person_id, array $attributes, string $token, string $role): string
+    {
+        $headers = [
+            'Authorization' => "Bearer {$token}",
+            'Access-Role'   => $role
+        ];
+        $request = $this->requestFactory->create('put', "person/{$person_id}", $headers, json_encode($attributes));
+        $response = $this->send($request);
+        return $response->getBody()->getContents();
     }
 
     /**
@@ -211,10 +228,10 @@ class PdsGateway implements \yii\base\Configurable
             );
         }
 
-        if ($response->getStatusCode() !== 201) {
-            throw new \Exception($response->getReasonPhrase());
+        if ($response->getStatusCode() === 201 || $response->getStatusCode() === 200) {
+            return $response;
         }
 
-        return $response;
+        throw new \Exception($response->getReasonPhrase());
     }
 }

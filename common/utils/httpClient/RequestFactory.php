@@ -13,7 +13,7 @@ class RequestFactory
      * @param $body
      * @return Request
      */
-    public function create(string $method, string $uri, array $headers = [], $body)
+    public function create(string $method, string $uri, array $headers = [], $body = null)
     {
         return new Request($method, $uri, $headers, $body);
     }
