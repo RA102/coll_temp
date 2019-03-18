@@ -63,7 +63,7 @@ class PdsGateway implements \yii\base\Configurable
 
         // TODO: send error depending on response code (Service unavailable, Bad request)
         if ($response->getStatusCode() !== 201) {
-            throw new \Exception("Unauthorized");
+            throw new \Exception($response->getReasonPhrase());
         }
 
         return $response->getBody()->getContents();
