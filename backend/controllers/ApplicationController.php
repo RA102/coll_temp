@@ -146,12 +146,12 @@ class ApplicationController extends Controller
     public function actionApprove($id)
     {
         $model = $this->findModel($id);
-//        try {
+        try {
             $this->applicationService->approve($model);
-//            Yii::$app->session->setFlash('success', "Заявка одобрена");
-//        } catch (\Exception $e) {
-//            Yii::$app->session->setFlash('error', "Произошла ошибка при сохранении: " . $e->getTraceAsString());
-//        }
+            Yii::$app->session->setFlash('success', "Заявка одобрена");
+        } catch (\Exception $e) {
+            Yii::$app->session->setFlash('error', "Произошла ошибка при сохранении: " . $e->getMessage());
+        }
 
         return $this->redirect(['index']);
     }
