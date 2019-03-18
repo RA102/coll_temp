@@ -150,7 +150,7 @@ class ApplicationController extends Controller
             $this->applicationService->approve($model);
             Yii::$app->session->setFlash('success', "Заявка одобрена");
         } catch (\Exception $e) {
-            Yii::$app->session->setFlash('error', "Произошла ошибка при сохранении: " . $e->getMessage());
+            Yii::$app->session->setFlash('error', "Произошла ошибка при сохранении: " . $e->getTraceAsString());
         }
 
         return $this->redirect(['index']);
