@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'street',
                     'value' => function(\common\models\organization\InstitutionApplication $model) {
-                        return $model->streetModel->caption_current;
+                        return $model->streetModel->caption_current ?? null;
                     }
                 ],
                 'birth_date',
