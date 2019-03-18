@@ -5,9 +5,10 @@ namespace common\models\organization;
 use common\helpers\GroupHelper;
 use common\helpers\LanguageHelper;
 use common\models\handbook\Speciality;
+use common\models\link\StudentGroupLink;
+use common\models\person\Student;
 use common\models\TeacherCourse;
 use Yii;
-use yii\helpers\Json;
 
 /**
  * This is the model class for table "organization.group".
@@ -35,6 +36,8 @@ use yii\helpers\Json;
  *
  * @property Speciality $speciality
  * @property TeacherCourse[] $teacherCourses
+ * @property StudentGroupLink[] $studentGroupLinks
+ * @property Student[] $students
  */
 class Group extends \yii\db\ActiveRecord
 {
@@ -156,5 +159,21 @@ class Group extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TeacherCourse::class, ['id' => 'teacher_course_id'])
             ->viaTable('link.teacher_course_group_link', ['group_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudentGroupLinks()
+    {
+        return $this->hasMany(StudentGroupLink::class, ['group_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudents()
+    {
+        return $this->hasMany(Student::class, ['id' => 'student_id'])->via('studentGroupLinks');
     }
 }
