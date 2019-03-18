@@ -98,6 +98,49 @@ paths:
           description: Your request was made with invalid credentials.
         404:
           description: Not Found
+  /students/<student_id>/grades:
+    post:
+      summary: Post a session grade for a given user in a lesson
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: header
+        name: Authorization
+        description: "auth token"
+        required: true
+        type: string
+        default: Bearer dummy_token
+      - in: path
+        name: student_id
+        required: true
+        type: integer
+      - in: query
+        name: lesson_id
+        required: true
+        type: integer
+      - in: body
+        name: value
+        required: true
+        schema:
+          type: object
+          properties:
+            value:
+              type: integer
+              required: true
+              example: 5
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/postGrade'
+        401:
+          description: Your request was made with invalid credentials.
+        404:
+          description: Not Found
+        422:
+          description: Data Validation Failed.
 definitions:
   getInstitutionGroups:
     type: object
@@ -362,5 +405,26 @@ definitions:
             "delete_ts": null
           }
         ]
+  postGrade:
+    type: object
+    required:
+    - success
+    - data
+    properties:
+      success:
+        type: boolean
+        example: true
+      data:
+        type: object
+        example: {
+           "success": true,
+           "data": {
+             "type": 2,
+             "student_id": 19,
+             "lesson_id": 14,
+             "value": 5,
+             "id": 5
+           }
+         }
 host: localhost
 basePath: /v1
