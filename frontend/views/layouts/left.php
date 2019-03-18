@@ -7,7 +7,7 @@
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
                     [
-                        'label' => Yii::t('app','Приемная комиссия'),
+                        'label' => Yii::t('app','Selection committee'),
                         'icon' => 'far fa-id-card',
                         'url' => '#',
                         'items' => [
