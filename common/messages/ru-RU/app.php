@@ -214,4 +214,7 @@ return [
     'Lesson Start Date' => 'Начало',
     'Lesson End Date' => 'Конец',
     'Group Lessons' => 'Занятия группы',
+
+    // GRADE
+    'Grade Value' => 'Оценка',
 ];
