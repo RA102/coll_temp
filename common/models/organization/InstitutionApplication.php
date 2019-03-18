@@ -2,6 +2,7 @@
 
 namespace common\models\organization;
 
+use common\helpers\InstitutionApplicationHelper;
 use common\helpers\PersonHelper;
 use common\models\CountryUnit;
 use common\models\Street;
@@ -161,5 +162,10 @@ class InstitutionApplication extends \yii\db\ActiveRecord
     public function getSex()
     {
         return PersonHelper::getSexList()[$this->sex] ?? null;
+    }
+
+    public function getStatus()
+    {
+        return InstitutionApplicationHelper::getStatusList()[$this->status] ?? null;
     }
 }
