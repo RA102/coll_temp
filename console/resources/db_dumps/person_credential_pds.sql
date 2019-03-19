@@ -14451,7 +14451,7 @@ INSERT INTO person.person_credential(person_id, indentity, create_ts, update_ts)
 INSERT INTO person.person_credential(person_id, indentity, create_ts, update_ts) VALUES (1298408, 'yzu37813@ebbob.com', '2018-11-13 17:30:03.044843', '2018-11-13 17:30:03.044843');
 INSERT INTO person.person_credential(person_id, indentity, create_ts, update_ts) VALUES (1298409, 'muhaev@.mail.ru', '2018-11-14 12:09:32.671600', '2018-11-14 12:09:32.671600');
 INSERT INTO person.person_credential(person_id, indentity, create_ts, update_ts) VALUES (1298410, 'hyf69086@iencm.com', '2018-11-26 12:05:43.621283', '2018-11-26 12:05:43.621283');
-INSERT INTO person.person_credential(person_id, indentity, create_ts, update_ts) VALUES (1298410, 'aimtorin@cit-orleu.kz', '2018-11-14 16:06:28.790429', '2018-11-14 16:06:28.790429');
+--INSERT INTO person.person_credential(person_id, indentity, create_ts, update_ts) VALUES (1298410, 'aimtorin@cit-orleu.kz', '2018-11-14 16:06:28.790429', '2018-11-14 16:06:28.790429');
 INSERT INTO person.person_credential(person_id, indentity, create_ts, update_ts) VALUES (1298410, 'senichka85@mail.ru', '2018-11-14 16:17:11.174131', '2018-11-14 16:17:11.174131');
 INSERT INTO person.person_credential(person_id, indentity, create_ts, update_ts) VALUES (1298411, 'ajym.arman@inbox.ru', '2018-11-16 10:30:39.322073', '2018-11-16 10:30:39.322073');
 INSERT INTO person.person_credential(person_id, indentity, create_ts, update_ts) VALUES (1298412, 'bekzat-axmetov@bk.ru', '2018-11-16 11:41:57.963644', '2018-11-16 11:41:57.963644');
