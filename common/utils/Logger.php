@@ -2,20 +2,21 @@
 
 namespace common\utils;
 
-use yii\log\Logger as YiiLogger;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Yii;
+use yii\log\Logger as YiiLogger;
 
 /**
  * Psr-3 compatible wrapper for Yii2 logger
  * Class Logger
  */
-class Logger implements \Psr\Log\LoggerInterface
+class Logger implements LoggerInterface
 {
-
     const LOGS_LEVELS_MAP = [
-        'info'    => YiiLogger::LEVEL_INFO,
-        'debug'   => YiiLogger::LEVEL_ERROR,
-        'warning' => YiiLogger::LEVEL_WARNING,
+        LogLevel::INFO    => YiiLogger::LEVEL_INFO,
+        LogLevel::ERROR   => YiiLogger::LEVEL_ERROR,
+        LogLevel::WARNING => YiiLogger::LEVEL_WARNING,
     ];
 
     private $namespace;
