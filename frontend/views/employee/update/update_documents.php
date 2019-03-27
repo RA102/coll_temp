@@ -17,23 +17,6 @@ use yii\widgets\ActiveForm;
 <div class="row">
     <div class="col-md-4">
         <legend class="text-semibold center-block">
-            <?= 'Свидетельство о рождении'?>
-        </legend>
-
-        <?= $activeForm->field($form, 'birth_certificate_number')->textInput(['maxlength' => true]) ?>
-
-        <?= $activeForm->field($form, 'birth_certificate_issued_date')->widget(DatePicker::class, [
-            'language' => 'ru',
-            'pluginOptions' => [
-                'autoclose' => true,
-                'format' => 'yyyy-mm-dd'
-            ]
-        ]); ?>
-
-        <?= $activeForm->field($form, 'birth_certificate_series')->textInput(['maxlength' => true]) ?>
-    </div>
-    <div class="col-md-4">
-        <legend class="text-semibold center-block">
             <?= 'Удостоверение личности'?>
         </legend>
 
