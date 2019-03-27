@@ -27,6 +27,7 @@ class PersonContactsForm extends Model
     public $residence_street_id;
 
     public $citizenship_country_id;
+    public $birth_place;
 
 
     public function __construct(
@@ -60,6 +61,8 @@ class PersonContactsForm extends Model
             $this->residence_street_id = $personLocationResidence->street_id;
         }
 
+        $this->birth_place = $person->birth_place;
+
         parent::__construct($config);
     }
 
@@ -76,6 +79,7 @@ class PersonContactsForm extends Model
             [['residence_country_id'], 'required'],
             [['residence_country_id', 'residence_city_ids', 'residence_street_id'], 'safe'],
             [['citizenship_country_id'], 'required'],
+            [['birth_place'], 'string'],
         ];
     }
 
@@ -92,6 +96,7 @@ class PersonContactsForm extends Model
             'location_residence' => 'Домашний адрес',
             'residence_country_id' => 'Домашний адрес',
             'citizenship_country_id' => 'Гражданство',
+            'birth_place' => 'Место рождения',
         ];
     }
 
@@ -133,6 +138,9 @@ class PersonContactsForm extends Model
         $personLocationResidence->type = PersonLocationHelper::TYPE_RESIDENCE;
 
         $personLocationService->setLocation($person, $personLocationResidence);
+
+        $person->birth_place = $this->birth_place;
+        $person->save();
     }
 
     public function validate($attributeNames = null, $clearErrors = true)

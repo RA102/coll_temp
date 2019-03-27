@@ -66,10 +66,7 @@ use yii\widgets\DetailView;
                     return implode(', ', $result);
                 },
             ],
-            [
-                'label' => 'Место рождения',
-                'value' => null
-            ],
+            'birth_place',
         ],
     ]) ?>
 
