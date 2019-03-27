@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\models\organization\Institution;
 use Yii;
 use yii\helpers\Json;
 
@@ -111,6 +112,14 @@ class CountryUnit extends \yii\db\ActiveRecord
     public function getStreets()
     {
         return $this->hasMany(Street::class, ['city_id' => 'id'])->inverseOf('city');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInstitutions()
+    {
+        return $this->hasMany(Institution::class, ['city_id' => 'id'])->inverseOf('city');
     }
 
     public function afterFind()
