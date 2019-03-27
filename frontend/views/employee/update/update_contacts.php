@@ -35,6 +35,17 @@ use yii\widgets\Pjax;
     <?= $activeForm->field($form, 'contact_phone_mobile')->textInput(['maxlength' => true]) ?>
 
     <?php
+    echo $activeForm->field($form, 'citizenship_country_id')->widget(Select2::classname(), [
+        'data' => ArrayHelper::map(\common\models\Country::find()->all(), 'id', 'caption_current'),
+        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+        'theme' => 'default',
+        'pluginOptions' => [
+            'allowClear' => true,
+        ],
+    ]);
+    ?>
+
+    <?php
     # Registration Location
     $registrationHasCountryUnit = false;
     $registrationHasStreet = false;
