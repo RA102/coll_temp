@@ -2,20 +2,32 @@
 
 namespace frontend\search;
 
+use common\models\link\PersonInstitutionLink;
+use common\models\organization\Institution;
 use common\models\person\Employee;
 use common\models\person\Person;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 
 /**
  * EmployeeSearch represents the model behind the search form of `common\models\person\Employee`.
  */
 class EmployeeSearch extends Employee
 {
+    protected $institution_id;
+
     public function formName()
     {
         return '';
+    }
+
+    public function __construct(Institution $institution, array $config = [])
+    {
+        parent::__construct($config);
+
+        $this->institution_id = $institution->id;
     }
 
     /**
@@ -79,9 +91,19 @@ class EmployeeSearch extends Employee
             if ($this->status == Person::STATUS_DELETED) {
                 $query->andWhere(['NOT', ['delete_ts' => null]]);
             } else {
-                $query->andFilterWhere(['status' => $this->status]);
+                $query->andFilterWhere([static::tableName() . '.status' => $this->status]);
                 $query->andWhere(['delete_ts' => null]);
             }
+        }
+
+        if ($this->institution_id) {
+            /** @see Employee::getPersonInstitutionLinks() */
+            $query->joinWith(['personInstitutionLinks' => function (ActiveQuery $query) {
+                return $query->andWhere([
+                    /** @see PersonInstitutionLink::$institution_id */
+                    PersonInstitutionLink::tableName() . '.institution_id' => $this->institution_id
+                ]);
+            }]);
         }
 
         // grid filtering conditions
