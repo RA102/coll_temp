@@ -55,9 +55,9 @@ class PersonService
         string $credential_type,
         bool $generate_credential
     ): PdsPersonInterface {
-        if (!empty($model->portal_uid)) {
-            throw new ForbiddenHttpException('Person already exists');
-        }
+//        if (!empty($model->portal_uid)) {
+//            throw new ForbiddenHttpException('Person already exists');
+//        }
 
         $newPerson = new PdsPersonInterface();
         $newPerson->lastname = $model->lastname;

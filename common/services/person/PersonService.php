@@ -7,6 +7,7 @@ use common\models\link\PersonInstitutionLink;
 use common\models\person\Person;
 use common\models\person\PersonCredential;
 use common\services\NotificationService;
+use common\services\pds\PersonCredentialService;
 use common\services\pds\PersonService as PdsService;
 use common\services\TransactionManager;
 
@@ -14,20 +15,24 @@ class PersonService
 {
     private $notificationService;
     private $transactionManager;
+    private $personCredentialService;
     private $pdsService;
 
     /**
      * PersonService constructor.
      * @param NotificationService $notificationService
+     * @param PersonCredentialService $personCredentialService
      * @param PdsService $pdsService
      * @param TransactionManager $transactionManager
      */
     public function __construct(
         NotificationService $notificationService,
+        PersonCredentialService $personCredentialService,
         PdsService $pdsService,
         TransactionManager $transactionManager
     ) {
         $this->notificationService = $notificationService;
+        $this->personCredentialService = $personCredentialService;
         $this->transactionManager = $transactionManager;
         $this->pdsService = $pdsService;
     }
@@ -38,46 +43,69 @@ class PersonService
      * @param bool $create_identity
      * @param string $identity
      * @param string $credential_type
+     * @param string $accessToken
+     * @param string $role
      * @return Person
-     * @throws \yii\db\Exception
+     * @throws \Exception
      */
     public function create(
         Person $model,
         $institution_id,
         $create_identity,
         $identity,
-        $credential_type = PersonCredentialHelper::TYPE_EMAIL
+        $credential_type = PersonCredentialHelper::TYPE_EMAIL,
+        $accessToken,
+        $role
     ) {
         if (!$model->isNewRecord) {
             throw new \yii\base\InvalidCallException('Model already created');
         }
 
+        $person = Person::findOne(['iin' => $model->iin]);
+        if ($person) {
+            $personInstitutionLink = PersonInstitutionLink::findOne([
+                'person_id'      => $person->id,
+                'institution_id' => $institution_id
+            ]);
+            if ($personInstitutionLink) {
+                throw new \Exception('Person is attached to institution');
+            }
+
+            $person->setAttributes(array_filter($model->getAttributes(), function ($value) {
+                return !is_null($value);
+            }));
+        } else {
+            $person = $model;
+        }
+
         $this->transactionManager->execute(function () use (
-            $model,
+            $person,
             $institution_id,
             $create_identity,
             $identity,
-            $credential_type
+            $credential_type,
+            $accessToken,
+            $role
         ) {
             $pdsPerson = $this->pdsService->create(
-                $model,
+                $person,
                 $identity,
                 $credential_type,
                 $create_identity
             );
-            $model->portal_uid = $pdsPerson->id;
+            $person->portal_uid = $pdsPerson->id;
 
-            if (!$model->save()) {
+            if (!$person->save()) {
                 if (YII_DEBUG) {
-                    $errors = $model->errors;
+                    $errors = $person->errors;
                     throw new \RuntimeException(reset($errors)[0]);
                 }
                 throw new \RuntimeException('Saving error.');
             }
 
             // TODO: add email to contacts
-            if ($create_identity) {
-                $personCredential = PersonCredential::add($model, $identity);
+            if ($pdsPerson->is_new && $create_identity) {
+                $personCredential = PersonCredential::add($person, $identity);
                 $personCredential->save();
 
                 // TODO: send notifications via queue
@@ -87,11 +115,20 @@ class PersonService
                 );
             }
 
-            $link = PersonInstitutionLink::add($model->id, $institution_id);
+            if (!$pdsPerson->is_new && $create_identity) {
+                $this->personCredentialService->create(
+                    $person->id,
+                    $identity,
+                    $accessToken,
+                    $role
+                );
+            }
+
+            $link = PersonInstitutionLink::add($person->id, $institution_id);
             $link->save();
         });
 
-        return $model;
+        return $person;
     }
 
     public function update(Person $model)

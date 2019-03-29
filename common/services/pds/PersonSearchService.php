@@ -4,7 +4,6 @@ namespace common\services\pds;
 
 use common\gateways\pds\PdsGateway;
 use common\models\person\Person;
-use common\models\system\Setting;
 use yii\helpers\Json;
 use yii\web\ForbiddenHttpException;
 use yii\web\UnauthorizedHttpException;
@@ -36,23 +35,23 @@ class PersonSearchService
 
         $persons = $this->findByID($query, $userToken->token, $user->person_type);
         if (!empty($persons)) {
-            return $this->getPersonObject($persons[0]);
+            return $this->getPersonObject($persons[0], false);
         }
 
         $persons = $this->findByIIN($query, $userToken->token, $user->person_type);
         if (!empty($persons)) {
-            return $this->getPersonObject($persons[0]);
+            return $this->getPersonObject($persons[0], false);
         }
 
         $persons = $this->findBy($query, $userToken->token, $user->person_type);
         if (!empty($persons)) {
-            return $this->getPersonObject($persons[0]);
+            return $this->getPersonObject($persons[0], false);
         }
 
         return null;
     }
 
-    protected function getPersonObject(array $personData): PdsPersonInterface
+    protected function getPersonObject(array $personData, bool $is_new): PdsPersonInterface
     {
         $model = new PdsPersonInterface();
         $model->id = $personData['id'];
@@ -63,6 +62,7 @@ class PersonSearchService
         $model->birth_date = $personData['birth_date'];
         $model->iin = $personData['iin'];
         $model->validation = $personData['validation'];
+        $model->is_new = $is_new;
 
         return $model;
     }

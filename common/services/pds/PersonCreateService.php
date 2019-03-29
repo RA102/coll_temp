@@ -2,7 +2,6 @@
 
 namespace common\services\pds;
 
-use common\gateways\pds\PdsGateway;
 use common\services\pds\exceptions\PersonAlreadyExistException;
 use yii\helpers\Json;
 
@@ -28,7 +27,7 @@ class PersonCreateService extends PersonSearchService
         $userToken = $this->getAccessToken();
         $userRole = $this->getRole();
         $response = $this->createPdsPerson($query, $userToken->token, $userRole);
-        return $this->getPersonObject($response);
+        return $this->getPersonObject($response, true);
     }
 
     /**

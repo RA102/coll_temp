@@ -17,6 +17,7 @@ class PdsPersonInterface
     public $credential_type = PersonCredentialHelper::TYPE_EMAIL;
     public $generate_credential;
     public $validation;
+    public $is_new;
 
     public function getAttributes()
     {

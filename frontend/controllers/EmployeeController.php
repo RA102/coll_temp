@@ -13,11 +13,11 @@ use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
 use frontend\search\EmployeeSearch;
 use Yii;
+use yii\base\Module;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\base\Module;
 
 /**
  * EmployeeController implements the CRUD actions for Employee model.
@@ -173,7 +173,9 @@ class EmployeeController extends Controller
                 Yii::$app->user->identity->institution->id,
                 $form->generate_credential,
                 $form->indentity,
-                $form->credential_type
+                $form->credential_type,
+                Yii::$app->user->identity->activeAccessToken->token,
+                Yii::$app->user->identity->person_type
             );
 
             return $this->redirect(['update-contacts', 'id' => $model->id]);

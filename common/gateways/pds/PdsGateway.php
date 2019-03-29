@@ -7,7 +7,6 @@ use common\gateways\pds\dto\PersonCredentialResponse;
 use common\gateways\pds\dto\ResetPasswordResponse;
 use common\gateways\pds\transformers\LoginTransformer;
 use common\gateways\pds\transformers\PersonTransformer;
-use common\models\person\Person;
 use common\models\system\Setting;
 use common\utils\httpClient\HttpClientFactory;
 use Karriere\JsonDecoder\JsonDecoder;
@@ -137,6 +136,16 @@ class PdsGateway implements \yii\base\Configurable
             ]
         ]);
 
+        if ($response->getStatusCode() === 422) {
+            $errors = json_decode($response->getBody()->getContents(), true);
+            $serverErrors = array_filter($errors, function ($errorData) {
+                return $errorData['field'] === 'server-error';
+            });
+            if (sizeof($serverErrors) > 0) {
+                throw new \Exception(reset($serverErrors)['message']);
+            }
+        }
+
         if ($response->getStatusCode() !== 201) {
             throw new \Exception($response->getReasonPhrase());
         }
@@ -219,6 +228,16 @@ class PdsGateway implements \yii\base\Configurable
                 'Access-Role'   => $role
             ]
         ]);
+
+        if ($response->getStatusCode() === 422) {
+            $errors = json_decode($response->getBody()->getContents(), true);
+            $serverErrors = array_filter($errors, function ($errorData) {
+                return $errorData['field'] === 'server-error';
+            });
+            if (sizeof($serverErrors) > 0) {
+                throw new \Exception($serverErrors[0]['message']);
+            }
+        }
 
         if ($response->getStatusCode() !== 201) {
             throw new \Exception("Couldn't create person credential");
