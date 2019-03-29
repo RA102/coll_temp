@@ -27,8 +27,10 @@ use kartik\select2\Select2;
     <?= $form->field($model, 'sex')->dropDownList(PersonHelper::getSexList()) ?>
 
     <?= $form->field($model, 'birth_date')->widget(DatePicker::class, [
+        'language' => 'ru',
         'pluginOptions' => [
-            'autoclose' => true
+            'autoclose' => true,
+            'format' => 'yyyy-mm-dd'
         ]
     ]); ?>
 
