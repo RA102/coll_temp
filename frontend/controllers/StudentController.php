@@ -26,6 +26,7 @@ use yii\base\Module;
  */
 class StudentController extends Controller
 {
+    private $institution;
     private $personInfoService;
     private $personContactService;
     private $personLocationService;
@@ -64,7 +65,8 @@ class StudentController extends Controller
     }
 
     public function __construct(
-        string $id, Module $module,
+        string $id,
+        Module $module,
         PersonInfoService $personInfoService,
         PersonContactService $personContactService,
         PersonLocationService $personLocationService,
@@ -75,6 +77,7 @@ class StudentController extends Controller
         $this->personContactService = $personContactService;
         $this->personLocationService = $personLocationService;
         $this->personService = $personService;
+        $this->institution = \Yii::$app->user->identity->institution;
         parent::__construct($id, $module, $config);
     }
 
