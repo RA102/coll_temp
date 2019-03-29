@@ -76,8 +76,16 @@ class GroupController extends Controller
      */
     public function actionView($id)
     {
+        $studentsSearch = new StudentSearch();
+        $studentsSearch->formName = 'withGroup';
+        $studentsSearch->institution_id = Yii::$app->user->identity->institution->id;
+        $studentsSearch->group_id = $id;
+        $studentsDataProvider = $studentsSearch->search(Yii::$app->request->queryParams);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'studentsSearch' => $studentsSearch,
+            'studentsDataProvider' => $studentsDataProvider
         ]);
     }
 
