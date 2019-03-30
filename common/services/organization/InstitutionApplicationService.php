@@ -11,6 +11,7 @@ use common\services\NotificationService;
 use common\services\person\PersonService;
 use common\services\TransactionManager;
 use frontend\models\SignupForm;
+use Yii;
 
 class InstitutionApplicationService
 {
@@ -70,8 +71,10 @@ class InstitutionApplicationService
         $person->birth_date = $application->birth_date;
 
         $institution = Institution::add(
+            $application->name,
             $application->street,
             $application->city_id,
+            $application->getCountryId(),
             $application->type_id,
             $application->house_number,
             $application->educational_form_id,
@@ -87,7 +90,9 @@ class InstitutionApplicationService
                 $institution->id,
                 true,
                 $application->email,
-                PersonCredentialHelper::TYPE_EMAIL
+                PersonCredentialHelper::TYPE_EMAIL,
+                Yii::$app->user->identity->activeAccessToken->token,
+                Yii::$app->user->identity->person_type
             );
         });
 
