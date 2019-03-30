@@ -3,6 +3,7 @@
 namespace common\models\person;
 
 use common\helpers\LanguageHelper;
+use common\helpers\PersonHelper;
 use common\helpers\SchemeHelper;
 use common\models\link\PersonInstitutionLink;
 use common\models\Nationality;
@@ -309,5 +310,10 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function getRelatives()
     {
         return $this->hasMany(PersonRelative::class, ['person_id' => 'id']);
+    }
+
+    public function getSex()
+    {
+        return PersonHelper::getSexList()[$this->sex] ?? null;
     }
 }
