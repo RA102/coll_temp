@@ -23,7 +23,14 @@ use yii\widgets\DetailView;
             ],
             [
                 'label' => 'Гражданство',
-                'value' => null
+                'value' => function ($model) use ($form) {
+                    $result = null;
+                    if (($id = $form->citizenship_country_id) !== null) {
+                        $result = \common\models\Country::findOne($id)->caption_current;
+                    }
+
+                    return $result;
+                },
             ],
             [
                 'label' => $form->getAttributeLabel('location_registration'),
@@ -59,10 +66,7 @@ use yii\widgets\DetailView;
                     return implode(', ', $result);
                 },
             ],
-            [
-                'label' => 'Место рождения',
-                'value' => null
-            ],
+            'birth_place',
         ],
     ]) ?>
 

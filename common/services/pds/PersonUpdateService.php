@@ -28,7 +28,7 @@ class PersonUpdateService extends PersonSearchService
         $userRole = $this->getRole();
         $query = array_filter($person->getAttributes());
         $response = $this->updatePdsPerson($person_id, $query, $userToken->token, $userRole);
-        return $this->getPersonObject($response);
+        return $this->getPersonObject($response, false);
     }
 
     private function updatePdsPerson(int $person_id, array $attributes, string $token, string $role)

@@ -142,7 +142,7 @@ use common\models\Country;
                                 if ($parent_id && !$children) {
                                     $form->hasStreet = true;
                                     echo $activeForm->field($form, "street")->dropDownList(
-                                        ArrayHelper::map(Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption'), [
+                                        ArrayHelper::map(Street::find()->andWhere(['city_id' => $parent_id])->all(), 'id', 'caption_current'), [
                                         'class' => 'form-control',
                                         'prompt' => ''
                                     ]);

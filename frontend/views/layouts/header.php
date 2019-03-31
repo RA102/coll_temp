@@ -17,7 +17,7 @@ use yii\helpers\Html;
             </a>
             <span class="navbar-text px-3 navbar-title hidden-xs">
                 Бiлiмал. Электронды колледж
-                <span>Шахтинский технологический колледж</span>
+                <span><?=Yii::$app->user->identity->institution->name?></span>
             </span>
         </div>
 

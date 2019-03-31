@@ -18,7 +18,7 @@ use dmstr\widgets\Alert;
 </div>
 
 <footer class="main-footer">
-    © 2008-2018 ТОО «ЦИТ «Өрлеу»
+    © 2008-<?=date('Y')?> ТОО «ЦИТ «Өрлеу»
 </footer>
 
 <!-- Control Sidebar -->

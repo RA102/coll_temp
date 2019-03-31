@@ -35,6 +35,8 @@ class LoginService
             \Yii::$app->user->login($person);
             return true;
         } catch (\Exception $e) {
+            var_dump($e->getMessage());
+            die();
             return false;
         }
     }

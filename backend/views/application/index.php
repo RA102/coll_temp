@@ -26,23 +26,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'id',
                 'name',
                 'iin',
-//                'sex',
                 'email:email',
                 'phone',
-                //'city_id',
-                //'type_id',
-                //'firstname',
-                //'lastname',
-                //'middlename',
-                //'street',
-                //'birth_date',
-                //'house_number',
-                //'educational_form_id',
-                //'organizational_legal_form_id',
-                //'status',
-                //'create_ts',
-                //'update_ts',
-                //'delete_ts',
+                [
+                    'attribute' => 'status',
+                    'filter' => \common\helpers\InstitutionApplicationHelper::getStatusList(),
+                    'value' => function(\common\models\organization\InstitutionApplication $model) {
+                        return $model->getStatus();
+                    }
+                ],
 
                 ['class' => 'yii\grid\ActionColumn'],
             ],

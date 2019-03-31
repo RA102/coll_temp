@@ -1,5 +1,6 @@
 <?php
 
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -54,6 +55,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]) ?>
+
+        <h3><?=Yii::t('app', 'Students')?></h3>
+        <?= GridView::widget([
+            'dataProvider' => $studentsDataProvider,
+            'filterModel' => $studentsSearch,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+
+                'firstname',
+                'lastname',
+                'middlename',
+                'birth_date',
+                'iin',
+            ],
+        ]); ?>
 
         <p>
             <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

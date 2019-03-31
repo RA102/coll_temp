@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\components\Model;
 use common\models\person\Student;
 use common\models\PersonRelative;
 use common\services\person\PersonContactService;
@@ -11,21 +12,21 @@ use common\services\person\PersonService;
 use frontend\models\forms\PersonContactsForm;
 use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
-use Yii;
 use frontend\search\StudentSearch;
-use common\components\Model;
+use Yii;
+use yii\base\Module;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\base\Module;
 
 /**
  * StudentController implements the CRUD actions for Student model.
  */
 class StudentController extends Controller
 {
+    private $institution;
     private $personInfoService;
     private $personContactService;
     private $personLocationService;
@@ -48,23 +49,24 @@ class StudentController extends Controller
                             'update', 'update-contacts', 'update-documents', 'update-relatives',
                             'delete', 'fire',
                         ],
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'allow'   => true,
+                        'roles'   => ['@'],
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::class,
+            'verbs'  => [
+                'class'   => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
-                    'fire' => ['POST'],
+                    'fire'   => ['POST'],
                 ],
             ],
         ];
     }
 
     public function __construct(
-        string $id, Module $module,
+        string $id,
+        Module $module,
         PersonInfoService $personInfoService,
         PersonContactService $personContactService,
         PersonLocationService $personLocationService,
@@ -75,6 +77,7 @@ class StudentController extends Controller
         $this->personContactService = $personContactService;
         $this->personLocationService = $personLocationService;
         $this->personService = $personService;
+        $this->institution = \Yii::$app->user->identity->institution;
         parent::__construct($id, $module, $config);
     }
 
@@ -90,7 +93,7 @@ class StudentController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            'searchModel'  => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -121,7 +124,7 @@ class StudentController extends Controller
 
         return $this->render('view/view_contacts', [
             'model' => $this->findModel($id),
-            'form' => $form,
+            'form'  => $form,
         ]);
     }
 
@@ -138,7 +141,7 @@ class StudentController extends Controller
 
         return $this->render('view/view_documents', [
             'model' => $model,
-            'form' => $form,
+            'form'  => $form,
         ]);
     }
 
@@ -188,7 +191,9 @@ class StudentController extends Controller
                 Yii::$app->user->identity->institution->id,
                 $form->generate_credential,
                 $form->indentity,
-                $form->credential_type
+                $form->credential_type,
+                Yii::$app->user->identity->activeAccessToken->token,
+                Yii::$app->user->identity->person_type
             );
 
             return $this->redirect(['view', 'id' => $model->id]);
@@ -220,7 +225,7 @@ class StudentController extends Controller
         }
 
         return $this->render('update/update', [
-            'form' => $form,
+            'form'  => $form,
             'model' => $model,
         ]);
     }
@@ -237,7 +242,7 @@ class StudentController extends Controller
         }
 
         return $this->render('update/update_contacts', [
-            'form' => $form,
+            'form'  => $form,
             'model' => $model,
         ]);
     }
@@ -254,7 +259,7 @@ class StudentController extends Controller
         }
 
         return $this->render('update/update_documents', [
-            'form' => $form,
+            'form'  => $form,
             'model' => $model,
         ]);
     }
@@ -300,7 +305,7 @@ class StudentController extends Controller
         }
 
         return $this->render('update/update_relatives', [
-            'model' => $model,
+            'model'     => $model,
             'relatives' => $relatives
         ]);
     }

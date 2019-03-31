@@ -6,10 +6,10 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model common\models\person\Student */
 
-$this->title = Yii::t('app', 'Update ' . $model->firstname, [
-    'nameAttribute' => '' . $model->id,
+$this->title = Yii::t('app', 'Update {name}', [
+    'name' => $model->getFullName(),
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'People'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Students'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->firstname, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 $action = $this->context->action->id;

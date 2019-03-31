@@ -28,7 +28,7 @@ class PersonCreateService extends PersonSearchService
         $userToken = $this->getAccessToken();
         $userRole = $this->getRole();
         $response = $this->createPdsPerson($query, $userToken->token, $userRole);
-        return $this->getPersonObject($response);
+        return $this->getPersonObject($response, true);
     }
 
     /**

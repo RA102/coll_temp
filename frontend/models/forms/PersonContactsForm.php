@@ -26,6 +26,9 @@ class PersonContactsForm extends Model
     public $residence_city_ids = [];
     public $residence_street_id;
 
+    public $citizenship_country_id;
+    public $birth_place;
+
 
     public function __construct(
         Person $person,
@@ -35,6 +38,12 @@ class PersonContactsForm extends Model
     {
         $this->contact_phone_home = $personContactService->getContactValue($person, PersonContactHelper::PHONE_HOME);
         $this->contact_phone_mobile = $personContactService->getContactValue($person, PersonContactHelper::PHONE_MOBILE);
+
+        // citizenship
+        $personLocationCitizenship = $personLocationService->getLocation($person, PersonLocationHelper::TYPE_CITIZENSHIP);
+        if ($personLocationCitizenship) {
+            $this->citizenship_country_id = $personLocationCitizenship->country_id;
+        }
 
         // registration
         $personLocationRegistration = $personLocationService->getLocation($person, PersonLocationHelper::TYPE_REGISTRATION);
@@ -52,6 +61,8 @@ class PersonContactsForm extends Model
             $this->residence_street_id = $personLocationResidence->street_id;
         }
 
+        $this->birth_place = $person->birth_place;
+
         parent::__construct($config);
     }
 
@@ -67,6 +78,8 @@ class PersonContactsForm extends Model
             [['registration_country_id', 'registration_city_ids', 'registration_street_id'], 'safe'],
             [['residence_country_id'], 'required'],
             [['residence_country_id', 'residence_city_ids', 'residence_street_id'], 'safe'],
+            [['citizenship_country_id'], 'required'],
+            [['birth_place'], 'string'],
         ];
     }
 
@@ -82,6 +95,8 @@ class PersonContactsForm extends Model
             'registration_country_id' => 'Адрес прописки',
             'location_residence' => 'Домашний адрес',
             'residence_country_id' => 'Домашний адрес',
+            'citizenship_country_id' => 'Гражданство',
+            'birth_place' => 'Место рождения',
         ];
     }
 
@@ -89,6 +104,16 @@ class PersonContactsForm extends Model
     {
         $personContactService->setContactValue($person, PersonContactHelper::PHONE_HOME, $this->contact_phone_home);
         $personContactService->setContactValue($person, PersonContactHelper::PHONE_MOBILE, $this->contact_phone_mobile);
+
+        // citizenship
+        $personLocationCitizenship = $personLocationService->getLocation($person, PersonLocationHelper::TYPE_CITIZENSHIP);
+        if (!$personLocationCitizenship) {
+            $personLocationCitizenship = new PersonLocation();
+        }
+        $personLocationCitizenship->country_id = $this->citizenship_country_id;
+        $personLocationCitizenship->type = PersonLocationHelper::TYPE_CITIZENSHIP;
+
+        $personLocationService->setLocation($person, $personLocationCitizenship);
 
         // registration
         $personLocationRegistration = $personLocationService->getLocation($person, PersonLocationHelper::TYPE_REGISTRATION);
@@ -113,6 +138,9 @@ class PersonContactsForm extends Model
         $personLocationResidence->type = PersonLocationHelper::TYPE_RESIDENCE;
 
         $personLocationService->setLocation($person, $personLocationResidence);
+
+        $person->birth_place = $this->birth_place;
+        $person->save();
     }
 
     public function validate($attributeNames = null, $clearErrors = true)

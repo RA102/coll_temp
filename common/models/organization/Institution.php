@@ -139,20 +139,25 @@ class Institution extends \yii\db\ActiveRecord
     }
 
     public static function add(
+        $name,
         $street_id,
         $city_id,
+        $country_id,
         $type_id,
         $house_number,
         $educational_form_id,
         $organizational_legal_form_id
     ) {
         $model = new Institution();
+        $model->name = $name;
         $model->street_id = $street_id;
         $model->city_id = $city_id;
+        $model->country_id = $country_id;
         $model->type_id = $type_id;
         $model->house_number = $house_number;
         $model->educational_form_id = $educational_form_id;
         $model->organizational_legal_form_id = $organizational_legal_form_id;
+        $model->status = Institution::STATUS_ACTIVE;
 
         return $model;
     }

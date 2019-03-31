@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\link\PersonInstitutionLink;
 use common\models\person\Employee;
 use common\services\person\PersonContactService;
 use common\services\person\PersonInfoService;
@@ -12,17 +13,18 @@ use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\StudentGeneralForm;
 use frontend\search\EmployeeSearch;
 use Yii;
+use yii\base\Module;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\base\Module;
 
 /**
  * EmployeeController implements the CRUD actions for Employee model.
  */
 class EmployeeController extends Controller
 {
+    private $institution;
     private $personInfoService;
     private $personContactService;
     private $personLocationService;
@@ -73,6 +75,7 @@ class EmployeeController extends Controller
         $this->personContactService = $personContactService;
         $this->personLocationService = $personLocationService;
         $this->personService = $personService;
+        $this->institution = \Yii::$app->user->identity->institution;
         parent::__construct($id, $module, $config);
     }
 
@@ -82,7 +85,7 @@ class EmployeeController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new EmployeeSearch();
+        $searchModel = new EmployeeSearch($this->institution);
         $searchModel->status = Employee::STATUS_ACTIVE;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -170,7 +173,9 @@ class EmployeeController extends Controller
                 Yii::$app->user->identity->institution->id,
                 $form->generate_credential,
                 $form->indentity,
-                $form->credential_type
+                $form->credential_type,
+                Yii::$app->user->identity->activeAccessToken->token,
+                Yii::$app->user->identity->person_type
             );
 
             return $this->redirect(['update-contacts', 'id' => $model->id]);
@@ -288,7 +293,13 @@ class EmployeeController extends Controller
     protected function findModel($id)
     {
         if (($model = Employee::findOne($id)) !== null) {
-            return $model;
+            // TODO should be moved to services
+            if ($model->getPersonInstitutionLinks()->andWhere([
+                /** @see PersonInstitutionLink::$institution_id */
+                PersonInstitutionLink::tableName() . '.institution_id' => $this->institution->id
+            ])->exists()) {
+                return $model;
+            }
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));

@@ -2,13 +2,17 @@
 
 namespace api\modules\v1\controllers;
 
+use api\modules\v1\forms\GradeForm;
 use common\behaviours\PdsBearerAuth;
 use common\models\Course;
 use common\models\organization\Institution;
+use common\models\person\Student;
+use common\models\StudentSessionGrade;
 use common\services\CourseService;
 use common\services\LessonService;
 use common\services\organization\GroupService;
 use common\services\person\StudentService;
+use common\services\StudentGradeService;
 use common\services\TeacherCourseService;
 use Yii;
 use yii\filters\Cors;
@@ -27,6 +31,7 @@ class SiteController extends Controller
     protected $courseService;
     protected $teacherCourseService;
     protected $lessonService;
+    protected $studentGradeService;
     /** @var Institution */
     protected $institution;
 
@@ -38,6 +43,7 @@ class SiteController extends Controller
         CourseService $courseService,
         TeacherCourseService $teacherCourseService,
         LessonService $lessonService,
+        StudentGradeService $studentGradeService,
         array $config = []
     ) {
         $this->groupService = $groupService;
@@ -45,6 +51,7 @@ class SiteController extends Controller
         $this->courseService = $courseService;
         $this->teacherCourseService = $teacherCourseService;
         $this->lessonService = $lessonService;
+        $this->studentGradeService = $studentGradeService;
 
         parent::__construct($id, $module, $config);
     }
@@ -129,7 +136,25 @@ class SiteController extends Controller
         $course = $this->findCourse($this->institution, $course_id);
         $teacherCourse = $this->findTeacherCourse($course, $teacher_course_id);
 
-        return $this->lessonService->getLessons($teacherCourse);
+        return $this->lessonService->getTeacherCourseLessons($teacherCourse);
+    }
+
+    public function actionPostGrade($student_id, $lesson_id)
+    {
+        $student = $this->studentService->getInstitutionStudent($this->institution, $student_id);
+        $lesson = $this->findLesson($student, $lesson_id);
+        $form = new GradeForm();
+
+        if ($form->load(\Yii::$app->request->bodyParams) && $form->validate()) {
+            $studentSessionGrade = new StudentSessionGrade();
+            $studentSessionGrade->student_id = $student->id;
+            $studentSessionGrade->lesson_id = $lesson->id;
+            $studentSessionGrade->value = $form->value;
+
+            return $this->studentGradeService->addStudentGrade($studentSessionGrade);
+        }
+
+        return $form;
     }
 
     protected function findCourse(Institution $institution, $id)
@@ -155,6 +180,15 @@ class SiteController extends Controller
         $group = $this->groupService->getGroup($institution, $id);
         if ($group !== null) {
             return $group;
+        }
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    protected function findLesson(Student $student, $id)
+    {
+        $lesson = $this->lessonService->getStudentLesson($student, $id);
+        if ($lesson !== null) {
+            return $lesson;
         }
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }

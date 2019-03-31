@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\person\Person;
 use common\services\organization\GroupService;
 use frontend\models\forms\GroupAllocationForm;
 use frontend\search\StudentSearch;
@@ -76,8 +77,16 @@ class GroupController extends Controller
      */
     public function actionView($id)
     {
+        $studentsSearch = new StudentSearch();
+        $studentsSearch->formName = 'withGroup';
+        $studentsSearch->institution_id = Yii::$app->user->identity->institution->id;
+        $studentsSearch->group_id = $id;
+        $studentsDataProvider = $studentsSearch->search(Yii::$app->request->queryParams);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'studentsSearch' => $studentsSearch,
+            'studentsDataProvider' => $studentsDataProvider
         ]);
     }
 
@@ -158,6 +167,7 @@ class GroupController extends Controller
 
         $withoutGroupSearch = new StudentSearch();
         $withoutGroupSearch->formName = 'withoutGroup';
+        $withoutGroupSearch->status = Person::STATUS_ACTIVE;
         $withoutGroupSearch->institution_id = Yii::$app->user->identity->institution->id;
         $studentsWithoutGroupDataProvider = new ActiveDataProvider();
 

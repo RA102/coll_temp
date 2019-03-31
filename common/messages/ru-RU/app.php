@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Приемная комиссия' => 'Қабылдау комиссиясы',
+    'Selection committee' => 'Приемная комиссия',
     'Текушая комиссия',
     'Архив комиссий',
     'Заявления',
@@ -58,6 +58,7 @@ return [
     'Daughter' => 'Дочь',
     'Brother' => 'Брат',
     'Sister' => 'Сестра',
+    'Update {name}' => 'Редактирование {name}',
 
     // EMPLOYEES
     'Employees' => 'Сотрудники',
@@ -215,4 +216,7 @@ return [
     'Lesson Start Date' => 'Начало',
     'Lesson End Date' => 'Конец',
     'Group Lessons' => 'Занятия группы',
+
+    // GRADE
+    'Grade Value' => 'Оценка',
 ];
