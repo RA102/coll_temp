@@ -13,7 +13,7 @@ $action = $this->context->action->id;
 ?>
 
 <div>
-    <h1>Просмотр учащегося</h1>
+    <h1><?=Yii::t('app', 'View student')?></h1>
 </div>
 
 <div class="student-view student-block">

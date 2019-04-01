@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-header">
         <ul class="nav nav-tabs">
             <li role="presentation" class="<?=$searchModel->isActive() ? 'active' : ''?>">
-                <?= Html::a('Текущие сотрудники', Url::current([
+                <?= Html::a(Yii::t('app', 'Current employees'), Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_ACTIVE,
                 ])) ?>
             </li>

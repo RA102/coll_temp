@@ -30,9 +30,11 @@ use yii\widgets\Pjax;
         ],
     ]); ?>
 
-    <?= $activeForm->field($form, 'contact_phone_home')->textInput(['maxlength' => true]) ?>
+    <?= $activeForm->field($form, 'contact_phone_home')->textInput(['maxlength' => true])
+        ->widget(\yii\widgets\MaskedInput::class, ['mask' => '+7 (999) 999-99-99',])?>
 
-    <?= $activeForm->field($form, 'contact_phone_mobile')->textInput(['maxlength' => true]) ?>
+    <?= $activeForm->field($form, 'contact_phone_mobile')->textInput()
+        ->widget(\yii\widgets\MaskedInput::class, ['mask' => '+7 (999) 999-99-99',]) ?>
 
     <?php
     echo $activeForm->field($form, 'citizenship_country_id')->widget(Select2::classname(), [

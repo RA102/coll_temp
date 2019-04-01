@@ -24,13 +24,13 @@ use yii\widgets\DetailView;
                 [
                     'attribute' => 'sex',
                     'value' => function(Employee $model) {
-                        return PersonHelper::getSexList()[$model->sex];
+                        return $model->getSex();
                     }
                 ],
                 [
                     'attribute' => 'nationality_id',
                     'value' => function(Employee $model) {
-                        return $model->nationality->name;
+                        return $model->nationality->name ?? null;
                     }
                 ],
             ],
