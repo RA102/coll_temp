@@ -22,8 +22,8 @@
                         'icon' => 'far fa-list-alt',
                         'url' => '#',
                         'items' => [
-                            ['label' => Yii::t('app','Сотрудники'), 'icon' => 'file-code-o', 'url' => ['/employee']],
-                            ['label' => Yii::t('app','Учащиеся'), 'icon' => 'dashboard', 'url' => ['/student/index']],
+                            ['label' => Yii::t('app','Employees'), 'icon' => 'file-code-o', 'url' => ['/employee']],
+                            ['label' => Yii::t('app','Students'), 'icon' => 'dashboard', 'url' => ['/student/index']],
                         ],
                     ],
                     [
