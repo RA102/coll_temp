@@ -2,8 +2,9 @@
 
 namespace frontend\controllers;
 
-use common\models\organization\Group;
+use common\models\organization\Institution;
 use common\models\TeacherCourse;
+use common\services\organization\GroupService;
 use common\services\person\EmployeeService;
 use frontend\models\forms\LessonForm;
 use frontend\search\GroupSearch;
@@ -24,6 +25,7 @@ use yii\base\Module;
 class LessonController extends Controller
 {
     private $employeeService;
+    private $groupService;
     private $institution;
 
     /**
@@ -59,9 +61,11 @@ class LessonController extends Controller
         string $id,
         Module $module,
         EmployeeService $employeeService,
+        GroupService $groupService,
         array $config = []
     ) {
         $this->employeeService = $employeeService;
+        $this->groupService = $groupService;
         $this->institution = \Yii::$app->user->identity->institution;
         parent::__construct($id, $module, $config);
     }
@@ -73,7 +77,7 @@ class LessonController extends Controller
      */
     public function actionIndex($group_id)
     {
-        $group = Group::findOne($group_id); // TODO change to GroupService::getGroup
+        $group = $this->findGroup($this->institution, $group_id);
 
         $teacherCourses = TeacherCourse::find()->joinWith([
             /** @see TeacherCourse::getGroups() */
@@ -96,6 +100,7 @@ class LessonController extends Controller
     public function actionGroups()
     {
         $searchModel = new GroupSearch();
+        $searchModel->institution_id = $this->institution->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('groups', [
@@ -114,6 +119,15 @@ class LessonController extends Controller
     protected function findModel($id)
     {
         if (($model = Lesson::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    protected function findGroup(Institution $institution, $id)
+    {
+        if (($model = $this->groupService->getGroup($institution, $id)) !== null) {
             return $model;
         }
 
