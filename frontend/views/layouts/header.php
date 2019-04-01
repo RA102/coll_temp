@@ -36,13 +36,13 @@ use yii\helpers\Html;
                     </ul>
                 </li>
 
-                <li>
-                    <a title="Инструкция пользователя" rel="noopener"
-                       href="https://ff.bilimal.kz/eyuuyqum/oykcaokq/iyuqmagg/482a09cba220bd4cd1fdbc5446634de55b30a662abba7.pdf"
-                       target="_blank" class="nav-help">
-                        <i class="fa fa-question-circle"></i>
-                    </a>
-                </li>
+<!--                <li>-->
+<!--                    <a title="Инструкция пользователя" rel="noopener"-->
+<!--                       href="https://ff.bilimal.kz/eyuuyqum/oykcaokq/iyuqmagg/482a09cba220bd4cd1fdbc5446634de55b30a662abba7.pdf"-->
+<!--                       target="_blank" class="nav-help">-->
+<!--                        <i class="fa fa-question-circle"></i>-->
+<!--                    </a>-->
+<!--                </li>-->
 
                 <!-- Messages: style can be found in dropdown.less-->
 
