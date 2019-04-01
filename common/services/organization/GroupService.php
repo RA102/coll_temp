@@ -11,12 +11,12 @@ class GroupService
 {
     // TODO getGroup(Institution $institution, $id): Group
 
-    public function getAssociativeByClass(int $class): array
+    public function getAssociativeByClass(int $class, int $institution_id): array
     {
         $formattedGroups = [];
 
         /* @var Group[] $groups */
-        $groups = Group::find()->where(['class' => $class])->all();
+        $groups = Group::find()->where(['class' => $class, 'institution_id' => $institution_id])->all();
 
         foreach ($groups as $group) {
             $formattedGroups[] = [
@@ -49,9 +49,9 @@ class GroupService
         ])->one();
     }
 
-    public function getByClass(int $class): array
+    public function getByClass(int $class, int $institution_id): array
     {
-        $groups = Group::find()->where(['class' => $class])->all();
+        $groups = Group::find()->where(['class' => $class, 'institution_id' => $institution_id])->all();
         return ArrayHelper::map($groups, 'id', 'caption_current');
     }
 
