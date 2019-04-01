@@ -9,6 +9,7 @@ use Yii;
 use common\models\Course;
 use yii\base\Module;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -72,8 +73,13 @@ class CourseController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Course::find()->with([
-                'institutionDiscipline' /** @see Course::getInstitutionDiscipline() */
+            'query' => Course::find()->joinWith([
+                /** @see Course::getInstitutionDiscipline() */
+                'institutionDiscipline' => function (ActiveQuery $query) {
+                    return $query->andWhere([
+                        'institution_id' => $this->institution->id,
+                    ]);
+                }
             ]),
         ]);
 
@@ -187,7 +193,20 @@ class CourseController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Course::findOne($id)) !== null) {
+        /** @var Course|null $model */
+        $model = Course::find()
+            ->joinWith([
+                /** @see Course::getInstitutionDiscipline() */
+                'institutionDiscipline' => function (ActiveQuery $query) {
+                    return $query->andWhere([
+                        'institution_id' => $this->institution->id
+                    ]);
+                }
+            ])
+            ->andWhere([Course::tableName() . '.id' => $id])
+            ->one();
+
+        if ($model !== null) {
             return $model;
         }
 
