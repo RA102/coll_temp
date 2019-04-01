@@ -158,6 +158,7 @@ class Institution extends \yii\db\ActiveRecord
         $model->educational_form_id = $educational_form_id;
         $model->organizational_legal_form_id = $organizational_legal_form_id;
         $model->status = Institution::STATUS_ACTIVE;
+        $model->max_grade = 4;
 
         return $model;
     }
