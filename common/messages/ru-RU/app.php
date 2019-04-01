@@ -60,7 +60,7 @@ return [
     'Sister' => 'Сестра',
     'Update {name}' => 'Редактирование {name}',
     'Expelled students' => 'Отчисленные обучающиеся',
-    'Current students' => 'Текущие обучающиеся',
+    'Current students' => 'Обучающиеся колледжа',
     'Deleted students' => 'Удаленные обучающиеся',
     'View student' => 'Просмотр обучающегося',
     'Edit student' => 'Редактирование обучающегося',
