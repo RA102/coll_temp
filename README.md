@@ -168,9 +168,7 @@ environments/            contains environment-based overrides
 **PostgreSQL:**
 
     host:          pg3.vpn
-    database:      db_college_%ID%
-                   db_college_general
-                   db_college_handbook
+    database:      db_college_general
     username:      bilimal
     password:      p97356y20734f
 
