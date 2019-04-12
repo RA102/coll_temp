@@ -133,6 +133,10 @@ environments/            contains environment-based overrides
 
     host: https://beta.citorleu.kz
 
+**PDS service:**
+
+    https://pds.citorleu.kz/
+
 **Server:**
 
     ssh:  tickets.vpn
@@ -153,9 +157,22 @@ environments/            contains environment-based overrides
 
 ## Environment for the production
 
+**Address:** 
+
     host: https://college.bilimal.kz
 
+**Code:**
+
     branch: production - only merge requests
+
+**PDS service:**
+
+    https://pds.cit-orleu.kz/
+
+**NOTICE:**
+
+* Used certificate from pki.gov.kz.
+* It is necessary to disable certificate authentication in code.
 
 **Prepare environment:**
 
