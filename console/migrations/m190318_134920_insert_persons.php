@@ -12,12 +12,13 @@ class m190318_134920_insert_persons extends Migration
      */
     public function safeUp()
     {
-        $this->db->pdo->exec(
-            file_get_contents(Yii::getAlias("@console/resources/db_dumps/person_pds.sql"))
-        );
-        $this->db->pdo->exec(
-            file_get_contents(Yii::getAlias("@console/resources/db_dumps/person_credential_pds.sql"))
-        );
+        /* Fix migration for running in empty databases */
+//        $this->db->pdo->exec(
+//            file_get_contents(Yii::getAlias("@console/resources/db_dumps/person_pds.sql"))
+//        );
+//        $this->db->pdo->exec(
+//            file_get_contents(Yii::getAlias("@console/resources/db_dumps/person_credential_pds.sql"))
+//        );
     }
 
     /**
