@@ -38,7 +38,8 @@ class PdsGateway implements \yii\base\Configurable
             'timeout'     => self::DEFAULT_TIMEOUT,
             'headers'     => [
                 'Access' => 'Bearer ' . Setting::getPdsToken(),
-            ]
+            ],
+            'verify' => false
         ]);
         $this->jsonDecoder = new JsonDecoder();
         $this->jsonDecoder->register(new PersonTransformer());
