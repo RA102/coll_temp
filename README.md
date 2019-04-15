@@ -160,6 +160,14 @@ environments/            contains environment-based overrides
 **Address:** 
 
     host: https://college.bilimal.kz
+    host api: https://college.bilimal.kz/api/
+    administration interface:  http://admin.college.vpn/
+
+**NOTICE:**
+
+* /api/ route is required to route requests.
+* /api/ route is not transmitted to the code.
+* If your internal routes match, you must write /api/api/, then the code will get the route one time.
 
 **Code:**
 
@@ -208,5 +216,8 @@ Example:
 
     General cache:       redis.vpn
     Authorization cache: session.vpn
+
+
+
 
 ------------
