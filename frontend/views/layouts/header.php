@@ -38,7 +38,7 @@ use yii\helpers\Html;
 
                 <li>
                     <a title="Инструкция пользователя" rel="noopener"
-                       href="/files/instruction_bilimal.pdf"
+                       href="/files/instruction_bilimal.pdf?1"
                        target="_blank" class="nav-help">
                         <i class="fa fa-question-circle"></i>
                     </a>
