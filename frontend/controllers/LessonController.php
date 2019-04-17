@@ -66,8 +66,17 @@ class LessonController extends Controller
     ) {
         $this->employeeService = $employeeService;
         $this->groupService = $groupService;
-        $this->institution = \Yii::$app->user->identity->institution;
         parent::__construct($id, $module, $config);
+    }
+
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->institution = \Yii::$app->user->identity->institution;
+        return true;
     }
 
     /**
