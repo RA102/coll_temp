@@ -6,17 +6,17 @@
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
-//                    [
-//                        'label' => Yii::t('app','Selection committee'),
-//                        'icon' => 'far fa-id-card',
-//                        'url' => '#',
-//                        'items' => [
-//                            ['label' => Yii::t('app','Текушая комиссия'), 'icon' => 'file-code-o', 'url' => ['/']],
-//                            ['label' => Yii::t('app','Архив комиссий'), 'icon' => 'dashboard', 'url' => ['/']],
-//                            ['label' => Yii::t('app','Заявления'), 'icon' => 'dashboard', 'url' => ['/']],
-//                            ['label' => Yii::t('app','Абитуриенты'), 'icon' => 'dashboard', 'url' => ['/']],
-//                        ],
-//                    ],
+                    [
+                        'label' => Yii::t('app','Selection committee'),
+                        'icon' => 'far fa-id-card',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => Yii::t('app','Текушая комиссия'), 'icon' => 'file-code-o', 'url' => ['/']],
+                            ['label' => Yii::t('app','Архив комиссий'), 'icon' => 'dashboard', 'url' => ['/']],
+                            ['label' => Yii::t('app','Заявления'), 'icon' => 'dashboard', 'url' => ['/']],
+                            ['label' => Yii::t('app','Абитуриенты'), 'icon' => 'dashboard', 'url' => ['/']],
+                        ],
+                    ],
                     [
                         'label' => Yii::t('app','Картотека'),
                         'icon' => 'far fa-list-alt',
