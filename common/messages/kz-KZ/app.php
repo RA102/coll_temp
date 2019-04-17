@@ -198,4 +198,22 @@ return [
     'Lesson Start Date' => 'Начало',
     'Lesson End Date' => 'Конец',
     'Group Lessons' => 'Занятия группы',
+
+    // GRADE
+    'Grade Value' => 'Оценка',
+
+    // RECEPTION COMMISSION
+    'Commission' => 'Комиссия',
+    'Commissions' => 'Комиссии',
+    'Current Commission' => 'Текущая комиссия',
+    'Create Commission' => 'Создание комиссии',
+    'Update Commission' => 'Редактирование комиссии',
+    'Commission From Date' => 'Начало комиссии',
+    'Commission To Date' => 'Окончание комиссии',
+    'Commission Order Number' => 'Номер приказа',
+    'Commission Order Date' => 'Дата приказа',
+    'Exam Start Date' => 'Начало комиссии',
+    'Exam End Date' => 'Окончание комиссии',
+    'Commission Status Active' => 'Активный',
+    'Commission Status Closed' => 'Закрыт',
 ];

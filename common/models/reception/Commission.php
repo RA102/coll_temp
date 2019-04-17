@@ -11,10 +11,12 @@ use Yii;
  * @property int $id
  * @property int $institution_id
  * @property array $caption
- * @property string $start_date
- * @property string $end_date
+ * @property string $from_date
+ * @property string $to_date
  * @property string $order_number
  * @property string $order_date
+ * @property string $exam_start_date
+ * @property string $exam_end_date
  * @property int $status
  * @property string $create_ts
  * @property string $update_ts
@@ -24,6 +26,9 @@ use Yii;
  */
 class Commission extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 0;
+    const STATUS_CLOSED = 10;
+
     public $caption_current;
 
     public $caption_ru;
@@ -43,11 +48,11 @@ class Commission extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status'], 'default', 'value' => null],
+            [['status'], 'default', 'value' => static::STATUS_ACTIVE],
             [['status'], 'integer'],
-            [['caption', 'start_date', 'end_date', 'order_date', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
+            [['caption', 'from_date', 'to_date', 'order_date', 'exam_start_date', 'exam_end_date'], 'safe'],
             [['order_number'], 'string', 'max' => 255],
-            [['caption_ru', 'caption_kk'], 'safe'],
+            [['caption_ru', 'caption_kk'], 'string'],
             [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
         ];
     }
@@ -81,14 +86,16 @@ class Commission extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'institution_id' => Yii::t('app', 'Institution'),
             'caption' => Yii::t('app', 'Caption'),
-            'start_date' => Yii::t('app', 'Start Date'),
-            'end_date' => Yii::t('app', 'End Date'),
-            'order_number' => Yii::t('app', 'Order Number'),
-            'order_date' => Yii::t('app', 'Order Date'),
+            'caption_ru' => Yii::t('app', 'Caption Ru'),
+            'caption_kk' => Yii::t('app', 'Caption Kk'),
+            'caption_current' => Yii::t('app', 'Caption Current'),
+            'from_date' => Yii::t('app', 'Commission From Date'),
+            'to_date' => Yii::t('app', 'Commission To Date'),
+            'order_number' => Yii::t('app', 'Commission Order Number'),
+            'order_date' => Yii::t('app', 'Commission Order Date'),
+            'exam_start_date' => Yii::t('app', 'Exam Start Date'),
+            'exam_end_date' => Yii::t('app', 'Exam End Date'),
             'status' => Yii::t('app', 'Status'),
-            'create_ts' => Yii::t('app', 'Create Ts'),
-            'update_ts' => Yii::t('app', 'Update Ts'),
-            'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
     }
 
