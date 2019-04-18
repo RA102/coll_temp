@@ -91,9 +91,6 @@ class LoginService
             $expire = new \DateTime();
             $expire->setTimestamp($token['exp']);
 
-            var_dump($data);
-            die();
-
             $accessToken = AccessToken::add(
                 $person,
                 $data['token'],
