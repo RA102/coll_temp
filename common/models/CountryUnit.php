@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\models\organization\Institution;
+use common\models\organization\InstitutionApplication;
 use Yii;
 use yii\helpers\Json;
 
@@ -120,6 +121,14 @@ class CountryUnit extends \yii\db\ActiveRecord
     public function getInstitutions()
     {
         return $this->hasMany(Institution::class, ['city_id' => 'id'])->inverseOf('city');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInstitutionApplications()
+    {
+        return $this->hasMany(InstitutionApplication::class, ['city_id' => 'id'])->inverseOf('city');
     }
 
     public function afterFind()
