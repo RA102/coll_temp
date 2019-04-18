@@ -55,9 +55,18 @@ class InstitutionDisciplineController extends Controller
         InstitutionDisciplineService $institutionDisciplineService,
         array $config = []
     ) {
-        $this->institution = \Yii::$app->user->identity->institution;
         $this->institutionDisciplineService = $institutionDisciplineService;
         parent::__construct($id, $module, $config);
+    }
+
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->institution = \Yii::$app->user->identity->institution;
+        return true;
     }
 
     /**

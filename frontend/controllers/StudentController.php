@@ -77,8 +77,17 @@ class StudentController extends Controller
         $this->personContactService = $personContactService;
         $this->personLocationService = $personLocationService;
         $this->personService = $personService;
-        $this->institution = \Yii::$app->user->identity->institution;
         parent::__construct($id, $module, $config);
+    }
+
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->institution = \Yii::$app->user->identity->institution;
+        return true;
     }
 
     /**

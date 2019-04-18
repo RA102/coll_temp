@@ -60,10 +60,19 @@ class CourseController extends Controller
         TeacherCourseService $teacherCourseService,
         array $config = []
     ) {
-        $this->institution = \Yii::$app->user->identity->institution;
         $this->institutionDisciplineService = $institutionDisciplineService;
         $this->teacherCourseService = $teacherCourseService;
         parent::__construct($id, $module, $config);
+    }
+
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->institution = \Yii::$app->user->identity->institution;
+        return true;
     }
 
     /**
