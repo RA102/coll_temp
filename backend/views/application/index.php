@@ -6,6 +6,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\search\InstitutionApplicationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $cities [] */
 
 $this->title = Yii::t('app', 'Institution Applications');
 $this->params['breadcrumbs'][] = $this->title;
@@ -25,6 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 'id',
                 'name',
+                [
+                    'attribute' => 'city_id',
+                    'filter' => $cities,
+                    'value' => function(\common\models\organization\InstitutionApplication $model) {
+                        return $model->city->caption_current;
+                    }
+                ],
                 'iin',
                 'email:email',
                 'phone',
