@@ -203,7 +203,7 @@ class GroupController extends Controller
     public function actionDeleteStudent($id, $group_id)
     {
         $this->groupService->deleteStudent($id, $group_id);
-        return $this->redirect(Url::previous());
+        return $this->goBack();
     }
 
     public function actionByYear()
