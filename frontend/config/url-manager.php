@@ -11,6 +11,7 @@ return [
         'speciality' => '/speciality/index',
         'group' => '/group/index',
         'institution' => '/institution/index',
+        'commission-member/<id:\d+>' => '/commission-member/index',
         '<a:\w+>' => 'site/<a>',
 
         'POST pds/set-access-token' => 'api/pds/set-access-token',

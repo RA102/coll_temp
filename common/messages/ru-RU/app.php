@@ -243,4 +243,5 @@ return [
     'Exam End Date' => 'Окончание комиссии',
     'Commission Status Active' => 'Активный',
     'Commission Status Closed' => 'Закрыт',
+    'Commission members' => 'Состав комиссии'
 ];

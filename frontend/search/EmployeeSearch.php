@@ -17,6 +17,7 @@ use yii\db\ActiveQuery;
 class EmployeeSearch extends Employee
 {
     protected $institution_id;
+    public $commission_id;
 
     public function formName()
     {
@@ -106,9 +107,15 @@ class EmployeeSearch extends Employee
             }]);
         }
 
+        if (!empty($this->commission_id)) {
+            $query->joinWith('commissions');
+            $query->andFilterWhere(['link.commission_member_link.commission_id' => $this->commission_id]);
+            $query->andWhere(['is', 'link.commission_member_link.delete_ts', new \yii\db\Expression('null')]);
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'person.person.id' => $this->id,
             'birth_date' => $this->birth_date,
             'sex' => $this->sex,
             'nationality_id' => $this->nationality_id,
