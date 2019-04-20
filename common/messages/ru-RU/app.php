@@ -243,5 +243,12 @@ return [
     'Exam End Date' => 'Окончание комиссии',
     'Commission Status Active' => 'Активный',
     'Commission Status Closed' => 'Закрыт',
-    'Commission members' => 'Состав комиссии'
+    'Commission members' => 'Состав комиссии',
+    'Adding member' => 'Добавление участника',
+    'Role' => 'Роль',
+    'Commission member' => 'Член комиссии',
+    'Commission secretary' => 'Секретарь комиссии',
+    'Commission deputy chairman' => 'Заместитель председателя комиссии',
+    'Commission chairman' => 'Председателя комиссии',
+    'Member ID' => 'Участник'
 ];
