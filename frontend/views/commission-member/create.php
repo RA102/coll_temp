@@ -7,7 +7,9 @@
  * Time: 12:49
  */
 $this->title = Yii::t('app', 'Adding member');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Commission members'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Commissions'), 'url' => ['/commission']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Current Commission'), 'url' => ['/commission/current']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Commission members'), 'url' => ['index', 'commission_id' => $model->commission_id]];
 $this->params['breadcrumbs'][] = $this->title;
 
 /* @var $this \yii\web\View */

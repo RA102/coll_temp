@@ -70,10 +70,10 @@ class CommissionMemberController extends Controller
     {
         $roles = CommissionMemberHelper::getRoleList();
         $model = new CommissionMemberLink();
+        $model->commission_id = $id;
         $employees = $this->employeeService->getTeachers(Yii::$app->user->identity->institution);
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->commission_id = $id;
             if ($model->save()) {
                 return $this->redirect(['index', 'commission_id' => $id]);
             }

@@ -2,6 +2,8 @@
 
 /* @var $this \yii\web\View */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Commissions'), 'url' => ['/commission']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Current Commission'), 'url' => ['/commission/current']];
 $this->title = Yii::t('app', 'Commission members');
 $this->params['breadcrumbs'][] = $this->title;
 
