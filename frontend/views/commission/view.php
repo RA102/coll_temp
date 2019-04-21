@@ -18,14 +18,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-body">
 
     <p>
-        <?= Html::a('Close', ['delete', 'id' => $model->id], [
+        <?= Html::a(Yii::t('app', 'Close'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -52,6 +52,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]) ?>
+
+    <p>
+        <?= Html::a(Yii::t('app', 'Commission members'), ['/commission-member', 'commission_id' => $model->id], [
+            'class' => 'btn btn-success',
+        ]) ?>
+    </p>
 
     </div>
 </div>

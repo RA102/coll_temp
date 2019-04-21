@@ -250,5 +250,6 @@ return [
     'Commission secretary' => 'Секретарь комиссии',
     'Commission deputy chairman' => 'Заместитель председателя комиссии',
     'Commission chairman' => 'Председатель комиссии',
-    'Member ID' => 'Участник'
+    'Member ID' => 'Участник',
+    'Close' => 'Закрыть',
 ];
