@@ -2,7 +2,7 @@
 
 namespace common\helpers;
 
-use common\models\CommissionMemberLink;
+use common\models\link\CommissionMemberLink;
 use Yii;
 
 /**

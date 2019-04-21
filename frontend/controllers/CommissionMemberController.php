@@ -3,14 +3,11 @@
 namespace frontend\controllers;
 
 use common\helpers\CommissionMemberHelper;
-use common\models\CommissionMemberLink;
-use common\models\reception\Commission;
+use common\models\link\CommissionMemberLink;
 use common\services\person\EmployeeService;
-use common\services\reception\CommissionService;
-use frontend\search\EmployeeSearch;
+use frontend\search\CommissionMemberLinkSearch;
 use Yii;
 use yii\base\Module;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -41,6 +38,7 @@ class CommissionMemberController extends Controller
                         'actions' => [
                             'index',
                             'create',
+                            'delete'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -58,13 +56,13 @@ class CommissionMemberController extends Controller
 
     public function actionIndex($commission_id)
     {
-        $employeeSearch = new EmployeeSearch(Yii::$app->user->identity->institution);
-        $employeeSearch->commission_id = $commission_id;
-        $employeeDataProvider = $employeeSearch->search(Yii::$app->request->queryParams);
+        $search = new CommissionMemberLinkSearch();
+        $search->commission_id = $commission_id;
+        $dataProvider = $search->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'employeeSearch' => $employeeSearch,
-            'employeeDataProvider' => $employeeDataProvider
+            'search' => $search,
+            'dataProvider' => $dataProvider
         ]);
     }
 
@@ -77,7 +75,7 @@ class CommissionMemberController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->commission_id = $id;
             if ($model->save()) {
-                return $this->redirect(['index', 'id' => $id]);
+                return $this->redirect(['index', 'commission_id' => $id]);
             }
         }
 
@@ -86,5 +84,27 @@ class CommissionMemberController extends Controller
             'model' => $model,
             'employees' => $employees,
         ]);
+    }
+
+    public function actionDelete($id) {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * Finds the CommissionMemberLink model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return CommissionMemberLink the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = CommissionMemberLink::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }

@@ -249,6 +249,6 @@ return [
     'Commission member' => 'Член комиссии',
     'Commission secretary' => 'Секретарь комиссии',
     'Commission deputy chairman' => 'Заместитель председателя комиссии',
-    'Commission chairman' => 'Председателя комиссии',
+    'Commission chairman' => 'Председатель комиссии',
     'Member ID' => 'Участник'
 ];
