@@ -1,5 +1,6 @@
 <?php
 
+use common\models\reception\Commission;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -18,17 +19,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-body">
 
     <p>
-        <?= Html::a(Yii::t('app', 'Close'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if ($model->status == Commission::STATUS_ACTIVE): ?>
+            <?= Html::a(Yii::t('app', 'Close'), ['close', 'id' => $model->id], [
+                'class' => 'btn btn-warning',
+                'data' => [
+                    'confirm' => 'Are you sure you want to close this commission?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php endif; ?>
+
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Are you sure you want to delete this commission?',
                 'method' => 'post',
             ],
         ]) ?>

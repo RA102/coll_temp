@@ -36,4 +36,19 @@ class CommissionService
                 Commission::tableName() . '.institution_id' => $institution->id,
             ])->one();
     }
+
+    public function closeCommission(Commission $commission)
+    {
+        $commission->status = Commission::STATUS_CLOSED;
+        $commission->save();
+
+        return $commission;
+    }
+
+    public function deleteCommission(Commission $commission)
+    {
+        $commission->delete();
+
+        return $commission;
+    }
 }

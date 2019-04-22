@@ -33,7 +33,7 @@ class CommissionController extends Controller
                         'actions' => [
                             'index', 'view', 'current',
                             'create',
-                            'delete',
+                            'close', 'delete',
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -123,15 +123,17 @@ class CommissionController extends Controller
     public function actionClose($id)
     {
         $model = $this->findModel($id);
-        $model->status = Commission::STATUS_CLOSED;
-        $model->save();
+
+        $this->commissionService->closeCommission($model);
 
         return $this->redirect(['index']);
     }
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        $this->commissionService->deleteCommission($model);
 
         return $this->redirect(['index']);
     }

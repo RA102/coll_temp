@@ -18,16 +18,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'caption_current',
             'from_date',
             'to_date',
             //'order_number',
             //'order_date',
-            'status',
-            //'create_ts',
+            [
+                'attribute' => 'status',
+                'value' => function (\common\models\reception\Commission $model) {
+                    return \common\helpers\CommissionHelper::getStatusList()[$model->status];
+                }
+            ],
+            'create_ts',
             //'update_ts',
             //'delete_ts',
 

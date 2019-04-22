@@ -96,6 +96,8 @@ class Commission extends \yii\db\ActiveRecord
             'exam_start_date' => Yii::t('app', 'Exam Start Date'),
             'exam_end_date' => Yii::t('app', 'Exam End Date'),
             'status' => Yii::t('app', 'Status'),
+            'create_ts' => Yii::t('app', 'Create Ts'),
+            'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
     }
 
