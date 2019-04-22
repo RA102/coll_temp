@@ -47,6 +47,11 @@ class CommissionService
 
     public function deleteCommission(Commission $commission)
     {
+        foreach ($commission->institutionDisciplines as $institutionDiscipline) {
+            /** @see Commission::getInstitutionDisciplines() */
+            $commission->unlink('institutionDisciplines', $institutionDiscipline, true);
+        }
+
         $commission->delete();
 
         return $commission;

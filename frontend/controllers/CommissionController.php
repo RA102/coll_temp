@@ -2,8 +2,11 @@
 
 namespace frontend\controllers;
 
+use common\models\link\CommissionDisciplineLink;
 use common\models\reception\Commission;
+use common\services\organization\InstitutionDisciplineService;
 use common\services\reception\CommissionService;
+use frontend\models\forms\CommissionForm;
 use Yii;
 use yii\base\Module;
 use yii\data\ActiveDataProvider;
@@ -19,6 +22,7 @@ class CommissionController extends Controller
 {
     private $institution;
     private $commissionService;
+    private $institutionDisciplineService;
 
     /**
      * {@inheritdoc}
@@ -53,9 +57,11 @@ class CommissionController extends Controller
         string $id,
         Module $module,
         CommissionService $commissionService,
+        InstitutionDisciplineService $institutionDisciplineService,
         array $config = []
     ) {
         $this->commissionService = $commissionService;
+        $this->institutionDisciplineService = $institutionDisciplineService;
         parent::__construct($id, $module, $config);
     }
 
@@ -106,17 +112,28 @@ class CommissionController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        $model = new Commission();
+        $form = new CommissionForm();
+        $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $model = new Commission();
+            $model->setAttributes($form->getAttributes());
             $model->institution_id = $this->institution->id;
             if ($model->save()) {
+                foreach ($form->institution_discipline_ids as $institution_discipline_id) {
+                    $link = new CommissionDisciplineLink();
+                    $link->institution_discipline_id = $institution_discipline_id;
+                    $link->commission_id = $model->id;
+                    $link->save();
+                }
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'form' => $form,
+            'institutionDisciplines' => $institutionDisciplines
         ]);
     }
 

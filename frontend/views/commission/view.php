@@ -49,6 +49,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'exam_start_date',
             'exam_end_date',
             [
+                'attribute' => 'institution_discipline_ids',
+                'value' => function (\common\models\reception\Commission $model) {
+                    return implode(', ', \yii\helpers\ArrayHelper::getColumn($model->institutionDisciplines, 'caption_current'));
+                },
+            ],
+            [
                 'attribute' => 'status',
                 'value' => function (\common\models\reception\Commission $model) {
                     return \common\helpers\CommissionHelper::getStatusList()[$model->status];

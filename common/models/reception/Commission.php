@@ -3,6 +3,7 @@
 namespace common\models\reception;
 
 use common\models\organization\Institution;
+use common\models\organization\InstitutionDiscipline;
 use Yii;
 
 /**
@@ -23,6 +24,7 @@ use Yii;
  * @property string $delete_ts
  *
  * @property Institution $institution
+ * @property InstitutionDiscipline[] $institutionDisciplines
  */
 class Commission extends \yii\db\ActiveRecord
 {
@@ -98,6 +100,7 @@ class Commission extends \yii\db\ActiveRecord
             'status' => Yii::t('app', 'Status'),
             'create_ts' => Yii::t('app', 'Create Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
+            'institution_discipline_ids' => Yii::t('app', 'Institution Disciplines'),
         ];
     }
 
@@ -107,5 +110,13 @@ class Commission extends \yii\db\ActiveRecord
     public function getInstitution()
     {
         return $this->hasOne(Institution::class, ['id' => 'institution_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInstitutionDisciplines()
+    {
+        return $this->hasMany(InstitutionDiscipline::class, ['id' => 'institution_discipline_id'])->viaTable('link.commission_discipline_link', ['commission_id' => 'id']);
     }
 }
