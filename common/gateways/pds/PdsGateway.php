@@ -115,7 +115,7 @@ class PdsGateway implements \yii\base\Configurable
         ]);
 
         if ($response->getStatusCode() !== 200) {
-            throw new \yii\web\UnprocessableEntityHttpException('Error occurred');
+            throw new \yii\web\UnprocessableEntityHttpException('Error occurred: ' . $response->getReasonPhrase());
         }
 
         return $response->getBody()->getContents();
