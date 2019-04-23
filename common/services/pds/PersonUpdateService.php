@@ -75,7 +75,7 @@ class PersonUpdateService extends PersonSearchService
         }
 
         if ($info['http_code'] !== 200) {
-            throw new UnprocessableEntityHttpException('Error occurred');
+            throw new UnprocessableEntityHttpException('Error occurred: ' . json_encode($data) . ' : ' . json_encode($info));
         }
 
         return Json::decode($data);
