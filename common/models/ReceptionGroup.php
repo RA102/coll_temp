@@ -1,0 +1,66 @@
+<?php
+
+namespace common\models;
+
+use common\models\handbook\Speciality;
+use Yii;
+
+/**
+ * This is the model class for table "reception.group".
+ *
+ * @property int $id
+ * @property array $caption
+ * @property string $language
+ * @property int $speciality_id
+ * @property int $education_form
+ * @property int $institution_id
+ * @property int $budget_places
+ * @property int $commercial_places
+ * @property string $create_ts
+ * @property string $update_ts
+ * @property string $delete_ts
+ */
+class ReceptionGroup extends \yii\db\ActiveRecord
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return 'reception.group';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['caption', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
+            [['speciality_id', 'education_form', 'institution_id', 'budget_places', 'commercial_places'], 'default', 'value' => null],
+            [['speciality_id', 'education_form', 'institution_id', 'budget_places', 'commercial_places'], 'integer'],
+            [['language'], 'string', 'max' => 2],
+            [['speciality_id'], 'exist', 'skipOnError' => true, 'targetClass' => Speciality::className(), 'targetAttribute' => ['speciality_id' => 'id']],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'caption' => Yii::t('app', 'Caption'),
+            'language' => Yii::t('app', 'Language'),
+            'speciality_id' => Yii::t('app', 'Speciality ID'),
+            'education_form' => Yii::t('app', 'Education Form'),
+            'institution_id' => Yii::t('app', 'Institution ID'),
+            'budget_places' => Yii::t('app', 'Budget Places'),
+            'commercial_places' => Yii::t('app', 'Commercial Places'),
+            'create_ts' => Yii::t('app', 'Create Ts'),
+            'update_ts' => Yii::t('app', 'Update Ts'),
+            'delete_ts' => Yii::t('app', 'Delete Ts'),
+        ];
+    }
+}
