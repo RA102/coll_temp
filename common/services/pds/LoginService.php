@@ -131,7 +131,7 @@ class LoginService
         if (!$person->save()) {
             throw new \DomainException($person->getErrorSummary(true)[0]);
         }
-        
+
         return $person;
     }
 }
