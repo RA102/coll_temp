@@ -32,8 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'format' => 'html',
                 'value' => function (Person $model) {
-                    return array_reduce($model->personCredentials, function(PersonCredential $model) {
-                        return $model->indentity . '<hr/>';
+                    return array_reduce($model->personCredentials, function($result, PersonCredential $model) {
+                        return $result . '<hr/>' . $model->indentity;
                     }, '');
                 }
             ]
