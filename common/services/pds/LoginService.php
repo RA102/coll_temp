@@ -128,6 +128,9 @@ class LoginService
             $person->iin = $personData['iin'];
         }
 
+        echo $person->isNewRecord ? 'New' : 'Not new';
+        die();
+
         if (!$person->save()) {
             throw new \DomainException($person->getErrorSummary(true)[0]);
         }
