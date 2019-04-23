@@ -128,7 +128,7 @@ class LoginService
             $person->iin = $personData['iin'];
         }
 
-        echo $person->isNewRecord ? 'New' : 'Not new';
+        echo $person->isNewRecord ? 'New' : 'Not new: ' . $person->id;
         die();
 
         if (!$person->save()) {
