@@ -230,22 +230,6 @@ class PdsGateway implements \yii\base\Configurable
             ]
         ]);
 
-
-        var_dump($this->httpClient->getConfig());
-        var_dump([
-            'json'    => [
-                'person_id' => $person_id,
-                'indentity' => $email,
-                'name'      => $type,
-                'status'    => self::PERSON_CREDENTIAL_CREATED_STATUS
-            ],
-            'headers' => [
-                'Authorization' => "Bearer {$token}",
-                'Access-Role'   => $role
-            ]
-        ]);
-        die();
-        
         if ($response->getStatusCode() == 422) {
             $errors = json_decode($response->getBody()->getContents(), true);
             $serverErrors = array_filter($errors, function ($errorData) {
@@ -257,6 +241,21 @@ class PdsGateway implements \yii\base\Configurable
         }
 
         if ($response->getStatusCode() !== 201) {
+            var_dump($this->httpClient->getConfig());
+            var_dump([
+                'json'    => [
+                    'person_id' => $person_id,
+                    'indentity' => $email,
+                    'name'      => $type,
+                    'status'    => self::PERSON_CREDENTIAL_CREATED_STATUS
+                ],
+                'headers' => [
+                    'Authorization' => "Bearer {$token}",
+                    'Access-Role'   => $role
+                ]
+            ]);
+            die();
+
             throw new \Exception("Couldn't create person credential: " . $response->getReasonPhrase() . ": " . $response->getStatusCode() . " : " . $response->getBody()->getContents());
         }
 
