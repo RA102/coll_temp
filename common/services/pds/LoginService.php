@@ -128,13 +128,13 @@ class LoginService
             $person->iin = $personData['iin'];
         }
 
-        echo $person->isNewRecord ? 'New person' : 'Update person';
-        var_dump($personData);
-        die();
-
         if (!$person->save()) {
             throw new \DomainException($person->getErrorSummary(true)[0]);
         }
+
+        echo 'Saved';
+        var_dump($personData);
+        die();
 
         return $person;
     }
