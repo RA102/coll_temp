@@ -31,6 +31,8 @@ class LoginService
     {
         try {
             $authData = $this->getPdsAuthData($username, $password);
+            var_dump($authData);
+            die();
             $person = $this->getPerson($authData['person']);
             $this->saveToken($person, $authData);
             \Yii::$app->user->login($person);
