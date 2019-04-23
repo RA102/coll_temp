@@ -114,9 +114,6 @@ class LoginService
         $person = Person::findIdentityByUID($personData['id']);
 
         if (!$person) {
-            echo 'New person';
-            var_dump($personData);
-            die();
             $person = Person::add(
                 $personData['id'],
                 $personData['firstname'],
@@ -130,6 +127,10 @@ class LoginService
             $person->middlename = $personData['middlename'];
             $person->iin = $personData['iin'];
         }
+
+        echo $person->isNewRecord ? 'New person' : 'Update person';
+        var_dump($personData);
+        die();
 
         if (!$person->save()) {
             throw new \DomainException($person->getErrorSummary(true)[0]);
