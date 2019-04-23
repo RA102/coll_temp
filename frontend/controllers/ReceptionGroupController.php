@@ -79,6 +79,7 @@ class ReceptionGroupController extends Controller
     {
         $model = new ReceptionGroup();
         $model->commission_id = $id;
+        $specialities = Yii::$app->user->identity->institution->specialities;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'commission_id' => $id]);
@@ -86,6 +87,7 @@ class ReceptionGroupController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'specialities' => $specialities
         ]);
     }
 

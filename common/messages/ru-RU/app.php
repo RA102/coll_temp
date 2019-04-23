@@ -252,4 +252,8 @@ return [
     'Commission chairman' => 'Председатель комиссии',
     'Member ID' => 'Участник',
     'Close' => 'Закрыть',
+
+    // RECEPTION GROUPS
+    'Budget Places' => 'Количество бюджетных мест',
+    'Commercial Places' => 'Количество коммерческих мест',
 ];
