@@ -121,14 +121,15 @@ class LoginService
                 $personData['middlename'],
                 $personData['iin']
             );
+            echo 'New';
         } else {
             $person->firstname = $personData['firstname'];
             $person->lastname = $personData['lastname'];
             $person->middlename = $personData['middlename'];
             $person->iin = $personData['iin'];
+            echo 'Not new: ' . $person->id;
         }
 
-        echo $person->isNewRecord ? 'New' : 'Not new';
         die();
 
         if (!$person->save()) {
