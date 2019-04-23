@@ -241,6 +241,14 @@ class PdsGateway implements \yii\base\Configurable
         }
 
         if ($response->getStatusCode() !== 201) {
+            $errors = json_decode($response->getBody()->getContents(), true);
+            $serverErrors = array_filter($errors, function ($errorData) {
+                return $errorData['field'] === 'server-error';
+            });
+            if (sizeof($serverErrors) > 0) {
+                throw new \Exception($serverErrors[0]['message']);
+            }
+
             throw new \Exception("Couldn't create person credential: " . $response->getReasonPhrase() . ": " . $response->getStatusCode());
         }
 
