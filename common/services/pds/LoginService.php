@@ -121,16 +121,12 @@ class LoginService
                 $personData['middlename'],
                 $personData['iin']
             );
-            echo 'New';
         } else {
             $person->firstname = $personData['firstname'];
             $person->lastname = $personData['lastname'];
             $person->middlename = $personData['middlename'];
             $person->iin = $personData['iin'];
-            echo 'Not new: ' . $person->id;
         }
-
-        die();
 
         if (!$person->save()) {
             throw new \DomainException($person->getErrorSummary(true)[0]);
