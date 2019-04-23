@@ -241,7 +241,7 @@ class PdsGateway implements \yii\base\Configurable
         }
 
         if ($response->getStatusCode() !== 201) {
-            throw new \Exception("Couldn't create person credential");
+            throw new \Exception("Couldn't create person credential: " . $response->getReasonPhrase());
         }
 
         return $this->jsonDecoder->decode($response->getBody()->getContents(), PersonCredentialResponse::class);
