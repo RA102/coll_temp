@@ -230,21 +230,21 @@ class PdsGateway implements \yii\base\Configurable
             ]
         ]);
 
-        var_dump([
-            'json'    => [
-                'person_id' => $person_id,
-                'indentity' => $email,
-                'name'      => $type,
-                'status'    => self::PERSON_CREDENTIAL_CREATED_STATUS
-            ],
-            'headers' => [
-                'Authorization' => "Bearer {$token}",
-                'Access-Role'   => $role
-            ]
-        ]);
-        die();
-
         if ($response->getStatusCode() == 422) {
+            var_dump([
+                'json'    => [
+                    'person_id' => $person_id,
+                    'indentity' => $email,
+                    'name'      => $type,
+                    'status'    => self::PERSON_CREDENTIAL_CREATED_STATUS
+                ],
+                'headers' => [
+                    'Authorization' => "Bearer {$token}",
+                    'Access-Role'   => $role
+                ]
+            ]);
+            die();
+
             $errors = json_decode($response->getBody()->getContents(), true);
             $serverErrors = array_filter($errors, function ($errorData) {
                 return $errorData['field'] === 'server-error';
