@@ -47,6 +47,7 @@ return [
                 'institution' => '/institution/index',
                 'application' => '/application/index',
                 'speciality' => '/speciality/index',
+                'person' => '/person/index',
                 '<a:\w+>' => 'site/<a>'
             ],
         ],
