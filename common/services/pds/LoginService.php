@@ -31,8 +31,6 @@ class LoginService
     {
         try {
             $authData = $this->getPdsAuthData($username, $password);
-            var_dump($authData);
-            die();
             $person = $this->getPerson($authData['person']);
             $this->saveToken($person, $authData);
             \Yii::$app->user->login($person);
@@ -116,6 +114,9 @@ class LoginService
         $person = Person::findIdentityByUID($personData['id']);
 
         if (!$person) {
+            echo 'New person';
+            var_dump($personData);
+            die();
             $person = Person::add(
                 $personData['id'],
                 $personData['firstname'],
