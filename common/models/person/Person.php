@@ -112,10 +112,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
             [['nickname', 'firstname', 'lastname', 'middlename', 'iin', 'person_type'], 'string', 'max' => 100],
             [['birth_place', 'photo'], 'string', 'max' => 255],
             [['language'], 'string', 'max' => 2],
-            ['iin', 'unique', 'on' => 'insert'],
-            ['iin', 'unique', 'on' => 'update', 'when' => function (self $model) {
-                return $model->isAttributeChanged('iin');
-            }],
+            ['iin', 'unique'],
         ];
     }
 
