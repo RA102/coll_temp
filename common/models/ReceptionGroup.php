@@ -13,7 +13,7 @@ use Yii;
  * @property string $language
  * @property int $speciality_id
  * @property int $education_form
- * @property int $institution_id
+ * @property int $commission_id
  * @property int $budget_places
  * @property int $commercial_places
  * @property string $create_ts
@@ -37,8 +37,8 @@ class ReceptionGroup extends \yii\db\ActiveRecord
     {
         return [
             [['caption', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
-            [['speciality_id', 'education_form', 'institution_id', 'budget_places', 'commercial_places'], 'default', 'value' => null],
-            [['speciality_id', 'education_form', 'institution_id', 'budget_places', 'commercial_places'], 'integer'],
+            [['speciality_id', 'education_form', 'commission_id', 'budget_places', 'commercial_places'], 'default', 'value' => null],
+            [['speciality_id', 'education_form', 'commission_id', 'budget_places', 'commercial_places'], 'integer'],
             [['language'], 'string', 'max' => 2],
             [['speciality_id'], 'exist', 'skipOnError' => true, 'targetClass' => Speciality::className(), 'targetAttribute' => ['speciality_id' => 'id']],
         ];

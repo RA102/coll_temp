@@ -18,7 +18,7 @@ class m190423_160508_create_reception_group_table extends Migration
             'language' => $this->string(2),
             'speciality_id' => $this->integer(),
             'education_form' => $this->integer(),
-            'institution_id' => $this->integer(),
+            'commission_id' => $this->integer(),
             'budget_places' => $this->integer(),
             'commercial_places' => $this->integer(),
             'create_ts' => $this->dateTime()->notNull()->defaultValue('now()'),
@@ -33,6 +33,14 @@ class m190423_160508_create_reception_group_table extends Migration
             'handbook.speciality',
             'id'
         );
+
+        $this->addForeignKey(
+            'fk_reception_group_2_commission',
+            'reception.group',
+            'commission_id',
+            'reception.commission',
+            'id'
+        );
     }
 
     /**
@@ -40,6 +48,7 @@ class m190423_160508_create_reception_group_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk_reception_group_2_commission', 'reception.group');
         $this->dropForeignKey('fk_reception_group_2_speciality', 'reception.group');
         $this->dropTable('reception.group');
     }

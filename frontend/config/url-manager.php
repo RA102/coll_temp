@@ -13,6 +13,7 @@ return [
         'institution' => '/institution/index',
         'commission' => '/commission/index',
         'commission-member/<commission_id:\d+>' => '/commission-member/index',
+        'reception-group/<commission_id:\d+>' => '/reception-group/index',
         '<a:\w+>' => 'site/<a>',
 
         'POST pds/set-access-token' => 'api/pds/set-access-token',
