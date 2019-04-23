@@ -131,11 +131,7 @@ class LoginService
         if (!$person->save()) {
             throw new \DomainException($person->getErrorSummary(true)[0]);
         }
-
-        echo 'Saved';
-        var_dump($personData);
-        die();
-
+        
         return $person;
     }
 }
