@@ -15,7 +15,7 @@ class CommissionForm extends Model
     public $order_date;
     public $exam_start_date;
     public $exam_end_date;
-    public $institution_discipline_ids;
+    public $institution_discipline_ids = [];
 
     /**
      * {@inheritdoc}

@@ -7,7 +7,10 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\reception\Commission */
 
-$this->title = $model->id;
+$commissionService = new \common\services\reception\CommissionService;
+$activeCommission = $commissionService->getActiveInstitutionCommission(\Yii::$app->user->identity->institution);
+
+$this->title = ($model->id == $activeCommission->id ? Yii::t('app', 'Current Commission') : $model->caption_current);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Commissions'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -63,11 +66,29 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Commission members'), ['/commission-member/index', 'commission_id' => $model->id], [
-            'class' => 'btn btn-success',
-        ]) ?>
-    </p>
-
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-4">
+        <a href="<?= \yii\helpers\Url::to(['/commission-member/index', 'commission_id' => $model->id]) ?>">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fa fa-user-tie fa-3x"></i>
+                    <h4>Состав комиссии</h4>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="<?= \yii\helpers\Url::to(['/commission-member/index', 'commission_id' => $model->id]) ?>">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fa fa-calendar-alt fa-3x"></i>
+                    <h4>Расписание экзаменов</h4>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
