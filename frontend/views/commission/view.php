@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </a>
     </div>
     <div class="col-md-4">
-        <a href="<?= \yii\helpers\Url::to(['/commission-member/index', 'commission_id' => $model->id]) ?>">
+        <a href="<?= \yii\helpers\Url::to(['/reception-exam/index', 'commission_id' => $model->id]) ?>">
             <div class="card">
                 <div class="card-body text-center">
                     <i class="fa fa-calendar-alt fa-3x"></i>

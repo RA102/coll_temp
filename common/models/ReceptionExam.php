@@ -1,9 +1,9 @@
 <?php
 
-namespace common\models\reception;
+namespace common\models;
 
 use common\models\organization\InstitutionDiscipline;
-use common\models\ReceptionGroup;
+use common\models\reception\Commission;
 use Yii;
 
 /**
@@ -18,7 +18,7 @@ use Yii;
  * @property InstitutionDiscipline $institutionDiscipline
  * @property ReceptionGroup[] $receptionGroups
  */
-class Exam extends \yii\db\ActiveRecord
+class ReceptionExam extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
