@@ -38,7 +38,7 @@ class AppealCommission extends \yii\db\ActiveRecord
             [['commission_id'], 'default', 'value' => null],
             [['commission_id'], 'integer'],
             [['order_number'], 'string', 'max' => 255],
-            [['commission_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReceptionCommission::className(), 'targetAttribute' => ['commission_id' => 'id']],
+            [['commission_id'], 'exist', 'skipOnError' => true, 'targetClass' => Commission::className(), 'targetAttribute' => ['commission_id' => 'id']],
         ];
     }
 
