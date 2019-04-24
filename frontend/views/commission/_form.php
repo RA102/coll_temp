@@ -70,21 +70,6 @@ use yii\widgets\ActiveForm;
 
     <hr>
 
-    <h4>Квалификации</h4>
-
-    <?= $activeForm->field($form, 'institution_discipline_ids')->widget(\kartik\select2\Select2::class, [
-        'data' => \yii\helpers\ArrayHelper::map($institutionDisciplines, 'id', 'caption_current'),
-        'options' => [
-            'placeholder' => '...',
-            'class' => 'active-form-refresh-control',
-            'multiple' => true,
-        ],
-        'theme' => 'default',
-        'pluginOptions' => [
-            'allowClear' => true,
-        ],
-    ]) ?>
-
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
