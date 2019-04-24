@@ -101,13 +101,15 @@ class ReceptionGroupController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $specialities = Yii::$app->user->identity->institution->specialities;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'commission_id' => $model->commission_id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'specialities' => $specialities
         ]);
     }
 
