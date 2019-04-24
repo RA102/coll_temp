@@ -9,26 +9,23 @@ use yii\grid\GridView;
 $this->title = Yii::t('app', 'Reception Exams');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="reception-exam-index">
+<h1><?= Html::encode($this->title) ?></h1>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="card">
+    <div class="card-body">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Reception Exam'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+                'id',
+                'commission_id',
+                'institution_discipline_id',
+                'teacher_id',
+                'date_ts',
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'commission_id',
-            'institution_discipline_id',
-            'teacher_id',
-            'date_ts',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                ['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]); ?>
+    </div>
 </div>
