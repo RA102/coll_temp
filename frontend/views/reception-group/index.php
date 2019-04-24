@@ -25,12 +25,31 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'caption',
-            'language',
-            'speciality_id',
+//            'id',
+            'caption_current',
+            [
+                'format'    => 'html',
+                'attribute' => 'language',
+                'value'     => function (\common\models\ReceptionGroup $model) {
+                    return $model->getLanguage();
+                },
+            ],
+            [
+                'format'    => 'html',
+                'attribute' => 'speciality_id',
+                'value'     => function (\common\models\ReceptionGroup $model) {
+                    return $model->speciality->caption_current ?? null;
+                },
+            ],
+            [
+                'format'    => 'html',
+                'attribute' => 'education_form',
+                'value'     => function (\common\models\ReceptionGroup $model) {
+                    return $model->getEducationPayForm() ?? null;
+                },
+            ],
             'education_form',
             //'institution_id',
             //'budget_places',
@@ -39,7 +58,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //'update_ts',
             //'delete_ts',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+            ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

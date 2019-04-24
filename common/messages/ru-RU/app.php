@@ -256,4 +256,5 @@ return [
     // RECEPTION GROUPS
     'Budget Places' => 'Количество бюджетных мест',
     'Commercial Places' => 'Количество коммерческих мест',
+    'View' => 'Просмотр',
 ];

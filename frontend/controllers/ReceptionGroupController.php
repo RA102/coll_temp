@@ -23,7 +23,7 @@ class ReceptionGroupController extends Controller
                 'rules' => [
                     [
                         'actions' => [
-                            'index',
+                            'index', 'view',
                             'create', 'update',
                             'delete'
                         ],
