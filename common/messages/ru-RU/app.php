@@ -257,4 +257,8 @@ return [
     'Budget Places' => 'Количество бюджетных мест',
     'Commercial Places' => 'Количество коммерческих мест',
     'View' => 'Просмотр',
+
+    // RECEPTION EXAMS
+    'Reception Exam' => 'Экзамен',
+    'Reception Exams' => 'Экзамены',
 ];

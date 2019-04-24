@@ -2,9 +2,14 @@
 
 namespace frontend\controllers;
 
+use common\models\organization\Institution;
+use common\models\reception\Commission;
+use common\services\reception\CommissionService;
 use Yii;
 use common\models\ReceptionExam;
+use yii\base\Module;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,14 +19,31 @@ use yii\filters\VerbFilter;
  */
 class ReceptionExamController extends Controller
 {
+    private $institution;
+    private $commissionService;
+
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'index', 'view', 'current',
+                            'create',
+                            'close', 'delete',
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -29,14 +51,34 @@ class ReceptionExamController extends Controller
         ];
     }
 
-    /**
-     * Lists all ReceptionExam models.
-     * @return mixed
-     */
-    public function actionIndex()
+    public function __construct(
+        string $id,
+        Module $module,
+        CommissionService $commissionService,
+        array $config = []
+    ) {
+        $this->commissionService = $commissionService;
+        parent::__construct($id, $module, $config);
+    }
+
+    public function beforeAction($action)
     {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->institution = \Yii::$app->user->identity->institution;
+        return true;
+    }
+
+    public function actionIndex($commission_id)
+    {
+        $commission = $this->findCommission($this->institution, $commission_id);
+
         $dataProvider = new ActiveDataProvider([
-            'query' => ReceptionExam::find(),
+            'query' => ReceptionExam::find()->andWhere([
+                'commission_id' => $commission->id,
+            ]),
         ]);
 
         return $this->render('index', [
@@ -44,81 +86,77 @@ class ReceptionExamController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single ReceptionExam model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
+    public function actionView($commission_id, $id)
     {
+        $commission = $this->findCommission($this->institution, $commission_id);
+        $receptionExam = $this->findCommissionExam($commission, $id);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $receptionExam,
         ]);
     }
 
-    /**
-     * Creates a new ReceptionExam model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
+    public function actionCreate($commission_id)
     {
-        $model = new ReceptionExam();
+        $commission = $this->findCommission($this->institution, $commission_id);
+        $receptionExam = new ReceptionExam();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($receptionExam->load(Yii::$app->request->post())) {
+            $receptionExam->commission_id = $commission->id;
+            if ($receptionExam->save()) {
+                return $this->redirect(['view', 'id' => $receptionExam->id]);
+            }
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $receptionExam,
         ]);
     }
 
-    /**
-     * Updates an existing ReceptionExam model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
+    public function actionUpdate($commission_id, $id)
     {
-        $model = $this->findModel($id);
+        $commission = $this->findCommission($this->institution, $commission_id);
+        $receptionExam = $this->findCommissionExam($commission, $id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($receptionExam->load(Yii::$app->request->post())) {
+            if ($receptionExam->save()) {
+                return $this->redirect(['view', 'id' => $receptionExam->id]);
+            }
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'model' => $receptionExam,
         ]);
     }
 
-    /**
-     * Deletes an existing ReceptionExam model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
+    public function actionDelete($commission_id, $id)
     {
-        $this->findModel($id)->delete();
+        $commission = $this->findCommission($this->institution, $commission_id);
+        $receptionExam = $this->findCommissionExam($commission, $id);
+
+        $receptionExam->delete();
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the ReceptionExam model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return ReceptionExam the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
+    protected function findCommissionExam(Commission $commission, $id)
     {
-        if (($model = ReceptionExam::findOne($id)) !== null) {
+        $model = ReceptionExam::find()->andWhere([
+            'commission_id' => $commission->id,
+            'id' => $id,
+        ])->one();
+
+        if ($model !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    protected function findCommission(Institution $institution, $id)
+    {
+        $model = $this->commissionService->getInstitutionCommission($institution, $id);
+        if ($model !== null) {
             return $model;
         }
 

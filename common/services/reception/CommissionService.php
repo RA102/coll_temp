@@ -8,6 +8,10 @@ use yii\db\ActiveRecord;
 
 class CommissionService
 {
+    /**
+     * @param Institution $institution
+     * @return array|ActiveRecord[]|Commission[]
+     */
     public function getInstitutionCommissions(Institution $institution)
     {
         return Commission::find()->andWhere([
@@ -28,6 +32,11 @@ class CommissionService
             ])->one();
     }
 
+    /**
+     * @param Institution $institution
+     * @param $id
+     * @return array|null|ActiveRecord|Commission
+     */
     public function getInstitutionCommission(Institution $institution, $id)
     {
         return Commission::find()
