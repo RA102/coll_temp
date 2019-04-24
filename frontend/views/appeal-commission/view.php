@@ -14,9 +14,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php if($model) {?>
-<p>
-    <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-</p>
+    <div style="position: relative;">
+        <h1><?=$this->title?></h1>
+        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->commission_id], ['class' => 'title-action btn btn-primary']) ?>
+    </div>
 <?php }?>
 
 <div class="card">
@@ -27,16 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
-                    'id',
-                    'caption',
-                    'commission_id',
+                    'caption_current',
                     'from_date',
                     'to_date',
-                    'order_number',
-                    'order_date',
-                    'create_ts',
-                    'update_ts',
-                    'delete_ts',
+//                    'order_number',
+//                    'order_date',
                 ],
             ]) ?>
             <?php } else { ?>

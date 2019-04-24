@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\reception\Commission;
 use Yii;
 use common\models\reception\AppealCommission;
 use frontend\search\AppealCommissionSearch;
@@ -62,16 +63,16 @@ class AppealCommissionController extends Controller
      */
     public function actionCreate($id)
     {
+        $commission = Commission::findOne($id);
+
         $model = new AppealCommission();
         $model->commission_id = $id;
+        $model->from_date = $commission->from_date;
+        $model->to_date = $commission->to_date;
+        $model->caption = $commission->caption;
+        $model->save();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->redirect(['view', 'id' => $id]);
     }
 
     /**

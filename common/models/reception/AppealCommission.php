@@ -20,6 +20,11 @@ use Yii;
  */
 class AppealCommission extends \yii\db\ActiveRecord
 {
+    public $caption_current;
+
+    public $caption_ru;
+    public $caption_kk;
+
     /**
      * {@inheritdoc}
      */
@@ -50,14 +55,37 @@ class AppealCommission extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'caption' => Yii::t('app', 'Caption'),
+            'caption_ru' => Yii::t('app', 'Caption Ru'),
+            'caption_kk' => Yii::t('app', 'Caption Kk'),
+            'caption_current' => Yii::t('app', 'Caption Current'),
+            'from_date' => Yii::t('app', 'Commission From Date'),
+            'to_date' => Yii::t('app', 'Commission To Date'),
             'commission_id' => Yii::t('app', 'Commission ID'),
-            'from_date' => Yii::t('app', 'From Date'),
-            'to_date' => Yii::t('app', 'To Date'),
             'order_number' => Yii::t('app', 'Order Number'),
             'order_date' => Yii::t('app', 'Order Date'),
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        $this->caption = [
+            'ru' => $this->caption_ru,
+            'kk' => $this->caption_kk,
+        ];
+
+        return parent::beforeSave($insert);
+    }
+
+    public function afterFind()
+    {
+        $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
+        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
+        $this->caption_ru = $this->caption['ru'];
+        $this->caption_kk = $this->caption['kk'];
+
+        parent::afterFind();
     }
 }
