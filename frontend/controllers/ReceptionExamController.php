@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\organization\Institution;
+use common\models\organization\InstitutionDiscipline;
 use common\models\reception\Commission;
 use common\services\reception\CommissionService;
 use Yii;
@@ -75,6 +76,10 @@ class ReceptionExamController extends Controller
     {
         $commission = $this->findCommission($this->institution, $commission_id);
 
+        $institutionDisciplines = InstitutionDiscipline::find()->andWhere(
+            "{$commission->id} = ANY(\"types\")"
+        )->all();
+
         $dataProvider = new ActiveDataProvider([
             'query' => ReceptionExam::find()->andWhere([
                 'commission_id' => $commission->id,
@@ -83,6 +88,8 @@ class ReceptionExamController extends Controller
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'commission' => $commission,
+            'institutionDisciplines' => $institutionDisciplines,
         ]);
     }
 

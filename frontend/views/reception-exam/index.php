@@ -5,6 +5,8 @@ use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $institutionDisciplines common\models\organization\InstitutionDiscipline[] */
+/* @var $commission common\models\reception\Commission */
 
 $this->title = Yii::t('app', 'Reception Exams');
 $this->params['breadcrumbs'][] = $this->title;
@@ -13,6 +15,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="card">
     <div class="card-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <?php foreach ($institutionDisciplines as $institutionDiscipline): ?>
+                    <td><?= $institutionDiscipline->caption_current ?></td>
+                <?php endforeach; ?>
+            </tr>
+            </thead>
+            <?php foreach ($commission->getDateRangeMap() as $date): ?>
+            <tr>
+                <td><?= $date ?></td>
+                <td>123</td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'columns' => [

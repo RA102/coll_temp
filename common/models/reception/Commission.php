@@ -119,4 +119,19 @@ class Commission extends \yii\db\ActiveRecord
     {
         return $this->hasMany(InstitutionDiscipline::class, ['id' => 'institution_discipline_id'])->viaTable('link.commission_discipline_link', ['commission_id' => 'id']);
     }
+
+    public function getDateRangeMap()
+    {
+        $dateMap = [];
+        $current = strtotime($this->exam_start_date);
+        $end = strtotime($this->exam_end_date);
+
+        while ($current <= $end) {
+            $stringDate = date('Y-m-d', $current);
+            $dateMap[] = $stringDate;
+            $current = strtotime('+1 days', $current);
+        }
+
+        return $dateMap;
+    }
 }
