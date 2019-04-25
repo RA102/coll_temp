@@ -2,6 +2,7 @@
 
 namespace backend\models\search;
 
+use common\models\organization\Institution;
 use common\models\person\PersonCredential;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -13,6 +14,7 @@ use common\models\person\Person;
 class PersonSearch extends Person
 {
     public $indentity;
+    public $institution_filter;
 
     /**
      * {@inheritdoc}
@@ -20,7 +22,7 @@ class PersonSearch extends Person
     public function rules()
     {
         return [
-            [['id', 'status', 'sex', 'nationality_id', 'is_pluralist', 'birth_country_id', 'birth_city_id', 'oid', 'alledu_id', 'alledu_server_id', 'pupil_id', 'owner_id', 'server_id', 'portal_uid', 'type'], 'integer'],
+            [['id', 'status', 'sex', 'nationality_id', 'is_pluralist', 'birth_country_id', 'birth_city_id', 'oid', 'alledu_id', 'alledu_server_id', 'pupil_id', 'owner_id', 'server_id', 'portal_uid', 'type', 'institution_filter'], 'integer'],
             [['nickname', 'firstname', 'lastname', 'middlename', 'birth_date', 'iin', 'birth_place', 'language', 'photo', 'create_ts', 'delete_ts', 'import_ts', 'person_type', 'indentity'], 'safe'],
             [['is_subscribed'], 'boolean'],
         ];
@@ -50,6 +52,7 @@ class PersonSearch extends Person
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['id' => SORT_ASC]]
         ]);
 
         $this->load($params);
@@ -97,6 +100,11 @@ class PersonSearch extends Person
         if ($this->indentity) {
             $query->joinWith('personCredentials')
                 ->andWhere(['ilike', PersonCredential::tableName() . '.indentity', $this->indentity]);
+        }
+
+        if ($this->institution_filter) {
+            $query->joinWith('institutions')
+                ->andWhere([Institution::tableName() . '.id' => $this->institution_filter]);
         }
 
         return $dataProvider;

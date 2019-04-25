@@ -1,6 +1,8 @@
 <?php
 
+use common\helpers\InstitutionHelper;
 use common\helpers\PersonTypeHelper;
+use common\models\organization\Institution;
 use common\models\person\Person;
 use common\models\person\PersonCredential;
 use yii\helpers\Html;
@@ -16,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php $this->beginBlock('content') ?>
-    <div class="person-index">
+    <div class="person-index" style="overflow: scroll">
         <?php Pjax::begin(); ?>
         <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -30,14 +32,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 'middlename',
                 [
                     'format' => 'html',
+                    'header' => 'Логин',
                     'attribute' => 'indentity',
                     'value' => function (Person $model) {
-                        return implode('<hr/>', array_map(function(PersonCredential $model) {
+                        return implode('<hr/>', array_map(function (PersonCredential $model) {
                             return $model->indentity;
                         }, $model->personCredentials));
                     }
                 ],
                 'iin',
+                [
+                    'format' => 'html',
+                    'header' => 'Колледж',
+                    'contentOptions' => ['style' => 'width:300px; word-wrap: break-word; overflow: hidden;'],
+                    'attribute' => 'institution_filter',
+                    'filter' => InstitutionHelper::getList(),
+                    'value' => function (Person $model) {
+                        return implode('<hr/>', array_map(function (Institution $model) {
+                            return $model->name;
+                        }, $model->institutions));
+                    }
+                ],
                 [
                     'filter' => \common\helpers\PersonHelper::getStatusList(),
                     'attribute' => 'status',
@@ -73,7 +88,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'delete_ts',
                 //'import_ts',
 
-                ['class' => 'yii\grid\ActionColumn'],
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view} {update}'
+                ],
             ],
         ]); ?>
         <?php Pjax::end(); ?>
