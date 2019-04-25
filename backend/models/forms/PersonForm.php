@@ -18,12 +18,13 @@ class PersonForm extends Model
     public $sex;
     public $iin;
     public $nationality_id;
-    public $type;
+    public $type = 2;
     public $status;
     public $person_type;
     public $indentities;
     public $birth_date;
     public $institution_id;
+    public $indentity;
 
     /**
      * {@inheritdoc}
@@ -31,13 +32,13 @@ class PersonForm extends Model
     public function rules()
     {
         return [
-            [['firstname', 'lastname', 'middlename', 'iin', 'person_type', 'birth_date'], 'required'],
+            [['firstname', 'lastname', 'middlename', 'iin', 'person_type', 'birth_date', 'type', 'institution_id', 'indentity'], 'required'],
 
             [['status', 'sex', 'nationality_id', 'type', 'person_type'], 'default', 'value' => null],
-            [['status', 'sex', 'nationality_id', 'type', 'id'], 'integer'],
+            [['status', 'sex', 'nationality_id', 'type', 'id', 'institution_id'], 'integer'],
 
             [['birth_date'], 'safe'],
-            [['nickname', 'firstname', 'lastname', 'middlename', 'iin', 'person_type'], 'string', 'max' => 100],
+            [['nickname', 'firstname', 'lastname', 'middlename', 'iin', 'person_type', 'indentity'], 'string', 'max' => 100],
             ['iin', 'validateIIN'],
         ];
     }
@@ -58,7 +59,9 @@ class PersonForm extends Model
             'nationality_id' => Yii::t('app', 'Nationality ID'),
             'iin' => Yii::t('app', 'Iin'),
             'type' => Yii::t('app', 'Type'),
-            'person_type' => Yii::t('app', 'Perosn Type'),
+            'person_type' => Yii::t('app', 'Person Type'),
+            'indentity' => Yii::t('app', 'Логин'),
+            'institution_id' => Yii::t('app', 'Колледж'),
         ];
     }
 

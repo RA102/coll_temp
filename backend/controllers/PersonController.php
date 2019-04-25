@@ -3,6 +3,8 @@
 namespace backend\controllers;
 
 use backend\models\forms\PersonForm;
+use common\helpers\PersonCredentialHelper;
+use common\services\person\PersonService;
 use Yii;
 use common\models\person\Person;
 use backend\models\search\PersonSearch;
@@ -16,6 +18,8 @@ use yii\filters\VerbFilter;
  */
 class PersonController extends Controller
 {
+    private $personService;
+
     /**
      * {@inheritdoc}
      */
@@ -38,6 +42,16 @@ class PersonController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function __construct(
+        string $id,
+        $module,
+        PersonService $personService,
+        array $config = []
+    ) {
+        $this->personService = $personService;
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -72,6 +86,7 @@ class PersonController extends Controller
      * Creates a new Person model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @throws \Exception
      */
     public function actionCreate()
     {
@@ -79,6 +94,17 @@ class PersonController extends Controller
         $form = new PersonForm();
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $model->setAttributes($form->attributes);
+            $model = $this->personService->create(
+                $model,
+                $form->institution_id,
+                true,
+                $form->indentity,
+                PersonCredentialHelper::TYPE_EMAIL,
+                Yii::$app->user->identity->activeAccessToken->token,
+                Yii::$app->user->identity->person_type
+            );
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

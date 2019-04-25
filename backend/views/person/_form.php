@@ -1,5 +1,6 @@
 <?php
 
+use common\helpers\InstitutionHelper;
 use common\helpers\PersonHelper;
 use common\helpers\PersonTypeHelper;
 use common\models\Nationality;
@@ -9,22 +10,14 @@ use kartik\select2\Select2;
 use yii\helpers\Html;
 use common\components\ActiveForm;
 use yii\widgets\DetailView;
-use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\person\Person */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form backend\models\forms\PersonForm */
+/* @var $activeForm yii\widgets\ActiveForm */
 ?>
 
 <div class="person-form">
-    <?php
-    Pjax::begin([
-        'id' => 'list-pjax',
-        'formSelector' => '#js-update',
-        'scrollTo' => 'false',
-    ]);
-    ?>
-
     <?php $activeForm = ActiveForm::begin([
         'id' => 'js-update',
         'enableClientValidation' => false,
@@ -81,6 +74,12 @@ use yii\widgets\Pjax;
             <fieldset>
                 <legend>ДОПОЛНИТЕЛЬНО</legend>
 
+                <?= $activeForm->field($form, 'institution_id')->widget(Select2::class, [
+                    'data' => InstitutionHelper::getList(),
+                    'options' => ['placeholder' => ''],
+                    'theme' => 'default',
+                ]) ?>
+
                 <?= $activeForm->field($form, 'status')->widget(Select2::class, [
                     'data' => PersonHelper::getStatusList(),
                     'options' => ['placeholder' => ''],
@@ -94,6 +93,8 @@ use yii\widgets\Pjax;
                     'options' => ['placeholder' => ''],
                     'theme' => 'default',
                 ]) ?>
+
+                <?= $activeForm->field($form, 'indentity')->textInput() ?>
             </fieldset>
         </div>
     </div>
@@ -104,7 +105,6 @@ use yii\widgets\Pjax;
     </div>
 
     <?php ActiveForm::end(); ?>
-    <?php Pjax::end(); ?>
 
     <?= DetailView::widget([
         'model' => $model,

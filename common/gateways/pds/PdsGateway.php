@@ -19,7 +19,7 @@ use Karriere\JsonDecoder\JsonDecoder;
 class PdsGateway implements \yii\base\Configurable
 {
     const PERSON_CREDENTIAL_CREATED_STATUS = 1;
-    const DEFAULT_TIMEOUT = 20; // 20 seconds
+    const DEFAULT_TIMEOUT = 30; // 30 seconds
 
     private $httpClient;
     private $jsonDecoder;
