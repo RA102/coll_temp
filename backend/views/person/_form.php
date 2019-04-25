@@ -3,10 +3,12 @@
 use common\helpers\PersonHelper;
 use common\helpers\PersonTypeHelper;
 use common\models\Nationality;
+use common\models\person\Person;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
 use yii\helpers\Html;
 use common\components\ActiveForm;
+use yii\widgets\DetailView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
@@ -23,7 +25,7 @@ use yii\widgets\Pjax;
     ]);
     ?>
 
-    <?php $form = ActiveForm::begin([
+    <?php $activeForm = ActiveForm::begin([
         'id' => 'js-update',
         'enableClientValidation' => false,
         'options' => [
@@ -36,19 +38,19 @@ use yii\widgets\Pjax;
             <fieldset>
                 <legend>ДАННЫЕ ПОЛЬЗОВАТЕЛЯ</legend>
 
-                <?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?>
+                <?= $activeForm->field($form, 'firstname')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'lastname')->textInput(['maxlength' => true]) ?>
+                <?= $activeForm->field($form, 'lastname')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'middlename')->textInput(['maxlength' => true]) ?>
+                <?= $activeForm->field($form, 'middlename')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'nickname')->textInput(['maxlength' => true]) ?>
+                <?= $activeForm->field($form, 'nickname')->textInput(['maxlength' => true]) ?>
 
-                <?= $form->field($model, 'iin')
+                <?= $activeForm->field($form, 'iin')
                     ->textInput(['maxlength' => true])
                     ->widget(\yii\widgets\MaskedInput::class, ['mask' => '999999999999']) ?>
 
-                <?= $form->field($model, 'birth_date')->widget(DatePicker::class, [
+                <?= $activeForm->field($form, 'birth_date')->widget(DatePicker::class, [
                     'language' => 'ru',
                     'pluginOptions' => [
                         'autoclose' => true,
@@ -56,7 +58,7 @@ use yii\widgets\Pjax;
                     ]
                 ]) ?>
 
-                <?= $form->field($model, 'sex')->widget(Select2::class, [
+                <?= $activeForm->field($form, 'sex')->widget(Select2::class, [
                     'data' => PersonHelper::getSexList(),
                     'options' => ['placeholder' => ''],
                     'theme' => 'default',
@@ -65,7 +67,7 @@ use yii\widgets\Pjax;
                     ],
                 ]) ?>
 
-                <?= $form->field($model, 'nationality_id')->widget(Select2::class, [
+                <?= $activeForm->field($form, 'nationality_id')->widget(Select2::class, [
                     'data' => \yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name'),
                     'options' => ['placeholder' => ''],
                     'theme' => 'default',
@@ -79,15 +81,15 @@ use yii\widgets\Pjax;
             <fieldset>
                 <legend>ДОПОЛНИТЕЛЬНО</legend>
 
-                <?= $form->field($model, 'status')->widget(Select2::class, [
+                <?= $activeForm->field($form, 'status')->widget(Select2::class, [
                     'data' => PersonHelper::getStatusList(),
                     'options' => ['placeholder' => ''],
                     'theme' => 'default',
                 ]) ?>
 
-                <?= $form->field($model, 'type')->textInput() ?>
+                <?= $activeForm->field($form, 'type')->textInput() ?>
 
-                <?= $form->field($model, 'person_type')->widget(Select2::class, [
+                <?= $activeForm->field($form, 'person_type')->widget(Select2::class, [
                     'data' => PersonTypeHelper::getList(),
                     'options' => ['placeholder' => ''],
                     'theme' => 'default',
@@ -103,5 +105,46 @@ use yii\widgets\Pjax;
 
     <?php ActiveForm::end(); ?>
     <?php Pjax::end(); ?>
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'id',
+            'iin',
+            [
+                'attribute' => 'status',
+                'value' => function (Person $model) {
+                    $statuses = \common\helpers\PersonHelper::getStatusList();
+                    return $statuses[$model->status] ?? 'unknown';
+                }
+            ],
+            'nickname',
+            'firstname',
+            'lastname',
+            'middlename',
+            'birth_date',
+            'sex',
+            'nationality_id',
+            'is_pluralist',
+            'birth_country_id',
+            'birth_city_id',
+            'birth_place',
+            'language',
+            'oid',
+            'alledu_id',
+            'alledu_server_id',
+            'pupil_id',
+            'owner_id',
+            'server_id',
+            'is_subscribed:boolean',
+            'portal_uid',
+            'photo',
+            'type',
+            'create_ts',
+            'delete_ts',
+            'import_ts',
+            'person_type',
+        ],
+    ]) ?>
 
 </div>
