@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\forms\PersonForm;
 use Yii;
 use common\models\person\Person;
 use backend\models\search\PersonSearch;
@@ -75,13 +76,15 @@ class PersonController extends Controller
     public function actionCreate()
     {
         $model = new Person();
+        $form = new PersonForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'form' => $form
         ]);
     }
 
@@ -95,28 +98,17 @@ class PersonController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $form = new PersonForm();
+        $form->setAttributes($model->getAttributes());
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'form' => $form
         ]);
-    }
-
-    /**
-     * Deletes an existing Person model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**
