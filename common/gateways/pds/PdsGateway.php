@@ -44,7 +44,8 @@ class PdsGateway implements \yii\base\Configurable
             'headers'     => [
                 'Access'       => 'Bearer ' . Setting::getPdsToken(),
                 'Content-Type' => 'application/json'
-            ]
+            ],
+            'verify' => false
         ]);
         $this->requestFactory = $requestFactory;
 
