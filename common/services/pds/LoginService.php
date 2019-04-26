@@ -35,8 +35,10 @@ class LoginService
             \Yii::$app->user->login($person);
             return true;
         } catch (\Exception $e) {
-            throw $e;
-//            return false;
+            echo $e->getMessage();
+            echo '<br/>';
+            echo $e->getTraceAsString();
+            return false;
         }
     }
 
