@@ -8,7 +8,8 @@ use yii\widgets\DetailView;
 /* @var $commission_id int */
 
 $this->title = 'Аппеляционная комиссия';
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Appeal Commissions'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Commissions'), 'url' => ['/commission']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Commission') . ' - ' . $model->commission->caption_current, 'url' => ['/commission/view', 'id' => $model->commission_id]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

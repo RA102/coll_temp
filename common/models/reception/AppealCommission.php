@@ -17,6 +17,8 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ *
+ * @property Commission $commission
  */
 class AppealCommission extends \yii\db\ActiveRecord
 {
@@ -87,5 +89,13 @@ class AppealCommission extends \yii\db\ActiveRecord
         $this->caption_kk = $this->caption['kk'];
 
         parent::afterFind();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCommission()
+    {
+        return $this->hasOne(Commission::class, ['id' => 'commission_id']);
     }
 }
