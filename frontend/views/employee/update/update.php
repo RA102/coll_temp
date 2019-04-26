@@ -3,11 +3,11 @@
 use common\helpers\PersonHelper;
 use common\models\Nationality;
 use kartik\date\DatePicker;
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\jui\AutoComplete;
 use yii\widgets\ActiveForm;
-use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\person\Employee */
@@ -57,7 +57,8 @@ use kartik\select2\Select2;
 
         <div class="row">
             <div class="col-md-4">
-                <?= $activeForm->field($model, 'nationality_id')->widget(Select2::classname(), [
+                <?php // Should it be form or model?? Validation fails ?>
+                <?= $activeForm->field($form, 'nationality_id')->widget(Select2::classname(), [
                         'data' => \yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name'),
                         'options' => ['placeholder' => ''],
                         'pluginOptions' => [
@@ -67,7 +68,7 @@ use kartik\select2\Select2;
                 ?>
             </div>
             <div class="col-md-4">
-                <?= $activeForm->field($model, 'iin')
+                <?= $activeForm->field($form, 'iin')
                     ->widget(\yii\widgets\MaskedInput::class, ['mask' => '999999999999'])
                 ?>
             </div>

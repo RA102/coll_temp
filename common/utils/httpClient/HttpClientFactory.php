@@ -2,47 +2,41 @@
 
 namespace common\utils\httpClient;
 
+use common\utils\Logger;
+use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\MessageFormatter;
-use GuzzleHttp\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use common\utils\Logger;
+use Psr\Log\LogLevel;
 
 class HttpClientFactory
 {
     /**
      * @param string $namespace
      * @param array $options @see http://docs.guzzlephp.org/en/stable/request-options.html
-     * @return \GuzzleHttp\Client
+     * @return Client
      */
     public function createHttpClient(string $namespace, array $options = [])
     {
-        $defaultConfig = [];
+        $stack = HandlerStack::create();
 
-        if (YII_DEBUG) {
-            $stack = HandlerStack::create();
-            // NOTE: There is a stream-related side effects and because of logging response body is empty
-            // @see https://github.com/guzzle/guzzle/issues/1582#issuecomment-397583084
-            $mapResponse = Middleware::mapResponse(function (ResponseInterface $response) {
-                $response->getBody()->rewind();
-                return $response;
-            });
-            $stack->push($mapResponse);
-            $stack->push(
-                Middleware::log(
-                    $this->getLogger($namespace),
-                    new MessageFormatter('{req_body} - {res_body}')
-                )
-            );
+        $loggingMiddleware = new LoggerMiddleware(
+            $this->getLogger($namespace),
+            new MessageFormatter("{method} {uri} {version}\n{req_body}\n\n{code} {phrase} \nContent-Type: {req_header_content-type}\n{res_body}")
+        );
+        $loggingMiddleware->setLogLevel(function (ResponseInterface $response = null) {
+            if ($response && $response->getStatusCode() >= 300) {
+                return LogLevel::ERROR;
+            }
+            return LogLevel::INFO;
+        });
+        $stack->push($loggingMiddleware);
 
-            $defaultConfig['handler'] = $stack;
-        }
+        $defaultConfig = [
+            'handler' => $stack
+        ];
 
-        // TODO: Consider implementing psr-18 http client and psr-7 requestFactory for interoperability,
-        $client = new \GuzzleHttp\Client(array_merge($defaultConfig, $options));
-
-        return $client;
+        return new Client(array_merge($defaultConfig, $options));
     }
 
     public function getLogger(string $namespace): LoggerInterface

@@ -28,6 +28,7 @@ class PersonCredentialService
      * @param int $person_id
      * @param string $identity
      * @param string $token
+     * @param string $role
      * @return PersonCredential
      * @throws \Exception
      */

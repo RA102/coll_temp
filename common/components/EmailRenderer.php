@@ -5,7 +5,7 @@ namespace common\components;
 use yii\base\Configurable;
 use yii\base\ViewContextInterface;
 
-class EmailComposer implements Configurable, ViewContextInterface
+class EmailRenderer implements Configurable, ViewContextInterface
 {
     const LAYOUT = 'layouts/html';
 
@@ -26,16 +26,6 @@ class EmailComposer implements Configurable, ViewContextInterface
 
         $this->_view = $config['view'];
         $this->_viewPath = $config['viewPath'];
-    }
-
-    /**
-     * @param string $view
-     * @param array $params
-     * @return mixed
-     */
-    public function compose(string $view, array $params = [])
-    {
-        return $this->render($view, $params);
     }
 
     /**

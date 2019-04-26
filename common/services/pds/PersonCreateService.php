@@ -3,6 +3,7 @@
 namespace common\services\pds;
 
 use common\services\pds\exceptions\PersonAlreadyExistException;
+use common\utils\SecurityUtils;
 use yii\helpers\Json;
 
 class PersonCreateService extends PersonSearchService
@@ -40,8 +41,7 @@ class PersonCreateService extends PersonSearchService
     private function createPdsPerson(array $attributes, string $token, string $role)
     {
         // NOTE: we need to generate password for user, which we will send to user via email
-        // TODO: Temporary solution
-        $attributes['validation'] = \Yii::$app->security->generateRandomString(8);
+        $attributes['validation'] = SecurityUtils::generatePassword();
         $data = $this->pdsGateway->createPerson($attributes, $token, $role);
         return array_merge(Json::decode($data), ['validation' => $attributes['validation']]);
     }

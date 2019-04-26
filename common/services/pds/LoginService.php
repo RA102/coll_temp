@@ -6,7 +6,6 @@ use common\gateways\pds\PdsGateway;
 use common\helpers\PersonHelper;
 use common\models\person\AccessToken;
 use common\models\person\Person;
-use common\models\system\Setting;
 use yii\helpers\Json;
 
 class LoginService

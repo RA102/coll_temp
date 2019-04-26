@@ -2,6 +2,12 @@
 
 namespace backend\controllers;
 
+use backend\models\forms\PersonCredentialForm;
+use backend\models\forms\PersonForm;
+use common\exceptions\ValidationException;
+use common\helpers\PersonCredentialHelper;
+use common\services\pds\PersonCredentialService;
+use common\services\person\PersonService;
 use Yii;
 use common\models\person\Person;
 use backend\models\search\PersonSearch;
@@ -15,6 +21,9 @@ use yii\filters\VerbFilter;
  */
 class PersonController extends Controller
 {
+    private $personService;
+    private $pdsPersonCredentialService;
+
     /**
      * {@inheritdoc}
      */
@@ -37,6 +46,19 @@ class PersonController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function __construct(
+        string $id,
+        $module,
+        PersonService $personService,
+        PersonCredentialService $pdsPersonCredentialService,
+        array $config = []
+    )
+    {
+        $this->personService = $personService;
+        $this->pdsPersonCredentialService = $pdsPersonCredentialService;
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -71,17 +93,31 @@ class PersonController extends Controller
      * Creates a new Person model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @throws \Exception
      */
     public function actionCreate()
     {
         $model = new Person();
+        $form = new PersonForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $model->setAttributes($form->attributes);
+            $model = $this->personService->create(
+                $model,
+                $form->institution_id,
+                true,
+                $form->indentity,
+                PersonCredentialHelper::TYPE_EMAIL,
+                Yii::$app->user->identity->activeAccessToken->token,
+                Yii::$app->user->identity->person_type
+            );
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'form' => $form
         ]);
     }
 
@@ -95,28 +131,59 @@ class PersonController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $form = new PersonForm();
+        $form->setAttributes($model->getAttributes());
+        $form->institution_id = $model->institution->id;
+        $credentials = $model->personCredentials;
+        $form->indentity = count($credentials) > 0 ? $credentials[0]->indentity : null;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $model->setAttributes($form->attributes);
+
+            $this->personService->update($model);
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'form' => $form
         ]);
     }
 
     /**
-     * Deletes an existing Person model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Updates an existing Person model.
+     * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionCreateCredentials($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $form = new PersonCredentialForm();
+        $form->load(Yii::$app->request->post());
 
-        return $this->redirect(['index']);
+        if ($form->validate()) {
+            try {
+                $this->pdsPersonCredentialService->create(
+                    $model->id,
+                    $form->indentity,
+                    Yii::$app->user->identity->activeAccessToken->token,
+                    $model->person_type
+                );
+            } catch (ValidationException $e) {
+                $form->addErrors($e->errors);
+            } catch (\Exception $e) {
+                Yii::$app->session->setFlash('error', $e->getTraceAsString());
+            }
+        }
+
+        if ($form->hasErrors()) {
+            Yii::$app->session->setFlash('error', current($form->firstErrors));
+        }
+
+        return $this->redirect(['person/update', 'id' => $model->id]);
     }
 
     /**

@@ -31,7 +31,8 @@ use yii\widgets\DetailView;
                 [
                     'attribute' => 'nationality_id',
                     'value' => function(Student $model) {
-                        return $model->nationality->name;
+                        $nationality = $model->nationality;
+                        return $nationality !== null ? $nationality->name : '';
                     }
                 ],
             ],

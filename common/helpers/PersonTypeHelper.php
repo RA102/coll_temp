@@ -2,6 +2,8 @@
 
 namespace common\helpers;
 
+use common\models\person\PersonType;
+
 class PersonTypeHelper
 {
     #Админ
@@ -21,4 +23,18 @@ class PersonTypeHelper
     const PERSON_TYPE_GROUP_PARENT = 3;       // родители
     const PERSON_TYPE_GROUP_SYSTEM = 4;       // системные
     const PERSON_TYPE_GROUP_ELSE = 0;         // другие
+
+    public static function getList()
+    {
+        /* @var $models PersonType[] */
+        $models = PersonType::find()
+            ->where(['is_deleted' => false])
+            ->all();
+        $result = [];
+        foreach ($models as $model) {
+            $result[$model->name] = $model->name;
+        }
+
+        return $result;
+    }
 }
