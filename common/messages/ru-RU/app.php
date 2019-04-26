@@ -265,4 +265,7 @@ return [
     'Reception Exams' => 'Экзамены',
     'Create Reception Exam' => 'Добавление Экзамена',
     'Update Reception Exam' => 'Редактирование Экзамена',
+
+    // APPEAL COMMISSIONS
+    'Appeal Commissions' => 'Апелляционные комиссии',
 ];
