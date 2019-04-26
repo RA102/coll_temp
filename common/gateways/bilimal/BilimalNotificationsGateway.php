@@ -49,11 +49,7 @@ class BilimalNotificationsGateway
                 'Access-Token' => $this->accessToken
             ]
         ]);
-
-        var_dump($response->getStatusCode());
-        var_dump($response->getReasonPhrase());
-        die();
-
+        
         return $response->getStatusCode() !== 201;
     }
 }
