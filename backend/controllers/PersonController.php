@@ -183,7 +183,7 @@ class PersonController extends Controller
             Yii::$app->session->setFlash('error', current($form->firstErrors));
         }
 
-        return $this->refresh();
+        return $this->redirect(['person/update', 'id' => $model->id]);
     }
 
     /**
