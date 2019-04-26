@@ -9,7 +9,7 @@ use yii\web\ForbiddenHttpException;
 class PersonUpdateService extends PersonSearchService
 {
     /**
-     * @param int $person_id
+     * @param int $pds_person_id
      * @param PdsPersonInterface $person
      * @return PdsPersonInterface
      * @throws ForbiddenHttpException
@@ -17,9 +17,9 @@ class PersonUpdateService extends PersonSearchService
      * @throws \yii\web\ServerErrorHttpException
      * @throws \yii\web\UnauthorizedHttpException
      */
-    public function update(int $person_id, PdsPersonInterface $person): PdsPersonInterface
+    public function update(int $pds_person_id, PdsPersonInterface $person): PdsPersonInterface
     {
-        $persons = $this->findOne(['id' => $person_id]);
+        $persons = $this->findOne(['id' => $pds_person_id]);
         if (empty($persons)) {
             throw new PersonNotExistException('Person not exists');
         }
@@ -27,7 +27,7 @@ class PersonUpdateService extends PersonSearchService
         $userToken = $this->getAccessToken();
         $userRole = $this->getRole();
         $query = array_filter($person->getAttributes());
-        $response = $this->updatePdsPerson($person_id, $query, $userToken->token, $userRole);
+        $response = $this->updatePdsPerson($pds_person_id, $query, $userToken->token, $userRole);
         return $this->getPersonObject($response, false);
     }
 

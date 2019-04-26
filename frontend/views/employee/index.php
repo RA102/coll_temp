@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
-    <h1><?=$this->title?> (<?=$dataProvider->count?>)</h1>
+    <h1><?=$this->title?> (<?=$dataProvider->totalCount?>)</h1>
     <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-header">
         <ul class="nav nav-tabs">
             <li role="presentation" class="<?=$searchModel->isActive() ? 'active' : ''?>">
-                <?= Html::a('Текущие сотрудники', Url::current([
+                <?= Html::a(Yii::t('app', 'Current employees'), Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_ACTIVE,
                 ])) ?>
             </li>

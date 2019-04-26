@@ -9,6 +9,7 @@ use Yii;
 use common\models\Course;
 use yii\base\Module;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -59,10 +60,19 @@ class CourseController extends Controller
         TeacherCourseService $teacherCourseService,
         array $config = []
     ) {
-        $this->institution = \Yii::$app->user->identity->institution;
         $this->institutionDisciplineService = $institutionDisciplineService;
         $this->teacherCourseService = $teacherCourseService;
         parent::__construct($id, $module, $config);
+    }
+
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->institution = \Yii::$app->user->identity->institution;
+        return true;
     }
 
     /**
@@ -72,8 +82,13 @@ class CourseController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Course::find()->with([
-                'institutionDiscipline' /** @see Course::getInstitutionDiscipline() */
+            'query' => Course::find()->joinWith([
+                /** @see Course::getInstitutionDiscipline() */
+                'institutionDiscipline' => function (ActiveQuery $query) {
+                    return $query->andWhere([
+                        'institution_id' => $this->institution->id,
+                    ]);
+                }
             ]),
         ]);
 
@@ -187,7 +202,20 @@ class CourseController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Course::findOne($id)) !== null) {
+        /** @var Course|null $model */
+        $model = Course::find()
+            ->joinWith([
+                /** @see Course::getInstitutionDiscipline() */
+                'institutionDiscipline' => function (ActiveQuery $query) {
+                    return $query->andWhere([
+                        'institution_id' => $this->institution->id
+                    ]);
+                }
+            ])
+            ->andWhere([Course::tableName() . '.id' => $id])
+            ->one();
+
+        if ($model !== null) {
             return $model;
         }
 

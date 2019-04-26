@@ -61,7 +61,7 @@ class PersonSearchService
         $model->create_ts = $personData['create_ts'];
         $model->birth_date = $personData['birth_date'];
         $model->iin = $personData['iin'];
-        $model->validation = $personData['validation'];
+        $model->validation = $personData['validation'] ?? null;
         $model->is_new = $is_new;
 
         return $model;

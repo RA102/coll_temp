@@ -43,12 +43,9 @@ frontend\assets\AppAsset::register($this);
 
     <div class="container">
         <div class="site-login">
-
             <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="card-group">
-                        <?= $content ?>
-                    </div>
+                <div class="card-group">
+                    <?= $content ?>
                 </div>
             </div>
         </div>

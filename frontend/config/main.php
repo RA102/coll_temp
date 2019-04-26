@@ -26,7 +26,7 @@ return [
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
-            'name' => 'advanced-frontend',
+            'name' => '3qJKDhkKxunv3ztKTUxBj7ddL6G2uLLPu7MPffnjBFXNEzaEebB4AeJTJwUBm8U4',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

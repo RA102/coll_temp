@@ -10,6 +10,8 @@ $this->title = Yii::t('app', 'Create Student');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Students'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<h1><?=$this->title?></h1>
 <?php $this->beginBlock('content') ?>
     <div class="student-create">
 

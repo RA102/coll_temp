@@ -53,6 +53,7 @@ use yii\web\IdentityInterface;
  * @property PersonContact[] $personContacts
  * @property PersonCredential[] $personCredentials
  * @property PersonLocation[] $personLocations
+ * @property Institution[] $institutions
  * @property Institution $institution
  * @property PersonInstitutionLink[] $personInstitutionLinks
  * @property PersonRelative[] $relatives

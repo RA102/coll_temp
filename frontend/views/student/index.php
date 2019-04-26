@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
-    <h1><?=$this->title?> (<?=$dataProvider->count?>)</h1>
+    <h1><?=$this->title?> (<?=$dataProvider->totalCount?>)</h1>
     <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 
@@ -28,17 +28,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-header">
         <ul class="nav nav-tabs">
             <li role="presentation" class="<?=$searchModel->isActive() ? 'active' : ''?>">
-                <?= Html::a('Текущие учащиеся', Url::current([
+                <?= Html::a(Yii::t('app', 'Current students'), Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_ACTIVE,
                 ])) ?>
             </li>
             <li role="presentation" class="<?=$searchModel->isFired() ? 'active' : ''?>">
-                <?= Html::a('Исключенные учащиеся', Url::current([
+                <?= Html::a(Yii::t('app', 'Expelled students'), Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_FIRED,
                 ])) ?>
             </li>
             <li role="presentation" class="<?=$searchModel->status == Person::STATUS_DELETED ? 'active' : ''?>">
-                <?= Html::a('Удаленные учащиеся', Url::current([
+                <?= Html::a(Yii::t('app', 'Deleted students'), Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_DELETED,
                 ])) ?>
             </li>

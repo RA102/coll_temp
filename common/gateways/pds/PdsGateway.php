@@ -23,7 +23,7 @@ use Psr\Http\Message\ResponseInterface;
 class PdsGateway implements \yii\base\Configurable
 {
     const PERSON_CREDENTIAL_CREATED_STATUS = 1;
-    const DEFAULT_TIMEOUT = 20; // 20 seconds
+    const DEFAULT_TIMEOUT = 30; // 30 seconds
 
     private $httpClient;
     private $jsonDecoder;
@@ -92,12 +92,17 @@ class PdsGateway implements \yii\base\Configurable
     public function search(array $query, string $token, string $role)
     {
         $query_string = http_build_query($query);
-        $headers = [
-            'Authorization' => "Bearer {$token}",
-            'Access-Role'   => $role
-        ];
-        $request = $this->requestFactory->create('get', "/person?{$query_string}", $headers);
-        $response = $this->send($request);
+        $response = $this->httpClient->get("/person?{$query_string}", [
+            'headers' => [
+                'Authorization' => "Bearer {$token}",
+                'Access-Role'   => $role
+            ]
+        ]);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new \yii\web\UnprocessableEntityHttpException('Error occurred: ' . $response->getReasonPhrase());
+        }
+
         return $response->getBody()->getContents();
     }
 

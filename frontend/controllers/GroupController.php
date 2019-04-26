@@ -61,6 +61,7 @@ class GroupController extends Controller
     public function actionIndex()
     {
         $searchModel = new GroupSearch();
+        $searchModel->institution_id = Yii::$app->user->identity->institution->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -98,6 +99,7 @@ class GroupController extends Controller
     public function actionCreate()
     {
         $model = new Group();
+        $model->institution_id = Yii::$app->user->identity->institution->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
@@ -157,7 +159,7 @@ class GroupController extends Controller
 
         $groups = [];
         if ($allocationModel->class) {
-            $groups = $this->groupService->getByClass($allocationModel->class);
+//            $groups = $this->groupService->getByClass($allocationModel->class, Yii::$app->user->identity->institution->id);
         }
 
         $fromCurrentGroupSearch = new StudentSearch();
@@ -195,13 +197,13 @@ class GroupController extends Controller
     public function actionAddStudent($id, $group_id)
     {
         $this->groupService->addStudent($id, $group_id);
-        $this->redirect(Url::previous());
+        $this->goBack();
     }
 
     public function actionDeleteStudent($id, $group_id)
     {
         $this->groupService->deleteStudent($id, $group_id);
-        return $this->redirect(Url::previous());
+        return $this->goBack();
     }
 
     public function actionByYear()
@@ -212,7 +214,7 @@ class GroupController extends Controller
             $class = $parents[0];
 
             return Json::encode([
-                'output' => $this->groupService->getAssociativeByClass($class),
+                'output' => $this->groupService->getAssociativeByClass($class, Yii::$app->user->identity->institution->id),
                 'selected' => ''
             ]);
         }

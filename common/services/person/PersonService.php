@@ -63,11 +63,7 @@ class PersonService
 
         $person = Person::findOne(['iin' => $model->iin]);
         if ($person) {
-            $personInstitutionLink = PersonInstitutionLink::findOne([
-                'person_id'      => $person->id,
-                'institution_id' => $institution_id
-            ]);
-            if ($personInstitutionLink) {
+            if ($person->institution) {
                 throw new \Exception('Person is attached to institution');
             }
 

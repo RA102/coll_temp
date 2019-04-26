@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\services\organization\InstitutionDisciplineService;
 use Yii;
 use common\models\organization\InstitutionDiscipline;
 use yii\data\ActiveDataProvider;
@@ -9,12 +10,16 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Module;
 
 /**
  * InstitutionDisciplineController implements the CRUD actions for InstitutionDiscipline model.
  */
 class InstitutionDisciplineController extends Controller
 {
+    private $institution;
+    private $institutionDisciplineService;
+
     /**
      * {@inheritdoc}
      */
@@ -44,6 +49,26 @@ class InstitutionDisciplineController extends Controller
         ];
     }
 
+    public function __construct(
+        string $id,
+        Module $module,
+        InstitutionDisciplineService $institutionDisciplineService,
+        array $config = []
+    ) {
+        $this->institutionDisciplineService = $institutionDisciplineService;
+        parent::__construct($id, $module, $config);
+    }
+
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $this->institution = \Yii::$app->user->identity->institution;
+        return true;
+    }
+
     /**
      * Lists all InstitutionDiscipline models.
      * @return mixed
@@ -51,7 +76,9 @@ class InstitutionDisciplineController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => InstitutionDiscipline::find(),
+            'query' => InstitutionDiscipline::find()->andWhere([
+                'institution_id' => $this->institution->id /** TODO @see InstitutionDisciplineService::getInstitutionDisciplines() */
+            ])
         ]);
 
         return $this->render('index', [
@@ -139,7 +166,15 @@ class InstitutionDisciplineController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = InstitutionDiscipline::findOne($id)) !== null) {
+        /** @var InstitutionDiscipline|null $model */
+        $model = InstitutionDiscipline::find()
+            ->andWhere([
+                'institution_id' => $this->institution->id,
+                'id' => $id,
+            ])
+            ->one(); /** @see InstitutionDisciplineService::getInstitutionDisciplines() */
+
+        if ($model !== null) {
             return $model;
         }
 

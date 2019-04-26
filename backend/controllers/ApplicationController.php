@@ -7,6 +7,7 @@ use Yii;
 use common\models\organization\InstitutionApplication;
 use backend\search\InstitutionApplicationSearch;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -62,10 +63,12 @@ class ApplicationController extends Controller
     {
         $searchModel = new InstitutionApplicationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $cities = ArrayHelper::map($this->applicationService->getExistingCities(), 'id', 'caption_current');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'cities' => $cities
         ]);
     }
 

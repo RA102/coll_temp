@@ -29,6 +29,15 @@ class PersonHelper
         ];
     }
 
+    public static function getStatusList()
+    {
+        return [
+            Person::STATUS_ACTIVE => Yii::t('app', 'active'),
+            Person::STATUS_FIRED => Yii::t('app', 'fired'),
+            Person::STATUS_DELETED => Yii::t('app', 'deleted'),
+        ];
+    }
+
     /**
      * Decode JWT token
      * @param  string $token access token to decode
@@ -52,7 +61,6 @@ class PersonHelper
         $decodedArray = (array)$decoded;
         return $decodedArray;
     }
-
 
 
     /**
