@@ -291,3 +291,4 @@ function formatMessage($message, $styles)
 
     return sprintf("\x1b[%sm", implode(';', array_map('getStyleCode', $styles))) . $message . "\x1b[0m";
 }
+
