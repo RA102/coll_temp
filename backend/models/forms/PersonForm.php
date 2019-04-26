@@ -32,7 +32,7 @@ class PersonForm extends Model
     public function rules()
     {
         return [
-            [['firstname', 'lastname', 'middlename', 'iin', 'person_type', 'birth_date', 'type', 'institution_id', 'indentity'], 'required'],
+            [['firstname', 'lastname', 'middlename', 'iin', 'person_type', 'birth_date', 'type', 'institution_id', 'indentity', 'status'], 'required'],
 
             [['status', 'sex', 'nationality_id', 'type', 'person_type'], 'default', 'value' => null],
             [['status', 'sex', 'nationality_id', 'type', 'id', 'institution_id'], 'integer'],
