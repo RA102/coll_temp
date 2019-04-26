@@ -175,11 +175,7 @@ class PersonController extends Controller
             } catch (ValidationException $e) {
                 $form->addErrors($e->errors);
             } catch (\Exception $e) {
-                echo $e->getMessage();
-                echo '<hr/>';
-                echo $e->getTraceAsString();
-                die();
-                Yii::$app->session->setFlash('error', Yii::t('app/error', 'Generic'));
+                Yii::$app->session->setFlash('error', $e->getTraceAsString());
             }
         }
 
