@@ -126,8 +126,15 @@ class PersonController extends Controller
         $model = $this->findModel($id);
         $form = new PersonForm();
         $form->setAttributes($model->getAttributes());
+        $form->institution_id = $model->institution->id;
+        $credentials = $model->personCredentials;
+        $form->indentity = count($credentials) > 0 ? $credentials[0]->indentity : null;
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $model->setAttributes($form->attributes);
+
+            $this->personService->update($model);
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
