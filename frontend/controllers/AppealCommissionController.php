@@ -5,7 +5,6 @@ namespace frontend\controllers;
 use common\models\reception\Commission;
 use Yii;
 use common\models\reception\AppealCommission;
-use frontend\search\AppealCommissionSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -26,6 +25,7 @@ class AppealCommissionController extends Controller
                         'actions' => [
                             'view',
                             'create',
+                            'update',
                             'delete'
                         ],
                         'allow' => true,
@@ -87,7 +87,7 @@ class AppealCommissionController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $id]);
         }
 
         return $this->render('update', [
