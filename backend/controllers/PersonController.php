@@ -169,7 +169,7 @@ class PersonController extends Controller
                 $this->pdsPersonCredentialService->create(
                     $model->id,
                     $form->indentity,
-                    $model->activeAccessToken->token,
+                    Yii::$app->user->identity->activeAccessToken->token,
                     $model->person_type
                 );
             } catch (ValidationException $e) {
