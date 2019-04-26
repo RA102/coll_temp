@@ -35,11 +35,11 @@ return [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
-                [
-                    'class'  => 'common\components\SentryTarget',
-                    'dsn'    => $params['sentry_dsn'],
-                    'levels' => ['error'],
-                ],
+//                [
+//                    'class'  => 'common\components\SentryTarget',
+//                    'dsn'    => $params['sentry_dsn'],
+//                    'levels' => ['error'],
+//                ],
             ],
         ],
         'errorHandler' => [
