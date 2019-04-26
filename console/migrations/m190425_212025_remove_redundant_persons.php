@@ -16,16 +16,24 @@ class m190425_212025_remove_redundant_persons extends Migration
      */
     public function safeUp()
     {
+        $this->createIndex('ix_person_portal_uid', Person::tableName(), 'portal_uid');
+
         /* @var Person[] $persons */
-        $persons = Person::find()->where(['<=', 'id', $this->max_id])->all();
+        $persons = Person::find()
+            ->joinWith('institutions')
+            ->where(['<=', Person::tableName() . '.id', $this->max_id])
+            ->orderBy(Person::tableName() . '.id')
+            ->all();
+        $total = count($persons);
+        $persons_delete = [];
         $i = $j = 0;
         foreach ($persons as $person) {
+            $total--;
             if (count($person->institutions) > 0) {
                 continue;
             }
 
             if ($person->portal_uid !== null) {
-
                 /* @var Person[] $otherPersons */
                 $otherPersons = Person::find()
                     ->where([
@@ -42,12 +50,14 @@ class m190425_212025_remove_redundant_persons extends Migration
                         $this->moveCredentials($person, $otherPerson);
                         $i++;
                     }
-                    $person->delete();
-                    echo "--- \n";
+                    array_push($persons_delete, $person->id);
+                    echo $total . "--- \n";
                     $j++;
                 }
             }
         }
+
+        $this->delete(Person::tableName(), ['id' => $persons_delete]);
 
         echo "Person Found: " . $j . "\n";
         echo "Other person Found: " . $i . "\n";
@@ -58,7 +68,7 @@ class m190425_212025_remove_redundant_persons extends Migration
      */
     public function safeDown()
     {
-
+        $this->dropIndex('ix_person_portal_uid', Person::tableName());
     }
 
     private function moveCredentials(Person $person, Person $newPerson)
