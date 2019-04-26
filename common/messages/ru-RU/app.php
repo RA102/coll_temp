@@ -194,6 +194,7 @@ return [
     'Discipline Type ENT' => 'Предметы для ЕНТ',
     'Discipline Type Exam' => 'Экзаменационные',
 
+    'Institution Discipline' => 'Предмет',
     'Institution Disciplines' => 'Предметы',
     'Institution Discipline ID' => 'Предмет',
     'Discipline ID' => 'Дисциплина',
@@ -210,6 +211,7 @@ return [
     'Teacher Courses' => 'Курсы учителя',
     'Create Teacher Course' => 'Добавление курса учителя',
     'Update Teacher Course' => 'Редактирование курса учителя',
+    'Teacher' => 'Учитель',
     'Teacher ID' => 'Учитель',
     'Teacher Course Start TS' => 'Начало курса учителя',
     'Teacher Course End TS' => 'Конец курса учителя',
@@ -261,4 +263,6 @@ return [
     // RECEPTION EXAMS
     'Reception Exam' => 'Экзамен',
     'Reception Exams' => 'Экзамены',
+    'Create Reception Exam' => 'Добавление Экзамена',
+    'Update Reception Exam' => 'Редактирование Экзамена',
 ];

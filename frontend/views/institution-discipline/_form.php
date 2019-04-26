@@ -36,8 +36,6 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
         ],
     ]) ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
-
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
