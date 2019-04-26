@@ -4,6 +4,7 @@ namespace common\models\reception;
 
 use common\models\organization\Institution;
 use common\models\organization\InstitutionDiscipline;
+use common\models\ReceptionGroup;
 use Yii;
 
 /**
@@ -25,6 +26,7 @@ use Yii;
  *
  * @property Institution $institution
  * @property InstitutionDiscipline[] $institutionDisciplines
+ * @property ReceptionGroup[] $receptionGroups
  */
 class Commission extends \yii\db\ActiveRecord
 {
@@ -118,6 +120,14 @@ class Commission extends \yii\db\ActiveRecord
     public function getInstitutionDisciplines()
     {
         return $this->hasMany(InstitutionDiscipline::class, ['id' => 'institution_discipline_id'])->viaTable('link.commission_discipline_link', ['commission_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReceptionGroups()
+    {
+        return $this->hasMany(ReceptionGroup::class, ['commission_id' => 'id']);
     }
 
     public function getDateRangeMap()

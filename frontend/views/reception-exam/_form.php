@@ -6,8 +6,9 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\ReceptionExam */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $institutionDisciplines common\models\organization\InstitutionDiscipline[] */
 /* @var $teachers common\models\person\Employee[] */
+/* @var $institutionDisciplines common\models\organization\InstitutionDiscipline[] */
+/* @var $receptionGroups common\models\ReceptionGroup[] */
 ?>
 
 <div class="reception-exam-form">
@@ -29,6 +30,16 @@ use yii\widgets\ActiveForm;
         'theme' => 'default',
         'pluginOptions' => [
             'allowClear' => true,
+        ],
+    ]) ?>
+
+    <?= $form->field($model, 'group_ids')->widget(\kartik\select2\Select2::class, [
+        'data' => \yii\helpers\ArrayHelper::map($receptionGroups, 'id', 'caption_current'), /** @see Group::$caption_current */
+        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+        'theme' => 'default',
+        'pluginOptions' => [
+            'allowClear' => true,
+            'multiple' => true,
         ],
     ]) ?>
 

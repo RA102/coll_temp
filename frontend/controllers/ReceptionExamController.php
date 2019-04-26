@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\organization\Institution;
 use common\models\organization\InstitutionDiscipline;
 use common\models\reception\Commission;
+use common\models\ReceptionGroup;
 use common\services\organization\InstitutionDisciplineService;
 use common\services\person\EmployeeService;
 use common\services\reception\CommissionService;
@@ -95,6 +96,8 @@ class ReceptionExamController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => ReceptionExam::find()->andWhere([
                 'commission_id' => $commission->id,
+            ])->with([
+                'receptionGroups' /** @see ReceptionExam::getReceptionGroups() */
             ]),
         ]);
 
@@ -136,7 +139,14 @@ class ReceptionExamController extends Controller
         if ($receptionExam->load(Yii::$app->request->post())) {
             $receptionExam->commission_id = $commission->id;
 
+            $transaction = \Yii::$app->db->beginTransaction();
             if ($receptionExam->save()) {
+                foreach ($receptionExam->group_ids as $group_id) {
+                    $receptionGroup = ReceptionGroup::findOne($group_id);
+                    /** @see ReceptionExam::getReceptionGroups() */
+                    $receptionExam->link('receptionGroups', $receptionGroup);
+                }
+                $transaction->commit();
                 return $this->redirect(['reception-exam/index', 'commission_id' => $receptionExam->commission_id]);
             }
         }
@@ -146,26 +156,7 @@ class ReceptionExamController extends Controller
             'date' => $date,
             'institutionDisciplines' => $this->institutionDisciplineService->getInstitutionDisciplines($this->institution),
             'teachers' => $this->employeeService->getTeachers($this->institution),
-        ]);
-    }
-
-    public function actionUpdate($commission_id, $id)
-    {
-        $commission = $this->findCommission($this->institution, $commission_id);
-        $receptionExam = $this->findCommissionExam($commission, $id);
-
-        if ($receptionExam->load(Yii::$app->request->post())) {
-            $receptionExam->commission_id = $commission->id;
-
-            if ($receptionExam->save()) {
-                return $this->redirect(['reception-exam/index', 'commission_id' => $receptionExam->commission_id]);
-            }
-        }
-
-        return $this->render('update', [
-            'model' => $receptionExam,
-            'institutionDiscipline' => $receptionExam->institutionDiscipline,
-            'teachers' => $this->employeeService->getTeachers($this->institution),
+            'receptionGroups' => $commission->receptionGroups,
         ]);
     }
 

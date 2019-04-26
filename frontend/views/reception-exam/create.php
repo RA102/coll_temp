@@ -6,6 +6,7 @@ use yii\helpers\Html;
 /* @var $model common\models\ReceptionExam */
 /* @var $teachers common\models\person\Employee[] */
 /* @var $institutionDisciplines common\models\organization\InstitutionDiscipline[] */
+/* @var $receptionGroups common\models\ReceptionGroup[] */
 
 $this->title = Yii::t('app', 'Create Reception Exam');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Reception Exams'), 'url' => ['index']];
@@ -20,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'teachers' => $teachers,
             'institutionDisciplines' => $institutionDisciplines,
+            'receptionGroups' => $receptionGroups
         ]) ?>
     </div>
 </div>

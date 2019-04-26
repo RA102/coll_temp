@@ -23,7 +23,7 @@ class ReceptionExam extends \yii\db\ActiveRecord
 {
     public $date;
     public $time;
-    public $group_ids;
+    public $group_ids = [];
 
     /**
      * {@inheritdoc}
@@ -39,7 +39,7 @@ class ReceptionExam extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['institution_discipline_id', 'date', 'time', 'date_ts'], 'required'],
+            [['institution_discipline_id', 'date', 'time'], 'required'],
             [['institution_discipline_id', 'teacher_id'], 'default', 'value' => null],
             [['institution_discipline_id', 'teacher_id'], 'integer'],
             [['date_ts'], function ($attribute) {
