@@ -14,6 +14,7 @@ return [
         'commission' => '/commission/index',
         'commission-member/<commission_id:\d+>' => '/commission-member/index',
         'reception-group/<commission_id:\d+>' => '/reception-group/index',
+        'reception-exam/<commission_id:\d+>' => '/reception-exam/index',
         'appeal-commission/view/<id:\d+>' => '/appeal-commission/view',
         'appeal-commission/create/<id:\d+>' => '/appeal-commission/create',
         '<a:\w+>' => 'site/<a>',
