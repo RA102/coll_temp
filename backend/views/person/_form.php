@@ -1,5 +1,6 @@
 <?php
 
+use backend\models\forms\PersonCredentialForm;
 use common\helpers\InstitutionHelper;
 use common\helpers\PersonHelper;
 use common\helpers\PersonTypeHelper;
@@ -7,6 +8,7 @@ use common\models\Nationality;
 use common\models\person\Person;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use common\components\ActiveForm;
 use yii\widgets\DetailView;
@@ -94,7 +96,9 @@ use yii\widgets\DetailView;
                     'theme' => 'default',
                 ]) ?>
 
-                <?= $activeForm->field($form, 'indentity')->textInput() ?>
+                <?php if ($model->isNewRecord): ?>
+                    <?= $activeForm->field($form, 'indentity')->textInput() ?>
+                <?php endif; ?>
             </fieldset>
         </div>
     </div>
@@ -105,6 +109,31 @@ use yii\widgets\DetailView;
     </div>
 
     <?php ActiveForm::end(); ?>
+
+    <?php if (!$model->isNewRecord): ?>
+        <label>Логины:</label>
+        <?php foreach ($model->personCredentials as $credential): ?>
+            <p><?= $credential->indentity ?></p>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php
+    $personCredentialForm = new PersonCredentialForm();
+    Modal::begin([
+        'header' => '<span class="modal-title">Добавить авторизационную запись</span>',
+        'toggleButton' => [
+            'label' => Yii::t('app', 'Добавить'),
+            'class' => 'btn btn-primary'
+        ]
+    ]);
+    $form = ActiveForm::begin(['action' => ['/person/create-credentials', 'id' => $model->id]]);
+    echo $form->field($personCredentialForm, 'indentity')->label(false);
+    echo Html::beginTag('div', ['class' => 'text-right']);
+    echo Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']);
+    echo Html::endTag('div');
+    ActiveForm::end();
+    Modal::end();
+    ?>
 
     <?= DetailView::widget([
         'model' => $model,

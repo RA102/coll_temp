@@ -2,8 +2,11 @@
 
 namespace backend\controllers;
 
+use backend\models\forms\PersonCredentialForm;
 use backend\models\forms\PersonForm;
+use common\exceptions\ValidationException;
 use common\helpers\PersonCredentialHelper;
+use common\services\pds\PersonCredentialService;
 use common\services\person\PersonService;
 use Yii;
 use common\models\person\Person;
@@ -19,6 +22,7 @@ use yii\filters\VerbFilter;
 class PersonController extends Controller
 {
     private $personService;
+    private $pdsPersonCredentialService;
 
     /**
      * {@inheritdoc}
@@ -48,9 +52,12 @@ class PersonController extends Controller
         string $id,
         $module,
         PersonService $personService,
+        PersonCredentialService $pdsPersonCredentialService,
         array $config = []
-    ) {
+    )
+    {
         $this->personService = $personService;
+        $this->pdsPersonCredentialService = $pdsPersonCredentialService;
         parent::__construct($id, $module, $config);
     }
 
@@ -142,6 +149,41 @@ class PersonController extends Controller
             'model' => $model,
             'form' => $form
         ]);
+    }
+
+    /**
+     * Updates an existing Person model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionCreateCredentials($id)
+    {
+        $model = $this->findModel($id);
+        $form = new PersonCredentialForm();
+        $form->load(Yii::$app->request->post());
+
+        if ($form->validate()) {
+            try {
+                $this->pdsPersonCredentialService->create(
+                    $model->id,
+                    $form->indentity,
+                    $model->activeAccessToken->token,
+                    $model->person_type
+                );
+            } catch (ValidationException $e) {
+                $form->addErrors($e->errors);
+            } catch (\Exception $e) {
+                Yii::$app->session->setFlash('error', Yii::t('app/error', 'Generic'));
+            }
+        }
+
+        if ($form->hasErrors()) {
+            Yii::$app->session->setFlash('error', current($form->firstErrors));
+        }
+
+        return $this->refresh();
     }
 
     /**
