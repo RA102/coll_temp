@@ -17,6 +17,7 @@ return [
         'reception-exam/<commission_id:\d+>' => '/reception-exam/index',
         'appeal-commission/view/<id:\d+>' => '/appeal-commission/view',
         'appeal-commission/create/<id:\d+>' => '/appeal-commission/create',
+        'appeal-commission-member/<commission_id:\d+>' => '/appeal-commission-member/index',
         '<a:\w+>' => 'site/<a>',
 
         'POST pds/set-access-token' => 'api/pds/set-access-token',

@@ -2,6 +2,8 @@
 
 namespace common\models\link;
 
+use common\helpers\CommissionMemberHelper;
+use common\models\person\Employee;
 use common\models\person\Person;
 use common\models\reception\AppealCommission;
 use Yii;
@@ -54,5 +56,17 @@ class AppealCommissionMemberLink extends \yii\db\ActiveRecord
             'create_ts' => Yii::t('app', 'Create Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMember()
+    {
+        return $this->hasOne(Employee::class, ['id' => 'member_id']);
+    }
+
+    public function getRoleValue() {
+        return CommissionMemberHelper::getRoleList()[$this->role];
     }
 }
