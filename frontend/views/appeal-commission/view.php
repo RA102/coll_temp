@@ -46,3 +46,18 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+
+<?php if ($model) {?>
+<div class="row">
+    <div class="col-md-4">
+        <a href="<?= \yii\helpers\Url::to(['/appeal-commission-member/index', 'commission_id' => $model->id]) ?>">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fa fa-user-tie fa-3x"></i>
+                    <h4><?=Yii::t('app', 'Commission members')?></h4>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+<?php }?>
