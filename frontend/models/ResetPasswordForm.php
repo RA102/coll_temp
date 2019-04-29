@@ -37,9 +37,9 @@ class ResetPasswordForm extends Model
             [['password', 'repassword'], 'required'],
             [['password', 'repassword'], 'string', 'min' => 8],
             [
-                'password',
+                'repassword',
                 'compare',
-                'compareAttribute' => 'repassword',
+                'compareAttribute' => 'password',
             ],
         ];
     }

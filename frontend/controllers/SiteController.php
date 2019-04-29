@@ -120,7 +120,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->redirect(['login']);
+        return $this->goHome();
     }
 
     /**
@@ -155,7 +155,7 @@ class SiteController extends Controller
             try {
                 $this->pdsPersonService->resetPassword($model->email);
                 Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-                return $this->redirect(['login']);
+                return $this->goHome();
             } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error',
                     'Sorry, we are unable to reset password for the provided email address.');
@@ -187,7 +187,7 @@ class SiteController extends Controller
             try {
                 $this->pdsPersonService->changePassword($token, $model->password, $model->repassword);
                 Yii::$app->session->setFlash('success', 'New password saved.');
-                return $this->redirect(['login']);
+                return $this->goHome();
             } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error', \Yii::t('app/error', 'Generic'));
             }
