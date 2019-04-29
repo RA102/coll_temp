@@ -5,7 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $token string */
 
-$resetLink = Yii::$app->urlManager->createAbsoluteUrl(['site/reset-password', 'token' => $token]);
+$host = Yii::$app->params['college_host'];
+$resetLink = $host . Yii::$app->urlManager->createUrl(['site/reset-password', 'token' => $token]);
 ?>
 <div class="password-reset">
     <p>Пройдите по ссылке для изменения пароля:</p>
