@@ -2,12 +2,12 @@
 
 namespace common\utils\httpClient;
 
+use common\utils\Logger;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use common\utils\Logger;
 
 class HttpClientFactory
 {
@@ -32,7 +32,7 @@ class HttpClientFactory
             $stack->push(
                 Middleware::log(
                     $this->getLogger($namespace),
-                    new MessageFormatter('{req_body} - {res_body}')
+                    new MessageFormatter('{request} - {response}')
                 )
             );
 

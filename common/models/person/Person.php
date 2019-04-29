@@ -62,6 +62,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     const TYPE_UNDEFINED = 0;
     const TYPE_STUDENT = 1;
     const TYPE_EMPLOYEE = 2;
+    const TYPE_ENTRANT = 3;
 
     const SEX_NONE = 0;
     const SEX_MALE = 1;

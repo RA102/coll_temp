@@ -17,7 +17,11 @@
                         'items' => [
                             ['label' => Yii::t('app','Текушая комиссия'), 'icon' => 'file-code-o', 'url' => $activeCommission ? ['commission/view', 'id' => $activeCommission->id] : ['/commission/current']],
                             ['label' => Yii::t('app','Архив комиссий'), 'icon' => 'dashboard', 'url' => ['/commission/index']],
-//                            ['label' => Yii::t('app','Заявления'), 'icon' => 'dashboard', 'url' => ['/']],
+                            [
+                                'label' => Yii::t('app', 'Заявления'),
+                                'icon'  => 'dashboard',
+                                'url'   => ['/admission-application/index']
+                            ],
 //                            ['label' => Yii::t('app','Абитуриенты'), 'icon' => 'dashboard', 'url' => ['/']],
                         ],
                     ],
