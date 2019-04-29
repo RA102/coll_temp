@@ -102,15 +102,19 @@ class PersonController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model->setAttributes($form->attributes);
-            $model = $this->personService->create(
-                $model,
-                $form->institution_id,
-                true,
-                $form->indentity,
-                PersonCredentialHelper::TYPE_EMAIL,
-                Yii::$app->user->identity->activeAccessToken->token,
-                Yii::$app->user->identity->person_type
-            );
+            try {
+                $model = $this->personService->create(
+                    $model,
+                    $form->institution_id,
+                    true,
+                    $form->indentity,
+                    PersonCredentialHelper::TYPE_EMAIL,
+                    Yii::$app->user->identity->activeAccessToken->token,
+                    Yii::$app->user->identity->person_type
+                );
+            } catch (\Exception $e) {
+                Yii::$app->session->setFlash('error', $e->getTraceAsString());
+            }
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
