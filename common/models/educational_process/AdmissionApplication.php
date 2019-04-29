@@ -12,6 +12,7 @@ use Yii;
  *
  * @property int $id
  * @property int $status
+ * @property int $type
  * @property int $institution_id
  * @property int $person_id
  * @property array $properties
@@ -41,6 +42,7 @@ class AdmissionApplication extends \yii\db\ActiveRecord
         $model = new self();
         $model->institution_id = $institution_id;
         $model->properties = $properties;
+        $model->type = ApplicationHelper::APPLICATION_TYPE_ADMISSION;
         $model->status = ApplicationHelper::STATUS_CREATED;
         return $model;
     }
@@ -51,9 +53,9 @@ class AdmissionApplication extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'institution_id', 'person_id'], 'default', 'value' => null],
-            [['status', 'institution_id', 'person_id'], 'integer'],
-            [['institution_id'], 'required'],
+            [['status', 'institution_id', 'person_id', 'type'], 'default', 'value' => null],
+            [['status', 'institution_id', 'person_id', 'type'], 'integer'],
+            [['institution_id', 'status', 'type'], 'required'],
             [['is_deleted'], 'default', 'value' => false],
             [['is_deleted'], 'boolean'],
             [['delete_ts', 'create_ts', 'update_ts', 'properties'], 'safe'],
@@ -68,6 +70,7 @@ class AdmissionApplication extends \yii\db\ActiveRecord
         return [
             'id'             => Yii::t('app', 'ID'),
             'status'         => Yii::t('app', 'Status'),
+            'type'           => Yii::t('app', 'Type'),
             'institution_id' => Yii::t('app', 'Institution ID'),
             'person_id'      => Yii::t('app', 'Person ID'),
             'is_deleted'     => Yii::t('app', 'Is Deleted'),

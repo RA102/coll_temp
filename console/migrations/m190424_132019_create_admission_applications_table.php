@@ -21,6 +21,7 @@ class m190424_132019_create_admission_applications_table extends Migration
             'institution_id' => $this->integer()->notNull(),
             'person_id'      => $this->integer(),
             'properties'     => 'jsonb',
+            'type'           => $this->smallInteger()->notNull(),
             'is_deleted'     => $this->boolean()->defaultValue(false)->notNull(),
             'delete_ts'      => $this->timestamp(),
             'create_ts'      => $this->timestamp()->defaultExpression('now()'),

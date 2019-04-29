@@ -76,7 +76,7 @@ class AdmissionApplicationController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => AdmissionApplication::find(),
+            'query' => AdmissionApplication::find()->where(['institution_id' => Yii::$app->user->identity->institution->id]),
         ]);
 
         return $this->render('index', [

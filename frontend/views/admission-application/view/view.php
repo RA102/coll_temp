@@ -4,7 +4,7 @@
 /* @var $model common\models\educational_process\AdmissionApplication */
 
 $this->title = Yii::t('app', 'Заявление') . " №{$model->id}";
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Applications'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Заявления'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
