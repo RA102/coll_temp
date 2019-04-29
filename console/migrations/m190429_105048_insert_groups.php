@@ -35,8 +35,6 @@ class m190429_105048_insert_groups extends Migration
      */
     public function down()
     {
-        $this->delete(Group::tableName(), ['>', 'id', 5]);
-        $this->delete(StudentGroupLink::tableName(), ['>', 'id', 8]);
     }
 
     private function insertInstitutions()
