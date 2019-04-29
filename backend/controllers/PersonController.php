@@ -113,7 +113,7 @@ class PersonController extends Controller
                     Yii::$app->user->identity->person_type
                 );
             } catch (\Exception $e) {
-                Yii::$app->session->setFlash('error', $e->getTraceAsString());
+                Yii::$app->session->setFlash('error', $e->getMessage() . $e->getTraceAsString());
             }
 
             return $this->redirect(['view', 'id' => $model->id]);
