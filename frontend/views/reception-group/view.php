@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\ReceptionGroup */
+/* @var $examDataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'View');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Groups'), 'url' => ['index', 'commission_id' => $model->commission_id]];
@@ -26,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <div class="clearfix"></div>
 
-<div class="reception-group-index skin-white">
+<div class="card">
     <div class="card-body">
         <div class="reception-group-view">
 
@@ -45,7 +46,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     'delete_ts',
                 ],
             ]) ?>
-
         </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <?= \yii\grid\GridView::widget([
+            'dataProvider' => $examDataProvider,
+            'columns' => [
+                'date',
+                'time',
+                [
+                    'attribute' => 'institution_discipline_id',
+                    'value' => function (\common\models\ReceptionExam $model) {
+                        return $model->institutionDiscipline->caption_current;
+                    },
+                ],
+            ],
+        ]); ?>
     </div>
 </div>

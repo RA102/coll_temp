@@ -225,4 +225,22 @@ return [
     'Commission chairman' => 'Председатель комиссии',
     'Member ID' => 'Участник',
     'Close' => 'Закрыть',
+
+    // RECEPTION GROUPS
+    'Budget Places' => 'Количество бюджетных мест',
+    'Commercial Places' => 'Количество коммерческих мест',
+    'View' => 'Просмотр',
+
+    // RECEPTION EXAMS
+    'Reception Exam' => 'Экзамен',
+    'Reception Exams' => 'Экзамены',
+    'Create Reception Exam' => 'Добавление Экзамена',
+    'Update Reception Exam' => 'Редактирование Экзамена',
+    'Exams schedule' => 'Расписание экзаменов',
+    'Exam Date' => 'Дата',
+    'Exam Time' => 'Время',
+
+    // APPEAL COMMISSIONS
+    'Appeal Commissions' => 'Апелляционные комиссии',
+    'Appeal Commission' => 'Апелляционная комиссия',
 ];

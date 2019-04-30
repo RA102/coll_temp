@@ -2,9 +2,12 @@
 
 namespace frontend\controllers;
 
+use common\models\ReceptionExam;
 use Yii;
 use common\models\ReceptionGroup;
 use frontend\search\ReceptionGroupSearch;
+use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -65,8 +68,27 @@ class ReceptionGroupController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        $examDataProvider = new ActiveDataProvider([
+            'query' => ReceptionExam::find()
+                ->joinWith([
+                    /** @see ReceptionExam::getReceptionGroups() */
+                    'receptionGroups' => function (ActiveQuery $query) use ($model) {
+                        return $query->andWhere([
+                            ReceptionGroup::tableName() . '.id' => $model->id,
+                        ]);
+                    },
+                ])
+                ->with([
+                    /** @see ReceptionExam::getInstitutionDiscipline() */
+                    'institutionDiscipline'
+                ]),
+        ]);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'examDataProvider' => $examDataProvider,
         ]);
     }
 

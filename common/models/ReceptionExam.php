@@ -85,6 +85,8 @@ class ReceptionExam extends \yii\db\ActiveRecord
             'teacher_id' => Yii::t('app', 'Teacher'),
             'date_ts' => Yii::t('app', 'Date TS'),
             'group_ids' => Yii::t('app', 'Groups'),
+            'date' => Yii::t('app', 'Exam Date'),
+            'time' => Yii::t('app', 'Exam Time'),
         ];
     }
 
@@ -101,7 +103,7 @@ class ReceptionExam extends \yii\db\ActiveRecord
      */
     public function getInstitutionDiscipline()
     {
-        return $this->hasOne(InstitutionDiscipline::class, ['id' => 'institution__discipline_id']);
+        return $this->hasOne(InstitutionDiscipline::class, ['id' => 'institution_discipline_id']);
     }
 
     /**
