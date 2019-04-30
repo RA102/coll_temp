@@ -6,7 +6,6 @@ use Yii;
 
 class ApplicationHelper
 {
-
     const APPLICATION_TYPE_ADMISSION = 1; // заявка на принятие в организацию
     const APPLICATION_TYPE_INSTITUTION = 2; // заявка организации на подключение к системе
     const APPLICATION_TYPE_APPEALS = 3; //заявка на апелляцию
@@ -67,6 +66,22 @@ class ApplicationHelper
             self::BASED_CLASSES_ELEVEN                      => Yii::t('app', 'На базе 11 классов'),
             self::BASED_CLASSES_TIPO_CORRESPONDS_TO_PROFILE => Yii::t('app', 'ТиПО соотв. профилю'),
             self::BASED_CLASSES_TIPO_DOES_NOT_MATCH_PROFILE => Yii::t('app', 'ТиПО не соотв. профилю'),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAdmissionApplicationStatusLabels()
+    {
+        return [
+            self::STATUS_CREATED   => Yii::t('app',
+                'Принято (принята онлайн заявка, ожидает заявление абитуриента и документов)'),
+            self::STATUS_ACCEPTED  => Yii::t('app',
+                'Зарегистрировано  (принят полный пакет документов) при этом статусе идет распределение по группам)'),
+            self::STATUS_DECLINED  => Yii::t('app', 'Отказано (указывается причина)'),
+            self::STATUS_WITHDRAWN => Yii::t('app', 'Отозвано (указывается основание)'),
+            self::STATUS_DELETED   => Yii::t('app', 'Удалено')
         ];
     }
 }

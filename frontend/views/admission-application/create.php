@@ -11,14 +11,12 @@ $this->params['breadcrumbs'][] = [
 ];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
-<h1><?= $this->title ?></h1>
-<?php $this->beginBlock('content') ?>
 <div class="admission-application-create">
+
+    <h1><?= $this->title ?></h1>
+
     <?= $this->render('_form', [
         'admissionApplicationForm' => $admissionApplicationForm,
         'specialities'             => $specialities
     ]) ?>
 </div>
-<?php $this->endBlock() ?>
-<?= $this->render('_layout') ?>
