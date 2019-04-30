@@ -3,7 +3,9 @@
 namespace frontend\controllers;
 
 use common\models\educational_process\AdmissionApplication;
+use common\models\ReceptionGroup;
 use common\services\educational_process\AdmissionApplicationService;
+use frontend\models\educational_process\applications\ChangeStatusForm;
 use frontend\models\forms\AdmissionApplicationForm;
 use Yii;
 use yii\base\Module;
@@ -54,6 +56,7 @@ class AdmissionApplicationController extends Controller
                             'create',
                             'update',
                             'delete',
+                            'change-status'
                         ],
                         'allow'   => true,
                         'roles'   => ['@'],
@@ -161,6 +164,33 @@ class AdmissionApplicationController extends Controller
             'admissionApplication'     => $admissionApplication,
             'admissionApplicationForm' => $admissionApplicationForm,
             'specialities'             => Yii::$app->user->identity->institution->specialities
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     */
+    public function actionChangeStatus($id)
+    {
+        $admissionApplication = $this->findModel($id);
+        $changeStatusForm = new ChangeStatusForm();
+        $changeStatusForm->setCurrentStatus($admissionApplication->status);
+
+        if ($changeStatusForm->load(Yii::$app->request->post()) && $changeStatusForm->validate()) {
+            $this->admissionApplicationService->changeStatus(
+                $id,
+                $changeStatusForm->status,
+                Yii::$app->user->identity,
+                $changeStatusForm->reception_group_id
+            );
+            return $this->redirect(['view', 'id' => $admissionApplication->id]);
+        }
+
+        return $this->render('change-status', [
+            'admissionApplication' => $admissionApplication,
+            'changeStatusForm'     => $changeStatusForm,
+            'receptionGroups'      => ReceptionGroup::find()->all()
         ]);
     }
 

@@ -14,7 +14,6 @@ class m190424_132019_create_admission_applications_table extends Migration
     {
         $this->execute('CREATE SCHEMA educational_process');
 
-        // TODO: add foreign key constraints
         $this->createTable('educational_process.application', [
             'id'             => $this->primaryKey(),
             'status'         => $this->smallInteger()->notNull(),
@@ -27,13 +26,13 @@ class m190424_132019_create_admission_applications_table extends Migration
             'create_ts'      => $this->timestamp()->defaultExpression('now()'),
             'update_ts'      => $this->timestamp()->defaultExpression('now()')
         ]);
-        $this->addForeignKey('fk_educational_process_application_institution_id',
+        $this->addForeignKey('fk_application_2_institution',
             'educational_process.application',
             'institution_id',
             'organization.institution',
             'id'
         );
-        $this->addForeignKey('fk_educational_process_application_person_id',
+        $this->addForeignKey('fk_application_2_person',
             'educational_process.application',
             'person_id',
             'person.person',
@@ -67,13 +66,13 @@ class m190424_132019_create_admission_applications_table extends Migration
             'document_number'  => $this->char(255),
             'comment'          => $this->char(1024)
         ]);
-        $this->addForeignKey('fk_link_person_social_status_link_social_status_id',
+        $this->addForeignKey('fk_person_social_status_link_2_person_social_status',
             'link.person_social_status_link',
             'social_status_id',
             'handbook.person_social_status',
             'id'
         );
-        $this->addForeignKey('fk_link_person_social_status_link_person_id',
+        $this->addForeignKey('fk_person_social_status_link_2_person',
             'link.person_social_status_link',
             'person_id',
             'person.person',
