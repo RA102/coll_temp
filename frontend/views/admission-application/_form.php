@@ -25,9 +25,9 @@ $socialStatusesData = \yii\helpers\ArrayHelper::map(
 );
 $socialStatusLinks = array_map(function (array $data) {
     return new \app\models\link\PersonSocialStatusLink([
-        'social_status_id' => $data['social_status_id'],
-        'comment'          => $data['comment'],
-        'document_number'  => $data['document_number'],
+        'social_status_id' => $data['social_status_id'] ?? null,
+        'comment'          => $data['comment'] ?? null,
+        'document_number'  => $data['document_number'] ?? null,
     ]);
 }, $admissionApplicationForm->social_statuses ?: [[]]);
 ?>
