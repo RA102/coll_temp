@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\person\Entrant;
 use common\models\person\Person;
+use frontend\search\EntrantSearch;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -43,9 +44,9 @@ class EntrantController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Entrant::find()->andWhere(['type' => Person::TYPE_ENTRANT]),
-        ]);
+        $searchModel = new EntrantSearch();
+        $searchModel->institution_id = Yii::$app->user->identity->institution->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
