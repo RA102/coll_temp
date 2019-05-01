@@ -4,6 +4,7 @@ namespace common\models\person;
 
 use common\helpers\PersonTypeHelper;
 use common\models\CommissionMemberLink;
+use common\models\ReceptionGroup;
 
 /**
  * This is the model class for table "person.person".
@@ -42,5 +43,14 @@ class Entrant extends Person
         parent::init();
 
         $this->type = Person::TYPE_ENTRANT;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReceptionGroups()
+    {
+        return $this->hasMany(ReceptionGroup::class, ['id' => 'reception_group_id'])
+            ->viaTable('link.entrant_reception_group_link', ['entrant_id' => 'id']);
     }
 }

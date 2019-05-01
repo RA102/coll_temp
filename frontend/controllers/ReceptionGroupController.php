@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\ReceptionExam;
+use frontend\search\EntrantSearch;
 use Yii;
 use common\models\ReceptionGroup;
 use frontend\search\ReceptionGroupSearch;
@@ -28,7 +29,8 @@ class ReceptionGroupController extends Controller
                         'actions' => [
                             'index', 'view',
                             'create', 'update',
-                            'delete'
+                            'delete',
+                            'entrants'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -132,6 +134,18 @@ class ReceptionGroupController extends Controller
         return $this->render('update', [
             'model' => $model,
             'specialities' => $specialities
+        ]);
+    }
+
+    public function actionEntrants($reception_group_id) {
+        $searchModel = new EntrantSearch();
+        $searchModel->institution_id = Yii::$app->user->identity->institution->id;
+        $searchModel->reception_group_id = $reception_group_id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('entrants', [
+            'searchModel'  => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

@@ -34,7 +34,7 @@
                                 'url'   => ['/admission-application/index']
                             ],
                             [
-                                'label' => Yii::t('app', 'Абитуриенты'),
+                                'label' => Yii::t('app', 'Entrants'),
                                 'icon'  => 'dashboard',
                                 'url'   => ['/entrant/index']
                             ],

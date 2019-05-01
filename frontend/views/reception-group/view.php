@@ -67,3 +67,16 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); ?>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-4">
+        <a href="<?= \yii\helpers\Url::to(['/reception-group/entrants', 'reception_group_id' => $model->id]) ?>">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fa fa-user-tie fa-3x"></i>
+                    <h4><?=Yii::t('app', 'Entrants')?></h4>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
