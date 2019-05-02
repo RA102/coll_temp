@@ -7,6 +7,7 @@ use backend\models\forms\PersonForm;
 use common\exceptions\ValidationException;
 use common\helpers\PersonCredentialHelper;
 use common\services\pds\PersonCredentialService;
+use common\services\pds\PersonSearchService;
 use common\services\person\PersonService;
 use Yii;
 use common\models\person\Person;
@@ -23,6 +24,7 @@ class PersonController extends Controller
 {
     private $personService;
     private $pdsPersonCredentialService;
+    private $searchService;
 
     /**
      * {@inheritdoc}
@@ -53,11 +55,13 @@ class PersonController extends Controller
         $module,
         PersonService $personService,
         PersonCredentialService $pdsPersonCredentialService,
+        PersonSearchService $searchService,
         array $config = []
     )
     {
         $this->personService = $personService;
         $this->pdsPersonCredentialService = $pdsPersonCredentialService;
+        $this->searchService = $searchService;
         parent::__construct($id, $module, $config);
     }
 
@@ -123,6 +127,14 @@ class PersonController extends Controller
             'model' => $model,
             'form' => $form
         ]);
+    }
+
+    public function actionSearch()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $field = Yii::$app->request->get('field');
+        $value = Yii::$app->request->get('value');
+        return $this->searchService->findOne([$field => $value]);
     }
 
     /**
