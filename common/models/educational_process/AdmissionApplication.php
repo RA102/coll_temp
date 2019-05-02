@@ -20,6 +20,8 @@ use Yii;
  * @property string $delete_ts
  * @property string $create_ts
  * @property string $update_ts
+ * @property string $reason
+ * @property array $history
  * @property Person $person
  */
 class AdmissionApplication extends \yii\db\ActiveRecord
@@ -58,8 +60,35 @@ class AdmissionApplication extends \yii\db\ActiveRecord
             [['institution_id', 'status', 'type'], 'required'],
             [['is_deleted'], 'default', 'value' => false],
             [['is_deleted'], 'boolean'],
-            [['delete_ts', 'create_ts', 'update_ts', 'properties'], 'safe'],
+            [['delete_ts', 'create_ts', 'update_ts', 'properties', 'history'], 'safe'],
+            [['reason'], 'string'],
         ];
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        if ($insert || $this->isAttributeChanged('status')) {
+            if (!$this->history) {
+                $this->history = [];
+            }
+
+            $this->history = array_merge($this->history, [
+                [
+                    'status'    => $this->status,
+                    'timestamp' => time()
+                ]
+            ]);
+        }
+
+        return true;
     }
 
     /**
@@ -77,6 +106,8 @@ class AdmissionApplication extends \yii\db\ActiveRecord
             'delete_ts'      => Yii::t('app', 'Delete Ts'),
             'create_ts'      => Yii::t('app', 'Create Ts'),
             'update_ts'      => Yii::t('app', 'Update Ts'),
+            'reason'         => Yii::t('app', 'Reason'),
+            'history'        => Yii::t('app', 'History')
         ];
     }
 

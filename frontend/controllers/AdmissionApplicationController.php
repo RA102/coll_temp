@@ -2,14 +2,15 @@
 
 namespace frontend\controllers;
 
+use common\helpers\ApplicationHelper;
 use common\models\educational_process\AdmissionApplication;
 use common\models\ReceptionGroup;
 use common\services\educational_process\AdmissionApplicationService;
 use frontend\models\educational_process\applications\ChangeStatusForm;
 use frontend\models\forms\AdmissionApplicationForm;
+use frontend\search\AdmissionApplicationSearch;
 use Yii;
 use yii\base\Module;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -78,12 +79,13 @@ class AdmissionApplicationController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => AdmissionApplication::find()->where(['institution_id' => Yii::$app->user->identity->institution->id]),
-        ]);
+        $searchModel = new AdmissionApplicationSearch(Yii::$app->user->identity->institution);
+        $searchModel->status = ApplicationHelper::STATUS_CREATED;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'searchModel'  => $searchModel
         ]);
     }
 
@@ -176,13 +178,15 @@ class AdmissionApplicationController extends Controller
         $admissionApplication = $this->findModel($id);
         $changeStatusForm = new ChangeStatusForm();
         $changeStatusForm->setCurrentStatus($admissionApplication->status);
+        $changeStatusForm->reason = $admissionApplication->reason;
 
         if ($changeStatusForm->load(Yii::$app->request->post()) && $changeStatusForm->validate()) {
             $this->admissionApplicationService->changeStatus(
                 $id,
                 $changeStatusForm->status,
                 Yii::$app->user->identity,
-                $changeStatusForm->reception_group_id
+                $changeStatusForm->reception_group_id,
+                $changeStatusForm->reason
             );
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
         }

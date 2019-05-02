@@ -78,17 +78,31 @@ class AdmissionApplicationService
      * @param int $status
      * @param Person $user
      * @param int|null $reception_group_id
+     * @param string $reason
      * @return AdmissionApplication
      * @throws \Exception
      */
-    public function changeStatus(int $id, int $status, Person $user, int $reception_group_id = null)
-    {
-        // TODO: add history of status updates
+    public function changeStatus(
+        int $id,
+        int $status,
+        Person $user,
+        int $reception_group_id = null,
+        string $reason = null
+    ) {
         if ($status === ApplicationHelper::STATUS_ACCEPTED) {
             if (!$reception_group_id) {
                 throw new \Exception('Group must be specified for accepted admission application');
             }
             return $this->accept($id, $user, $reception_group_id);
+        }
+        if ($status === ApplicationHelper::STATUS_DECLINED) {
+            return $this->decline($id, $reason);
+        }
+        if ($status === ApplicationHelper::STATUS_WITHDRAWN) {
+            return $this->withdraw($id, $reason);
+        }
+        if ($status === ApplicationHelper::STATUS_DELETED) {
+            return $this->delete($id);
         }
 
         throw new \Exception('Not supported status');
@@ -150,6 +164,73 @@ class AdmissionApplicationService
                 throw new \Exception(current($entrantReceptionGroupLink->getFirstErrors()));
             }
         });
+
+        return $admissionApplication;
+    }
+
+    /**
+     * @param int $id
+     * @param string $reason
+     * @return AdmissionApplication
+     * @throws \Exception
+     */
+    public function decline(int $id, string $reason): AdmissionApplication
+    {
+        $admissionApplication = AdmissionApplication::findOne($id);
+        if (!$admissionApplication) {
+            throw new \Exception('Admission application not found');
+        }
+
+        $admissionApplication->status = ApplicationHelper::STATUS_DECLINED;
+        $admissionApplication->reason = $reason;
+        if (!$admissionApplication->save()) {
+            throw new \Exception('Saving error');
+        }
+
+        return $admissionApplication;
+    }
+
+    /**
+     * @param int $id
+     * @param string $reason
+     * @return AdmissionApplication
+     * @throws \Exception
+     */
+    public function withdraw(int $id, string $reason): AdmissionApplication
+    {
+        $admissionApplication = AdmissionApplication::findOne($id);
+        if (!$admissionApplication) {
+            throw new \Exception('Admission application not found');
+        }
+
+        $admissionApplication->status = ApplicationHelper::STATUS_WITHDRAWN;
+        $admissionApplication->reason = $reason;
+        if (!$admissionApplication->save()) {
+            throw new \Exception('Saving error');
+        }
+
+        return $admissionApplication;
+    }
+
+    /**
+     * @param int $id
+     * @return AdmissionApplication
+     * @throws \Exception
+     */
+    public function delete(int $id): AdmissionApplication
+    {
+        $admissionApplication = AdmissionApplication::findOne($id);
+        if (!$admissionApplication) {
+            throw new \Exception('Admission application not found');
+        }
+
+        $admissionApplication->status = ApplicationHelper::STATUS_DELETED;
+        $admissionApplication->is_deleted = true;
+        $admissionApplication->delete_ts = date("Y-m-d H:i:s");
+
+        if (!$admissionApplication->save()) {
+            throw new \Exception('Saving error');
+        }
 
         return $admissionApplication;
     }

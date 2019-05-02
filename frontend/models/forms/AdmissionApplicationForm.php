@@ -2,6 +2,8 @@
 
 namespace frontend\models\forms;
 
+use common\helpers\ApplicationHelper;
+use common\models\educational_process\AdmissionApplication;
 use common\models\person\Entrant;
 use common\validators\IinValidator;
 use Yii;
@@ -9,6 +11,10 @@ use yii\base\Model;
 
 class AdmissionApplicationForm extends Model
 {
+    const SCENARIO_UPDATE_ACCEPTED_APPLICATION = 'update-accepted-application';
+
+    private $admissionApplication;
+
     public $iin;
 
     public $firstname;
@@ -42,6 +48,27 @@ class AdmissionApplicationForm extends Model
 
     public $social_statuses;
 
+    /**
+     * AdmissionApplicationForm constructor.
+     * @param AdmissionApplication|null $admissionApplication
+     * @param array $config
+     */
+    public function __construct(array $config = [], AdmissionApplication $admissionApplication = null)
+    {
+        parent::__construct($config);
+
+        if ($admissionApplication) {
+            $this->admissionApplication = $admissionApplication;
+        }
+
+        if ($admissionApplication->status === ApplicationHelper::STATUS_ACCEPTED) {
+            $this->setScenario(self::SCENARIO_UPDATE_ACCEPTED_APPLICATION);
+        }
+    }
+
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -100,6 +127,36 @@ class AdmissionApplicationForm extends Model
 
             // TODO: add validation of models
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_UPDATE_ACCEPTED_APPLICATION] = [
+            '!firstname',
+            '!lastname',
+            '!middlename',
+            '!iin',
+            '!birth_date',
+            '!sex',
+            '!nationaltity_id',
+            '!citizenship_location',
+
+            '!filing_form',
+            '!education_form',
+            '!speciality_id',
+            '!language',
+
+            '!needs_dormitory',
+            '!reason_for_dormitory',
+
+            '!education_pay_form',
+            '!based_classes'
+        ];
+        return $scenarios;
     }
 
     /**
