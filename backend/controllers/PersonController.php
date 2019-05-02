@@ -112,11 +112,10 @@ class PersonController extends Controller
                     Yii::$app->user->identity->activeAccessToken->token,
                     Yii::$app->user->identity->person_type
                 );
+                return $this->redirect(['view', 'id' => $model->id]);
             } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error', Yii::t('app', $e->getMessage()));
             }
-
-            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
