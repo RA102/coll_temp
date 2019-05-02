@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'format' => 'html',
                     'header' => 'Колледж',
-                    'contentOptions' => ['style' => 'width:300px; word-wrap: break-word; overflow: hidden;'],
+                    'contentOptions' => ['style' => 'max-width:200px; word-wrap: break-word; overflow: hidden;'],
                     'attribute' => 'institution_filter',
                     'filter' => InstitutionHelper::getList(),
                     'value' => function (Person $model) {
