@@ -114,7 +114,8 @@ class PersonController extends Controller
                 );
                 return $this->redirect(['view', 'id' => $model->id]);
             } catch (\Exception $e) {
-                Yii::$app->session->setFlash('error', Yii::t('app', $e->getMessage()));
+                Yii::$app->session->setFlash('error',
+                    Yii::t('app', $e->getMessage() . '<hr/>' . $e->getTraceAsString()));
             }
         }
 
