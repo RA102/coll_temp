@@ -59,10 +59,9 @@ class AdmissionApplicationForm extends Model
 
         if ($admissionApplication) {
             $this->admissionApplication = $admissionApplication;
-        }
-
-        if ($admissionApplication->status === ApplicationHelper::STATUS_ACCEPTED) {
-            $this->setScenario(self::SCENARIO_UPDATE_ACCEPTED_APPLICATION);
+            if ($admissionApplication->status === ApplicationHelper::STATUS_ACCEPTED) {
+                $this->setScenario(self::SCENARIO_UPDATE_ACCEPTED_APPLICATION);
+            }
         }
     }
 
