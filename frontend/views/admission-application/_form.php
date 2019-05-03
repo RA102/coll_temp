@@ -25,7 +25,9 @@ $socialStatusesData = \yii\helpers\ArrayHelper::map(
     'id',
     'caption_current'
 );
-$blockPersonalDataEditing = $admissionApplication && $admissionApplication->status === ApplicationHelper::STATUS_ACCEPTED;
+$blockPersonalDataEditing = isset($admissionApplication) ?
+    $admissionApplication->status === ApplicationHelper::STATUS_ACCEPTED
+    : false;
 ?>
 
 <?php $form = ActiveForm::begin([
