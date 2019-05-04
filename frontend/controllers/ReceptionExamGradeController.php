@@ -5,18 +5,18 @@ namespace frontend\controllers;
 use common\models\organization\Institution;
 use common\models\person\Entrant;
 use common\models\ReceptionExam;
+use common\models\ReceptionExamGrade;
 use common\models\ReceptionGroup;
 use common\services\organization\InstitutionDisciplineService;
 use common\services\ReceptionExamService;
 use common\services\ReceptionGroupService;
 use Yii;
-use common\models\ReceptionExamGrade;
 use yii\base\Module;
 use yii\db\ActiveQuery;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * ReceptionExamGradeController implements the CRUD actions for ReceptionExamGrade model.
@@ -101,7 +101,7 @@ class ReceptionExamGradeController extends Controller
                         'entrant' => function (ActiveQuery $query) use ($receptionGroup) {
                             /** @see Entrant::getReceptionGroups() */
                             return $query->joinWith([
-                                'receptionGroups' => function (ActiveQuery $query) use ($receptionGroup) {
+                                'receptionGroup' => function (ActiveQuery $query) use ($receptionGroup) {
                                     return $query->andWhere([
                                         'link.entrant_reception_group_link.reception_group_id' => $receptionGroup->id,
                                     ]);

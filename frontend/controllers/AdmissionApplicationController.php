@@ -8,6 +8,7 @@ use common\models\ReceptionGroup;
 use common\services\educational_process\AdmissionApplicationService;
 use frontend\models\educational_process\applications\ChangeStatusForm;
 use frontend\models\forms\AdmissionApplicationForm;
+use frontend\models\forms\EnlistEntrantForm;
 use frontend\search\AdmissionApplicationSearch;
 use Yii;
 use yii\base\Module;
@@ -57,7 +58,8 @@ class AdmissionApplicationController extends Controller
                             'create',
                             'update',
                             'delete',
-                            'change-status'
+                            'change-status',
+                            'enlist'
                         ],
                         'allow'   => true,
                         'roles'   => ['@'],
@@ -68,6 +70,7 @@ class AdmissionApplicationController extends Controller
                 'class'   => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'enlist' => ['POST'],
                 ],
             ],
         ];
@@ -191,11 +194,39 @@ class AdmissionApplicationController extends Controller
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
         }
 
+        $eligibleReceptionGroupsForEntrant = ReceptionGroup::find()
+            ->andWhere([
+                'speciality_id'  => $admissionApplication->properties['speciality_id'],
+                'education_form' => $admissionApplication->properties['education_form'],
+                'language'       => $admissionApplication->properties['language']
+            ])->all();
         return $this->render('change-status', [
             'admissionApplication' => $admissionApplication,
             'changeStatusForm'     => $changeStatusForm,
-            'receptionGroups'      => ReceptionGroup::find()->all()
+            'receptionGroups'      => $eligibleReceptionGroupsForEntrant
         ]);
+    }
+
+    /**
+     * @return \yii\web\Response
+     */
+    public function actionEnlist()
+    {
+        $enlistAdmissionApplicationForm = new EnlistEntrantForm();
+
+        if ($enlistAdmissionApplicationForm->load(Yii::$app->request->post())
+            && $enlistAdmissionApplicationForm->validate()) {
+            $this->admissionApplicationService->enlist(
+                $enlistAdmissionApplicationForm->admission_application_id,
+                $enlistAdmissionApplicationForm->group_id
+            );
+
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Студент успешно зачислен'));
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        Yii::$app->session->setFlash('error', current($enlistAdmissionApplicationForm->firstErrors));
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**

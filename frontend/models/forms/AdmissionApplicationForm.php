@@ -5,6 +5,8 @@ namespace frontend\models\forms;
 use common\helpers\ApplicationHelper;
 use common\models\educational_process\AdmissionApplication;
 use common\models\person\Entrant;
+use common\models\person\Person;
+use common\models\person\PersonCredential;
 use common\validators\IinValidator;
 use Yii;
 use yii\base\Model;
@@ -124,7 +126,17 @@ class AdmissionApplicationForm extends Model
 
             ['social_statuses', 'validateSocialStatuses', 'skipOnEmpty' => true],
 
-            // TODO: add validation of models
+            [
+                'iin',
+                'unique',
+                'targetClass' => Person::class,
+            ],
+            [
+                'email',
+                'unique',
+                'targetClass'     => PersonCredential::class,
+                'targetAttribute' => 'indentity'
+            ],
         ];
     }
 

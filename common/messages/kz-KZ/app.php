@@ -224,33 +224,35 @@ return [
     'Commission deputy chairman' => 'Заместитель председателя комиссии',
     'Commission chairman' => 'Председатель комиссии',
     'Member ID' => 'Участник',
-    'Close' => 'Закрыть',
+    'Close'                       => 'Закрыть',
 
     // RECEPTION GROUPS
-    'Budget Places' => 'Количество бюджетных мест',
-    'Commercial Places' => 'Количество коммерческих мест',
-    'View' => 'Просмотр',
+    'Budget Places'               => 'Количество бюджетных мест',
+    'Commercial Places'           => 'Количество коммерческих мест',
+    'View'                        => 'Просмотр',
 
     // RECEPTION EXAMS
-    'Reception Exam' => 'Экзамен',
-    'Reception Exams' => 'Экзамены',
-    'Create Reception Exam' => 'Добавление Экзамена',
-    'Update Reception Exam' => 'Редактирование Экзамена',
-    'Exams schedule' => 'Расписание экзаменов',
-    'Exam Date' => 'Дата',
-    'Exam Time' => 'Время',
+    'Reception Exam'              => 'Экзамен',
+    'Reception Exams'             => 'Экзамены',
+    'Create Reception Exam'       => 'Добавление Экзамена',
+    'Update Reception Exam'       => 'Редактирование Экзамена',
+    'Exams schedule'              => 'Расписание экзаменов',
+    'Exam Date'                   => 'Дата',
+    'Exam Time'                   => 'Время',
+    'Competitions'                => 'Конкурсы',
+    'Competition'                 => 'Конкурс',
 
     // RECEPTION EXAM GRADES
-    'Reception Exam Grades' => 'Результаты экзаменов',
+    'Reception Exam Grades'       => 'Результаты экзаменов',
     'Create Reception Exam Grade' => 'Добавить результат экзамена',
-    'Exam Grade Value' => 'Оценка',
-    'Exam Grade History' => 'История оценок',
+    'Exam Grade Value'            => 'Оценка',
+    'Exam Grade History'          => 'История оценок',
 
     // APPEAL COMMISSIONS
-    'Appeal Commissions' => 'Апелляционные комиссии',
-    'Appeal Commission' => 'Апелляционная комиссия',
+    'Appeal Commissions'          => 'Апелляционные комиссии',
+    'Appeal Commission'           => 'Апелляционная комиссия',
 
     // ENTRANTS
-    'Entrants' => 'Абитуриенты',
-    'Entrant ID' => 'Абитуриент',
+    'Entrants'                    => 'Абитуриенты',
+    'Entrant ID'                  => 'Абитуриент',
 ];

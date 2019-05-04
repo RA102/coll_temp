@@ -22,7 +22,7 @@ use Yii;
  * @property string $update_ts
  * @property string $reason
  * @property array $history
- * @property Person $person
+ * @property Entrant $person
  */
 class AdmissionApplication extends \yii\db\ActiveRecord
 {
@@ -82,8 +82,8 @@ class AdmissionApplication extends \yii\db\ActiveRecord
 
             $this->history = array_merge($this->history, [
                 [
-                    'status'    => $this->status,
-                    'timestamp' => time()
+                    'status' => $this->status,
+                    'date'   => date("Y-m-d H:i:s")
                 ]
             ]);
         }
@@ -135,6 +135,17 @@ class AdmissionApplication extends \yii\db\ActiveRecord
      */
     public function getPerson()
     {
-        return $this->hasOne(Person::class, ['id' => 'person_id']);
+        if ($this->isEnlisted()) {
+            return $this->hasOne(Person::class, ['id' => 'person_id']);
+        }
+        return $this->hasOne(Entrant::class, ['id' => 'person_id']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnlisted(): bool
+    {
+        return $this->status === ApplicationHelper::STATUS_ENLISTED;
     }
 }
