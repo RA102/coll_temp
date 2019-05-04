@@ -20,10 +20,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <b>Абитуриент:</b> <?= $entrant->getFullName() ?>
+                    <b>Экзамен:</b> <?= $receptionExam->getFullName() ?>
                 </p>
                 <p>
-                    <b>Экзамен:</b> <?= $receptionExam->institutionDiscipline->caption_current ?> (<?= $receptionExam->time ?>)
+                    <b>Абитуриент:</b> <?= $entrant->getFullName() ?>
                 </p>
             </div>
         </div>

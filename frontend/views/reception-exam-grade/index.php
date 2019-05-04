@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <tr>
                 <td></td>
                 <?php foreach ($receptionExams as $receptionExam): ?>
-                    <td><?= $receptionExam->institutionDiscipline->caption_current ?> (<?= $receptionExam->time ?>)</td>
+                    <td><?= $receptionExam->getFullName() ?></td>
                 <?php endforeach; ?>
             </tr>
             </thead>
