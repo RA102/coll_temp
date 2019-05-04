@@ -70,6 +70,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
     <div class="col-md-4">
+        <a href="<?= \yii\helpers\Url::to(['/reception-exam-grade/index', 'reception_group_id' => $model->id]) ?>">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fa fa-bell fa-3x"></i>
+                    <h4><?=Yii::t('app', 'Результаты вступительных экзаменов')?></h4>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
         <a href="<?= \yii\helpers\Url::to(['/reception-group/entrants', 'reception_group_id' => $model->id]) ?>">
             <div class="card">
                 <div class="card-body text-center">

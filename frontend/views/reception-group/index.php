@@ -28,7 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
 //            ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
-            'caption_current',
+            [
+                'format' => 'html',
+                'attribute' => 'caption_current',
+                'value' => function (\common\models\ReceptionGroup $model) {
+                    return Html::a($model->caption_current, ['view', 'id' => $model->id]);
+                }
+            ],
             [
                 'format'    => 'html',
                 'attribute' => 'language',

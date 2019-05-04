@@ -32,4 +32,16 @@ class InstitutionDisciplineService
             ])
             ->one();
     }
+
+    public function getInstitutionExamDisciplines(Institution $institution)
+    {
+        return InstitutionDiscipline::find()
+            ->andWhere(
+                InstitutionDiscipline::TYPE_EXAM . " = ANY(\"types\")"
+            )
+            ->andWhere([
+                'institution_id' => $institution->id,
+            ])
+            ->all();
+    }
 }

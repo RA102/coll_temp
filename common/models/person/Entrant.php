@@ -4,10 +4,13 @@ namespace common\models\person;
 
 use common\helpers\PersonTypeHelper;
 use common\models\CommissionMemberLink;
+use common\models\ReceptionExamGrade;
 use common\models\ReceptionGroup;
 
 /**
  * This is the model class for table "person.person".
+ *
+ * @property ReceptionExamGrade[] $receptionExamGrades
  */
 class Entrant extends Person
 {
@@ -52,5 +55,13 @@ class Entrant extends Person
     {
         return $this->hasMany(ReceptionGroup::class, ['id' => 'reception_group_id'])
             ->viaTable('link.entrant_reception_group_link', ['entrant_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReceptionExamGrades()
+    {
+        return $this->hasMany(ReceptionExamGrade::class, ['entrant_id' => 'id']);
     }
 }

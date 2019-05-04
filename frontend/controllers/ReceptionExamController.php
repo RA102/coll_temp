@@ -3,12 +3,12 @@
 namespace frontend\controllers;
 
 use common\models\organization\Institution;
-use common\models\organization\InstitutionDiscipline;
 use common\models\reception\Commission;
 use common\models\ReceptionGroup;
 use common\services\organization\InstitutionDisciplineService;
 use common\services\person\EmployeeService;
 use common\services\reception\CommissionService;
+use common\services\ReceptionExamService;
 use Yii;
 use common\models\ReceptionExam;
 use yii\base\Module;
@@ -25,6 +25,8 @@ class ReceptionExamController extends Controller
 {
     /** @var Institution */
     private $institution;
+    /** @var ReceptionExamService */
+    private $receptionExamService;
     /** @var CommissionService */
     private $commissionService;
     /** @var InstitutionDisciplineService */
@@ -64,11 +66,13 @@ class ReceptionExamController extends Controller
     public function __construct(
         string $id,
         Module $module,
+        ReceptionExamService $receptionExamService,
         CommissionService $commissionService,
         InstitutionDisciplineService $institutionDisciplineService,
         EmployeeService $employeeService,
         array $config = []
     ) {
+        $this->receptionExamService = $receptionExamService;
         $this->commissionService = $commissionService;
         $this->institutionDisciplineService = $institutionDisciplineService;
         $this->employeeService = $employeeService;
@@ -89,9 +93,7 @@ class ReceptionExamController extends Controller
     {
         $commission = $this->findCommission($this->institution, $commission_id);
 
-        $institutionDisciplines = InstitutionDiscipline::find()->andWhere(
-            InstitutionDiscipline::TYPE_EXAM . " = ANY(\"types\")"
-        )->all();
+        $institutionDisciplines = $this->institutionDisciplineService->getInstitutionExamDisciplines($this->institution);
 
         $dataProvider = new ActiveDataProvider([
             'query' => ReceptionExam::find()->andWhere([
@@ -132,8 +134,10 @@ class ReceptionExamController extends Controller
     public function actionCreate($commission_id, $date, $institution_discipline_id)
     {
         $commission = $this->findCommission($this->institution, $commission_id);
+        $institutionDiscipline = $this->findInstitutionDiscipline($this->institution, $institution_discipline_id);
+
         $receptionExam = new ReceptionExam();
-        $receptionExam->institution_discipline_id = $institution_discipline_id;
+        $receptionExam->institution_discipline_id = $institutionDiscipline->id;
         $receptionExam->date = $date;
 
         if ($receptionExam->load(Yii::$app->request->post())) {
@@ -165,7 +169,14 @@ class ReceptionExamController extends Controller
         $commission = $this->findCommission($this->institution, $commission_id);
         $receptionExam = $this->findCommissionExam($commission, $id);
 
+        $transaction = \Yii::$app->db->beginTransaction();
+        foreach ($receptionExam->receptionExamGrades as $receptionExamGrade) {
+            $receptionExamGrade->delete();
+        }
+        /** @see ReceptionExam::getReceptionGroups() */
+        $receptionExam->unlinkAll('receptionGroups', true);
         $receptionExam->delete();
+        $transaction->commit();
 
         return $this->redirect(['reception-exam/index', 'commission_id' => $receptionExam->commission_id]);
     }
@@ -178,10 +189,7 @@ class ReceptionExamController extends Controller
      */
     protected function findCommissionExam(Commission $commission, $id)
     {
-        $model = ReceptionExam::find()->andWhere([
-            'commission_id' => $commission->id,
-            'id' => $id,
-        ])->one();
+        $model = $this->receptionExamService->get($id, $commission, null);
 
         if ($model !== null) {
             return $model;

@@ -269,10 +269,17 @@ return [
     'Exam Date' => 'Дата',
     'Exam Time' => 'Время',
 
+    // RECEPTION EXAM GRADES
+    'Reception Exam Grades' => 'Результаты экзаменов',
+    'Create Reception Exam Grade' => 'Добавить результат экзамена',
+    'Exam Grade Value' => 'Оценка',
+    'Exam Grade History' => 'История оценок',
+
     // APPEAL COMMISSIONS
     'Appeal Commissions' => 'Апелляционные комиссии',
     'Appeal Commission' => 'Апелляционная комиссия',
 
     // ENTRANTS
-    'Entrants' => 'Абитуриенты'
+    'Entrants' => 'Абитуриенты',
+    'Entrant ID' => 'Абитуриент',
 ];

@@ -18,6 +18,7 @@ use Yii;
  * @property Commission $commission
  * @property InstitutionDiscipline $institutionDiscipline
  * @property ReceptionGroup[] $receptionGroups
+ * @property ReceptionExamGrade[] $receptionExamGrades
  */
 class ReceptionExam extends \yii\db\ActiveRecord
 {
@@ -112,5 +113,13 @@ class ReceptionExam extends \yii\db\ActiveRecord
     public function getReceptionGroups()
     {
         return $this->hasMany(ReceptionGroup::class, ['id' => 'group_id'])->viaTable('reception.exam_group_link', ['exam_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReceptionExamGrades()
+    {
+        return $this->hasMany(ReceptionExamGrade::class, ['exam_id' => 'id']);
     }
 }

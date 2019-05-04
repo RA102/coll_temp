@@ -5,6 +5,8 @@ namespace common\models;
 use common\helpers\GroupHelper;
 use common\helpers\LanguageHelper;
 use common\models\handbook\Speciality;
+use common\models\person\Entrant;
+use common\models\reception\Commission;
 use Yii;
 
 /**
@@ -23,6 +25,8 @@ use Yii;
  * @property string $delete_ts
  *
  * @property Speciality $speciality
+ * @property Entrant[] $entrants
+ * @property ReceptionExam[] $receptionExams
  */
 class ReceptionGroup extends \yii\db\ActiveRecord
 {
@@ -101,7 +105,6 @@ class ReceptionGroup extends \yii\db\ActiveRecord
         return LanguageHelper::getLanguageList()[$this->language] ?? '';
     }
 
-
     public function getSpeciality()
     {
         return $this->hasOne(Speciality::class, ['id' => 'speciality_id']);
@@ -110,5 +113,29 @@ class ReceptionGroup extends \yii\db\ActiveRecord
     public function getEducationPayForm()
     {
         return GroupHelper::getEducationFormList()[$this->education_form] ?? '';
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCommission()
+    {
+        return $this->hasOne(Commission::class, ['id' => 'commission_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEntrants()
+    {
+        return $this->hasMany(Entrant::class, ['id' => 'entrant_id'])->viaTable('link.entrant_reception_group_link', ['reception_group_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReceptionExams()
+    {
+        return $this->hasMany(ReceptionExam::class, ['id' => 'exam_id'])->viaTable('reception.exam_group_link', ['group_id' => 'id']);
     }
 }
