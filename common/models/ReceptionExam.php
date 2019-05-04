@@ -91,6 +91,11 @@ class ReceptionExam extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getFullName()
+    {
+        return $this->institutionDiscipline->caption_current . ' (' . $this->date . ' ' . $this->time . ')';
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
