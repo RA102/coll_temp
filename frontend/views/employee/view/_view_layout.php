@@ -6,14 +6,14 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model common\models\person\Employee */
 
-$this->title = $model->firstname;
+$this->title = $model->id === Yii::$app->user->id ? Yii::t('app', 'Profile') : Yii::t('app', 'View employee');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Employees'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $model->getFullName();
 $action = $this->context->action->id;
 ?>
 
 <div>
-    <h1><?=Yii::t('app', 'View employee')?></h1>
+    <h1><?=$this->title?></h1>
 </div>
 
 <div class="employee-view student-block">

@@ -71,6 +71,7 @@ return [
     'Fire Employee' => 'Уволить сотрудника',
     'View employee' => 'Персональные данные сотрудника',
     'Edit employee' => 'Редактирование персональных данных сотрудника',
+    'Edit profile' => 'Редактирование профиля',
     'Current employees' => 'Сотрудники колледжа',
     'Language of instruction' => 'Язык преподавания',
 

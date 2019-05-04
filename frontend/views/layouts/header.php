@@ -66,7 +66,12 @@ use yii\helpers\Html;
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat"><?=Yii::t('app', 'Profile')?></a>
+                                <?= Html::a(
+                                    Yii::t('app', 'Profile'),
+                                    ['/employee/view', 'id' => Yii::$app->user->id],
+                                    ['class' => 'btn btn-default btn-flat']
+                                ) ?>
+<!--                                <a href="#" class="btn btn-default btn-flat">--><?//=Yii::t('app', 'Profile')?><!--</a>-->
                             </div>
                             <div class="pull-right">
                                 <?= Html::a(
