@@ -42,6 +42,11 @@ class AdmissionApplicationForm extends Model
     public $speciality_id;
     public $language;
 
+    public $contract_number;
+    public $contract_date;
+    public $contract_sum;
+    public $contract_duration;
+
     public $needs_dormitory;
     public $reason_for_dormitory;
 
@@ -124,6 +129,11 @@ class AdmissionApplicationForm extends Model
             [['sex'], 'in', 'range' => [Entrant::SEX_NONE, Entrant::SEX_MALE, Entrant::SEX_FEMALE]],
             [['language'], 'string', 'min' => 2, 'max' => 2],
 
+            ['contract_number', 'string', 'max' => '20'],
+            [['contract_date'], 'date', 'format' => 'php:Y-m-d'],
+            ['contract_sum', 'integer'],
+            ['contract_duration', 'integer', 'min' => 0],
+
             ['social_statuses', 'validateSocialStatuses', 'skipOnEmpty' => true],
 
             [
@@ -165,7 +175,12 @@ class AdmissionApplicationForm extends Model
             '!reason_for_dormitory',
 
             '!education_pay_form',
-            '!based_classes'
+            '!based_classes',
+
+            '!contract_number',
+            '!contract_date',
+            '!contract_sum',
+            '!contract_duration'
         ];
         return $scenarios;
     }
@@ -197,6 +212,11 @@ class AdmissionApplicationForm extends Model
             'education_form' => Yii::t('app', 'Основа обучения'),
             'speciality_id'  => Yii::t('app', 'Speciality ID'),
             'language'       => Yii::t('app', 'Language'),
+
+            'contract_number'   => Yii::t('app', 'Номер договора'),
+            'contract_date'     => Yii::t('app', 'Дата договора'),
+            'contract_sum'      => Yii::t('app', 'Сумма договора'),
+            'contract_duration' => Yii::t('app', 'Срок действия договора'),
 
             'needs_dormitory'      => Yii::t('app', 'Необходимость в общежитии'),
             'reason_for_dormitory' => Yii::t('app', 'Причина'),

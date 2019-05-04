@@ -1,5 +1,7 @@
 <?php
 
+use common\helpers\ApplicationHelper;
+use common\helpers\EducationHelper;
 use common\models\Country;
 use common\models\educational_process\AdmissionApplication;
 use yii\widgets\DetailView;
@@ -62,7 +64,36 @@ $arrivalLocationCountry = $model->properties['arrival_location']
             'contentOptions' => [
                 'class' => $model->properties['is_repatriate'] ? '' : 'hidden'
             ]
-        ]
+        ],
+
+        [
+            'label' => Yii::t('app', 'Speciality ID'),
+            'value' => 'specialityName',
+        ],
+        [
+            'label' => Yii::t('app', 'Форма оплаты'),
+            'value' => function (AdmissionApplication $admissionApplication) {
+                return EducationHelper::getPaymentFormTypes()[$admissionApplication->properties['education_pay_form']];
+            }
+        ],
+        [
+            'label' => Yii::t('app', 'Язык обучения'),
+            'value' => function (AdmissionApplication $admissionApplication) {
+                return \common\helpers\LanguageHelper::getLanguageList()[$admissionApplication->properties['language']];
+            }
+        ],
+        [
+            'label' => Yii::t('app', 'Основа обучения'),
+            'value' => function (AdmissionApplication $admissionApplication) {
+                return EducationHelper::getEducationFormTypes()[$admissionApplication->properties['education_form']];
+            }
+        ],
+        [
+            'label' => Yii::t('app', 'На базе'),
+            'value' => function (AdmissionApplication $admissionApplication) {
+                return ApplicationHelper::getBasedClassesLabel($admissionApplication->properties['based_classes']);
+            }
+        ],
     ],
 ]); ?>
 

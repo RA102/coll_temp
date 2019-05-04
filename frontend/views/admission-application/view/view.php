@@ -26,7 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label'   => 'Контактные данные',
                 'content' => $this->render('_contacts', compact('model')),
-                'options' => ['id' => 'myveryownID']
+            ],
+            [
+                'label'   => 'Льготы',
+                'content' => $this->render('_social_statuses', compact('model')),
             ],
         ]
     ])
