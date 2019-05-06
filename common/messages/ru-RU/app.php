@@ -290,5 +290,8 @@ return [
     'Reason' => 'Причина',
     'Appeal Applications' => 'Апелляционные заявления',
     'Update Appeal Application' => 'Редактирование апелляционного заявления',
-    'Create Appeal Application' => 'Создание апелляционного заявления'
+    'Create Appeal Application' => 'Создание апелляционного заявления',
+    'Appeal new' => 'Новое',
+    'Appeal accepted' => 'Принято',
+    'Appeal rejected' => 'Отклонено',
 ];

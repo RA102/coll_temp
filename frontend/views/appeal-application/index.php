@@ -26,10 +26,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'id',
-                'entrant_id',
+                [
+                    'attribute' => 'entrant_id',
+                    'value' => function (\common\models\reception\AppealApplication $model) {
+                        return $model->entrant->getFullName();
+                    },
+                    'filter' => false
+                ],
                 'reason:ntext',
-                'status',
+                [
+                    'attribute' => 'status',
+                    'value' => function (\common\models\reception\AppealApplication $model) {
+                        return $model->getStatusValue();
+                    },
+                    'filter' => \common\helpers\AppealApplicationHelper::getStatusList()
+                ],
 
                 ['class' => 'yii\grid\ActionColumn'],
             ],

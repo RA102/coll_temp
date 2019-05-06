@@ -35,10 +35,10 @@ class AppealApplicationController extends Controller
      * Lists all AppealApplication models.
      * @return mixed
      */
-    public function actionIndex($id)
+    public function actionIndex($commission_id)
     {
         $searchModel = new AppealApplicationSearch();
-        $searchModel->appeal_commission_id = $id;
+        $searchModel->appeal_commission_id = $commission_id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -65,9 +65,11 @@ class AppealApplicationController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new AppealApplication();
+        $model->appeal_commission_id = $id;
+        $model->status = AppealApplication::STATUS_NEW;
         $entrants = Entrant::find()->joinWith('institutions')
             ->andFilterWhere(['person_institution_link.institution_id' => Yii::$app->user->identity->institution->id])->all();
 

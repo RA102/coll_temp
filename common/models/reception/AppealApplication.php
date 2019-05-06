@@ -2,6 +2,7 @@
 
 namespace common\models\reception;
 
+use common\helpers\AppealApplicationHelper;
 use common\models\person\Entrant;
 use common\models\person\Person;
 use Yii;
@@ -22,6 +23,10 @@ use Yii;
  */
 class AppealApplication extends \yii\db\ActiveRecord
 {
+    const STATUS_NEW = 1;
+    const STATUS_ACCEPTED = 2;
+    const STATUS_REJECTED = 3;
+
     /**
      * {@inheritdoc}
      */
@@ -38,7 +43,7 @@ class AppealApplication extends \yii\db\ActiveRecord
         return [
             [['appeal_commission_id', 'entrant_id', 'status'], 'default', 'value' => null],
             [['appeal_commission_id', 'entrant_id', 'status'], 'integer'],
-            [['entrant_id'], 'required'],
+            [['entrant_id', 'reason'], 'required'],
             [['reason'], 'string'],
             [['create_ts', 'update_ts', 'delete_ts'], 'safe'],
             [['entrant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::className(), 'targetAttribute' => ['entrant_id' => 'id']],
@@ -69,5 +74,9 @@ class AppealApplication extends \yii\db\ActiveRecord
 
     public function getAppealCommission() {
         return $this->hasOne(AppealCommission::class, ['id' => 'appeal_commission_id']);
+    }
+
+    public function getStatusValue() {
+        return AppealApplicationHelper::getStatusList()[$this->status] ?? null;
     }
 }

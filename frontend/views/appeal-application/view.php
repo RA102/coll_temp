@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\reception\AppealApplication */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Appeal Applications'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Appeal Applications'), 'url' => ['index', 'commission_id' => $model->appeal_commission_id]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -31,7 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                     ],
                     'reason:ntext',
-                    'status',
+                    [
+                        'attribute' => 'status',
+                        'value' => function (\common\models\reception\AppealApplication $model) {
+                            return $model->getStatusValue();
+                        },
+                    ],
                     'create_ts',
                     'update_ts',
                 ],
