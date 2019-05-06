@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\reception\AppealApplication */
+/* @var $entrans \common\models\person\Entrant[] */
 
 $this->title = Yii::t('app', 'Create Appeal Application');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Appeal Applications'), 'url' => ['index']];
@@ -17,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $this->render('_form', [
             'model' => $model,
+            'entrants' => $entrants
         ]) ?>
 
     </div>

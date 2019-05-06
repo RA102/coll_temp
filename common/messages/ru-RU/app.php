@@ -289,5 +289,6 @@ return [
     'Applications' => 'Заявления',
     'Reason' => 'Причина',
     'Appeal Applications' => 'Апелляционные заявления',
-    'Update Appeal Application' => 'Редактирование заявления'
+    'Update Appeal Application' => 'Редактирование апелляционного заявления',
+    'Create Appeal Application' => 'Создание апелляционного заявления'
 ];

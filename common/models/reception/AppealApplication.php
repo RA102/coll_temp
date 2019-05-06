@@ -2,6 +2,7 @@
 
 namespace common\models\reception;
 
+use common\models\person\Entrant;
 use common\models\person\Person;
 use Yii;
 
@@ -16,6 +17,8 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ *
+ * @property Entrant $entrant
  */
 class AppealApplication extends \yii\db\ActiveRecord
 {
@@ -58,5 +61,13 @@ class AppealApplication extends \yii\db\ActiveRecord
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
         ];
+    }
+
+    public function getEntrant() {
+        return $this->hasOne(Entrant::class, ['id' => 'entrant_id']);
+    }
+
+    public function getAppealCommission() {
+        return $this->hasOne(AppealCommission::class, ['id' => 'appeal_commission_id']);
     }
 }

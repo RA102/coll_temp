@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use common\models\person\Entrant;
+use frontend\search\EntrantSearch;
 use Yii;
 use common\models\reception\AppealApplication;
 use frontend\search\AppealApplicationSearch;
@@ -66,6 +68,8 @@ class AppealApplicationController extends Controller
     public function actionCreate()
     {
         $model = new AppealApplication();
+        $entrants = Entrant::find()->joinWith('institutions')
+            ->andFilterWhere(['person_institution_link.institution_id' => Yii::$app->user->identity->institution->id])->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -73,6 +77,7 @@ class AppealApplicationController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'entrants' => $entrants
         ]);
     }
 
@@ -86,6 +91,8 @@ class AppealApplicationController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $entrants = Entrant::find()->joinWith('institutions')
+            ->andFilterWhere(['person_institution_link.institution_id' => Yii::$app->user->identity->institution->id])->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -93,6 +100,7 @@ class AppealApplicationController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'entrants' => $entrants
         ]);
     }
 

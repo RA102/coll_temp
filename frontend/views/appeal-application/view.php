@@ -24,7 +24,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
                     'id',
-                    'entrant_id',
+                    [
+                        'attribute' => 'entrant_id',
+                        'value' => function (\common\models\reception\AppealApplication $model) {
+                            return $model->entrant->getFullName();
+                        },
+                    ],
                     'reason:ntext',
                     'status',
                     'create_ts',
