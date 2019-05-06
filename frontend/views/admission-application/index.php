@@ -1,7 +1,7 @@
 <?php
 
 use common\helpers\ApplicationHelper;
-use common\models\educational_process\AdmissionApplication;
+use common\models\reception\AdmissionApplication;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;

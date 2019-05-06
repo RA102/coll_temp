@@ -243,8 +243,8 @@ return [
     // RECEPTION EXAM GRADES
     'Reception Exam Grades' => 'Результаты экзаменов',
     'Create Reception Exam Grade' => 'Добавить результат экзамена',
-    'Exam Grade Value' => 'Оценка',
-    'Exam Grade History' => 'История оценок',
+    'Exam Grade Value'            => 'Оценка',
+    'Exam Grade History'          => 'История оценок',
     'Grade Type' => 'Система оценивания',
 
     // APPEAL COMMISSIONS

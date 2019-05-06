@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 
-/* @var $model common\models\educational_process\AdmissionApplication */
+/* @var $model common\models\reception\AdmissionApplication */
 
 ?>
 

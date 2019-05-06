@@ -3,7 +3,7 @@
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\educational_process\AdmissionApplication */
+/* @var $model common\models\reception\AdmissionApplication */
 ?>
 
 <?= DetailView::widget([

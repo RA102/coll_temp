@@ -12,7 +12,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $admissionApplication \common\models\educational_process\AdmissionApplication|null */
+/* @var $admissionApplication \common\models\reception\AdmissionApplication|null */
 /* @var $admissionApplicationForm \frontend\models\forms\AdmissionApplicationForm */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $specialities common\models\handbook\Speciality[] */
@@ -156,6 +156,47 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
             EducationHelper::getPaymentFormTypes(),
             ['prompt' => Yii::t('app', 'Выбрать'), 'disabled' => $blockPersonalDataEditing]
         ) ?>
+        <?= $form->field($admissionApplicationForm, 'contract_number',
+            [
+                'options' => [
+                    'class' => "form-group" .
+                        ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
+                            ? ''
+                            : ' hidden')
+                ]
+            ])->textInput(['disabled' => $blockPersonalDataEditing]); ?>
+        <?= $form->field($admissionApplicationForm, 'contract_date', [
+            'options' => [
+                'class' => "form-group" .
+                    ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
+                        ? ''
+                        : ' hidden')
+            ]
+        ])->widget(DatePicker::class, [
+            'language'      => 'ru',
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format'    => 'yyyy-mm-dd'
+            ],
+            'disabled'      => $blockPersonalDataEditing
+        ]); ?>
+        <?= $form->field($admissionApplicationForm, 'contract_sum',
+            [
+                'options' => [
+                    'class' => "form-group" .
+                        ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
+                            ? ''
+                            : ' hidden')
+                ]
+            ])->textInput(['disabled' => $blockPersonalDataEditing]); ?>
+        <?= $form->field($admissionApplicationForm, 'contract_duration', [
+            'options' => [
+                'class' => "form-group" .
+                    ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
+                        ? ''
+                        : ' hidden')
+            ]
+        ])->textInput(); ?>
         <?= $form->field($admissionApplicationForm, 'based_classes')->dropDownList(
             \common\helpers\ApplicationHelper::getBasedClassesArray(),
             ['prompt' => Yii::t('app', 'Выбрать'), 'disabled' => $blockPersonalDataEditing]
@@ -208,23 +249,38 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
 <?php
 $listOfDependencies = json_encode([
     [
-        'mainId'              => Html::getInputId($admissionApplicationForm, 'is_repatriate'),
-        'dependantFieldClass' => 'field-' . Html::getInputId($admissionApplicationForm, 'arrival_location'),
+        'mainId'                => Html::getInputId($admissionApplicationForm, 'is_repatriate'),
+        'dependantFieldClasses' => ['field-' . Html::getInputId($admissionApplicationForm, 'arrival_location')],
     ],
     [
-        'mainId'              => Html::getInputId($admissionApplicationForm, 'needs_dormitory'),
-        'dependantFieldClass' => 'field-' . Html::getInputId($admissionApplicationForm, 'reason_for_dormitory'),
+        'mainId'                => Html::getInputId($admissionApplicationForm, 'needs_dormitory'),
+        'dependantFieldClasses' => ['field-' . Html::getInputId($admissionApplicationForm, 'reason_for_dormitory')],
+    ],
+    [
+        'mainId'                => Html::getInputId($admissionApplicationForm, 'education_pay_form'),
+        'dependantFieldClasses' => [
+            'field-' . Html::getInputId($admissionApplicationForm, 'contract_number'),
+            'field-' . Html::getInputId($admissionApplicationForm, 'contract_date'),
+            'field-' . Html::getInputId($admissionApplicationForm, 'contract_sum'),
+            'field-' . Html::getInputId($admissionApplicationForm, 'contract_duration'),
+        ],
+        'desiredValue'          => EducationHelper::EDUCATION_PAY_FORM_CONTRACT
     ]
 ]);
 
 $js = <<<JS
 (function() {
     {$listOfDependencies}.forEach(function (relation) {
-        $("#" + relation.mainId).on('change', function () {
-            if($(this).is(":checked")) {
-                $("." + relation.dependantFieldClass).removeClass("hidden");
+        $("#" + relation.mainId).on('change', function (e) {
+            var shouldDisplay = relation.desiredValue ? relation.desiredValue == e.target.value : $(this).is(":checked")
+            if(shouldDisplay) {
+                relation.dependantFieldClasses.forEach(function (fieldClass) {
+                    $("." + fieldClass).removeClass("hidden"); 
+                });
             } else {
-                $("." + relation.dependantFieldClass).addClass("hidden");
+                relation.dependantFieldClasses.forEach(function (fieldClass) {
+                    $("." + fieldClass).addClass("hidden"); 
+                });
             }
         })
     });

@@ -1,13 +1,15 @@
 <?php
 
-namespace common\services\educational_process;
+namespace common\services\reception;
 
 use app\models\link\EntrantReceptionGroupLink;
 use common\helpers\ApplicationHelper;
 use common\helpers\PersonCredentialHelper;
-use common\models\educational_process\AdmissionApplication;
+use common\helpers\PersonTypeHelper;
+use common\models\link\StudentGroupLink;
 use common\models\person\Entrant;
 use common\models\person\Person;
+use common\models\reception\AdmissionApplication;
 use common\services\person\PersonService;
 use common\services\TransactionManager;
 use frontend\models\forms\AdmissionApplicationForm;
@@ -29,16 +31,19 @@ class AdmissionApplicationService
 
     /**
      * @param AdmissionApplicationForm $admissionApplicationForm
+     * @param int $commission_id
      * @param int $institution_id
      * @return AdmissionApplication
      * @throws \Exception
      */
     public function create(
         AdmissionApplicationForm $admissionApplicationForm,
+        int $commission_id,
         int $institution_id
     ): AdmissionApplication {
         // TODO: add validation of iin and email uniqueness, check existence of similar application
         $admissionApplication = AdmissionApplication::add(
+            $commission_id,
             $institution_id,
             $admissionApplicationForm->getAttributes()
         );
@@ -231,6 +236,52 @@ class AdmissionApplicationService
         if (!$admissionApplication->save()) {
             throw new \Exception('Saving error');
         }
+
+        return $admissionApplication;
+    }
+
+    /**
+     * @param int $id
+     * @param int $group_id
+     * @return AdmissionApplication
+     * @throws \Exception
+     */
+    public function enlist(int $id, int $group_id): AdmissionApplication
+    {
+        $admissionApplication = AdmissionApplication::findOne([
+            'id'     => $id,
+            'type'   => ApplicationHelper::APPLICATION_TYPE_ADMISSION,
+            'status' => ApplicationHelper::STATUS_ACCEPTED
+        ]);
+        if (!$admissionApplication) {
+            throw new \Exception('Admission application not found');
+        }
+
+        $admissionApplication->status = ApplicationHelper::STATUS_ENLISTED;
+        $entrant = $admissionApplication->person;
+        $entrant->type = Person::TYPE_STUDENT;
+        $entrant->person_type = PersonTypeHelper::PERSON_TYPE_STUDENT;
+
+        $this->transactionManager->execute(function () use (
+            &$admissionApplication,
+            &$entrant,
+            $group_id
+        ) {
+            if (!$admissionApplication->save()) {
+                throw new \Exception('Saving Error');
+            }
+            if (!$entrant->save()) {
+                throw new \Exception('Saving Error');
+            }
+
+            $studentGroupLink = new StudentGroupLink([
+                'student_id' => $entrant->id,
+                'group_id'   => $group_id
+            ]);
+            if (!$studentGroupLink->save()) {
+                throw new \Exception('Saving Error');
+            }
+        });
 
         return $admissionApplication;
     }

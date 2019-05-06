@@ -3,11 +3,13 @@
 namespace frontend\controllers;
 
 use common\helpers\ApplicationHelper;
-use common\models\educational_process\AdmissionApplication;
+use common\models\reception\AdmissionApplication;
 use common\models\ReceptionGroup;
-use common\services\educational_process\AdmissionApplicationService;
-use frontend\models\educational_process\applications\ChangeStatusForm;
+use common\services\reception\AdmissionApplicationService;
+use common\services\reception\CommissionService;
 use frontend\models\forms\AdmissionApplicationForm;
+use frontend\models\forms\EnlistEntrantForm;
+use frontend\models\reception\admission_application\ChangeStatusForm;
 use frontend\search\AdmissionApplicationSearch;
 use Yii;
 use yii\base\Module;
@@ -22,23 +24,27 @@ use yii\web\NotFoundHttpException;
 class AdmissionApplicationController extends Controller
 {
     public $admissionApplicationService;
+    public $commissionService;
 
     /**
      * AdmissionApplicationController constructor.
      * @param string $id
      * @param Module $module
      * @param AdmissionApplicationService $admissionApplicationService
+     * @param CommissionService $commissionService
      * @param array $config
      */
     public function __construct(
         $id,
         Module $module,
         AdmissionApplicationService $admissionApplicationService,
+        CommissionService $commissionService,
         array $config = []
     ) {
         parent::__construct($id, $module, $config);
 
         $this->admissionApplicationService = $admissionApplicationService;
+        $this->commissionService = $commissionService;
     }
 
     /**
@@ -57,7 +63,8 @@ class AdmissionApplicationController extends Controller
                             'create',
                             'update',
                             'delete',
-                            'change-status'
+                            'change-status',
+                            'enlist'
                         ],
                         'allow'   => true,
                         'roles'   => ['@'],
@@ -68,6 +75,7 @@ class AdmissionApplicationController extends Controller
                 'class'   => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'enlist' => ['POST'],
                 ],
             ],
         ];
@@ -128,8 +136,17 @@ class AdmissionApplicationController extends Controller
         $admissionApplicationForm = new AdmissionApplicationForm();
 
         if ($admissionApplicationForm->load(Yii::$app->request->post()) && $admissionApplicationForm->validate()) {
+            $commission = $this->commissionService->getActiveInstitutionCommission(
+                Yii::$app->user->identity->institution
+            );
+            if (!$commission) {
+                Yii::$app->session->setFlash('error',
+                    Yii::t('app', 'Необходимо создать текущую комиссию для приема завлений'));
+            }
+
             $admissionApplication = $this->admissionApplicationService->create(
                 $admissionApplicationForm,
+                $commission->id,
                 Yii::$app->user->identity->institution->id
             );
 
@@ -191,11 +208,39 @@ class AdmissionApplicationController extends Controller
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
         }
 
+        $eligibleReceptionGroupsForEntrant = ReceptionGroup::find()
+            ->andWhere([
+                'speciality_id'  => $admissionApplication->properties['speciality_id'],
+                'education_form' => $admissionApplication->properties['education_form'],
+                'language'       => $admissionApplication->properties['language']
+            ])->all();
         return $this->render('change-status', [
             'admissionApplication' => $admissionApplication,
             'changeStatusForm'     => $changeStatusForm,
-            'receptionGroups'      => ReceptionGroup::find()->all()
+            'receptionGroups'      => $eligibleReceptionGroupsForEntrant
         ]);
+    }
+
+    /**
+     * @return \yii\web\Response
+     */
+    public function actionEnlist()
+    {
+        $enlistAdmissionApplicationForm = new EnlistEntrantForm();
+
+        if ($enlistAdmissionApplicationForm->load(Yii::$app->request->post())
+            && $enlistAdmissionApplicationForm->validate()) {
+            $this->admissionApplicationService->enlist(
+                $enlistAdmissionApplicationForm->admission_application_id,
+                $enlistAdmissionApplicationForm->group_id
+            );
+
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Студент успешно зачислен'));
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+
+        Yii::$app->session->setFlash('error', current($enlistAdmissionApplicationForm->firstErrors));
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**

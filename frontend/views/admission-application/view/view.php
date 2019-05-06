@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model common\models\educational_process\AdmissionApplication */
+/* @var $model common\models\reception\AdmissionApplication */
 
 $this->title = Yii::t('app', 'Заявление') . " №{$model->id}";
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Заявления'), 'url' => ['index']];
@@ -26,7 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label'   => 'Контактные данные',
                 'content' => $this->render('_contacts', compact('model')),
-                'options' => ['id' => 'myveryownID']
+            ],
+            [
+                'label'   => 'Льготы',
+                'content' => $this->render('_social_statuses', compact('model')),
             ],
         ]
     ])

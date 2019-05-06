@@ -110,5 +110,15 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </a>
     </div>
+    <div class="col-md-4">
+        <a href="<?= \yii\helpers\Url::to(["/competition/{$model->id}"]) ?>">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fa fa-user-check fa-3x"></i>
+                    <h4><?= Yii::t('app', 'Competitions') ?></h4>
+                </div>
+            </div>
+        </a>
+    </div>
 </div>
 

@@ -2,11 +2,10 @@
 
 namespace frontend\search;
 
+use common\models\person\Entrant;
 use common\models\person\Person;
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\person\Entrant;
 
 /**
  * StudentSearch represents the model behind the search form of `common\models\person\Student`.
@@ -85,7 +84,7 @@ class EntrantSearch extends Entrant
         }
 
         if (!empty($this->reception_group_id)) {
-            $query->joinWith('receptionGroups');
+            $query->joinWith('receptionGroup');
             $query->andFilterWhere(['link.entrant_reception_group_link.reception_group_id' => $this->reception_group_id]);
             $query->andWhere(['is', 'link.entrant_reception_group_link.delete_ts', new \yii\db\Expression('null')]);
         }
@@ -102,25 +101,25 @@ class EntrantSearch extends Entrant
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'person.person.id' => $this->id,
-            'birth_date' => $this->birth_date,
-            'sex' => $this->sex,
-            'nationality_id' => $this->nationality_id,
-            'is_pluralist' => $this->is_pluralist,
-            'birth_country_id' => $this->birth_country_id,
-            'birth_city_id' => $this->birth_city_id,
-            'oid' => $this->oid,
-            'alledu_id' => $this->alledu_id,
-            'alledu_server_id' => $this->alledu_server_id,
-            'pupil_id' => $this->pupil_id,
-            'owner_id' => $this->owner_id,
-            'server_id' => $this->server_id,
-            'is_subscribed' => $this->is_subscribed,
-            'portal_uid' => $this->portal_uid,
+            'person.person.id'   => $this->id,
+            'birth_date'         => $this->birth_date,
+            'sex'                => $this->sex,
+            'nationality_id'     => $this->nationality_id,
+            'is_pluralist'       => $this->is_pluralist,
+            'birth_country_id'   => $this->birth_country_id,
+            'birth_city_id'      => $this->birth_city_id,
+            'oid'                => $this->oid,
+            'alledu_id'          => $this->alledu_id,
+            'alledu_server_id'   => $this->alledu_server_id,
+            'pupil_id'           => $this->pupil_id,
+            'owner_id'           => $this->owner_id,
+            'server_id'          => $this->server_id,
+            'is_subscribed'      => $this->is_subscribed,
+            'portal_uid'         => $this->portal_uid,
             'person.person.type' => $this->type,
-            'create_ts' => $this->create_ts,
-            'delete_ts' => $this->delete_ts,
-            'import_ts' => $this->import_ts,
+            'create_ts'          => $this->create_ts,
+            'delete_ts'          => $this->delete_ts,
+            'import_ts'          => $this->import_ts,
         ]);
 
         $query->andFilterWhere(['ilike', 'nickname', $this->nickname])
