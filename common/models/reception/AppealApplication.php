@@ -79,4 +79,9 @@ class AppealApplication extends \yii\db\ActiveRecord
     public function getStatusValue() {
         return AppealApplicationHelper::getStatusList()[$this->status] ?? null;
     }
+
+    public function isFinished() {
+        $finishedStatuses = [self::STATUS_ACCEPTED, self::STATUS_REJECTED];
+        return in_array($this->status, $finishedStatuses);
+    }
 }

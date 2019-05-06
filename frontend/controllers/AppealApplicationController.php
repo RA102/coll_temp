@@ -106,6 +106,22 @@ class AppealApplicationController extends Controller
         ]);
     }
 
+    public function actionAccept($id) {
+        $model = $this->findModel($id);
+        $model->status = AppealApplication::STATUS_ACCEPTED;
+        $model->save();
+
+        return $this->redirect(['index', 'commission_id' => $model->appeal_commission_id]);
+    }
+
+    public function actionReject($id) {
+        $model = $this->findModel($id);
+        $model->status = AppealApplication::STATUS_REJECTED;
+        $model->save();
+
+        return $this->redirect(['view', 'commission_id' => $model->appeal_commission_id]);
+    }
+
     /**
      * Deletes an existing AppealApplication model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

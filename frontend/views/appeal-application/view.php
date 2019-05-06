@@ -14,11 +14,33 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div style="position: relative;">
     <h1><?=$this->title?></h1>
-    <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 
 <div class="card">
     <div class="card-body">
+
+        <p>
+            <?php if (!$model->isFinished()): ?>
+                <?= Html::a(Yii::t('app', 'Accept'), ['accept', 'id' => $model->id], [
+                    'class' => 'btn btn-success',
+                    'data' => [
+                        'confirm' => Yii::t('app', 'Are you sure you want to accept this application?'),
+                        'method' => 'post',
+                    ],
+                ]) ?>
+
+            <?= Html::a(Yii::t('app', 'Reject'), ['reject', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('app', 'Are you sure you want to reject this application?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
+
+                <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?php endif; ?>
+        </p>
+
         <div class="appeal-application-view">
             <?= DetailView::widget([
                 'model' => $model,

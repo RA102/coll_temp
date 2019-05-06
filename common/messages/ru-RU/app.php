@@ -294,4 +294,7 @@ return [
     'Appeal new' => 'Новое',
     'Appeal accepted' => 'Принято',
     'Appeal rejected' => 'Отклонено',
+    'Accept' => 'Принять',
+    'Are you sure you want to accept this application?' => 'Вы уверены что хотите принять это заявление?',
+    'Are you sure you want to reject this application?' => 'Вы уверены что хотите отклонить это заявление?'
 ];
