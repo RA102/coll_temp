@@ -3,8 +3,8 @@
 namespace common\services\reception;
 
 use common\helpers\ApplicationHelper;
-use common\models\educational_process\AdmissionApplication;
 use common\models\handbook\Speciality;
+use common\models\reception\AdmissionApplication;
 
 class CompetitionService
 {

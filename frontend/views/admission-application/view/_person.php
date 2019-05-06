@@ -3,11 +3,11 @@
 use common\helpers\ApplicationHelper;
 use common\helpers\EducationHelper;
 use common\models\Country;
-use common\models\educational_process\AdmissionApplication;
+use common\models\reception\AdmissionApplication;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\educational_process\AdmissionApplication */
+/* @var $model common\models\reception\AdmissionApplication */
 $citizenshipLocationCountry = $model->properties['citizenship_location']
     ? Country::findOne($model->properties['citizenship_location'])
     : null;

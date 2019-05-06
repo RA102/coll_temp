@@ -5,8 +5,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $admissionApplication common\models\educational_process\AdmissionApplication */
-/* @var $changeStatusForm \frontend\models\educational_process\applications\ChangeStatusForm */
+/* @var $admissionApplication common\models\reception\AdmissionApplication */
+/* @var $changeStatusForm \frontend\models\reception\admission_application\ChangeStatusForm */
 /* @var $receptionGroups \common\models\ReceptionGroup[] */
 
 $this->title = Yii::t('app', 'Изменить статус');

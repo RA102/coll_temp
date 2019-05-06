@@ -3,8 +3,8 @@
 namespace frontend\models\forms;
 
 use common\helpers\ApplicationHelper;
-use common\models\educational_process\AdmissionApplication;
 use common\models\organization\Group;
+use common\models\reception\AdmissionApplication;
 use yii\base\Model;
 use yii\db\ActiveQuery;
 

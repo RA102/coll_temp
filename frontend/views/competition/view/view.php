@@ -9,9 +9,9 @@
 use common\helpers\ApplicationHelper;
 use common\helpers\EducationHelper;
 use common\helpers\LanguageHelper;
-use common\models\educational_process\AdmissionApplication;
+use common\models\reception\AdmissionApplication;
 
-/* @var $admissionApplications \common\models\educational_process\AdmissionApplication[] */
+/* @var $admissionApplications \common\models\reception\AdmissionApplication[] */
 $this->title = Yii::t('app', 'Competition');
 
 $this->params['breadcrumbs'][] = [

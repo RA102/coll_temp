@@ -1,15 +1,15 @@
 <?php
 
-namespace common\services\educational_process;
+namespace common\services\reception;
 
 use app\models\link\EntrantReceptionGroupLink;
 use common\helpers\ApplicationHelper;
 use common\helpers\PersonCredentialHelper;
 use common\helpers\PersonTypeHelper;
-use common\models\educational_process\AdmissionApplication;
 use common\models\link\StudentGroupLink;
 use common\models\person\Entrant;
 use common\models\person\Person;
+use common\models\reception\AdmissionApplication;
 use common\services\person\PersonService;
 use common\services\TransactionManager;
 use frontend\models\forms\AdmissionApplicationForm;
@@ -31,16 +31,19 @@ class AdmissionApplicationService
 
     /**
      * @param AdmissionApplicationForm $admissionApplicationForm
+     * @param int $commission_id
      * @param int $institution_id
      * @return AdmissionApplication
      * @throws \Exception
      */
     public function create(
         AdmissionApplicationForm $admissionApplicationForm,
+        int $commission_id,
         int $institution_id
     ): AdmissionApplication {
         // TODO: add validation of iin and email uniqueness, check existence of similar application
         $admissionApplication = AdmissionApplication::add(
+            $commission_id,
             $institution_id,
             $admissionApplicationForm->getAttributes()
         );

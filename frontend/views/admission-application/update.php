@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $admissionApplication common\models\educational_process\AdmissionApplication */
+/* @var $admissionApplication common\models\reception\AdmissionApplication */
 /* @var $admissionApplicationForm \frontend\models\forms\AdmissionApplicationForm */
 /* @var $specialities common\models\handbook\Speciality[] */
 

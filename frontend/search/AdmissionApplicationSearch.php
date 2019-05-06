@@ -2,8 +2,8 @@
 
 namespace frontend\search;
 
-use common\models\educational_process\AdmissionApplication;
 use common\models\organization\Institution;
+use common\models\reception\AdmissionApplication;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
