@@ -282,7 +282,10 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getInstitutions()
     {
-        return $this->hasMany(Institution::className(), ['id' => 'institution_id'])->viaTable('link.person_institution_link', ['person_id' => 'id']);
+        return $this->hasMany(Institution::className(), ['id' => 'institution_id'])
+            ->viaTable('link.person_institution_link', ['person_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+            });
     }
 
     public function getInstitution()

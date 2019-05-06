@@ -127,16 +127,30 @@ class PersonService
         return $person;
     }
 
-    public function update(Person $model)
+    public function update(Person $model, int $institution_id)
     {
         if ($model->isNewRecord) {
             throw new \yii\base\InvalidCallException('Model not created');
         }
 
-        $this->transactionManager->execute(function () use ($model) {
+        $this->transactionManager->execute(function () use ($model, $institution_id) {
             $this->pdsService->update($model);
             if (!$model->save()) {
                 throw new \RuntimeException('Saving error.');
+            }
+
+            if ($model->institution->id !== $institution_id) {
+                PersonInstitutionLink::updateAll(['is_deleted' => true], ['person_id' => $model->id]);
+                $link = PersonInstitutionLink::findOne(['person_id' => $model->id, 'institution_id' => $institution_id]);
+
+                if ($link) {
+                    $link->activate();
+                } else {
+                    $link = PersonInstitutionLink::add($model->id, $institution_id);
+                }
+                if (!$link->save()) {
+                    throw new \RuntimeException('Saving error.');
+                }
             }
         });
 

@@ -93,6 +93,11 @@ class PersonInstitutionLink extends \yii\db\ActiveRecord
         return $model;
     }
 
+    public function activate()
+    {
+        $this->is_deleted = false;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
