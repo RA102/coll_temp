@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\models\educational_process\applications;
+namespace frontend\models\reception\admission_application;
 
 use common\helpers\ApplicationHelper;
 use Yii;

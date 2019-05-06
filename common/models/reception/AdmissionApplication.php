@@ -1,19 +1,21 @@
 <?php
 
-namespace common\models\educational_process;
+namespace common\models\reception;
 
 use common\helpers\ApplicationHelper;
+use common\models\organization\Institution;
 use common\models\person\Entrant;
 use common\models\person\Person;
 use Yii;
 
 /**
- * This is the model class for table "educational_process.application".
+ * This is the model class for table "reception.admission_application".
  *
  * @property int $id
  * @property int $status
  * @property int $type
  * @property int $institution_id
+ * @property int $commission_id
  * @property int $person_id
  * @property array $properties
  * @property bool $is_deleted
@@ -31,17 +33,19 @@ class AdmissionApplication extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'educational_process.application';
+        return 'reception.admission_application';
     }
 
     /**
      * @param int $institution_id
+     * @param int $commission_id
      * @param array $properties
      * @return AdmissionApplication
      */
-    public static function add(int $institution_id, array $properties)
+    public static function add(int $commission_id, int $institution_id, array $properties)
     {
         $model = new self();
+        $model->commission_id = $commission_id;
         $model->institution_id = $institution_id;
         $model->properties = $properties;
         $model->type = ApplicationHelper::APPLICATION_TYPE_ADMISSION;
@@ -55,13 +59,35 @@ class AdmissionApplication extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'institution_id', 'person_id', 'type'], 'default', 'value' => null],
-            [['status', 'institution_id', 'person_id', 'type'], 'integer'],
-            [['institution_id', 'status', 'type'], 'required'],
+            [['status', 'commission_id', 'institution_id', 'person_id', 'type'], 'default', 'value' => null],
+            [['status', 'commission_id', 'institution_id', 'person_id', 'type'], 'integer'],
+            [['commission_id', 'institution_id', 'status', 'type'], 'required'],
             [['is_deleted'], 'default', 'value' => false],
             [['is_deleted'], 'boolean'],
             [['delete_ts', 'create_ts', 'update_ts', 'properties', 'history'], 'safe'],
             [['reason'], 'string'],
+
+            [
+                'commission_id',
+                'exist',
+                'skipOnError'     => true,
+                'targetClass'     => Commission::class,
+                'targetAttribute' => ['commission_id' => 'id']
+            ],
+            [
+                'institution_id',
+                'exist',
+                'skipOnError'     => true,
+                'targetClass'     => Institution::class,
+                'targetAttribute' => ['institution_id' => 'id']
+            ],
+            [
+                'person_id',
+                'exist',
+                'skipOnError'     => true,
+                'targetClass'     => Person::class,
+                'targetAttribute' => ['person_id' => 'id']
+            ],
         ];
     }
 

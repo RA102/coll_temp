@@ -3,12 +3,13 @@
 namespace frontend\controllers;
 
 use common\helpers\ApplicationHelper;
-use common\models\educational_process\AdmissionApplication;
+use common\models\reception\AdmissionApplication;
 use common\models\ReceptionGroup;
-use common\services\educational_process\AdmissionApplicationService;
-use frontend\models\educational_process\applications\ChangeStatusForm;
+use common\services\reception\AdmissionApplicationService;
+use common\services\reception\CommissionService;
 use frontend\models\forms\AdmissionApplicationForm;
 use frontend\models\forms\EnlistEntrantForm;
+use frontend\models\reception\admission_application\ChangeStatusForm;
 use frontend\search\AdmissionApplicationSearch;
 use Yii;
 use yii\base\Module;
@@ -23,23 +24,27 @@ use yii\web\NotFoundHttpException;
 class AdmissionApplicationController extends Controller
 {
     public $admissionApplicationService;
+    public $commissionService;
 
     /**
      * AdmissionApplicationController constructor.
      * @param string $id
      * @param Module $module
      * @param AdmissionApplicationService $admissionApplicationService
+     * @param CommissionService $commissionService
      * @param array $config
      */
     public function __construct(
         $id,
         Module $module,
         AdmissionApplicationService $admissionApplicationService,
+        CommissionService $commissionService,
         array $config = []
     ) {
         parent::__construct($id, $module, $config);
 
         $this->admissionApplicationService = $admissionApplicationService;
+        $this->commissionService = $commissionService;
     }
 
     /**
@@ -131,8 +136,17 @@ class AdmissionApplicationController extends Controller
         $admissionApplicationForm = new AdmissionApplicationForm();
 
         if ($admissionApplicationForm->load(Yii::$app->request->post()) && $admissionApplicationForm->validate()) {
+            $commission = $this->commissionService->getActiveInstitutionCommission(
+                Yii::$app->user->identity->institution
+            );
+            if (!$commission) {
+                Yii::$app->session->setFlash('error',
+                    Yii::t('app', 'Необходимо создать текущую комиссию для приема завлений'));
+            }
+
             $admissionApplication = $this->admissionApplicationService->create(
                 $admissionApplicationForm,
+                $commission->id,
                 Yii::$app->user->identity->institution->id
             );
 

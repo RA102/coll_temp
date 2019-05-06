@@ -12,7 +12,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $admissionApplication \common\models\educational_process\AdmissionApplication|null */
+/* @var $admissionApplication \common\models\reception\AdmissionApplication|null */
 /* @var $admissionApplicationForm \frontend\models\forms\AdmissionApplicationForm */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $specialities common\models\handbook\Speciality[] */
@@ -128,47 +128,6 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
                 EducationHelper::getEducationFormTypes(),
                 ['prompt' => Yii::t('app', 'Выбрать'), 'disabled' => $blockPersonalDataEditing]
             ) ?>
-            <?= $form->field($admissionApplicationForm, 'contract_number',
-                [
-                    'options' => [
-                        'class' => "form-group" .
-                            ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
-                                ? ''
-                                : ' hidden')
-                    ]
-                ])->textInput(['disabled' => $blockPersonalDataEditing]); ?>
-            <?= $form->field($admissionApplicationForm, 'contract_date', [
-                'options' => [
-                    'class' => "form-group" .
-                        ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
-                            ? ''
-                            : ' hidden')
-                ]
-            ])->widget(DatePicker::class, [
-                'language'      => 'ru',
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'format'    => 'yyyy-mm-dd'
-                ],
-                'disabled'      => $blockPersonalDataEditing
-            ]); ?>
-            <?= $form->field($admissionApplicationForm, 'contract_sum',
-                [
-                    'options' => [
-                        'class' => "form-group" .
-                            ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
-                                ? ''
-                                : ' hidden')
-                    ]
-                ])->textInput(['disabled' => $blockPersonalDataEditing]); ?>
-            <?= $form->field($admissionApplicationForm, 'contract_duration', [
-                'options' => [
-                    'class' => "form-group" .
-                        ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
-                            ? ''
-                            : ' hidden')
-                ]
-            ])->textInput(); ?>
             <?= $form->field($admissionApplicationForm, 'speciality_id')->widget(Select2::class, [
                 'data'          => \yii\helpers\ArrayHelper::map(
                     $specialities,
@@ -197,6 +156,47 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
             EducationHelper::getPaymentFormTypes(),
             ['prompt' => Yii::t('app', 'Выбрать'), 'disabled' => $blockPersonalDataEditing]
         ) ?>
+        <?= $form->field($admissionApplicationForm, 'contract_number',
+            [
+                'options' => [
+                    'class' => "form-group" .
+                        ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
+                            ? ''
+                            : ' hidden')
+                ]
+            ])->textInput(['disabled' => $blockPersonalDataEditing]); ?>
+        <?= $form->field($admissionApplicationForm, 'contract_date', [
+            'options' => [
+                'class' => "form-group" .
+                    ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
+                        ? ''
+                        : ' hidden')
+            ]
+        ])->widget(DatePicker::class, [
+            'language'      => 'ru',
+            'pluginOptions' => [
+                'autoclose' => true,
+                'format'    => 'yyyy-mm-dd'
+            ],
+            'disabled'      => $blockPersonalDataEditing
+        ]); ?>
+        <?= $form->field($admissionApplicationForm, 'contract_sum',
+            [
+                'options' => [
+                    'class' => "form-group" .
+                        ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
+                            ? ''
+                            : ' hidden')
+                ]
+            ])->textInput(['disabled' => $blockPersonalDataEditing]); ?>
+        <?= $form->field($admissionApplicationForm, 'contract_duration', [
+            'options' => [
+                'class' => "form-group" .
+                    ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
+                        ? ''
+                        : ' hidden')
+            ]
+        ])->textInput(); ?>
         <?= $form->field($admissionApplicationForm, 'based_classes')->dropDownList(
             \common\helpers\ApplicationHelper::getBasedClassesArray(),
             ['prompt' => Yii::t('app', 'Выбрать'), 'disabled' => $blockPersonalDataEditing]

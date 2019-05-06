@@ -3,10 +3,10 @@
 namespace frontend\models\forms;
 
 use common\helpers\ApplicationHelper;
-use common\models\educational_process\AdmissionApplication;
 use common\models\person\Entrant;
 use common\models\person\Person;
 use common\models\person\PersonCredential;
+use common\models\reception\AdmissionApplication;
 use common\validators\IinValidator;
 use Yii;
 use yii\base\Model;

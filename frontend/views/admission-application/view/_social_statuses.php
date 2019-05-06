@@ -1,7 +1,8 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $model common\models\educational_process\AdmissionApplication */
+
+/* @var $model common\models\reception\AdmissionApplication */
 
 use app\models\handbook\PersonSocialStatus;
 
