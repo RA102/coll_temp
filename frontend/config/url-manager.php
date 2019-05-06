@@ -20,6 +20,7 @@ return [
         'appeal-commission/create/<id:\d+>'                                                                                                              => '/appeal-commission/create',
         'appeal-commission-member/<commission_id:\d+>'                                                                                                   => '/appeal-commission-member/index',
         'appeal-commission-member/create/<id:\d+>'                                                                                                       => '/appeal-commission-member/create',
+        'appeal-application/<id:\d+>'                                                                                                                    => '/appeal-application/index',
         'competition/<commission_id:\d+>'                                                                                                                => '/competition/index',
         'competition/view/<commission_id:\d+>/<speciality_id:\d+>/<education_pay_form:\d+>/<language:[a-z]{2}>/<education_form:\d+>/<based_classes:\d+>' => '/competition/view',
         '<a:\w+>'                                                                                                                                        => 'site/<a>',

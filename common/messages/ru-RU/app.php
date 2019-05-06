@@ -284,4 +284,10 @@ return [
     // ENTRANTS
     'Entrants' => 'Абитуриенты',
     'Entrant ID' => 'Абитуриент',
+
+    // APPEAL APPLICATIONS
+    'Applications' => 'Заявления',
+    'Reason' => 'Причина',
+    'Appeal Applications' => 'Апелляционные заявления',
+    'Update Appeal Application' => 'Редактирование заявления'
 ];
