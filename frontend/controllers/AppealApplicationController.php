@@ -81,7 +81,10 @@ class AppealApplicationController extends Controller
         $model = new AppealApplication();
         $model->appeal_commission_id = $id;
         $model->status = AppealApplication::STATUS_NEW;
-        $entrants = $this->entrantService->getEntrants(Yii::$app->user->identity->institution);
+        $entrants = $this->entrantService->getCommissionEntrants(
+            Yii::$app->user->identity->institution,
+            $model->appealCommission->commission
+        );
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -103,7 +106,10 @@ class AppealApplicationController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $entrants = $this->entrantService->getEntrants(Yii::$app->user->identity->institution);
+        $entrants = $this->entrantService->getCommissionEntrants(
+            Yii::$app->user->identity->institution,
+            $model->appealCommission->commission
+        );
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

@@ -20,6 +20,7 @@ use Yii;
  * @property string $delete_ts
  *
  * @property Entrant $entrant
+ * @property AppealCommission $appealCommission
  */
 class AppealApplication extends \yii\db\ActiveRecord
 {

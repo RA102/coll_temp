@@ -2,6 +2,7 @@
 
 namespace common\models\person;
 
+use app\models\link\EntrantReceptionGroupLink;
 use common\helpers\PersonTypeHelper;
 use common\models\CommissionMemberLink;
 use common\models\ReceptionExam;
@@ -84,5 +85,13 @@ class Entrant extends Person
 
         return sizeof($receptionExamIds) ===
             sizeof(array_intersect($receptionExamIds, $entrantPassedReceptionExamIds));
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEntrantReceptionGroupLinks()
+    {
+        return $this->hasMany(EntrantReceptionGroupLink::class, ['entrant_id' => 'id']);
     }
 }
