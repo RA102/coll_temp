@@ -2,6 +2,9 @@
 
 /* @var $this yii\web\View */
 /* @var $model common\models\educational_process\AdmissionApplication */
+
+use app\models\handbook\PersonSocialStatus;
+
 ?>
 
 <?= \yii\grid\GridView::widget([
@@ -11,9 +14,11 @@
     ]),
     'columns'      => [
         [
-            'label' => Yii::t('app', 'Наименование'),
-            'value' => function (array $socialStatusData) {
-                return $socialStatusData['name'];
+            'contentOptions' => ['style' => 'white-space: normal;'],
+            'label'          => Yii::t('app', 'Наименование'),
+            'value'          => function (array $socialStatusData) {
+                $socialStatus = PersonSocialStatus::findOne($socialStatusData['name']);
+                return $socialStatus ? $socialStatus->caption_current : null;
             },
         ],
         [
