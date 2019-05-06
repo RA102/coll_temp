@@ -2,20 +2,21 @@
 
 namespace frontend\controllers;
 
-use common\models\person\Entrant;
-use frontend\search\EntrantSearch;
+use common\services\person\EntrantService;
 use Yii;
 use common\models\reception\AppealApplication;
 use frontend\search\AppealApplicationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\base\Module;
 
 /**
  * AppealApplicationController implements the CRUD actions for AppealApplication model.
  */
 class AppealApplicationController extends Controller
 {
+    private $entrantService;
     /**
      * {@inheritdoc}
      */
@@ -29,6 +30,16 @@ class AppealApplicationController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function __construct(
+        string $id,
+        Module $module,
+        EntrantService $entrantService,
+        array $config = [])
+    {
+        $this->entrantService = $entrantService;
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -70,8 +81,7 @@ class AppealApplicationController extends Controller
         $model = new AppealApplication();
         $model->appeal_commission_id = $id;
         $model->status = AppealApplication::STATUS_NEW;
-        $entrants = Entrant::find()->joinWith('institutions')
-            ->andFilterWhere(['person_institution_link.institution_id' => Yii::$app->user->identity->institution->id])->all();
+        $entrants = $this->entrantService->getEntrants(Yii::$app->user->identity->institution);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -93,8 +103,7 @@ class AppealApplicationController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $entrants = Entrant::find()->joinWith('institutions')
-            ->andFilterWhere(['person_institution_link.institution_id' => Yii::$app->user->identity->institution->id])->all();
+        $entrants = $this->entrantService->getEntrants(Yii::$app->user->identity->institution);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
