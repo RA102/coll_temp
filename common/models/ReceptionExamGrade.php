@@ -12,6 +12,7 @@ use Yii;
  * @property int $id
  * @property int $entrant_id
  * @property int $exam_id
+ * @property int $grade_type
  * @property string $grade
  * @property string $history
  * @property string $create_ts
@@ -23,6 +24,10 @@ use Yii;
  */
 class ReceptionExamGrade extends \yii\db\ActiveRecord
 {
+    const GRADE_TYPE_LOGICAL = 1;
+    const GRADE_TYPE_TEST = 2;
+    const GRADE_TYPE_5 = 3;
+
     /**
      * {@inheritdoc}
      */

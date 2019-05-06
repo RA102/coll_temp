@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'gradeWrapper')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'gradeWrapper')->dropDownList(\common\helpers\ReceptionExamGradeHelper::getGradeTypeLabels($receptionExam->grade_type)) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

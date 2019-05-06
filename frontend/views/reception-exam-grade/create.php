@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?php foreach ($model->historyWrapper as $history): ?>
                             <tr>
                                 <td><?= $history->date ?? '' ?></td>
-                                <td><?= $history->value ?? '' ?></td>
+                                <td><?= \common\helpers\ReceptionExamGradeHelper::getGradeTypeLabels($model->grade_type)[$history->value] ?? '' ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </table>

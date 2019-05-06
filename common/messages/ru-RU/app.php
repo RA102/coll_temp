@@ -274,6 +274,7 @@ return [
     'Create Reception Exam Grade' => 'Добавить результат экзамена',
     'Exam Grade Value' => 'Оценка',
     'Exam Grade History' => 'История оценок',
+    'Grade Type' => 'Система оценивания',
 
     // APPEAL COMMISSIONS
     'Appeal Commissions' => 'Апелляционные комиссии',

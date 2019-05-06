@@ -125,7 +125,7 @@ class ReceptionExamGradeController extends Controller
                 if (!isset($gradeMap[$entrant->id])) {
                     $gradeMap[$entrant->id] = [];
                 }
-                $gradeMap[$entrant->id][$receptionExam->id] = $receptionExamGrade->grade;
+                $gradeMap[$entrant->id][$receptionExam->id] = $receptionExamGrade;
             }
         }
 
@@ -147,18 +147,21 @@ class ReceptionExamGradeController extends Controller
     public function actionCreate($reception_group_id, $exam_id, $entrant_id)
     {
         $receptionGroup = $this->findReceptionGroup($this->institution, $reception_group_id);
+        /** @var Entrant $entrant */
         $entrant = $receptionGroup
             ->getEntrants()
             ->andWhere([
                 'id' => $entrant_id,
             ])
             ->one();
+        /** @var ReceptionExam $receptionExam */
         $receptionExam = $receptionGroup
             ->getReceptionExams()
             ->andWhere([
                 'id' => $exam_id,
             ])
             ->one();
+        /** @var ReceptionExamGrade $model */
         $model = ReceptionExamGrade::find()
             ->andWhere([
                 'entrant_id' => $entrant->id,
@@ -175,6 +178,7 @@ class ReceptionExamGradeController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->grade_type = $receptionExam->grade_type;
             $model->exam_id = $receptionExam->id;
             $model->entrant_id = $entrant->id;
 

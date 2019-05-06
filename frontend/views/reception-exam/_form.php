@@ -33,6 +33,8 @@ use yii\widgets\ActiveForm;
         ],
     ]) ?>
 
+    <?= $form->field($model, 'grade_type')->dropDownList(\common\helpers\ReceptionExamGradeHelper::getGradeTypeList()) ?>
+
     <?= $form->field($model, 'group_ids')->widget(\kartik\select2\Select2::class, [
         'data' => \yii\helpers\ArrayHelper::map($receptionGroups, 'id', 'caption_current'), /** @see Group::$caption_current */
         'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],

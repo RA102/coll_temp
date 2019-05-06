@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\helpers\ReceptionExamGradeHelper;
 use common\models\organization\InstitutionDiscipline;
 use common\models\reception\Commission;
 use Yii;
@@ -13,6 +14,7 @@ use Yii;
  * @property int $commission_id
  * @property int $institution_discipline_id
  * @property int $teacher_id
+ * @property int $grade_type
  * @property string $date_ts
  *
  * @property Commission $commission
@@ -53,6 +55,8 @@ class ReceptionExam extends \yii\db\ActiveRecord
             [['institution_discipline_id'], 'exist', 'skipOnError' => true, 'targetClass' => InstitutionDiscipline::class, 'targetAttribute' => ['institution_discipline_id' => 'id']],
             [['commission_id'], 'exist', 'skipOnError' => true, 'targetClass' => Commission::class, 'targetAttribute' => ['commission_id' => 'id']],
             [['group_ids'], 'each', 'rule' => ['integer']],
+            ['group_ids', 'required'],
+            ['grade_type', 'in', 'range' => array_keys(ReceptionExamGradeHelper::getGradeTypeList())],
         ];
     }
 
@@ -88,6 +92,7 @@ class ReceptionExam extends \yii\db\ActiveRecord
             'group_ids' => Yii::t('app', 'Groups'),
             'date' => Yii::t('app', 'Exam Date'),
             'time' => Yii::t('app', 'Exam Time'),
+            'grade_type' => Yii::t('app', 'Grade Type'),
         ];
     }
 
