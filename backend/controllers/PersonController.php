@@ -156,7 +156,7 @@ class PersonController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model->setAttributes($form->attributes);
 
-            $this->personService->update($model);
+            $this->personService->update($model, $form->institution_id);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
