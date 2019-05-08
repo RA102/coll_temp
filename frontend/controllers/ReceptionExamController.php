@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\helpers\ReceptionExamHelper;
 use common\models\organization\Institution;
 use common\models\reception\Commission;
 use common\models\ReceptionGroup;
@@ -142,6 +143,7 @@ class ReceptionExamController extends Controller
 
         if ($receptionExam->load(Yii::$app->request->post())) {
             $receptionExam->commission_id = $commission->id;
+            $receptionExam->grade_type = ReceptionExamHelper::examTypeToGradeTypeMap($receptionExam->type);
 
             $transaction = \Yii::$app->db->beginTransaction();
             if ($receptionExam->save()) {

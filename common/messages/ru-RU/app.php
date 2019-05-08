@@ -270,6 +270,7 @@ return [
     'Exams schedule'             => 'Расписание экзаменов',
     'Exam Date'                  => 'Дата',
     'Exam Time'                  => 'Время',
+    'Exam Type'                  => 'Тип экзамена',
 
     // RECEPTION EXAM GRADES
     'Reception Exam Grades' => 'Результаты экзаменов',
