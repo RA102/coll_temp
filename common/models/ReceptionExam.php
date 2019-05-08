@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\helpers\ReceptionExamGradeHelper;
+use common\helpers\ReceptionExamHelper;
 use common\models\organization\InstitutionDiscipline;
 use common\models\reception\Commission;
 use Yii;
@@ -15,6 +16,7 @@ use Yii;
  * @property int $institution_discipline_id
  * @property int $teacher_id
  * @property int $grade_type
+ * @property int $type
  * @property string $date_ts
  *
  * @property Commission $commission
@@ -24,6 +26,11 @@ use Yii;
  */
 class ReceptionExam extends \yii\db\ActiveRecord
 {
+    const TYPE_CREATIVE = 1;
+    const TYPE_INTERVIEW = 2;
+    const TYPE_EXAM = 3;
+    const TYPE_TEST = 4;
+
     public $date;
     public $time;
     public $group_ids = [];
@@ -56,6 +63,7 @@ class ReceptionExam extends \yii\db\ActiveRecord
             [['commission_id'], 'exist', 'skipOnError' => true, 'targetClass' => Commission::class, 'targetAttribute' => ['commission_id' => 'id']],
             [['group_ids'], 'each', 'rule' => ['integer']],
             ['group_ids', 'required'],
+            ['type', 'in', 'range' => array_keys(ReceptionExamHelper::getTypeList())],
             ['grade_type', 'in', 'range' => array_keys(ReceptionExamGradeHelper::getGradeTypeList())],
         ];
     }
@@ -92,6 +100,7 @@ class ReceptionExam extends \yii\db\ActiveRecord
             'group_ids' => Yii::t('app', 'Groups'),
             'date' => Yii::t('app', 'Exam Date'),
             'time' => Yii::t('app', 'Exam Time'),
+            'type' => Yii::t('app', 'Exam Type'),
             'grade_type' => Yii::t('app', 'Grade Type'),
         ];
     }
