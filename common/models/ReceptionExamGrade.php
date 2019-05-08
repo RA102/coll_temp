@@ -2,8 +2,8 @@
 
 namespace common\models;
 
+use common\helpers\ReceptionExamGradeHelper;
 use common\models\person\Entrant;
-use common\models\person\Person;
 use Yii;
 
 /**
@@ -14,6 +14,7 @@ use Yii;
  * @property int $exam_id
  * @property int $grade_type
  * @property string $grade
+ * @property int $points
  * @property string $history
  * @property string $create_ts
  * @property string $delete_ts
@@ -42,13 +43,7 @@ class ReceptionExamGrade extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['entrant_id', 'exam_id'], 'required'],
-            [['entrant_id', 'exam_id'], 'default', 'value' => null],
-            [['entrant_id', 'exam_id'], 'integer'],
-            [['grade'], 'string', 'max' => 255],
             [['gradeWrapper'], 'string', 'max' => 255],
-            [['entrant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['entrant_id' => 'id']],
-            [['exam_id'], 'exist', 'skipOnError' => true, 'targetClass' => ReceptionExam::class, 'targetAttribute' => ['exam_id' => 'id']],
         ];
     }
 
@@ -73,6 +68,7 @@ class ReceptionExamGrade extends \yii\db\ActiveRecord
     public function setGradeWrapper($value)
     {
         $this->grade = $value;
+        $this->points = ReceptionExamGradeHelper::getGradeTypePoints($this->grade_type)[$value];
 
         $history = $this->historyWrapper;
         $history[] = [
@@ -116,5 +112,15 @@ class ReceptionExamGrade extends \yii\db\ActiveRecord
     public function getEntrant()
     {
         return $this->hasOne(Entrant::class, ['id' => 'entrant_id']);
+    }
+
+    public static function add(Entrant $entrant, ReceptionExam $receptionExam)
+    {
+        $model = new static();
+        $model->grade_type = $receptionExam->grade_type;
+        $model->exam_id = $receptionExam->id;
+        $model->entrant_id = $entrant->id;
+
+        return $model;
     }
 }

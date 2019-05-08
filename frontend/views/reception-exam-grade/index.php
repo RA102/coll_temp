@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?php if (isset($gradeMap[$entrant->id][$receptionExam->id])): ?>
                                 <?php
                                     $receptionExamGrade = $gradeMap[$entrant->id][$receptionExam->id];
-                                    $total += ReceptionExamGradeHelper::getGradeTypePoints($receptionExamGrade->grade_type)[$receptionExamGrade->grade];
+                                    $total += $receptionExamGrade->points;
                                     echo ReceptionExamGradeHelper::getGradeTypeLabels($receptionExamGrade->grade_type)[$receptionExamGrade->grade] ?? '';
                                 ?>
                             <?php endif ?>

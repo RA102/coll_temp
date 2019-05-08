@@ -169,19 +169,15 @@ class ReceptionExamGradeController extends Controller
             ])
             ->one();
 
-        if (!$model) {
-            $model = new ReceptionExamGrade();
-        }
-
         if (!$entrant || !$receptionExam) {
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->grade_type = $receptionExam->grade_type;
-            $model->exam_id = $receptionExam->id;
-            $model->entrant_id = $entrant->id;
+        if (!$model) {
+            $model = ReceptionExamGrade::add($entrant, $receptionExam);
+        }
 
+        if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 return $this->redirect(['index', 'reception_group_id' => $receptionGroup->id]);
             }
