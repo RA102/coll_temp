@@ -23,6 +23,7 @@ return [
         'appeal-application/<commission_id:\d+>'                                                                                                                    => '/appeal-application/index',
         'competition/<commission_id:\d+>'                                                                                                                => '/competition/index',
         'competition/view/<commission_id:\d+>/<speciality_id:\d+>/<education_pay_form:\d+>/<language:[a-z]{2}>/<education_form:\d+>/<based_classes:\d+>' => '/competition/view',
+        'reception/entrance-exam-order/<commission_id:\d+>'=> 'reception/entrance-exam-order/index',
         '<a:\w+>'                                                                                                                                        => 'site/<a>',
 
         'POST pds/set-access-token' => 'api/pds/set-access-token',
