@@ -305,5 +305,6 @@ return [
     'Date' => 'Дата',
     'Number' => 'Номер',
     'Form' => 'Сформировать',
-    'Form document' => 'Сформировать документ'
+    'Form document' => 'Сформировать документ',
+    'Order of admission to entrance exams' => 'Приказ о допуске к вступительным экзаменам'
 ];

@@ -2,6 +2,7 @@
 
 namespace frontend\controllers\reception;
 
+use common\models\reception\AdmissionProtocol;
 use common\services\person\EntrantService;
 use frontend\models\forms\EntranceExamOrderForm;
 use Yii;
@@ -46,13 +47,15 @@ class EntranceExamOrderController extends Controller
     public function actionIndex($commission_id)
     {
         $form = new EntranceExamOrderForm();
+        $protocols = AdmissionProtocol::find()->where(['commission_id' => $commission_id])->all();
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
 
         }
 
         return $this->render('index', [
-            'form' => $form
+            'form' => $form,
+            'protocols' => $protocols
         ]);
     }
 }
