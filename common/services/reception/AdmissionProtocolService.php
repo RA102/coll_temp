@@ -98,6 +98,12 @@ class AdmissionProtocolService
      */
     public function close(AdmissionProtocol $admissionProtocol)
     {
+        if (!$admissionProtocol->isCreated()) {
+            throw new DomainException(
+                'Forbidden',
+                'Данное действие недоступно'
+            );
+        }
         $admissionProtocol->status = AdmissionProtocol::STATUS_CLOSED;
 
         if (!$admissionProtocol->save()) {

@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $admissionProtocol->number;
             }
             ?>
             <?= Html::a(Yii::t('app', 'Print'),
-                ['update', 'id' => $admissionProtocol->id, 'commission_id' => $commission->id],
+                ['print', 'id' => $admissionProtocol->id, 'commission_id' => $commission->id],
                 ['class' => 'btn btn-primary']) ?>
             <?php if ($admissionProtocol->isCreated()) {
                 echo Html::a(Yii::t('app', 'Close'),
@@ -129,19 +129,22 @@ $this->params['breadcrumbs'][] = $admissionProtocol->number;
                     <td><?= sizeof($issue['speakers']) ?></td>
                     <td><?= $issue['decree'] ?></td>
                     <td>
-                        <?= Html::a("<icon class='fa fa-trash'></icon>",
-                            [
-                                'delete-issue',
-                                'id'            => $admissionProtocol->id,
-                                'commission_id' => $commission->id,
-                                'key'           => $key
-                            ], [
-                                'class' => 'btn btn-danger pull-right',
-                                'data'  => [
-                                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                                    'method'  => 'post',
-                                ],
-                            ]); ?>
+                        <?php
+                        if ($admissionProtocol->isCreated()) {
+                            echo Html::a("<icon class='fa fa-trash'></icon>",
+                                [
+                                    'delete-issue',
+                                    'id'            => $admissionProtocol->id,
+                                    'commission_id' => $commission->id,
+                                    'key'           => $key
+                                ], [
+                                    'class' => 'btn btn-danger pull-right',
+                                    'data'  => [
+                                        'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                                        'method'  => 'post',
+                                    ],
+                                ]);
+                        } ?>
                     </td>
                 </tr>
             <?php } ?>

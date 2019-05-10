@@ -260,20 +260,13 @@ class ProtocolController extends \yii\web\Controller
         }
 
         $receptionGroups = $this->receptionGroupService->getCommissionReceptionGroups($commission);
-        $receptionGroupIds = array_map(function ($receptionGroup) {
-            return $receptionGroup->id;
-        }, $receptionGroups);
-        $entrants = $this->entrantService->getEntrantsByReceptionGroupIds($receptionGroupIds);
 
         return $this->render('issue_form', [
             'admissionProtocol' => $admissionProtocol,
             'commission'        => $commission,
             'protocolIssueForm' => $protocolIssueForm,
             'receptionGroups'   => $receptionGroups,
-            'possibleSpeakers'  => array_merge(
-                $commission->members,
-                $entrants
-            )
+            'possibleSpeakers'  => $commission->members
         ]);
     }
 
