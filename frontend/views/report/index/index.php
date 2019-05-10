@@ -28,5 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </a>
     </div>
+    <div class="col-md-4">
+        <a href="<?= \yii\helpers\Url::to(['/reception/entrance-exam-order', 'commission_id' => $commission->id]) ?>">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fa fa-file-alt fa-3x"></i>
+                    <h4><?= Yii::t('app', 'Order of admission to exams') ?></h4>
+                </div>
+            </div>
+        </a>
+    </div>
 </div>
 

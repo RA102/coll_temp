@@ -307,6 +307,7 @@ return [
     'Form'                                              => 'Сформировать',
     'Form document'                                     => 'Сформировать документ',
     'Order of admission to entrance exams'              => 'Приказ о допуске к вступительным экзаменам',
+    'Order of admission to exams'                       => 'Приказ о допуске к экзаменам',
 
     // Reports
     'Reports'                                           => 'Отчетности',
