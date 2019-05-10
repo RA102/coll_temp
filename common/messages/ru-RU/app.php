@@ -294,17 +294,22 @@ return [
     'Update Appeal Application' => 'Редактирование апелляционного заявления',
     'Create Appeal Application' => 'Создание апелляционного заявления',
     'Appeal new' => 'Новое',
-    'Appeal accepted' => 'Принято',
-    'Appeal rejected' => 'Отклонено',
-    'Accept' => 'Принять',
+    'Appeal accepted'                                   => 'Принято',
+    'Appeal rejected'                                   => 'Отклонено',
+    'Accept'                                            => 'Принять',
     'Are you sure you want to accept this application?' => 'Вы уверены что хотите принять это заявление?',
     'Are you sure you want to reject this application?' => 'Вы уверены что хотите отклонить это заявление?',
 
     // ENTRANCE EXAM ORDER
-    'Protocol number' => 'Номер протокола',
-    'Date' => 'Дата',
-    'Number' => 'Номер',
-    'Form' => 'Сформировать',
-    'Form document' => 'Сформировать документ',
-    'Order of admission to entrance exams' => 'Приказ о допуске к вступительным экзаменам'
+    'Protocol number'                                   => 'Номер протокола',
+    'Date'                                              => 'Дата',
+    'Number'                                            => 'Номер',
+    'Form'                                              => 'Сформировать',
+    'Form document'                                     => 'Сформировать документ',
+    'Order of admission to entrance exams'              => 'Приказ о допуске к вступительным экзаменам',
+
+    // Reports
+    'Reports'                                           => 'Отчетности',
+    'Report'                                            => 'Отчетность',
+    'Forms'                                             => 'Формы',
 ];

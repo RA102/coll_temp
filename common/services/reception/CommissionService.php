@@ -2,7 +2,9 @@
 
 namespace common\services\reception;
 
+use common\models\link\CommissionMemberLink;
 use common\models\organization\Institution;
+use common\models\person\Person;
 use common\models\reception\Commission;
 use yii\db\ActiveRecord;
 
@@ -28,7 +30,7 @@ class CommissionService
         return Commission::find()
             ->andWhere([
                 Commission::tableName() . '.institution_id' => $institution->id,
-                Commission::tableName() . '.status' => Commission::STATUS_ACTIVE,
+                Commission::tableName() . '.status'         => Commission::STATUS_ACTIVE,
             ])->one();
     }
 
@@ -41,7 +43,7 @@ class CommissionService
     {
         return Commission::find()
             ->andWhere([
-                Commission::tableName() . '.id' => $id,
+                Commission::tableName() . '.id'             => $id,
                 Commission::tableName() . '.institution_id' => $institution->id,
             ])->one();
     }
@@ -64,5 +66,22 @@ class CommissionService
         $commission->delete();
 
         return $commission;
+    }
+
+    /**
+     * @param Commission $commission
+     * @param array $roles
+     * @return Person[]
+     */
+    public function getCommissionMembers(Commission $commission, array $roles)
+    {
+        $commissionMemberLinks = CommissionMemberLink::find()->joinWith('member')->where([
+            'commission_id' => $commission->id,
+            'role'          => $roles
+        ])->all();
+
+        return array_map(function (CommissionMemberLink $commissionMemberLink) {
+            return $commissionMemberLink->member;
+        }, $commissionMemberLinks);
     }
 }

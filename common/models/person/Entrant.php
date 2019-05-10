@@ -4,7 +4,8 @@ namespace common\models\person;
 
 use app\models\link\EntrantReceptionGroupLink;
 use common\helpers\PersonTypeHelper;
-use common\models\CommissionMemberLink;
+use common\models\reception\AdmissionApplication;
+use common\models\reception\CommissionMemberLink;
 use common\models\ReceptionExam;
 use common\models\ReceptionExamGrade;
 use common\models\ReceptionGroup;
@@ -14,6 +15,7 @@ use common\models\ReceptionGroup;
  *
  * @property ReceptionGroup $receptionGroup
  * @property ReceptionExamGrade[] $receptionExamGrades
+ * @property ReceptionExamGrade[] $indexedReceptionExamGrades
  */
 class Entrant extends Person
 {
@@ -54,6 +56,14 @@ class Entrant extends Person
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getAdmissionApplication()
+    {
+        return $this->hasOne(AdmissionApplication::class, ['person_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getReceptionGroup()
     {
         return $this->hasOne(ReceptionGroup::class, ['id' => 'reception_group_id'])
@@ -66,6 +76,15 @@ class Entrant extends Person
     public function getReceptionExamGrades()
     {
         return $this->hasMany(ReceptionExamGrade::class, ['entrant_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIndexedReceptionExamGrades()
+    {
+        return $this->hasMany(ReceptionExamGrade::class, ['entrant_id' => 'id'])
+            ->indexBy('exam_id');
     }
 
     /**
