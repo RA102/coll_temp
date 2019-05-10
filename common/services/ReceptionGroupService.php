@@ -32,6 +32,15 @@ class ReceptionGroupService
     }
 
     /**
+     * @param Commission $commission
+     * @return ReceptionGroup[]
+     */
+    public function getCommissionReceptionGroups(Commission $commission)
+    {
+        return ReceptionGroup::findAll(['commission_id' => $commission->id]);
+    }
+
+    /**
      * @param int $commission_id
      * @param int $speciality_id
      * @param int $education_form
