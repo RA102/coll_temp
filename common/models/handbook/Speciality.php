@@ -134,4 +134,8 @@ class Speciality extends \yii\db\ActiveRecord
         parent::afterFind();
 
     }
+
+    public function getCaptionWithCode() {
+        return "{$this->caption_current} ({$this->code})";
+    }
 }
