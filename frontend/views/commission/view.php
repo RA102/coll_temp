@@ -112,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </a>
     </div>
     <div class="col-md-4">
-        <a href="<?= \yii\helpers\Url::to(['/report/index', 'commission_id' => $model->id]) ?>">
+        <a href="<?= \yii\helpers\Url::to("{$model->id}/report") ?>">
             <div class="card">
                 <div class="card-body text-center">
                     <i class="fa fa-file-alt fa-3x"></i>

@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\controllers;
+namespace frontend\controllers\report;
 
 use common\models\handbook\Speciality;
 use common\models\link\CommissionMemberLink;
@@ -8,14 +8,13 @@ use common\services\PdfService;
 use common\services\person\EntrantService;
 use common\services\reception\CommissionService;
 use common\services\ReceptionGroupService;
-use common\services\ReportService;
 use frontend\models\forms\EntranceExamsReportForm;
 use yii\base\Module;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class ReportController extends Controller
+class IndexController extends Controller
 {
     protected $institution;
     protected $commissionService;
