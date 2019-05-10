@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'label' => Yii::t('app', 'Оценка'),
                         'value' => function (AdmissionApplication $admissionApplication) {
-                            return $admissionApplication->person->getReceptionExamGrades()->sum('grade::INT');
+                            return $admissionApplication->person->getReceptionExamGrades()->sum('points');
                         }
                     ],
                     [
