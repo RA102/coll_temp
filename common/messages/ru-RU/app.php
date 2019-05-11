@@ -313,4 +313,7 @@ return [
     'Reports'                                           => 'Отчетности',
     'Report'                                            => 'Отчетность',
     'Forms'                                             => 'Формы',
+
+    // ADMISSION ORDER
+    'Exam form' => 'Тип экзамена'
 ];
