@@ -10,9 +10,11 @@ use common\models\link\StudentGroupLink;
 use common\models\person\Entrant;
 use common\models\person\Person;
 use common\models\reception\AdmissionApplication;
+use common\services\exceptions\DomainException;
 use common\services\person\PersonService;
 use common\services\TransactionManager;
 use frontend\models\forms\AdmissionApplicationForm;
+use frontend\models\reception\admission_application\ReceiptForm;
 
 class AdmissionApplicationService
 {
@@ -250,7 +252,6 @@ class AdmissionApplicationService
     {
         $admissionApplication = AdmissionApplication::findOne([
             'id'     => $id,
-            'type'   => ApplicationHelper::APPLICATION_TYPE_ADMISSION,
             'status' => ApplicationHelper::STATUS_ACCEPTED
         ]);
         if (!$admissionApplication) {
@@ -282,6 +283,31 @@ class AdmissionApplicationService
                 throw new \Exception('Saving Error');
             }
         });
+
+        return $admissionApplication;
+    }
+
+    /**
+     * @param AdmissionApplication $admissionApplication
+     * @param ReceiptForm $receiptForm
+     * @return AdmissionApplication
+     * @throws DomainException
+     */
+    public function addReceipt(AdmissionApplication $admissionApplication, ReceiptForm $receiptForm)
+    {
+        if (!$admissionApplication->isAccepted()) {
+            throw new DomainException(
+                'Admission application must be accepted',
+                'Расписку можно сформировать только для зарегистрированных заявок'
+            );
+        }
+        $admissionApplication->receipt = $receiptForm->getAttributes();
+        if (!$admissionApplication->save()) {
+            throw new DomainException(
+                'Saving Error',
+                current($admissionApplication->firstErrors)
+            );
+        }
 
         return $admissionApplication;
     }
