@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $specialities common\models\handbook\Speciality[] */
 
-$this->title = Yii::t('app', 'Commissions');
+$this->title = Yii::t('app', 'Journal');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

@@ -11,19 +11,18 @@ use yii\grid\GridView;
 /* @var $specialities common\models\handbook\Speciality[] */
 
 $this->title = Yii::t('app', 'Commissions');
-$this->params['breadcrumbs'][] = $this->title;
 $i = 1;
 ?>
 
-    <h5 class="text-center">
-        <b>
+<h5 class="text-center">
+    <b>
         ЖУРНАЛ
         <br>
         регистрация заявлений абитуриентов,
         <br>
         поступающих в 2019 году
-        </b>
-    </h5>
+    </b>
+</h5>
 
 <table>
     <tr>
@@ -41,7 +40,9 @@ $i = 1;
         <td>Код квалификации</td>
         <td>Название квалификации</td>
         <td>Дата приема документов</td>
-        <td>Образование (какое учебное заведение и когда окончил, его место нахождение). Для выпускников ПТШ указать на базе какой ступени школы они обучались в ПТШ</td>
+        <td>Образование (какое учебное заведение и когда окончил, его место нахождение). Для выпускников ПТШ указать на
+            базе какой ступени школы они обучались в ПТШ
+        </td>
         <td>Номер и дата выдачи документа об образовании</td>
         <td>Отметка о зачислении или отказе</td>
         <td>Отметка о возврате документов</td>
@@ -75,30 +76,37 @@ $i = 1;
     <?php
     /** @var \common\models\reception\AdmissionApplication $model */
     foreach ($dataProvider->getModels() as $model):
-    ?>
-    <tr>
-        <td><?= $model->id; $i++ ?></td>
-        <td><?= $model->person->getFullName() ?></td>
-        <td><?= $model->person->birth_date ?></td>
-        <td><?= $model->person->iin ?></td>
-        <td><?= $model->person->nationality->name ?></td>
-        <td></td> <!-- Отметка о документе подтверждающем права на льготы при зачислении -->
-        <td></td> <!-- Нуждается в общежитие (да, нет) -->
-        <td><?= $model->properties['language'] ?? '' ?></td>
-        <td></td> <!-- Учебный год -->
-        <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? ''?></td> <!-- Код специальности -->
-        <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? ''?></td> <!-- Название специальности -->
-        <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? ''?></td> <!-- Код квалификации -->
-        <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? ''?></td> <!-- Название квалификации -->
-        <td><?= $model->properties['application_date'] ?? ''?></td>
-        <td></td>
-        <td></td>
-        <td><?= ApplicationHelper::$list[$model->status] ?></td>
-        <td></td>
-        <td><?= $model->person->birth_place ?></td>
-        <td><?= \common\helpers\EducationHelper::getEducationFormTypes()[$model->properties['education_form']] ?></td>
-<!--        <td>--><?//= \common\helpers\EducationHelper::getPaymentFormTypes()[$model->properties['education_pay_form']] ?><!--</td>-->
-        <td></td>
-    </tr>
+        ?>
+        <tr>
+            <td><?= $model->id;
+                $i++ ?></td>
+            <td><?= $model->person->getFullName() ?></td>
+            <td><?= $model->person->birth_date ?></td>
+            <td><?= $model->person->iin ?></td>
+            <td><?= $model->person->nationality->name ?></td>
+            <td></td> <!-- Отметка о документе подтверждающем права на льготы при зачислении -->
+            <td></td> <!-- Нуждается в общежитие (да, нет) -->
+            <td><?= $model->properties['language'] ?? '' ?></td>
+            <td></td> <!-- Учебный год -->
+            <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? '' ?></td>
+            <!-- Код специальности -->
+            <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? '' ?></td>
+            <!-- Название специальности -->
+            <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? '' ?></td>
+            <!-- Код квалификации -->
+            <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? '' ?></td>
+            <!-- Название квалификации -->
+            <td><?= $model->properties['application_date'] ?? '' ?></td>
+            <td></td>
+            <td></td>
+            <td><?= ApplicationHelper::$list[$model->status] ?></td>
+            <td></td>
+            <td><?= $model->person->birth_place ?></td>
+            <td><?= \common\helpers\EducationHelper::getEducationFormTypes()[$model->properties['education_form']] ?></td>
+            <!--        <td>-->
+            <? //= \common\helpers\EducationHelper::getPaymentFormTypes()[$model->properties['education_pay_form']]
+            ?><!--</td>-->
+            <td></td>
+        </tr>
     <?php endforeach; ?>
 </table>

@@ -254,4 +254,11 @@ return [
     // ENTRANTS
     'Entrants' => 'Абитуриенты',
     'Entrant ID' => 'Абитуриент',
+
+    // JOURNAL
+    'Journal' => 'Журнал',
+
+    // RATING
+    'Ratings' => 'Рейтинги',
+    'Rating' => 'Рейтинг',
 ];

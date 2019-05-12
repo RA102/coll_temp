@@ -24,7 +24,7 @@ class Employee extends Person
     public static function find()
     {
         return parent::find()->andWhere([
-            'type' => Person::TYPE_EMPLOYEE,
+            static::tableName() . '.type' => Person::TYPE_EMPLOYEE,
         ]);
     }
 
