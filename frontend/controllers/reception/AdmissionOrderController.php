@@ -68,8 +68,8 @@ class AdmissionOrderController extends Controller
                 ->andWhere(new Expression("properties ->> 'education_pay_form' = '{$form->education_pay_form}'"))
                 ->andWhere(new Expression("properties ->> 'language' = '{$form->language}'"))
                 ->andWhere(new Expression("properties ->> 'based_classes' = '{$form->based_classes}'"))
-                ->joinWith(['student' => function(ActiveQuery $query) use($form, $commission_id){
-                    $query->joinWith(['receptionGroup' => function(ActiveQuery $query) use($form, $commission_id){
+                ->joinWith(['student' => function(ActiveQuery $query) use ($form, $commission_id) {
+                    $query->joinWith(['receptionGroup' => function (ActiveQuery $query) use ($form, $commission_id) {
                         $query->joinWith([
                             'receptionExams' => function (ActiveQuery $query) use ($form, $commission_id) {
                                 return $query->andWhere(['reception.exam.commission_id' => $commission_id])
