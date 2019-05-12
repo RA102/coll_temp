@@ -315,5 +315,6 @@ return [
     'Forms'                                             => 'Формы',
 
     // ADMISSION ORDER
-    'Exam form' => 'Тип экзамена'
+    'Exam form' => 'Тип экзамена',
+    'Order of admission' => 'Приказ о зачислении',
 ];

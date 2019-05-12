@@ -6,6 +6,7 @@ use common\helpers\ApplicationHelper;
 use common\models\organization\Institution;
 use common\models\person\Entrant;
 use common\models\person\Person;
+use common\models\person\Student;
 use Yii;
 
 /**
@@ -25,6 +26,7 @@ use Yii;
  * @property string $reason
  * @property array $history
  * @property Entrant $person
+ * @property Student $student
  */
 class AdmissionApplication extends \yii\db\ActiveRecord
 {
@@ -165,6 +167,14 @@ class AdmissionApplication extends \yii\db\ActiveRecord
             return $this->hasOne(Person::class, ['id' => 'person_id']);
         }
         return $this->hasOne(Entrant::class, ['id' => 'person_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getStudent()
+    {
+        return $this->hasOne(Student::class, ['id' => 'person_id']);
     }
 
     /**

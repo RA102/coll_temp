@@ -25,7 +25,7 @@ class Entrant extends Person
     public static function find()
     {
         return parent::find()->andWhere([
-            'type' => Person::TYPE_ENTRANT,
+            'person.type' => Person::TYPE_ENTRANT,
         ]);
     }
 
