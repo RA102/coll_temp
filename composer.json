@@ -30,7 +30,8 @@
         "karriere/json-decoder": "^2.2",
         "psr/log": "^1.1",
       "wbraganca/yii2-dynamicform": "v2.0.2",
-      "unclead/yii2-multiple-input": "~2.0"
+      "unclead/yii2-multiple-input": "~2.0",
+        "kartik-v/yii2-mpdf": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
