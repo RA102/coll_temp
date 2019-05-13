@@ -10,7 +10,7 @@ use yii\widgets\DetailView;
 $commissionService = new \common\services\reception\CommissionService;
 $activeCommission = $commissionService->getActiveInstitutionCommission(\Yii::$app->user->identity->institution);
 
-$this->title = ($model->id == $activeCommission->id ? Yii::t('app', 'Current Commission') : $model->caption_current);
+$this->title = ($model->id == ($activeCommission->id ?? null) ? Yii::t('app', 'Current Commission') : $model->caption_current);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Commissions'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);

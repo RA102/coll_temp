@@ -49,7 +49,7 @@ class CommissionService
     {
         return Commission::find()
             ->andWhere([
-                Commission::tableName() . '.id'             => $id,
+                Commission::tableName() . '.id' => $id,
                 Commission::tableName() . '.institution_id' => $institution->id,
                 Commission::tableName() . '.delete_ts' => null,
             ])
