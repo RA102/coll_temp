@@ -43,6 +43,7 @@ class AdmissionProtocol extends \yii\db\ActiveRecord
     {
         return [
             [['commission_id', 'status'], 'default', 'value' => null],
+            [['issues'], 'default', 'value' => []],
             [['commission_id', 'status'], 'integer'],
             [
                 ['completion_date', 'create_ts', 'update_ts', 'delete_ts', 'commission_members', 'agendas', 'issues'],
@@ -57,6 +58,18 @@ class AdmissionProtocol extends \yii\db\ActiveRecord
                 'targetAttribute' => ['commission_id' => 'id']
             ],
         ];
+    }
+
+    /**
+     *
+     */
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        if (is_null($this->issues)) {
+            $this->issues = [];
+        }
     }
 
     /**
