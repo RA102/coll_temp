@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->getEducationPayForm() ?? null;
                 },
             ],
-            'education_form',
+//            'education_form',
             //'institution_id',
             //'budget_places',
             //'commercial_places',
