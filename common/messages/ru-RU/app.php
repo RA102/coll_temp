@@ -327,4 +327,12 @@ return [
     'Active'                               => 'Активно',
     'Closed'                               => 'Закрыто',
     'Deleted'                              => 'Удалено',
+    'Are you sure you want to reject this application?' => 'Вы уверены что хотите отклонить это заявление?',
+
+    // JOURNAL
+    'Journal' => 'Журнал',
+
+    // RATING
+    'Ratings' => 'Рейтинги',
+    'Rating' => 'Рейтинг',
 ];

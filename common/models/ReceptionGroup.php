@@ -71,12 +71,14 @@ class ReceptionGroup extends \yii\db\ActiveRecord
             'language' => Yii::t('app', 'Language'),
             'speciality_id' => Yii::t('app', 'Speciality ID'),
             'education_form' => Yii::t('app', 'Education Form'),
+            'education_pay_form' => Yii::t('app', 'Education Pay Form'),
             'institution_id' => Yii::t('app', 'Institution ID'),
             'budget_places' => Yii::t('app', 'Budget Places'),
             'commercial_places' => Yii::t('app', 'Commercial Places'),
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
+            'based_classes' => Yii::t('app', 'На базе'),
         ];
     }
 
