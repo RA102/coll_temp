@@ -189,14 +189,15 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
                             : ' hidden')
                 ]
             ])->textInput(['disabled' => $blockPersonalDataEditing]); ?>
-        <?= $form->field($admissionApplicationForm, 'contract_duration', [
-            'options' => [
-                'class' => "form-group" .
-                    ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
-                        ? ''
-                        : ' hidden')
-            ]
-        ])->textInput(); ?>
+        <?= $form->field($admissionApplicationForm, 'contract_duration',
+            [
+                'options' => [
+                    'class' => "form-group" .
+                        ($admissionApplicationForm->education_pay_form == EducationHelper::EDUCATION_PAY_FORM_CONTRACT
+                            ? ''
+                            : ' hidden')
+                ]
+            ])->textInput(['disabled' => $blockPersonalDataEditing]); ?>
         <?= $form->field($admissionApplicationForm, 'based_classes')->dropDownList(
             \common\helpers\ApplicationHelper::getBasedClassesArray(),
             ['prompt' => Yii::t('app', 'Выбрать'), 'disabled' => $blockPersonalDataEditing]

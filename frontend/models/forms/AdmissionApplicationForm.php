@@ -60,12 +60,13 @@ class AdmissionApplicationForm extends Model
      * @param AdmissionApplication|null $admissionApplication
      * @param array $config
      */
-    public function __construct(array $config = [], AdmissionApplication $admissionApplication = null)
+    public function __construct(AdmissionApplication $admissionApplication = null, array $config = [])
     {
         parent::__construct($config);
 
         if ($admissionApplication) {
             $this->admissionApplication = $admissionApplication;
+            $this->setAttributes($admissionApplication->properties);
             if ($admissionApplication->status === ApplicationHelper::STATUS_ACCEPTED) {
                 $this->setScenario(self::SCENARIO_UPDATE_ACCEPTED_APPLICATION);
             }
@@ -140,12 +141,14 @@ class AdmissionApplicationForm extends Model
                 'iin',
                 'unique',
                 'targetClass' => Person::class,
+                'on'          => self::SCENARIO_DEFAULT
             ],
             [
                 'email',
                 'unique',
                 'targetClass'     => PersonCredential::class,
-                'targetAttribute' => 'indentity'
+                'targetAttribute' => 'indentity',
+                'on'              => self::SCENARIO_DEFAULT
             ],
         ];
     }

@@ -185,7 +185,7 @@ class AdmissionApplicationController extends Controller
     public function actionUpdate($id)
     {
         $admissionApplication = $this->findModel($id);
-        $admissionApplicationForm = new AdmissionApplicationForm($admissionApplication->properties);
+        $admissionApplicationForm = new AdmissionApplicationForm($admissionApplication);
 
         if ($admissionApplicationForm->load(Yii::$app->request->post()) && $admissionApplicationForm->validate()) {
             $admissionApplication = $this->admissionApplicationService->update(
