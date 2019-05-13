@@ -16,9 +16,12 @@ class CommissionService
      */
     public function getInstitutionCommissions(Institution $institution)
     {
-        return Commission::find()->andWhere([
-            Commission::tableName() . '.institution_id' => $institution->id,
-        ])->all();
+        return Commission::find()
+            ->andWhere([
+                Commission::tableName() . '.institution_id' => $institution->id,
+                Commission::tableName() . '.delete_ts' => null,
+            ])
+            ->all();
     }
 
     /**
@@ -30,8 +33,11 @@ class CommissionService
         return Commission::find()
             ->andWhere([
                 Commission::tableName() . '.institution_id' => $institution->id,
-                Commission::tableName() . '.status'         => Commission::STATUS_ACTIVE,
-            ])->one();
+                Commission::tableName() . '.status' => Commission::STATUS_ACTIVE,
+                Commission::tableName() . '.delete_ts' => null
+            ])
+            ->limit(1)
+            ->one();
     }
 
     /**
@@ -45,7 +51,10 @@ class CommissionService
             ->andWhere([
                 Commission::tableName() . '.id'             => $id,
                 Commission::tableName() . '.institution_id' => $institution->id,
-            ])->one();
+                Commission::tableName() . '.delete_ts' => null,
+            ])
+            ->limit(1)
+            ->one();
     }
 
     public function closeCommission(Commission $commission)
@@ -58,12 +67,13 @@ class CommissionService
 
     public function deleteCommission(Commission $commission)
     {
-        foreach ($commission->institutionDisciplines as $institutionDiscipline) {
-            /** @see Commission::getInstitutionDisciplines() */
-            $commission->unlink('institutionDisciplines', $institutionDiscipline, true);
-        }
+//        foreach ($commission->institutionDisciplines as $institutionDiscipline) {
+//            /** @see Commission::getInstitutionDisciplines() */
+//            $commission->unlink('institutionDisciplines', $institutionDiscipline, true);
+//        }
 
-        $commission->delete();
+        $commission->delete_ts = date('Y-m-d H:i:s');
+        $commission->save();
 
         return $commission;
     }

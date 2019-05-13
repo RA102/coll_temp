@@ -78,9 +78,11 @@ class CommissionController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Commission::find()->andWhere([
-                'institution_id' => $this->institution->id,
-            ]),
+            'query' => Commission::find()
+                ->andWhere([
+                    Commission::tableName() . '.institution_id' => $this->institution->id,
+                    Commission::tableName() . '.delete_ts' => null,
+                ]),
         ]);
 
         return $this->render('index', [
