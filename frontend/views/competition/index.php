@@ -29,10 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns'      => [
                 [
                     'label' => Yii::t('app', 'Speciality ID'),
-                    'value' => function (array $competitionData) {
-                        $speciality = \common\models\handbook\Speciality::findOne($competitionData['speciality_id']);
-                        return $speciality ? $speciality->caption_current : null;
-                    },
+                    'value' => 'speciality.caption_current',
                 ],
                 [
                     'label' => Yii::t('app', 'Форма оплаты'),

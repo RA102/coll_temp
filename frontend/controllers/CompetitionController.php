@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\services\organization\GroupService;
+use common\services\reception\CommissionService;
 use common\services\reception\CompetitionService;
 use frontend\models\forms\CompetitionEntrantsForm;
 use frontend\models\forms\EnlistEntrantForm;
@@ -14,6 +15,7 @@ use yii\web\NotFoundHttpException;
 
 class CompetitionController extends Controller
 {
+    private $commissionService;
     private $competitionService;
     private $groupService;
 
@@ -22,19 +24,23 @@ class CompetitionController extends Controller
      * @param string $id
      * @param Module $module
      * @param array $config
+     * @param CommissionService $commissionService
      * @param CompetitionService $competitionService
      * @param GroupService $groupService
+     * @internal param $CommissionService
      * @internal param AdmissionApplicationService $admissionApplicationService
      */
     public function __construct(
         $id,
         Module $module,
         array $config = [],
+        CommissionService $commissionService,
         CompetitionService $competitionService,
         GroupService $groupService
     ) {
         parent::__construct($id, $module, $config);
 
+        $this->commissionService = $commissionService;
         $this->competitionService = $competitionService;
         $this->groupService = $groupService;
     }
@@ -62,17 +68,14 @@ class CompetitionController extends Controller
     }
 
     /**
+     * @param int $commission_id
      * @return string
      * @throws NotFoundHttpException
      */
-    public function actionIndex()
+    public function actionIndex(int $commission_id)
     {
-        $commission_id = \Yii::$app->request->getQueryParam('commission_id', null);
-        if (!$commission_id) {
-            throw new NotFoundHttpException();
-        }
-
-        $competitions = $this->competitionService->getCompetitions();
+        $commission = $this->findCommission($commission_id);
+        $competitions = $this->competitionService->getCompetitions($commission);
         $dataProvider = new ArrayDataProvider([
             'models' => $competitions
         ]);
@@ -84,11 +87,14 @@ class CompetitionController extends Controller
     }
 
     /**
+     * @param int $commission_id
      * @return string
      * @throws NotFoundHttpException
      */
-    public function actionView()
+    public function actionView(int $commission_id)
     {
+        $commission = $this->findCommission($commission_id);
+
         $params = \Yii::$app->request->getQueryParams();
         $competitionEntrantsForm = new CompetitionEntrantsForm();
         $competitionEntrantsForm->load($params);
@@ -98,6 +104,7 @@ class CompetitionController extends Controller
         }
 
         $admissionApplications = $this->competitionService->getAdmissionApplicationsForCompetition(
+            $commission,
             $competitionEntrantsForm->speciality_id,
             $competitionEntrantsForm->education_pay_form,
             $competitionEntrantsForm->language,
@@ -115,10 +122,29 @@ class CompetitionController extends Controller
         );
 
         return $this->render('view/view', [
-            'enlistEntrantForm'       => new EnlistEntrantForm(),
-            'competitionEntrantsForm' => $competitionEntrantsForm,
             'admissionApplications'   => $admissionApplications,
+            'commission'              => $commission,
+            'competitionEntrantsForm' => $competitionEntrantsForm,
+            'enlistEntrantForm'       => new EnlistEntrantForm(),
             'groups'                  => $groups
         ]);
+    }
+
+    /**
+     * @param int $commission_id
+     * @return array|\common\models\reception\Commission|null
+     * @throws NotFoundHttpException
+     */
+    protected function findCommission(int $commission_id)
+    {
+        $commission = $this->commissionService->getInstitutionCommission(
+            \Yii::$app->user->identity->institution,
+            $commission_id
+        );
+        if (!$commission) {
+            throw new NotFoundHttpException("Коммисия не найдена");
+        }
+
+        return $commission;
     }
 }

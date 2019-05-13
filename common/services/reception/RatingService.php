@@ -2,7 +2,6 @@
 
 namespace common\services\reception;
 
-use common\helpers\ApplicationHelper;
 use common\models\handbook\Speciality;
 use common\models\reception\AdmissionApplication;
 use common\models\reception\Commission;
@@ -13,10 +12,7 @@ class RatingService
 {
     public function getRatings(Commission $commission)
     {
-        $admissionApplications = AdmissionApplication::findAll([
-            'type' => ApplicationHelper::APPLICATION_TYPE_ADMISSION,
-            'commission_id' => $commission->id,
-        ]);
+        $admissionApplications = AdmissionApplication::findAll(['commission_id' => $commission->id]);
 
         $ratings = [];
         /* @var $specialitiesMap Speciality[] */
@@ -69,16 +65,13 @@ class RatingService
     )
     {
         $admissionApplications = AdmissionApplication::find()
-            ->andWhere([
-                AdmissionApplication::tableName() . '.type' => ApplicationHelper::APPLICATION_TYPE_ADMISSION,
-                'commission_id' => $commission->id,
-            ])
+            ->andWhere(['commission_id' => $commission->id])
             ->andWhere(new Expression("properties @> '{\"speciality_id\": \"{$speciality_id}\"}'"))
             ->andWhere(new Expression("properties @> '{\"education_pay_form\": \"{$education_pay_form}\"}'"))
             ->andWhere(new Expression("properties @> '{\"language\": \"{$language}\"}'"))
             ->andWhere(new Expression("properties @> '{\"education_form\": \"{$education_form}\"}'"))
             ->andWhere(new Expression("properties @> '{\"based_classes\": \"{$based_classes}\"}'"))
-            ->with([
+            ->innerJoinWith([
                 /** @see AdmissionApplication::getPerson() */
                 'person' => function (ActiveQuery $query) {
                     return $query->with([

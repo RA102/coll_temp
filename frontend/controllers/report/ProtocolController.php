@@ -130,7 +130,7 @@ class ProtocolController extends \yii\web\Controller
      * @return array|\common\models\reception\Commission|null
      * @throws NotFoundHttpException
      */
-    public function findCommission(int $commission_id)
+    protected function findCommission(int $commission_id)
     {
         $commission = $this->commissionService->getInstitutionCommission(
             $this->institution,

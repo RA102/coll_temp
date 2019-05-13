@@ -6,13 +6,11 @@ use common\helpers\ApplicationHelper;
 use common\helpers\EducationHelper;
 use common\helpers\LanguageHelper;
 use common\models\handbook\Speciality;
-use common\models\reception\Commission;
 use Yii;
 use yii\base\Model;
 
 class CompetitionEntrantsForm extends Model
 {
-    public $commission_id;
     public $speciality_id;
     public $education_pay_form;
     public $language;
@@ -26,12 +24,11 @@ class CompetitionEntrantsForm extends Model
     {
         return [
             [
-                ['commission_id', 'speciality_id', 'education_pay_form', 'language', 'education_form', 'based_classes'],
+                ['speciality_id', 'education_pay_form', 'language', 'education_form', 'based_classes'],
                 'required'
             ],
-            [['commission_id', 'speciality_id', 'education_pay_form', 'education_form', 'based_classes'], 'integer'],
+            [['speciality_id', 'education_pay_form', 'education_form', 'based_classes'], 'integer'],
 
-            ['commission_id', 'exist', 'targetClass' => Commission::class, 'targetAttribute' => 'id'],
             ['speciality_id', 'exist', 'targetClass' => Speciality::class, 'targetAttribute' => 'id'],
 
             ['education_pay_form', 'in', 'range' => array_keys(EducationHelper::getPaymentFormTypes())],

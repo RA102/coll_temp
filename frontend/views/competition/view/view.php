@@ -1,6 +1,7 @@
 <?php
 
 
+/* @var $commission \common\models\reception\Commission */
 /* @var $competitionEntrantsForm \frontend\models\forms\CompetitionEntrantsForm */
 /* @var $enlistEntrantForm \frontend\models\forms\EnlistEntrantForm */
 
@@ -10,6 +11,7 @@ use common\helpers\ApplicationHelper;
 use common\helpers\EducationHelper;
 use common\helpers\LanguageHelper;
 use common\models\reception\AdmissionApplication;
+use frontend\models\forms\CompetitionEntrantsForm;
 
 /* @var $admissionApplications \common\models\reception\AdmissionApplication[] */
 $this->title = Yii::t('app', 'Competition');
@@ -20,11 +22,11 @@ $this->params['breadcrumbs'][] = [
 ];
 $this->params['breadcrumbs'][] = [
     'label' => Yii::t('app', 'Commission'),
-    'url'   => ['commission/view', 'id' => $competitionEntrantsForm->commission_id]
+    'url'   => ['commission/view', 'id' => $commission->id]
 ];
 $this->params['breadcrumbs'][] = [
     'label' => Yii::t('app', 'Competitions'),
-    'url'   => ["competition/{$competitionEntrantsForm->commission_id}"]
+    'url'   => ["competition/{$commission->id}"]
 ];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -40,8 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attributes' => [
                     [
                         'attribute' => 'speciality_id',
-                        'value'     => function (\frontend\models\forms\CompetitionEntrantsForm $competitionEntrantsForm
-                        ) {
+                        'value'     => function (CompetitionEntrantsForm $competitionEntrantsForm) {
                             $speciality = $competitionEntrantsForm->getSpeciality();
                             return $speciality ? $speciality->caption_current : null;
                         }
