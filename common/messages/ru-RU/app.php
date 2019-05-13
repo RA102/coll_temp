@@ -335,4 +335,8 @@ return [
     // RATING
     'Ratings' => 'Рейтинги',
     'Rating' => 'Рейтинг',
+
+    // ADMISSION ORDER
+    'Exam form' => 'Тип экзамена',
+    'Order of admission' => 'Приказ о зачислении',
 ];

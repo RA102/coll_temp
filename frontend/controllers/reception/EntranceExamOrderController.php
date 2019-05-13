@@ -6,6 +6,7 @@ use common\helpers\ApplicationHelper;
 use common\helpers\EducationHelper;
 use common\helpers\LanguageHelper;
 use common\models\handbook\Speciality;
+use common\services\PdfService;
 use common\models\reception\AdmissionApplication;
 use common\models\reception\AdmissionProtocol;
 use frontend\models\forms\EntranceExamOrderForm;
@@ -13,12 +14,15 @@ use kartik\mpdf\Pdf;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\base\Module;
 
 /**
  * EntranceExamOrderController
  */
 class EntranceExamOrderController extends Controller
 {
+    protected $pdfService;
+
     /**
      * {@inheritdoc}
      */
@@ -38,6 +42,17 @@ class EntranceExamOrderController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function __construct(
+        $id,
+        Module $module,
+        PdfService $pdfService,
+        array $config = []
+    ) {
+        parent::__construct($id, $module, $config);
+
+        $this->pdfService = $pdfService;
     }
 
     /**
@@ -67,14 +82,10 @@ class EntranceExamOrderController extends Controller
                 'institution' => Yii::$app->user->identity->institution
             ]);
 
-            $pdf = new Pdf([
-                'mode' => Pdf::MODE_UTF8,
-                'format' => Pdf::FORMAT_A4,
-                'orientation' => Pdf::ORIENT_PORTRAIT,
-                'destination' => Pdf::DEST_BROWSER,
-                'content' => $content,
-                'cssFile' => '@frontend/web/css/print.css',
-            ]);
+            $pdf = $this->pdfService->generate(
+                $content,
+                \Yii::t('app', 'Order of admission to entrance exams')
+            );
 
             return $pdf->render();
         }

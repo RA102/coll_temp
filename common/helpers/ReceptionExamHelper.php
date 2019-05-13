@@ -10,7 +10,7 @@ class ReceptionExamHelper
     public static function getTypeList()
     {
         return [
-            ReceptionExam::TYPE_CREATIVE => 'Творческий',
+            ReceptionExam::TYPE_CREATIVE => 'Творческий экзамен',
             ReceptionExam::TYPE_INTERVIEW => 'Собеседование',
             ReceptionExam::TYPE_EXAM => 'Экзамен',
             ReceptionExam::TYPE_TEST => 'Тестирование',

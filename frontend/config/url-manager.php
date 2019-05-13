@@ -26,6 +26,7 @@ return [
         'competition/view/<commission_id:\d+>/<speciality_id:\d+>/<education_pay_form:\d+>/<language:[a-z]{2}>/<education_form:\d+>/<based_classes:\d+>' => '/competition/view',
 
         'reception/entrance-exam-order/<commission_id:\d+>'                 => 'reception/entrance-exam-order/index',
+        'reception/admission-order/<commission_id:\d+>'                     => 'reception/admission-order/index',
         'commission/<commission_id:\d+>/report'                             => 'report/index',
         'commission/<commission_id:\d+>/report/forms'                       => 'report/index/forms',
         'commission/<commission_id:\d+>/report/<c:\w+>'                     => 'report/<c>/index',
