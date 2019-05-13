@@ -4,7 +4,6 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $form frontend\models\forms\CommissionForm */
-/* @var $institutionDisciplines common\models\organization\InstitutionDiscipline[] */
 
 $this->title = Yii::t('app', 'Create Commission');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Commissions'), 'url' => ['index']];
@@ -31,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="commission-create">
             <?= $this->render('_form', [
                 'form' => $form,
-                'institutionDisciplines' => $institutionDisciplines,
             ]) ?>
         </div>
     </div>

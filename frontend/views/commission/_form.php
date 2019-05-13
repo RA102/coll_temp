@@ -5,7 +5,6 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $form frontend\models\forms\CommissionForm */
-/* @var $institutionDisciplines common\models\organization\InstitutionDiscipline[] */
 /* @var $activeForm yii\widgets\ActiveForm */
 ?>
 

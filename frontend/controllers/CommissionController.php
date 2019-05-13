@@ -36,7 +36,7 @@ class CommissionController extends Controller
                     [
                         'actions' => [
                             'index', 'view', 'current',
-                            'create',
+                            'create', 'update',
                             'close', 'delete',
                         ],
                         'allow' => true,
@@ -115,27 +115,43 @@ class CommissionController extends Controller
         }
 
         $form = new CommissionForm();
-        $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model = new Commission();
             $model->setAttributes($form->getAttributes());
             $model->institution_id = $this->institution->id;
-            if ($model->save()) {
-                foreach ($form->institution_discipline_ids as $institution_discipline_id) {
-                    $link = new CommissionDisciplineLink();
-                    $link->institution_discipline_id = $institution_discipline_id;
-                    $link->commission_id = $model->id;
-                    $link->save();
-                }
 
+            if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
 
         return $this->render('create', [
             'form' => $form,
-            'institutionDisciplines' => $institutionDisciplines
+        ]);
+    }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        $form = new CommissionForm();
+        $form->caption_kk = $model->caption_kk;
+        $form->caption_ru = $model->caption_ru;
+        $form->setAttributes($model->getAttributes());
+
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            $model->setAttributes($form->getAttributes());
+            $model->institution_id = $this->institution->id;
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
+
+        return $this->render('update', [
+            'form' => $form,
+            'model' => $model,
         ]);
     }
 

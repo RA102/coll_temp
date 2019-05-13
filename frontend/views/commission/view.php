@@ -22,9 +22,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-body">
 
         <p>
+            <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], [
+                'class' => 'btn btn-warning',
+            ]) ?>
+
             <?php if ($model->status == Commission::STATUS_ACTIVE): ?>
                 <?= Html::a(Yii::t('app', 'Close'), ['close', 'id' => $model->id], [
-                    'class' => 'btn btn-warning',
+                    'class' => 'btn btn-primary',
                     'data'  => [
                         'confirm' => 'Are you sure you want to close this commission?',
                         'method'  => 'post',
