@@ -42,7 +42,7 @@ class EntrantService
      * @param array $based_classes
      * @return array|\yii\db\ActiveRecord[]
      */
-    public function getEntrantsByReceptionGroup(
+    public function getEntrantsForEntranceExamsReport(
         ReceptionGroup $receptionGroup,
         int $education_pay_form,
         array $based_classes
@@ -64,5 +64,19 @@ class EntrantService
             return $entrant->admissionApplication->properties['education_pay_form'] == $education_pay_form &&
                 in_array($entrant->admissionApplication->properties['based_classes'], $based_classes);
         });
+    }
+
+    /**
+     * @param array $receptionGroupIds
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function getEntrantsByReceptionGroupIds(array $receptionGroupIds)
+    {
+        // NOTE: Use method where to override default filter by entrant type (After enlisting entrant becomes student)
+        return Entrant::find()->where([])->innerJoinWith([
+            'receptionGroup' => function (ActiveQuery $query) use ($receptionGroupIds) {
+                return $query->andWhere(['reception.group.id' => $receptionGroupIds]);
+            },
+        ])->all();
     }
 }

@@ -14,7 +14,7 @@ use Yii;
  *
  * @property int $id
  * @property int $status
- * @property int $type
+ * @property array $receipt
  * @property int $institution_id
  * @property int $commission_id
  * @property int $person_id
@@ -25,8 +25,10 @@ use Yii;
  * @property string $update_ts
  * @property string $reason
  * @property array $history
+ *
  * @property Entrant $person
  * @property Student $student
+ * @property Institution $institution
  */
 class AdmissionApplication extends \yii\db\ActiveRecord
 {
@@ -50,7 +52,6 @@ class AdmissionApplication extends \yii\db\ActiveRecord
         $model->commission_id = $commission_id;
         $model->institution_id = $institution_id;
         $model->properties = $properties;
-        $model->type = ApplicationHelper::APPLICATION_TYPE_ADMISSION;
         $model->status = ApplicationHelper::STATUS_CREATED;
         return $model;
     }
@@ -61,12 +62,12 @@ class AdmissionApplication extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'commission_id', 'institution_id', 'person_id', 'type'], 'default', 'value' => null],
-            [['status', 'commission_id', 'institution_id', 'person_id', 'type'], 'integer'],
-            [['commission_id', 'institution_id', 'status', 'type'], 'required'],
+            [['status', 'commission_id', 'institution_id', 'person_id'], 'default', 'value' => null],
+            [['status', 'commission_id', 'institution_id', 'person_id'], 'integer'],
+            [['commission_id', 'institution_id', 'status'], 'required'],
             [['is_deleted'], 'default', 'value' => false],
             [['is_deleted'], 'boolean'],
-            [['delete_ts', 'create_ts', 'update_ts', 'properties', 'history'], 'safe'],
+            [['delete_ts', 'create_ts', 'update_ts', 'properties', 'history', 'receipt'], 'safe'],
             [['reason'], 'string'],
 
             [
@@ -127,7 +128,6 @@ class AdmissionApplication extends \yii\db\ActiveRecord
         return [
             'id'             => Yii::t('app', 'ID'),
             'status'         => Yii::t('app', 'Status'),
-            'type'           => Yii::t('app', 'Type'),
             'institution_id' => Yii::t('app', 'Institution ID'),
             'person_id'      => Yii::t('app', 'Person ID'),
             'is_deleted'     => Yii::t('app', 'Is Deleted'),
@@ -175,6 +175,22 @@ class AdmissionApplication extends \yii\db\ActiveRecord
     public function getStudent()
     {
         return $this->hasOne(Student::class, ['id' => 'person_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInstitution()
+    {
+        return $this->hasOne(Institution::class, ['id' => 'institution_id']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccepted(): bool
+    {
+        return $this->status === ApplicationHelper::STATUS_ACCEPTED;
     }
 
     /**

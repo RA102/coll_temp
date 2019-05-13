@@ -2,8 +2,10 @@
 
 namespace common\models\reception;
 
+use common\models\link\CommissionMemberLink;
 use common\models\organization\Institution;
 use common\models\organization\InstitutionDiscipline;
+use common\models\person\Person;
 use common\models\ReceptionGroup;
 use Yii;
 
@@ -24,8 +26,10 @@ use Yii;
  * @property string $update_ts
  * @property string $delete_ts
  *
+ * @property CommissionMemberLink[] $commissionMemberLinks
  * @property Institution $institution
  * @property InstitutionDiscipline[] $institutionDisciplines
+ * @property Person[] $members
  * @property ReceptionGroup[] $receptionGroups
  */
 class Commission extends \yii\db\ActiveRecord
@@ -87,23 +91,40 @@ class Commission extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'institution_id' => Yii::t('app', 'Institution'),
-            'caption' => Yii::t('app', 'Caption'),
-            'caption_ru' => Yii::t('app', 'Caption Ru'),
-            'caption_kk' => Yii::t('app', 'Caption Kk'),
-            'caption_current' => Yii::t('app', 'Caption Current'),
-            'from_date' => Yii::t('app', 'Commission From Date'),
-            'to_date' => Yii::t('app', 'Commission To Date'),
-            'order_number' => Yii::t('app', 'Commission Order Number'),
-            'order_date' => Yii::t('app', 'Commission Order Date'),
-            'exam_start_date' => Yii::t('app', 'Exam Start Date'),
-            'exam_end_date' => Yii::t('app', 'Exam End Date'),
-            'status' => Yii::t('app', 'Status'),
-            'create_ts' => Yii::t('app', 'Create Ts'),
-            'delete_ts' => Yii::t('app', 'Delete Ts'),
+            'id'                         => Yii::t('app', 'ID'),
+            'institution_id'             => Yii::t('app', 'Institution'),
+            'caption'                    => Yii::t('app', 'Caption'),
+            'caption_ru'                 => Yii::t('app', 'Caption Ru'),
+            'caption_kk'                 => Yii::t('app', 'Caption Kk'),
+            'caption_current'            => Yii::t('app', 'Caption Current'),
+            'from_date'                  => Yii::t('app', 'Commission From Date'),
+            'to_date'                    => Yii::t('app', 'Commission To Date'),
+            'order_number'               => Yii::t('app', 'Commission Order Number'),
+            'order_date'                 => Yii::t('app', 'Commission Order Date'),
+            'exam_start_date'            => Yii::t('app', 'Exam Start Date'),
+            'exam_end_date'              => Yii::t('app', 'Exam End Date'),
+            'status'                     => Yii::t('app', 'Status'),
+            'create_ts'                  => Yii::t('app', 'Create Ts'),
+            'delete_ts'                  => Yii::t('app', 'Delete Ts'),
             'institution_discipline_ids' => Yii::t('app', 'Institution Disciplines'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMembers()
+    {
+        return $this->hasMany(Person::class, ['id' => 'member_id'])
+            ->via('memberLinks');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMemberLinks()
+    {
+        return $this->hasMany(CommissionMemberLink::class, ['commission_id' => 'id']);
     }
 
     /**

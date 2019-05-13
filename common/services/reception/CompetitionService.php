@@ -14,7 +14,6 @@ class CompetitionService
     public function getCompetitions()
     {
         $admissionApplications = AdmissionApplication::findAll([
-            'type'   => ApplicationHelper::APPLICATION_TYPE_ADMISSION,
             'status' => [ApplicationHelper::STATUS_ACCEPTED, ApplicationHelper::STATUS_ENLISTED]
         ]);
 
@@ -67,7 +66,6 @@ class CompetitionService
         string $based_classes
     ) {
         $admissionApplications = AdmissionApplication::findAll([
-            'type'   => ApplicationHelper::APPLICATION_TYPE_ADMISSION,
             'status' => ApplicationHelper::STATUS_ACCEPTED
         ]);
 

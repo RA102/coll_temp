@@ -3,13 +3,16 @@
 namespace frontend\controllers;
 
 use common\helpers\ApplicationHelper;
+use common\models\handbook\Speciality;
 use common\models\reception\AdmissionApplication;
 use common\models\ReceptionGroup;
+use common\services\PdfService;
 use common\services\reception\AdmissionApplicationService;
 use common\services\reception\CommissionService;
 use frontend\models\forms\AdmissionApplicationForm;
 use frontend\models\forms\EnlistEntrantForm;
 use frontend\models\reception\admission_application\ChangeStatusForm;
+use frontend\models\reception\admission_application\ReceiptForm;
 use frontend\search\AdmissionApplicationSearch;
 use Yii;
 use yii\base\Module;
@@ -25,6 +28,7 @@ class AdmissionApplicationController extends Controller
 {
     public $admissionApplicationService;
     public $commissionService;
+    public $pdfService;
 
     /**
      * AdmissionApplicationController constructor.
@@ -32,6 +36,7 @@ class AdmissionApplicationController extends Controller
      * @param Module $module
      * @param AdmissionApplicationService $admissionApplicationService
      * @param CommissionService $commissionService
+     * @param PdfService $pdfService
      * @param array $config
      */
     public function __construct(
@@ -39,12 +44,14 @@ class AdmissionApplicationController extends Controller
         Module $module,
         AdmissionApplicationService $admissionApplicationService,
         CommissionService $commissionService,
+        PdfService $pdfService,
         array $config = []
     ) {
         parent::__construct($id, $module, $config);
 
         $this->admissionApplicationService = $admissionApplicationService;
         $this->commissionService = $commissionService;
+        $this->pdfService = $pdfService;
     }
 
     /**
@@ -64,7 +71,8 @@ class AdmissionApplicationController extends Controller
                             'update',
                             'delete',
                             'change-status',
-                            'enlist'
+                            'enlist',
+                            'receipt'
                         ],
                         'allow'   => true,
                         'roles'   => ['@'],
@@ -74,8 +82,9 @@ class AdmissionApplicationController extends Controller
             'verbs'  => [
                 'class'   => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
-                    'enlist' => ['POST'],
+                    'delete'  => ['POST'],
+                    'enlist'  => ['POST'],
+                    'receipt' => ['POST']
                 ],
             ],
         ];
@@ -105,8 +114,15 @@ class AdmissionApplicationController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $receiptForm = new ReceiptForm();
+        if ($model->receipt) {
+            $receiptForm->setAttributes($model->receipt);
+        }
+
         return $this->render('view/view', [
-            'model' => $this->findModel($id),
+            'model'       => $model,
+            'receiptForm' => $receiptForm
         ]);
     }
 
@@ -241,6 +257,40 @@ class AdmissionApplicationController extends Controller
 
         Yii::$app->session->setFlash('error', current($enlistAdmissionApplicationForm->firstErrors));
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    /**
+     * @param int $id
+     * @return \yii\web\Response
+     */
+    public function actionReceipt(int $id)
+    {
+        $admissionApplication = $this->findModel($id);
+
+        $receiptForm = new ReceiptForm();
+
+        if ($receiptForm->load(Yii::$app->request->post()) && $receiptForm->validate()) {
+            $admissionApplication = $this->admissionApplicationService->addReceipt(
+                $admissionApplication,
+                $receiptForm
+            );
+
+            $htmlContent = $this->renderPartial('receipt', [
+                'admissionApplication' => $admissionApplication,
+                'speciality'           => Speciality::findOne($admissionApplication->properties['speciality_id'])
+            ]);
+
+            $pdf = $this->pdfService->generate($htmlContent, Yii::t('app', 'Расписка')
+                . " №{$admissionApplication->id}");
+
+            return $pdf->render();
+        }
+
+        if ($receiptForm->hasErrors()) {
+            Yii::$app->session->setFlash('error', current($receiptForm->firstErrors));
+        }
+
+        return $this->redirect(['view', 'id' => $id]);
     }
 
     /**

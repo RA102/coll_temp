@@ -140,7 +140,7 @@ class IndexController extends Controller
                 if (!$receptionGroup) {
                     throw new \DomainException('Группа с такими данными не найдена');
                 }
-                $entrants = $this->entrantsService->getEntrantsByReceptionGroup(
+                $entrants = $this->entrantsService->getEntrantsForEntranceExamsReport(
                     $receptionGroup,
                     $entranceExamsReportForm->education_pay_form,
                     $entranceExamsReportForm->based_classes
