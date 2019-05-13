@@ -140,4 +140,9 @@ class ReceptionGroup extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ReceptionExam::class, ['id' => 'exam_id'])->viaTable('reception.exam_group_link', ['group_id' => 'id']);
     }
+
+    public function getEducationForm()
+    {
+        return GroupHelper::getEducationFormList()[$this->education_form] ?? '';
+    }
 }

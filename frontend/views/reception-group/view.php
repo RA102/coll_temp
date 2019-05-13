@@ -36,14 +36,30 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attributes' => [
                     'id',
                     'caption_current',
-                    'language',
-                    'speciality_id',
-                    'education_form',
+                    [
+                        'format'    => 'html',
+                        'attribute' => 'language',
+                        'value'     => function (\common\models\ReceptionGroup $model) {
+                            return $model->getLanguage();
+                        },
+                    ],
+                    [
+                        'format'    => 'html',
+                        'attribute' => 'speciality_id',
+                        'value'     => function (\common\models\ReceptionGroup $model) {
+                            return $model->speciality->caption_current;
+                        },
+                    ],
+                    [
+                        'format'    => 'html',
+                        'attribute' => 'education_form',
+                        'value'     => function (\common\models\ReceptionGroup $model) {
+                            return $model->getEducationForm();
+                        },
+                    ],
                     'budget_places',
                     'commercial_places',
                     'create_ts',
-                    'update_ts',
-                    'delete_ts',
                 ],
             ]) ?>
         </div>
