@@ -4,19 +4,33 @@ namespace frontend\search;
 
 use common\models\person\Entrant;
 use common\models\person\Person;
+use common\models\reception\Commission;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 
 /**
  * StudentSearch represents the model behind the search form of `common\models\person\Student`.
  */
 class EntrantSearch extends Entrant
 {
-    public $institution_id;
+    public $commission_id;
     public $reception_group_id;
     public $withoutGroup = false;
 
     public $formName;
+
+    /**
+     * EntrantSearch constructor.
+     * @param Commission $commission
+     * @param array $config
+     */
+    public function __construct(Commission $commission = null, array $config = [])
+    {
+        parent::__construct($config);
+
+        $this->commission_id = $commission ? $commission->id : null;
+    }
 
     public function formName()
     {
@@ -29,8 +43,43 @@ class EntrantSearch extends Entrant
     public function rules()
     {
         return [
-            [['id', 'status', 'sex', 'nationality_id', 'is_pluralist', 'birth_country_id', 'birth_city_id', 'oid', 'alledu_id', 'alledu_server_id', 'pupil_id', 'owner_id', 'server_id', 'portal_uid', 'type'], 'integer'],
-            [['nickname', 'firstname', 'lastname', 'middlename', 'birth_date', 'iin', 'birth_place', 'language', 'photo', 'create_ts', 'delete_ts', 'import_ts', 'institution_id'], 'safe'],
+            [
+                [
+                    'id',
+                    'status',
+                    'sex',
+                    'nationality_id',
+                    'is_pluralist',
+                    'birth_country_id',
+                    'birth_city_id',
+                    'oid',
+                    'alledu_id',
+                    'alledu_server_id',
+                    'pupil_id',
+                    'owner_id',
+                    'server_id',
+                    'portal_uid',
+                    'type'
+                ],
+                'integer'
+            ],
+            [
+                [
+                    'nickname',
+                    'firstname',
+                    'lastname',
+                    'middlename',
+                    'birth_date',
+                    'iin',
+                    'birth_place',
+                    'language',
+                    'photo',
+                    'create_ts',
+                    'delete_ts',
+                    'import_ts'
+                ],
+                'safe'
+            ],
             [['is_subscribed'], 'boolean'],
         ];
     }
@@ -53,7 +102,11 @@ class EntrantSearch extends Entrant
      */
     public function search($params)
     {
-        $query = Entrant::find();
+        $query = Entrant::find()->innerJoinWith([
+            'admissionApplication' => function (ActiveQuery $query) {
+                return $query->andWhere(['commission_id' => $this->commission_id]);
+            }
+        ]);
 
         // add conditions that should always apply here
 
@@ -71,10 +124,10 @@ class EntrantSearch extends Entrant
 
         if (isset($this->status)) {
             if ($this->status == Person::STATUS_DELETED) {
-                $query->andWhere(['NOT', [self::tableName().'.delete_ts' => null]]);
+                $query->andWhere(['NOT', [self::tableName() . '.delete_ts' => null]]);
             } else {
-                $query->andFilterWhere([self::tableName().'.status' => $this->status]);
-                $query->andWhere([self::tableName().'.delete_ts' => null]);
+                $query->andFilterWhere([self::tableName() . '.status' => $this->status]);
+                $query->andWhere([self::tableName() . '.delete_ts' => null]);
             }
         }
 

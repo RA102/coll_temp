@@ -3,10 +3,10 @@
 namespace frontend\controllers;
 
 use common\models\person\Entrant;
-use common\models\person\Person;
+use common\services\reception\CommissionService;
 use frontend\search\EntrantSearch;
 use Yii;
-use yii\data\ActiveDataProvider;
+use yii\base\Module;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -16,6 +16,22 @@ use yii\web\NotFoundHttpException;
  */
 class EntrantController extends Controller
 {
+    protected $commissionService;
+
+    /**
+     * EntrantController constructor.
+     * @param string $id
+     * @param Module $module
+     * @param CommissionService $commissionService
+     * @param array $config
+     */
+    public function __construct($id, Module $module, CommissionService $commissionService, array $config = [])
+    {
+        parent::__construct($id, $module, $config);
+
+        $this->commissionService = $commissionService;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -44,8 +60,11 @@ class EntrantController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new EntrantSearch();
-        $searchModel->institution_id = Yii::$app->user->identity->institution->id;
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+
+        $searchModel = new EntrantSearch($activeCommission);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

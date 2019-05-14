@@ -5,7 +5,6 @@ namespace common\models\person;
 use app\models\link\EntrantReceptionGroupLink;
 use common\helpers\PersonTypeHelper;
 use common\models\reception\AdmissionApplication;
-use common\models\reception\CommissionMemberLink;
 use common\models\ReceptionExam;
 use common\models\ReceptionExamGrade;
 use common\models\ReceptionGroup;
@@ -13,6 +12,7 @@ use common\models\ReceptionGroup;
 /**
  * This is the model class for table "person.person".
  *
+ * @property AdmissionApplication $admissionApplication
  * @property ReceptionGroup $receptionGroup
  * @property ReceptionExamGrade[] $receptionExamGrades
  * @property ReceptionExamGrade[] $indexedReceptionExamGrades
