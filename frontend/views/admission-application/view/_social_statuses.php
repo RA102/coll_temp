@@ -11,7 +11,7 @@ use app\models\handbook\PersonSocialStatus;
 <?= \yii\grid\GridView::widget([
     'summary'      => false,
     'dataProvider' => new \yii\data\ArrayDataProvider([
-        'models' => $model->properties['social_statuses']
+        'models' => $model->properties['social_statuses'] ?: []
     ]),
     'columns'      => [
         [
