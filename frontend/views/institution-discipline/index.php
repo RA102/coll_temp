@@ -32,9 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'types',
                     'value' => function(InstitutionDiscipline $model) {
-                        return implode(', ', array_map(function ($item) {
-                            return InstitutionDisciplineHelper::getTypeList()[$item];
-                        }, $model->types));
+                        if ($model->types) {
+                            return implode(', ', array_map(function ($item) {
+                                return InstitutionDisciplineHelper::getTypeList()[$item];
+                            }, $model->types));
+                        }
+                        return null;
                     }
                 ],
                 'create_ts',
