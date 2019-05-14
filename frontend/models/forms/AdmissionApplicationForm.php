@@ -80,7 +80,17 @@ class AdmissionApplicationForm extends Model
     {
         return [
             [['is_repatriate', 'needs_dormitory'], 'default', 'value' => false],
-            ['social_statuses', 'default', 'value' => null],
+
+            [
+                [
+                    'contract_date',
+                    'contract_duration',
+                    'contract_sum',
+                    'social_statuses',
+                ],
+                'default',
+                'value' => null
+            ],
 
             [
                 [
