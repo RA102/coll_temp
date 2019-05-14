@@ -7,7 +7,6 @@ use common\models\person\Entrant;
 use common\models\person\Person;
 use common\models\person\PersonCredential;
 use common\models\reception\AdmissionApplication;
-use common\validators\IinValidator;
 use Yii;
 use yii\base\Model;
 
@@ -136,7 +135,8 @@ class AdmissionApplicationForm extends Model
             ],
 
             [['iin'], 'string', 'length' => 12],
-            [['iin'], IinValidator::class],
+            [['iin'], 'match', 'pattern' => '/^\d{12}$/'],
+//            [['iin'], IinValidator::class],
             [['firstname', 'lastname', 'middlename'], 'string', 'max' => 100],
             [['sex'], 'in', 'range' => [Entrant::SEX_NONE, Entrant::SEX_MALE, Entrant::SEX_FEMALE]],
             [['language'], 'string', 'min' => 2, 'max' => 2],
