@@ -24,16 +24,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="admission-application-change-status">
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($changeStatusForm, 'status')->dropDownList(
-        array_filter(
+    <?= $form->field($changeStatusForm, 'status')->widget(\kartik\select2\Select2::class, [
+        'data'    => array_filter(
             ApplicationHelper::getAdmissionApplicationStatusLabels(),
             function (int $status) use ($admissionApplication) {
                 return $status >= $admissionApplication->status;
             },
             ARRAY_FILTER_USE_KEY
         ),
-        ['prompt' => \Yii::t('app', 'Выбрать')]
-    ) ?>
+        'options' => [
+            'placeholder' => \Yii::t('app', 'Выбрать')
+        ],
+        'theme'   => 'default'
+    ]) ?>
 
     <?= $form->field($changeStatusForm, 'reception_group_id', [
         'options' => ['class' => 'form-group' . ($changeStatusForm->status == ApplicationHelper::STATUS_ACCEPTED ? '' : ' hidden')]

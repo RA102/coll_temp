@@ -136,7 +136,6 @@ class AdmissionApplicationForm extends Model
 
             [['iin'], 'string', 'length' => 12],
             [['iin'], 'match', 'pattern' => '/^\d{12}$/'],
-//            [['iin'], IinValidator::class],
             [['firstname', 'lastname', 'middlename'], 'string', 'max' => 100],
             [['sex'], 'in', 'range' => [Entrant::SEX_NONE, Entrant::SEX_MALE, Entrant::SEX_FEMALE]],
             [['language'], 'string', 'min' => 2, 'max' => 2],
