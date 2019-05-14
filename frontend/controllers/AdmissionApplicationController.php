@@ -96,7 +96,11 @@ class AdmissionApplicationController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AdmissionApplicationSearch(Yii::$app->user->identity->institution);
+        $commission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+
+        $searchModel = new AdmissionApplicationSearch($commission);
         $searchModel->status = ApplicationHelper::STATUS_CREATED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
