@@ -197,13 +197,13 @@ class GroupController extends Controller
     public function actionAddStudent($id, $group_id)
     {
         $this->groupService->addStudent($id, $group_id);
-        $this->goBack();
+        return $this->redirect(Url::base(true) . Url::previous());
     }
 
     public function actionDeleteStudent($id, $group_id)
     {
         $this->groupService->deleteStudent($id, $group_id);
-        return $this->goBack();
+        return $this->redirect(Url::base(true) . Url::previous());
     }
 
     public function actionByYear()
