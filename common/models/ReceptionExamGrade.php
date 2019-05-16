@@ -20,6 +20,7 @@ use Yii;
  * @property string $delete_ts
  *
  * @property Entrant $entrant
+ * @property ReceptionExam $receptionExam
  * @property string $gradeWrapper
  * @property array $historyWrapper
  */
