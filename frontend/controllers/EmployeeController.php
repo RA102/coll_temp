@@ -210,7 +210,7 @@ class EmployeeController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model->setAttributes($form->attributes);
-            $this->personService->update($model);
+            $this->personService->update($model, Yii::$app->user->identity->institution->id);
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
