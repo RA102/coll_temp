@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         $labelText = ApplicationHelper::$list[$admissionApplication->status];
                         $statusClass = (function () use ($admissionApplication) {
                             if ($admissionApplication->status === ApplicationHelper::STATUS_CREATED) {
-                                return 'label label-secondary';
+                                return 'label label-primary';
                             }
                             if ($admissionApplication->status === ApplicationHelper::STATUS_ACCEPTED) {
                                 return 'label label-success';

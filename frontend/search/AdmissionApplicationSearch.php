@@ -2,27 +2,27 @@
 
 namespace frontend\search;
 
-use common\models\organization\Institution;
 use common\models\reception\AdmissionApplication;
+use common\models\reception\Commission;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 class AdmissionApplicationSearch extends AdmissionApplication
 {
-
     public $status;
-    protected $institution_id;
+
+    protected $commission_id;
 
     /**
      * AdmissionApplicationSearch constructor.
-     * @param Institution $institution
+     * @param Commission $commission
      * @param array $config
      */
-    public function __construct(Institution $institution, array $config = [])
+    public function __construct(Commission $commission = null, array $config = [])
     {
         parent::__construct($config);
 
-        $this->institution_id = $institution->id;
+        $this->commission_id = $commission ? $commission->id : null;
     }
 
     /**
@@ -58,7 +58,8 @@ class AdmissionApplicationSearch extends AdmissionApplication
      */
     public function search($params)
     {
-        $query = AdmissionApplication::find();
+        $query = AdmissionApplication::find()
+            ->andWhere(['commission_id' => $this->commission_id]);
 
         // add conditions that should always apply here
 
@@ -75,8 +76,7 @@ class AdmissionApplicationSearch extends AdmissionApplication
         }
 
         $query->andFilterWhere([
-            'institution_id' => $this->institution_id,
-            'status'         => $this->status
+            'status' => $this->status
         ]);
 
         return $dataProvider;

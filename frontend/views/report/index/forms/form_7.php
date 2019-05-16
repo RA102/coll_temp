@@ -104,7 +104,12 @@
                 <tr>
                     <td style="text-align: center;"><?= $entrantIndex + 1 ?></td>
                     <td><?= $entrant->getFullName() ?></td>
-                    <td style="text-align: center;"><?= $entrant->indexedReceptionExamGrades[$exam->id]->grade ?? '' ?></td>
+                    <td style="text-align: center;">
+                        <?php
+                        $receptionExamGrade = $entrant->indexedReceptionExamGrades[$exam->id];
+                        echo \common\helpers\ReceptionExamGradeHelper::getGradeTypeLabels($receptionExamGrade->grade_type)[$receptionExamGrade->grade] ?? '';
+                        ?>
+                    </td>
                     <td style="text-align: center;"><?= $exam->date ?></td>
                 </tr>
             <?php } ?>

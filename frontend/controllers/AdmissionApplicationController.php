@@ -96,7 +96,11 @@ class AdmissionApplicationController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AdmissionApplicationSearch(Yii::$app->user->identity->institution);
+        $commission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+
+        $searchModel = new AdmissionApplicationSearch($commission);
         $searchModel->status = ApplicationHelper::STATUS_CREATED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -214,13 +218,15 @@ class AdmissionApplicationController extends Controller
         $changeStatusForm->reason = $admissionApplication->reason;
 
         if ($changeStatusForm->load(Yii::$app->request->post()) && $changeStatusForm->validate()) {
-            $this->admissionApplicationService->changeStatus(
-                $id,
-                $changeStatusForm->status,
-                Yii::$app->user->identity,
-                $changeStatusForm->reception_group_id,
-                $changeStatusForm->reason
-            );
+            if ($admissionApplication->status != $changeStatusForm->status) {
+                $this->admissionApplicationService->changeStatus(
+                    $id,
+                    $changeStatusForm->status,
+                    Yii::$app->user->identity,
+                    $changeStatusForm->reception_group_id,
+                    $changeStatusForm->reason
+                );
+            }
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
         }
 
