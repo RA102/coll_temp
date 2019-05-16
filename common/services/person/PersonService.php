@@ -135,6 +135,8 @@ class PersonService
 
         $this->transactionManager->execute(function () use ($model, $institution_id) {
             $this->pdsService->update($model);
+            $model->setDeleteStatus();
+
             if (!$model->save()) {
                 throw new \RuntimeException('Saving error.');
             }
@@ -169,6 +171,7 @@ class PersonService
 
         $this->transactionManager->execute(function () use ($model) {
             $model->delete_ts = date('Y-m-d H:i:s');
+            $model->status = Person::STATUS_DELETED;
             if (!$model->save()) {
                 throw new \RuntimeException('Saving error.');
             }
