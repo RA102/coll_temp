@@ -3,22 +3,40 @@
 namespace frontend\controllers;
 
 use common\models\ReceptionExam;
-use frontend\search\EntrantSearch;
-use Yii;
 use common\models\ReceptionGroup;
+use common\services\ReceptionGroupService;
+use frontend\search\EntrantSearch;
 use frontend\search\ReceptionGroupSearch;
+use Yii;
+use yii\base\Module;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * ReceptionGroupController implements the CRUD actions for ReceptionGroup model.
  */
 class ReceptionGroupController extends Controller
 {
+    protected $receptionGroupService;
+
+    /**
+     * ReceptionGroupController constructor.
+     * @param string $id
+     * @param Module $module
+     * @param ReceptionGroupService $receptionGroupService
+     * @param array $config
+     */
+    public function __construct($id, Module $module, ReceptionGroupService $receptionGroupService, array $config = [])
+    {
+        parent::__construct($id, $module, $config);
+
+        $this->receptionGroupService = $receptionGroupService;
+    }
+
     public function behaviors()
     {
         return [
@@ -138,9 +156,13 @@ class ReceptionGroupController extends Controller
     }
 
     public function actionEntrants($reception_group_id) {
+        $receptionGroup = $this->receptionGroupService->getInstitutionReceptionGroup(
+            Yii::$app->user->identity->institution,
+            $reception_group_id
+        );
+
         $searchModel = new EntrantSearch();
-        $searchModel->institution_id = Yii::$app->user->identity->institution->id;
-        $searchModel->reception_group_id = $reception_group_id;
+        $searchModel->reception_group_id = $receptionGroup ? $receptionGroup->id : null;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('entrants', [

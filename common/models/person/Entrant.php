@@ -88,7 +88,7 @@ class Entrant extends Person
     }
 
     /**
-     * @param array $receptionExams
+     * @param ReceptionExam[] $receptionExams
      * @return bool
      */
     public function passedReceptionExams(array $receptionExams): bool
@@ -97,13 +97,30 @@ class Entrant extends Person
             return false;
         }
 
-        $entrantPassedReceptionExamIds = $this->getReceptionExamGrades()->select('exam_id')->column();
+        $passedExamIds = array_map(function (ReceptionExamGrade $receptionExamGrade) {
+            return $receptionExamGrade->exam_id;
+        }, $this->receptionExamGrades);
         $receptionExamIds = array_map(function (ReceptionExam $receptionExam) {
             return $receptionExam->id;
         }, $receptionExams);
 
+
+        $failedAnyExam = array_reduce($this->receptionExamGrades,
+            function (bool $result, ReceptionExamGrade $receptionExamGrade) {
+                // NOTE: check if entrant failed any exam
+                if ($receptionExamGrade->points === 0) {
+                    return true;
+                }
+
+                return $result;
+            }, false);
+        if ($failedAnyExam) {
+            return false;
+        }
+
+        // NOTE: if entrant did't failed any exam we check if he passed all exams (has grade for each exam)
         return sizeof($receptionExamIds) ===
-            sizeof(array_intersect($receptionExamIds, $entrantPassedReceptionExamIds));
+            sizeof(array_intersect($receptionExamIds, $passedExamIds));
     }
 
     /**
