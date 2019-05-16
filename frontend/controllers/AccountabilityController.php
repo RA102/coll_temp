@@ -2,13 +2,17 @@
 
 namespace frontend\controllers;
 
+use common\models\handbook\Speciality;
+use common\models\organization\Institution;
 use common\models\reception\AdmissionApplication;
+use common\models\ReceptionGroup;
 use common\services\reception\CommissionService;
 use frontend\models\forms\JournalForm;
 use kartik\mpdf\Pdf;
 use Yii;
 use yii\base\Module;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -19,6 +23,7 @@ use yii\filters\VerbFilter;
  */
 class AccountabilityController extends Controller
 {
+    /** @var Institution */
     private $institution;
     private $commissionService;
 
@@ -54,7 +59,8 @@ class AccountabilityController extends Controller
         Module $module,
         CommissionService $commissionService,
         array $config = []
-    ) {
+    )
+    {
         $this->commissionService = $commissionService;
         parent::__construct($id, $module, $config);
     }
@@ -84,6 +90,12 @@ class AccountabilityController extends Controller
             'query' => $query,
         ]);
 
+        /** @var Speciality[] $specialities */
+        $specialities = $this->institution->getSpecialities()->with([
+            /** @see Speciality::getParent() */
+            'parent',
+        ])->all();
+
         if ($form->load(\Yii::$app->request->queryParams) && $form->validate()) {
             if ($form->education_form) {
                 $query->andWhere(new Expression("properties @> '{\"education_form\": \"{$form->education_form}\"}'"));
@@ -95,9 +107,25 @@ class AccountabilityController extends Controller
                 $query->andWhere(new Expression("properties @> '{\"language\": \"{$form->language}\"}'"));
             }
 
+            $query->joinWith([
+                /** @see AdmissionApplication::getStudent() */
+                'student' => function (ActiveQuery $query) use ($form) {
+                    if ($form->speciality_id) {
+                        $query->joinWith([
+                            'receptionGroup' => function (ActiveQuery $query) use ($form) {
+                                return $query->andWhere([
+                                    ReceptionGroup::tableName() . '.speciality_id' => $form->speciality_id
+                                ]);
+                            }
+                        ]);
+                    }
+                    return $query;
+                }
+            ]);
+
             if ($form->export) {
                 $specialitiesMap = [];
-                foreach ($this->institution->specialities as $speciality) {
+                foreach ($specialities as $speciality) {
                     $specialitiesMap[$speciality->id] = $speciality;
                 }
                 $content = $this->renderPartial('_journal', [
@@ -137,7 +165,7 @@ class AccountabilityController extends Controller
         return $this->render('journal', [
             'dataProvider' => $dataProvider,
             'form' => $form,
-            'specialities' => $this->institution->specialities,
+            'specialities' => $specialities,
         ]);
     }
 }

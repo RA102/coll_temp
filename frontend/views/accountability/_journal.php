@@ -80,19 +80,19 @@ $i = 1;
         <tr>
             <td><?= $model->id;
                 $i++ ?></td>
-            <td><?= $model->person->getFullName() ?></td>
-            <td><?= $model->person->birth_date ?></td>
-            <td><?= $model->person->iin ?></td>
-            <td><?= $model->person->nationality->name ?></td>
+            <td><?= $model->student->getFullName() ?></td>
+            <td><?= $model->student->birth_date ?></td>
+            <td><?= $model->student->iin ?></td>
+            <td><?= $model->student->nationality->name ?></td>
             <td></td> <!-- Отметка о документе подтверждающем права на льготы при зачислении -->
             <td></td> <!-- Нуждается в общежитие (да, нет) -->
             <td><?= $model->properties['language'] ?? '' ?></td>
             <td></td> <!-- Учебный год -->
-            <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? '' ?></td>
+            <td><?= $specialities[$model->properties['speciality_id']]->parent->code ?? '' ?></td>
             <!-- Код специальности -->
-            <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? '' ?></td>
+            <td><?= $specialities[$model->properties['speciality_id']]->parent->caption_current ?? '' ?></td>
             <!-- Название специальности -->
-            <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? '' ?></td>
+            <td><?= $specialities[$model->properties['speciality_id']]->code ?? '' ?></td>
             <!-- Код квалификации -->
             <td><?= $specialities[$model->properties['speciality_id']]->caption_current ?? '' ?></td>
             <!-- Название квалификации -->
@@ -101,7 +101,7 @@ $i = 1;
             <td></td>
             <td><?= ApplicationHelper::$list[$model->status] ?></td>
             <td></td>
-            <td><?= $model->person->birth_place ?></td>
+            <td><?= $model->student->birth_place ?></td>
             <td><?= \common\helpers\EducationHelper::getEducationFormTypes()[$model->properties['education_form']] ?></td>
             <!--        <td>-->
             <? //= \common\helpers\EducationHelper::getPaymentFormTypes()[$model->properties['education_pay_form']]
