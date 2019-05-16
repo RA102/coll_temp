@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'buttons' => [
                                     'add' => function ($url, \common\models\person\Student $model) use($allocationModel) {
                                         return Html::a('<span class="glyphicon glyphicon-plus"></span>',
-                                            ['group/add-student', 'id' => $model->id, 'group_id' => $allocationModel->group_id], [
+                                            ['group/add-student', 'id' => $model->id, 'group_id' => $allocationModel->group_id, 'class' => $allocationModel->class], [
                                                 'data-method' => 'post',
                                                 'data-pjax' => '#list-pjax',
                                                 'title' => Yii::t('app', 'Add student'),
@@ -127,7 +127,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'buttons' => [
                                     'drop' => function ($url, \common\models\person\Student $model) use($allocationModel) {
                                         return Html::a('<span class="glyphicon glyphicon-minus"></span>',
-                                            ['group/delete-student', 'id' => $model->id, 'group_id' => $allocationModel->group_id], [
+                                            ['group/delete-student', 'id' => $model->id, 'group_id' => $allocationModel->group_id, 'class' => $allocationModel->class], [
                                                 'data-confirm' => Yii::t('app', 'Are you sure?'),
                                                 'data-method' => 'post',
                                                 'data-pjax' => '#list-pjax',
