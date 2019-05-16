@@ -127,7 +127,7 @@ class PersonService
         return $person;
     }
 
-    public function update(Person $model, int $institution_id)
+    public function update(Person $model, $institution_id)
     {
         if ($model->isNewRecord) {
             throw new \yii\base\InvalidCallException('Model not created');
