@@ -25,14 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div class="group-index skin-white">
-    <?php
-    Pjax::begin([
-        'id' => 'list-pjax',
-        'scrollTo' => false,
-        'timeout' => false,
-        'enablePushState' => true,
-    ]);
-    ?>
     <div class="card-body">
         <?php $form = ActiveForm::begin([
             'id' => 'group-allocation-form',
@@ -93,11 +85,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'buttons' => [
                                     'add' => function ($url, \common\models\person\Student $model) use($allocationModel) {
                                         return Html::a('<span class="glyphicon glyphicon-plus"></span>',
-                                            ['group/add-student', 'id' => $model->id, 'group_id' => $allocationModel->group_id, 'class' => $allocationModel->class], [
-                                                'data-method' => 'post',
-                                                'data-pjax' => '#list-pjax',
-                                                'title' => Yii::t('app', 'Add student'),
-                                            ]);
+                                            ['group/add-student', 'id' => $model->id, 'group_id' => $allocationModel->group_id, 'class' => $allocationModel->class]
+                                        );
                                     },
                                 ],
                             ],
@@ -128,10 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'drop' => function ($url, \common\models\person\Student $model) use($allocationModel) {
                                         return Html::a('<span class="glyphicon glyphicon-minus"></span>',
                                             ['group/delete-student', 'id' => $model->id, 'group_id' => $allocationModel->group_id, 'class' => $allocationModel->class], [
-                                                'data-confirm' => Yii::t('app', 'Are you sure?'),
-                                                'data-method' => 'post',
-                                                'data-pjax' => '#list-pjax',
-                                                'title' => Yii::t('app', 'Add student'),
+                                                'data-confirm' => Yii::t('app', 'Are you sure?')
                                             ]);
                                     },
                                 ],
@@ -143,7 +129,6 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         <?php endif;?>
     </div>
-    <?php Pjax::end(); ?>
 </div>
 
 <?php
