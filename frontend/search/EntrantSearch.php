@@ -102,13 +102,26 @@ class EntrantSearch extends Entrant
      */
     public function search($params)
     {
-        $query = Entrant::find()->innerJoinWith([
-            'admissionApplication' => function (ActiveQuery $query) {
-                return $query->andWhere(['commission_id' => $this->commission_id]);
-            }
-        ]);
+        $query = Entrant::find();
 
         // add conditions that should always apply here
+        if (!empty($this->commission_id)) {
+            $query->innerJoinWith([
+                'admissionApplication' => function (ActiveQuery $query) {
+                    return $query->andWhere(['commission_id' => $this->commission_id]);
+                }
+            ]);
+        }
+
+        if (!empty($this->reception_group_id)) {
+            $query->joinWith('receptionGroup');
+            $query->andFilterWhere(['link.entrant_reception_group_link.reception_group_id' => $this->reception_group_id]);
+            $query->andWhere(['is', 'link.entrant_reception_group_link.delete_ts', new \yii\db\Expression('null')]);
+        }
+
+        if (empty($this->commission_id) && empty($this->reception_group_id)) {
+            $query->where('0=1');
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -129,17 +142,6 @@ class EntrantSearch extends Entrant
                 $query->andFilterWhere([self::tableName() . '.status' => $this->status]);
                 $query->andWhere([self::tableName() . '.delete_ts' => null]);
             }
-        }
-
-        if (!empty($this->institution_id)) {
-            $query->joinWith('institutions');
-            $query->andFilterWhere(['person_institution_link.institution_id' => $this->institution_id]);
-        }
-
-        if (!empty($this->reception_group_id)) {
-            $query->joinWith('receptionGroup');
-            $query->andFilterWhere(['link.entrant_reception_group_link.reception_group_id' => $this->reception_group_id]);
-            $query->andWhere(['is', 'link.entrant_reception_group_link.delete_ts', new \yii\db\Expression('null')]);
         }
 
         if ($this->withoutGroup) {
