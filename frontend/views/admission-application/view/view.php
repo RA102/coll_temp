@@ -82,12 +82,12 @@ $form = ActiveForm::begin([
     ],
 ]);
 
-echo $form->field($receiptForm, 'applications_count')->textInput(['type' => 'number']);
-echo $form->field($receiptForm, 'school_certificates_count')->textInput(['type' => 'number']);
-echo $form->field($receiptForm, 'medical_certificates_count')->textInput(['type' => 'number']);
-echo $form->field($receiptForm, 'medical_commission_opinions_count')->textInput(['type' => 'number']);
-echo $form->field($receiptForm, 'photos_count')->textInput(['type' => 'number']);
-echo $form->field($receiptForm, 'ent_certificates_count')->textInput(['type' => 'number']);
+echo $form->field($receiptForm, 'applications_count')->textInput(['type' => 'number', 'min' => 0]);
+echo $form->field($receiptForm, 'school_certificates_count')->textInput(['type' => 'number', 'min' => 0]);
+echo $form->field($receiptForm, 'medical_certificates_count')->textInput(['type' => 'number', 'min' => 0]);
+echo $form->field($receiptForm, 'medical_commission_opinions_count')->textInput(['type' => 'number', 'min' => 0]);
+echo $form->field($receiptForm, 'photos_count')->textInput(['type' => 'number', 'min' => 0]);
+echo $form->field($receiptForm, 'ent_certificates_count')->textInput(['type' => 'number', 'min' => 0]);
 ?>
     <div class="row">
         <div class="col-sm-12">
