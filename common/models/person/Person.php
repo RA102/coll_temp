@@ -320,4 +320,9 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return PersonHelper::getSexList()[$this->sex] ?? null;
     }
+
+    public function setDeleteStatus()
+    {
+        $this->delete_ts = intval($this->status) === Person::STATUS_ACTIVE ? null : date('Y-m-d H:i:s');
+    }
 }
