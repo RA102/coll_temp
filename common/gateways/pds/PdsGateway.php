@@ -2,6 +2,7 @@
 
 namespace common\gateways\pds;
 
+use common\exceptions\ValidationException;
 use common\gateways\pds\dto\LoginResponse;
 use common\gateways\pds\dto\PersonCredentialResponse;
 use common\gateways\pds\dto\ResetPasswordResponse;
@@ -9,7 +10,10 @@ use common\gateways\pds\transformers\LoginTransformer;
 use common\gateways\pds\transformers\PersonTransformer;
 use common\models\system\Setting;
 use common\utils\httpClient\HttpClientFactory;
+use common\utils\httpClient\RequestFactory;
 use Karriere\JsonDecoder\JsonDecoder;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * // TODO: split according to logic
@@ -19,28 +23,32 @@ use Karriere\JsonDecoder\JsonDecoder;
 class PdsGateway implements \yii\base\Configurable
 {
     const PERSON_CREDENTIAL_CREATED_STATUS = 1;
-    const DEFAULT_TIMEOUT = 20; // 20 seconds
+    const DEFAULT_TIMEOUT = 30; // 30 seconds
 
     private $httpClient;
     private $jsonDecoder;
+    private $requestFactory;
 
     /**
-     * TODO: need better way to inject config, without implementing yii configurable interface and jsonDecoder initialization
      * PdsGateway constructor.
      * @param HttpClientFactory $httpClientFactory
+     * @param RequestFactory $requestFactory
      * @param array $config
      */
-    public function __construct(HttpClientFactory $httpClientFactory, $config = [])
+    public function __construct(HttpClientFactory $httpClientFactory, RequestFactory $requestFactory, $config = [])
     {
         $this->httpClient = $httpClientFactory->createHttpClient('pds', [
             'base_uri'    => $config['baseUrl'],
             'http_errors' => false, // disable throwing http exceptions
             'timeout'     => self::DEFAULT_TIMEOUT,
             'headers'     => [
-                'Access' => 'Bearer ' . Setting::getPdsToken(),
+                'Access'       => 'Bearer ' . Setting::getPdsToken(),
+                'Content-Type' => 'application/json'
             ],
             'verify' => false
         ]);
+        $this->requestFactory = $requestFactory;
+
         $this->jsonDecoder = new JsonDecoder();
         $this->jsonDecoder->register(new PersonTransformer());
         $this->jsonDecoder->register(new LoginTransformer());
@@ -52,20 +60,14 @@ class PdsGateway implements \yii\base\Configurable
      * @return string
      * @throws \Exception
      */
-    public function login(string $username, string $password)
+    public function login(string $username, string $password): string
     {
-        $response = $this->httpClient->post('auth', [
-            'json' => [
-                'indentity' => $username,
-                'password'  => $password
-            ]
-        ]);
-
-        // TODO: send error depending on response code (Service unavailable, Bad request)
-        if ($response->getStatusCode() !== 201) {
-            throw new \Exception("reason: " . $response->getReasonPhrase() . " | code: " . $response->getStatusCode());
-        }
-
+        $body = [
+            'indentity' => $username,
+            'password'  => $password
+        ];
+        $request = $this->requestFactory->create('post', 'auth', [], json_encode($body));
+        $response = $this->send($request);
         return $response->getBody()->getContents();
     }
 
@@ -76,25 +78,10 @@ class PdsGateway implements \yii\base\Configurable
      */
     public function loginByToken(string $token): LoginResponse
     {
-        $response = $this->httpClient->post('auth', [
-            'json' => [
-                'authToken' => $token
-            ]
-        ]);
-
-        if ($response->getStatusCode() !== 201) {
-            throw new \Exception("Unauthorized");
-        }
-
-        $loginResponse = $this->jsonDecoder->decode(
-            $response->getBody()->getContents(),
-            LoginResponse::class
-        );
-        if (!isset($loginResponse->person) || !isset($loginResponse->person->id)) {
-            throw new \Exception("Unauthorized");
-        }
-
-        return $loginResponse;
+        $body = ['authToken' => $token];
+        $request = $this->requestFactory->create('post', 'auth', [], json_encode($body));
+        $response = $this->send($request);
+        return $this->jsonDecoder->decode($response->getBody()->getContents(), LoginResponse::class);
     }
 
     /**
@@ -102,7 +89,6 @@ class PdsGateway implements \yii\base\Configurable
      * @param string $token
      * @param string $role
      * @return string
-     * @throws \yii\web\UnprocessableEntityHttpException
      */
     public function search(array $query, string $token, string $role)
     {
@@ -115,7 +101,7 @@ class PdsGateway implements \yii\base\Configurable
         ]);
 
         if ($response->getStatusCode() !== 200) {
-            throw new \yii\web\UnprocessableEntityHttpException('Error occurred');
+            throw new \yii\web\UnprocessableEntityHttpException('Error occurred: ' . $response->getReasonPhrase());
         }
 
         return $response->getBody()->getContents();
@@ -124,33 +110,35 @@ class PdsGateway implements \yii\base\Configurable
     /**
      * @param array $attributes
      * @param string $token
-     * @return mixed
-     * @throws \Exception
+     * @param string $role
+     * @return string
      */
     public function createPerson(array $attributes, string $token, string $role)
     {
-        $response = $this->httpClient->post('person', [
-            'json'    => $attributes,
-            'headers' => [
-                'Authorization' => "Bearer {$token}",
-                'Access-Role'   => $role
-            ]
-        ]);
+        $headers = [
+            'Authorization' => "Bearer {$token}",
+            'Access-Role'   => $role
+        ];
+        $request = $this->requestFactory->create('post', 'person', $headers, json_encode($attributes));
+        $response = $this->send($request);
+        return $response->getBody()->getContents();
+    }
 
-        if ($response->getStatusCode() === 422) {
-            $errors = json_decode($response->getBody()->getContents(), true);
-            $serverErrors = array_filter($errors, function ($errorData) {
-                return $errorData['field'] === 'server-error';
-            });
-            if (sizeof($serverErrors) > 0) {
-                throw new \Exception(reset($serverErrors)['message']);
-            }
-        }
-
-        if ($response->getStatusCode() !== 201) {
-            throw new \Exception($response->getReasonPhrase());
-        }
-
+    /**
+     * @param int $person_id
+     * @param array $attributes
+     * @param string $token
+     * @param string $role
+     * @return string
+     */
+    public function updatePerson(int $person_id, array $attributes, string $token, string $role): string
+    {
+        $headers = [
+            'Authorization' => "Bearer {$token}",
+            'Access-Role'   => $role
+        ];
+        $request = $this->requestFactory->create('put', "person/{$person_id}", $headers, json_encode($attributes));
+        $response = $this->send($request);
         return $response->getBody()->getContents();
     }
 
@@ -162,17 +150,12 @@ class PdsGateway implements \yii\base\Configurable
      */
     public function resetPassword(string $identity, string $type): ResetPasswordResponse
     {
-        $response = $this->httpClient->post('person/reset-password', [
-            'json' => [
-                'indentity' => $identity,
-                'type'      => $type
-            ],
-        ]);
-
-        if ($response->getStatusCode() !== 201) {
-            throw new \Exception("Couldn't reset password");
-        }
-
+        $body = [
+            'indentity' => $identity,
+            'type'      => $type
+        ];
+        $request = $this->requestFactory->create('post', 'person/reset-password', [], json_encode($body));
+        $response = $this->send($request);
         return $this->jsonDecoder->decode($response->getBody()->getContents(), ResetPasswordResponse::class);
     }
 
@@ -183,20 +166,15 @@ class PdsGateway implements \yii\base\Configurable
      * @return bool
      * @throws \Exception
      */
-    public function changePassword(string $hash, string $password, string $repassword)
+    public function changePassword(string $hash, string $password, string $repassword): bool
     {
-        $response = $this->httpClient->post('person/change-password', [
-            'json' => [
-                'hash'       => $hash,
-                'password'   => $password,
-                'repassword' => $repassword
-            ]
-        ]);
-
-        if ($response->getStatusCode() !== 201) {
-            throw new \Exception("Couldn't change password");
-        }
-
+        $body = [
+            'hash'       => $hash,
+            'password'   => $password,
+            'repassword' => $repassword
+        ];
+        $request = $this->requestFactory->create('post', 'person/change-password', [], json_encode($body));
+        $this->send($request);
         return true;
     }
 
@@ -217,33 +195,49 @@ class PdsGateway implements \yii\base\Configurable
         string $type,
         string $role
     ): PersonCredentialResponse {
-        $response = $this->httpClient->post('person-credential', [
-            'json'    => [
-                'person_id' => $person_id,
-                'indentity' => $email,
-                'name'      => $type,
-                'status'    => self::PERSON_CREDENTIAL_CREATED_STATUS
-            ],
-            'headers' => [
-                'Authorization' => "Bearer {$token}",
-                'Access-Role'   => $role
-            ]
-        ]);
-
-        if ($response->getStatusCode() === 422) {
-            $errors = json_decode($response->getBody()->getContents(), true);
-            $serverErrors = array_filter($errors, function ($errorData) {
-                return $errorData['field'] === 'server-error';
-            });
-            if (sizeof($serverErrors) > 0) {
-                throw new \Exception($serverErrors[0]['message']);
-            }
-        }
-
-        if ($response->getStatusCode() !== 201) {
-            throw new \Exception("Couldn't create person credential");
-        }
-
+        $body = [
+            'person_id' => $person_id,
+            'indentity' => $email,
+            'name'      => $type,
+            'status'    => self::PERSON_CREDENTIAL_CREATED_STATUS
+        ];
+        $headers = [
+            'Authorization' => "Bearer {$token}",
+            'Access-Role'   => $role
+        ];
+        $request = $this->requestFactory->create('post', 'person-credential', $headers, json_encode($body));
+        $response = $this->send($request);
         return $this->jsonDecoder->decode($response->getBody()->getContents(), PersonCredentialResponse::class);
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @return ResponseInterface
+     * @throws ValidationException
+     * @throws \Exception
+     */
+    private function send(RequestInterface $request): ResponseInterface
+    {
+        $response = $this->httpClient->send($request);
+        
+        if ($response->getStatusCode() === 422) {
+            $rawErrors = json_decode($response->getBody()->getContents(), true);
+            $errors = array_reduce($rawErrors, function ($acc, $error) {
+                $acc[$error['field']][] = $error['message'];
+                return $acc;
+            }, []);
+
+            throw new ValidationException(
+                $response->getReasonPhrase(),
+                0,
+                $errors
+            );
+        }
+
+        if ($response->getStatusCode() === 201 || $response->getStatusCode() === 200) {
+            return $response;
+        }
+
+        throw new \Exception($response->getReasonPhrase());
     }
 }

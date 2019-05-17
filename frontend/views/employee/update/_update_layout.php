@@ -16,7 +16,10 @@ $action = $this->context->action->id;
 ?>
 
 <div>
-    <h1><?=Yii::t('app', 'Edit employee')?></h1>
+    <h1><?=$model->id == Yii::$app->user->id ?
+            Yii::t('app', 'Edit profile') :
+            Yii::t('app', 'Edit employee')?>
+    </h1>
 </div>
 
 <div class="employee-view student-block">

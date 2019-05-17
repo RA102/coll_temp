@@ -4,6 +4,7 @@ namespace common\services\organization;
 
 use backend\models\forms\ApplicationForm;
 use common\helpers\PersonCredentialHelper;
+use common\models\CountryUnit;
 use common\models\organization\Institution;
 use common\models\organization\InstitutionApplication;
 use common\models\person\Employee;
@@ -122,5 +123,9 @@ class InstitutionApplicationService
         if (!$model->isNew()) {
             throw new \yii\base\InvalidCallException('Model is already processed');
         }
+    }
+
+    public function getExistingCities() {
+        return CountryUnit::find()->innerJoinWith('institutionApplications')->all();
     }
 }

@@ -40,7 +40,7 @@ class Employee extends Person
     {
         $model = parent::add($portal_uid, $firstname, $lastname, $middlename, $iin);
         $model->type = Person::TYPE_EMPLOYEE;
-        $model->person_type = PersonTypeHelper::PERSON_TYPE_STUDENT;
+        $model->person_type = PersonTypeHelper::PERSON_TYPE_TEACHER;
 
         return $model;
     }

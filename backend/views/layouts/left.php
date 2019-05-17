@@ -11,7 +11,7 @@
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
-                            ['label' => Yii::t('app','Список'), 'icon' => 'file-code-o', 'url' => ['/']],
+                            ['label' => Yii::t('app','Список'), 'icon' => 'file-code-o', 'url' => ['/person']],
                             ['label' => Yii::t('app','Роли'), 'icon' => 'dashboard', 'url' => ['/']],
                             ['label' => Yii::t('app','Должности'), 'icon' => 'dashboard', 'url' => ['/']],
                             ['label' => Yii::t('app','Социальные статусы'), 'icon' => 'dashboard', 'url' => ['/']],

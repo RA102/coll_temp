@@ -31,7 +31,7 @@ return [
     ],
     'container' => [
         'singletons' => [
-            'common\components\EmailComposer'                     => [
+            'common\components\EmailRenderer'                     => [
                 'view'     => ['class' => 'yii\web\View'],
                 'viewPath' => '@common/mail',
             ],

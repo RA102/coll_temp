@@ -2,25 +2,25 @@
 
 namespace common\services;
 
-use common\components\EmailComposer;
+use common\components\EmailRenderer;
 use common\gateways\bilimal\BilimalNotificationsGateway;
 
 class NotificationService
 {
     private $bilimalNotificationsGateway;
-    private $emailComposer;
+    private $emailRenderer;
 
     /**
      * NotificationsService constructor.
      * @param BilimalNotificationsGateway $bilimalNotificationsGateway
-     * @param EmailComposer $emailComposer
+     * @param EmailRenderer $emailRenderer
      */
     public function __construct(
         BilimalNotificationsGateway $bilimalNotificationsGateway,
-        EmailComposer $emailComposer
+        EmailRenderer $emailRenderer
     ) {
         $this->bilimalNotificationsGateway = $bilimalNotificationsGateway;
-        $this->emailComposer = $emailComposer;
+        $this->emailRenderer = $emailRenderer;
     }
 
     /**
@@ -29,7 +29,7 @@ class NotificationService
      */
     public function sendRegistrationCompletedNotification(string $email)
     {
-        $htmlMessage = $this->emailComposer->compose('signup');
+        $htmlMessage = $this->emailRenderer->render('signup');
 
         $this->bilimalNotificationsGateway->sendEmailNotification(
             \Yii::t('app', 'Регистрация на bilimal'),
@@ -45,7 +45,7 @@ class NotificationService
      */
     public function sendPersonCreatedNotification(string $email, string $password)
     {
-        $htmlMessage = $this->emailComposer->compose('welcome', [
+        $htmlMessage = $this->emailRenderer->render('welcome', [
             'password' => $password
         ]);
 
@@ -63,7 +63,7 @@ class NotificationService
      */
     public function sendPasswordResetNotification(string $email, string $token)
     {
-        $htmlMessage = $this->emailComposer->compose('passwordReset', [
+        $htmlMessage = $this->emailRenderer->render('passwordReset', [
             'token' => $token
         ]);
 
@@ -81,7 +81,7 @@ class NotificationService
      */
     public function sendCredentialCreatedNotification(string $email, string $password)
     {
-        $htmlMessage = $this->emailComposer->compose('welcome', [
+        $htmlMessage = $this->emailRenderer->render('welcome', [
             'password' => $password
         ]);
 

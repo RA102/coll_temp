@@ -38,8 +38,8 @@ class AccessToken extends \yii\db\ActiveRecord
             [['person_id'], 'default', 'value' => null],
             [['person_id'], 'integer'],
             [['is_temporary'], 'boolean'],
-            [['create_ts', 'expire_ts', 'delete_ts'], 'safe'],
-            [['token', 'hash'], 'string', 'max' => 255],
+            [['create_ts', 'expire_ts', 'delete_ts', 'token'], 'safe'],
+            [['hash'], 'string', 'max' => 255],
         ];
     }
 

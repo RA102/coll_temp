@@ -53,6 +53,7 @@ use yii\web\IdentityInterface;
  * @property PersonContact[] $personContacts
  * @property PersonCredential[] $personCredentials
  * @property PersonLocation[] $personLocations
+ * @property Institution[] $institutions
  * @property Institution $institution
  * @property PersonInstitutionLink[] $personInstitutionLinks
  * @property PersonRelative[] $relatives
@@ -282,7 +283,10 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getInstitutions()
     {
-        return $this->hasMany(Institution::className(), ['id' => 'institution_id'])->viaTable('link.person_institution_link', ['person_id' => 'id']);
+        return $this->hasMany(Institution::className(), ['id' => 'institution_id'])
+            ->viaTable('link.person_institution_link', ['person_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+            });
     }
 
     public function getInstitution()
@@ -316,5 +320,10 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function getSex()
     {
         return PersonHelper::getSexList()[$this->sex] ?? null;
+    }
+
+    public function setDeleteStatus()
+    {
+        $this->delete_ts = intval($this->status) === Person::STATUS_ACTIVE ? null : date('Y-m-d H:i:s');
     }
 }
