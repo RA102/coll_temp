@@ -198,4 +198,67 @@ return [
     'Lesson Start Date' => 'Начало',
     'Lesson End Date' => 'Конец',
     'Group Lessons' => 'Занятия группы',
+
+    // GRADE
+    'Grade Value' => 'Оценка',
+
+    // RECEPTION COMMISSION
+    'Commission' => 'Комиссия',
+    'Commissions' => 'Комиссии',
+    'Current Commission' => 'Текущая комиссия',
+    'Create Commission' => 'Создание комиссии',
+    'Update Commission' => 'Редактирование комиссии',
+    'Commission From Date' => 'Начало комиссии',
+    'Commission To Date' => 'Окончание комиссии',
+    'Commission Order Number' => 'Номер приказа',
+    'Commission Order Date' => 'Дата приказа',
+    'Exam Start Date' => 'Начало экзаменов',
+    'Exam End Date' => 'Окончание экзаменов',
+    'Commission Status Active' => 'Активный',
+    'Commission Status Closed' => 'Закрыт',
+    'Commission members' => 'Состав комиссии',
+    'Adding member' => 'Добавление участника',
+    'Role' => 'Роль',
+    'Commission member' => 'Член комиссии',
+    'Commission secretary' => 'Секретарь комиссии',
+    'Commission deputy chairman' => 'Заместитель председателя комиссии',
+    'Commission chairman' => 'Председатель комиссии',
+    'Member ID' => 'Участник',
+    'Close' => 'Закрыть',
+
+    // RECEPTION GROUPS
+    'Budget Places' => 'Количество бюджетных мест',
+    'Commercial Places' => 'Количество коммерческих мест',
+    'View' => 'Просмотр',
+
+    // RECEPTION EXAMS
+    'Reception Exam' => 'Экзамен',
+    'Reception Exams' => 'Экзамены',
+    'Create Reception Exam' => 'Добавление Экзамена',
+    'Update Reception Exam' => 'Редактирование Экзамена',
+    'Exams schedule' => 'Расписание экзаменов',
+    'Exam Date' => 'Дата',
+    'Exam Time' => 'Время',
+
+    // RECEPTION EXAM GRADES
+    'Reception Exam Grades' => 'Результаты экзаменов',
+    'Create Reception Exam Grade' => 'Добавить результат экзамена',
+    'Exam Grade Value'            => 'Оценка',
+    'Exam Grade History'          => 'История оценок',
+    'Grade Type' => 'Система оценивания',
+
+    // APPEAL COMMISSIONS
+    'Appeal Commissions' => 'Апелляционные комиссии',
+    'Appeal Commission' => 'Апелляционная комиссия',
+
+    // ENTRANTS
+    'Entrants' => 'Абитуриенты',
+    'Entrant ID' => 'Абитуриент',
+
+    // JOURNAL
+    'Journal' => 'Журнал',
+
+    // RATING
+    'Ratings' => 'Рейтинги',
+    'Rating' => 'Рейтинг',
 ];

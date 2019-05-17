@@ -61,6 +61,7 @@ class PersonService
             throw new \yii\base\InvalidCallException('Model already created');
         }
 
+        // TODO: Remove. Probably deprecated, pass to transaction manager $model variable instead of $person
         $person = Person::findOne(['iin' => $model->iin]);
         if ($person) {
             if ($person->institution) {

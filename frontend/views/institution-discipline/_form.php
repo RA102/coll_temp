@@ -21,8 +21,6 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
 
     <?= $form->field($model, 'caption_kk')->textInput() ?>
 
-    <?= $form->field($model, 'slug')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'types')->widget(Select2::class, [
         'data' => \common\helpers\InstitutionDisciplineHelper::getTypeList(),
         'options' => [
@@ -35,8 +33,6 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
             'allowClear' => true,
         ],
     ]) ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

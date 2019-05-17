@@ -11,16 +11,28 @@ class GroupService
 {
     // TODO getGroup(Institution $institution, $id): Group
 
-    public function getAssociativeByClass(int $class, int $institution_id): array
-    {
+    public function getAssociativeByClass(
+        int $class,
+        int $institution_id,
+        int $education_form = null,
+        int $education_pay_form = null,
+        int $speciality_id = null,
+        string $language = null
+    ): array {
         $formattedGroups = [];
 
         /* @var Group[] $groups */
-        $groups = Group::find()->where(['class' => $class, 'institution_id' => $institution_id])->all();
+        $groups = Group::find()->where(['class' => $class, 'institution_id' => $institution_id])
+            ->andFilterWhere([
+                'education_form'     => $education_form,
+                'education_pay_form' => $education_pay_form,
+                'speciality_id'      => $speciality_id,
+                'language'           => $language
+            ])->all();
 
         foreach ($groups as $group) {
             $formattedGroups[] = [
-                'id' => $group->id,
+                'id'   => $group->id,
                 'name' => $group->caption_current,
             ];
         }
@@ -58,9 +70,9 @@ class GroupService
     public function addStudent(int $id, int $group_id)
     {
         $link = StudentGroupLink::find()
-            ->where(['student_id' => $id])
-            ->andWhere(['group_id' => $group_id])
-            ->one() ?? new StudentGroupLink();
+                ->where(['student_id' => $id])
+                ->andWhere(['group_id' => $group_id])
+                ->one() ?? new StudentGroupLink();
 
         $link->student_id = $id;
         $link->group_id = $group_id;

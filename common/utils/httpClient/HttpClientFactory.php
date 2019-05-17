@@ -20,17 +20,19 @@ class HttpClientFactory
     {
         $stack = HandlerStack::create();
 
-        $loggingMiddleware = new LoggerMiddleware(
-            $this->getLogger($namespace),
-            new MessageFormatter("{method} {uri} {version}\n{req_body}\n\n{code} {phrase} \nContent-Type: {req_header_content-type}\n{res_body}")
-        );
-        $loggingMiddleware->setLogLevel(function (ResponseInterface $response = null) {
-            if ($response && $response->getStatusCode() >= 300) {
-                return LogLevel::ERROR;
-            }
-            return LogLevel::INFO;
-        });
-        $stack->push($loggingMiddleware);
+        if (YII_DEBUG) {
+            $loggingMiddleware = new LoggerMiddleware(
+                $this->getLogger($namespace),
+                new MessageFormatter("{method} {uri} {version}\n{req_body}\n\n{code} {phrase} \nContent-Type: {req_header_content-type}\n{res_body}")
+            );
+            $loggingMiddleware->setLogLevel(function (ResponseInterface $response = null) {
+                if ($response && $response->getStatusCode() >= 300) {
+                    return LogLevel::ERROR;
+                }
+                return LogLevel::INFO;
+            });
+            $stack->push($loggingMiddleware);
+        }
 
         $defaultConfig = [
             'handler' => $stack

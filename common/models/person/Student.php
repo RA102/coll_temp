@@ -5,11 +5,13 @@ namespace common\models\person;
 use common\helpers\PersonTypeHelper;
 use common\models\link\StudentGroupLink;
 use common\models\organization\Group;
+use common\models\ReceptionGroup;
 
 /**
  * This is the model class for table "person.person".
  *
  * @property StudentGroupLink[] $studentGroupLinks
+ * @property Group $group
  */
 class Student extends Person
 {
@@ -26,7 +28,7 @@ class Student extends Person
     public static function find()
     {
         return parent::find()->andWhere([
-            'person.person.type' => Person::TYPE_STUDENT,
+            static::tableName() . '.type' => Person::TYPE_STUDENT,
         ]);
     }
 
@@ -62,5 +64,20 @@ class Student extends Person
     public function getStudentGroupLinks()
     {
         return $this->hasMany(StudentGroupLink::class, ['student_id' => 'id']);
+    }
+
+    public function getGroup()
+    {
+        return $this->hasOne(Group::class, ['id' => 'group_id'])
+            ->viaTable('link.student_group_link', ['student_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReceptionGroup()
+    {
+        return $this->hasOne(ReceptionGroup::class, ['id' => 'reception_group_id'])
+            ->viaTable('link.entrant_reception_group_link', ['entrant_id' => 'id']);
     }
 }
