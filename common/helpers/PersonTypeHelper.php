@@ -16,6 +16,8 @@ class PersonTypeHelper
     const PERSON_TYPE_STUDENT = 'student';
     #Учитель
     const PERSON_TYPE_TEACHER = 'teacher';
+    #Абитуриент
+    const PERSON_TYPE_ENTRANT = 'entrant';
 
     #Группы для ролей пользователя
     const PERSON_TYPE_GROUP_EMPLOYEE = 1;     // работники

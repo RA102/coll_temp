@@ -74,7 +74,8 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
     {
         return [
             [['institution_id'], 'required'],
-            [['institution_id', 'types', 'status'], 'default', 'value' => null],
+            [['institution_id', 'status'], 'default', 'value' => null],
+            [['types'], 'default', 'value' => []],
             [['institution_id', 'status'], 'integer'],
             [['types'], 'each', 'rule' => ['integer']],
             [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],

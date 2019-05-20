@@ -38,6 +38,11 @@ class BilimalNotificationsGateway
      */
     public function sendEmailNotification(string $title, string $message, array $addresses, string $from = self::DEFAULT_FROM_EMAIL)
     {
+        if (YII_ENV_DEV) {
+            // NOTE: temporary solution, should be mocked
+            return true;
+        }
+
         $response = $this->httpClient->post('email', [
             'json' => [
                 'addressees' => $addresses,

@@ -61,6 +61,7 @@ class PersonService
             throw new \yii\base\InvalidCallException('Model already created');
         }
 
+        // TODO: Remove. Probably deprecated, pass to transaction manager $model variable instead of $person
         $person = Person::findOne(['iin' => $model->iin]);
         if ($person) {
             if ($person->institution) {
@@ -127,7 +128,7 @@ class PersonService
         return $person;
     }
 
-    public function update(Person $model, int $institution_id)
+    public function update(Person $model, $institution_id)
     {
         if ($model->isNewRecord) {
             throw new \yii\base\InvalidCallException('Model not created');

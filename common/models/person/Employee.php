@@ -3,6 +3,8 @@
 namespace common\models\person;
 
 use common\helpers\PersonTypeHelper;
+use common\models\CommissionMemberLink;
+use common\models\reception\Commission;
 
 /**
  * This is the model class for table "person.person".
@@ -22,7 +24,7 @@ class Employee extends Person
     public static function find()
     {
         return parent::find()->andWhere([
-            'type' => Person::TYPE_EMPLOYEE,
+            static::tableName() . '.type' => Person::TYPE_EMPLOYEE,
         ]);
     }
 
@@ -41,5 +43,22 @@ class Employee extends Person
         $model->person_type = PersonTypeHelper::PERSON_TYPE_TEACHER;
 
         return $model;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCommissions()
+    {
+        return $this->hasMany(Commission::class, ['id' => 'commission_id'])
+            ->viaTable('link.commission_member_link', ['member_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCommissionMemberLinks()
+    {
+        return $this->hasMany(CommissionMemberLink::class, ['employee_id' => 'id']);
     }
 }
