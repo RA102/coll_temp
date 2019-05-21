@@ -22,13 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="institution-form skin-white">
     <div class="card-body">
-    <?php
-    Pjax::begin([
-        'id' => 'list-pjax',
-        'formSelector' => '#js-update',
-        'scrollTo' => 'false',
-    ]);
-    ?>
 
     <?php $activeForm = ActiveForm::begin([
         'id' => 'js-update',
@@ -161,6 +154,5 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <?php ActiveForm::end(); ?>
-    <?php Pjax::end(); ?>
     </div>
 </div>

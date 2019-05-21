@@ -37,8 +37,10 @@ use kartik\select2\Select2;
             </div>
             <div class="col-md-4">
                 <?= $activeForm->field($form, 'birth_date')->widget(DatePicker::class, [
+                    'language' => 'ru',
                     'pluginOptions' => [
-                        'autoclose' => true
+                        'autoclose' => true,
+                        'format' => 'yyyy-mm-dd'
                     ]
                 ]); ?>
             </div>

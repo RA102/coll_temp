@@ -73,10 +73,10 @@ class Group extends \yii\db\ActiveRecord
             [['speciality_id', 'max_class', 'class', 'education_form', 'education_pay_form', 'institution_id', 'parent_id', 'type', 'rating_system_id', 'based_classes'], 'integer'],
             [['is_deleted'], 'boolean'],
             [['language'], 'string', 'max' => 2],
-            [['caption_ru', 'caption_kk'], 'safe'],
             [['speciality_id'], 'exist', 'skipOnError' => true, 'targetClass' => Speciality::className(), 'targetAttribute' => ['speciality_id' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['parent_id' => 'id']],
             [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::className(), 'targetAttribute' => ['institution_id' => 'id']],
+            [['caption_ru', 'caption_kk', 'speciality_id', 'education_form', 'education_pay_form', 'max_class', 'class', 'language'], 'required'],
         ];
     }
 
@@ -125,9 +125,9 @@ class Group extends \yii\db\ActiveRecord
     public function afterFind()
     {
         $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
-        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
-        $this->caption_ru = $this->caption['ru'];
-        $this->caption_kk = $this->caption['kk'];
+        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'] ?? $this->caption['kk'] ?? null;
+        $this->caption_ru = $this->caption['ru'] ?? null;
+        $this->caption_kk = $this->caption['kk'] ?? null;
 
         parent::afterFind();
     }
