@@ -18,7 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="reception-group-index skin-white">
     <div class="card-body">
 
-    <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -70,6 +69,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-    <?php Pjax::end(); ?>
     </div>
 </div>

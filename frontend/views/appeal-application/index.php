@@ -19,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="group-index skin-white">
     <div class="card-body">
-        <?php Pjax::begin(); ?>
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
@@ -45,6 +44,5 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
-        <?php Pjax::end(); ?>
     </div>
 </div>

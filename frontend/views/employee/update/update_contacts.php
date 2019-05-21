@@ -15,13 +15,6 @@ use yii\widgets\Pjax;
 
 <?php $this->beginBlock('update-content') ?>
 
-    <?php
-    Pjax::begin([
-        'id' => 'list-pjax',
-        'formSelector' => '#js-update',
-        'scrollTo' => 'false',
-    ]);
-    ?>
     <?php $activeForm = ActiveForm::begin([
         'id' => 'js-update',
         'enableClientValidation' => false,
@@ -188,7 +181,6 @@ use yii\widgets\Pjax;
     </div>
 
     <?php ActiveForm::end(); ?>
-    <?php Pjax::end(); ?>
 
 <?php $this->endBlock() ?>
 
