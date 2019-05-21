@@ -219,6 +219,15 @@ class PdsGateway implements \yii\base\Configurable
     private function send(RequestInterface $request): ResponseInterface
     {
         $response = $this->httpClient->send($request);
+
+        var_dump($response);
+        echo '<hr/>';
+        var_dump($response->getStatusCode());
+        echo '<hr/>';
+        var_dump($response->getBody()->getContents());
+        echo '<hr/>';
+        var_dump($response->getReasonPhrase());
+        die();
         
         if ($response->getStatusCode() === 422) {
             $rawErrors = json_decode($response->getBody()->getContents(), true);
