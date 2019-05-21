@@ -228,7 +228,9 @@ class PdsGateway implements \yii\base\Configurable
             }, []);
 
             throw new ValidationException(
-                $response->getBody()->getContents() . ': ' . $response->getReasonPhrase(),
+                $request->getBody()->getContents(). ': '
+                . $response->getBody()->getContents() . ': '
+                . $response->getReasonPhrase(),
                 0,
                 $errors
             );
