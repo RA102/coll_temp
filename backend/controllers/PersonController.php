@@ -222,19 +222,20 @@ class PersonController extends Controller
                 continue;
             }
 
-            $person->lastname = empty($person->lastname) ? $personData['lastname'] : $person->lastname;
-            $person->middlename = empty($person->middlename) ? $personData['middlename'] : $person->middlename;
-            $person->firstname = empty($person->firstname) ? $personData['firstname'] : $person->firstname;
-            $person->birth_date = empty($person->birth_date) ? $personData['birth_date'] : $person->birth_date;
-            $person->iin = empty($person->iin) ? $personData['iin'] : $person->iin;
+            try {
+                $person->lastname = $person->lastname === null ? $personData['lastname'] : $person->lastname;
+                $person->middlename = $person->middlename === null ? $personData['middlename'] : $person->middlename;
+                $person->firstname = $person->firstname === null ? $personData['firstname'] : $person->firstname;
+                $person->birth_date = $person->birth_date === null ? $personData['birth_date'] : $person->birth_date;
+                $person->iin = $person->iin === null ? $personData['iin'] : $person->iin;
 
-            var_dump($personData);
+                var_dump($personData);
 
-//            try {
-//                $person->save();
-//            } catch (\Exception $e) {
-//                echo $e->getMessage() . "<hr/>";
-//            }
+                $person->save();
+            } catch (\Exception $e) {
+                echo $e->getMessage() . "<hr/>";
+            }
+            var_dump($person->getAttributes());
         }
     }
 
