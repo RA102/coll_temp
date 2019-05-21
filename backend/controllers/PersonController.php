@@ -202,7 +202,7 @@ class PersonController extends Controller
         return $this->redirect(['person/update', 'id' => $model->id]);
     }
 
-    public function actionParse()
+    public function actionParse($limit = 100)
     {
         /* @var $persons Person[] */
         $persons = Person::find()
@@ -212,12 +212,17 @@ class PersonController extends Controller
                 'iin' => null
             ])
             ->andWhere('portal_uid IS NOT NULL')
+            ->limit($limit)
             ->all();
 
         foreach ($persons as $person) {
             $personData = $this->searchService->findOne(['id' => $person->portal_uid]);
+
+            if (!$personData) {
+                continue;
+            }
+
             var_dump($personData);
-            die();
         }
     }
 
