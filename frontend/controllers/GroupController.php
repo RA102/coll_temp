@@ -64,14 +64,16 @@ class GroupController extends Controller
             $searchModel = new GroupSearch();
             $searchModel->institution_id = Yii::$app->user->identity->institution->id;
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        } catch (\Exception $e) {
-            Yii::$app->session->setFlash('error', $e->getMessage());
-        }
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } catch (\Exception $e) {
+            return $this->render('error', [
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
