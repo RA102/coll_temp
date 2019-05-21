@@ -202,7 +202,7 @@ class PersonController extends Controller
         return $this->redirect(['person/update', 'id' => $model->id]);
     }
 
-    public function actionParse($limit = 100)
+    public function actionParse($limit = 100, $offset = 0)
     {
         /* @var $persons Person[] */
         $persons = Person::find()
@@ -213,6 +213,8 @@ class PersonController extends Controller
             ])
             ->andWhere('portal_uid IS NOT NULL')
             ->limit($limit)
+            ->offset($offset)
+            ->orderBy('id')
             ->all();
 
         foreach ($persons as $person) {
