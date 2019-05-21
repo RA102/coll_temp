@@ -58,7 +58,6 @@ class InstitutionController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $this->institutionService->update($model, $form);
-            return $this->redirect(['index']);
         }
 
         return $this->render('index', [
