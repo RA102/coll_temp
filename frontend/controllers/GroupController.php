@@ -60,20 +60,14 @@ class GroupController extends Controller
      */
     public function actionIndex()
     {
-        try {
-            $searchModel = new GroupSearch();
-            $searchModel->institution_id = Yii::$app->user->identity->institution->id;
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel = new GroupSearch();
+        $searchModel->institution_id = Yii::$app->user->identity->institution->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
-        } catch (\Exception $e) {
-            return $this->render('error', [
-                'error' => $e->getMessage(),
-            ]);
-        }
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
