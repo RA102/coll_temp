@@ -154,6 +154,8 @@ class PdsGateway implements \yii\base\Configurable
             'indentity' => $identity,
             'type'      => $type
         ];
+        var_dump($body);
+        die();
         $request = $this->requestFactory->create('post', 'person/reset-password', [], json_encode($body));
         $response = $this->send($request);
         return $this->jsonDecoder->decode($response->getBody()->getContents(), ResetPasswordResponse::class);
