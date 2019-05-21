@@ -238,6 +238,6 @@ class PdsGateway implements \yii\base\Configurable
             return $response;
         }
 
-        throw new \Exception($response->getReasonPhrase());
+        throw new \Exception($response->getStatusCode() . ': ' . $response->getReasonPhrase());
     }
 }
