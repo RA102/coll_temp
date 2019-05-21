@@ -230,11 +230,11 @@ class PersonController extends Controller
 
             var_dump($personData);
 
-            try {
-                $person->save();
-            } catch (\Exception $e) {
-                echo $e->getMessage() . "<hr/>";
-            }
+//            try {
+//                $person->save();
+//            } catch (\Exception $e) {
+//                echo $e->getMessage() . "<hr/>";
+//            }
         }
     }
 
