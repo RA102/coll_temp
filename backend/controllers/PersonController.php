@@ -202,6 +202,25 @@ class PersonController extends Controller
         return $this->redirect(['person/update', 'id' => $model->id]);
     }
 
+    public function actionParse()
+    {
+        /* @var $persons Person[] */
+        $persons = Person::find()
+            ->where([
+                'firstname' => null,
+                'lastname' => null,
+                'iin' => null
+            ])
+            ->andWhere('portal_uid IS NOT NULL')
+            ->all();
+
+        foreach ($persons as $person) {
+            $personData = $this->searchService->findOne(['id' => $person->portal_uid]);
+            var_dump($personData);
+            die();
+        }
+    }
+
     /**
      * Finds the Person model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
