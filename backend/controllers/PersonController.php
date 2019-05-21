@@ -223,11 +223,11 @@ class PersonController extends Controller
             }
 
             try {
-                $person->lastname = $person->lastname === null ? $personData['lastname'] : $person->lastname;
-                $person->middlename = $person->middlename === null ? $personData['middlename'] : $person->middlename;
-                $person->firstname = $person->firstname === null ? $personData['firstname'] : $person->firstname;
-                $person->birth_date = $person->birth_date === null ? $personData['birth_date'] : $person->birth_date;
-                $person->iin = $person->iin === null ? $personData['iin'] : $person->iin;
+                $person->lastname = $personData->lastname;
+                $person->middlename = $personData->middlename;
+                $person->firstname = $personData->firstname;
+                $person->birth_date = $personData->birth_date;
+                $person->iin = $personData->iin;
 
                 var_dump($personData);
 
