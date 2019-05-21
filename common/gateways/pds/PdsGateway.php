@@ -228,7 +228,7 @@ class PdsGateway implements \yii\base\Configurable
             }, []);
 
             throw new ValidationException(
-                $response->getReasonPhrase(),
+                $response->getBody()->getContents() . ': ' . $response->getReasonPhrase(),
                 0,
                 $errors
             );
@@ -238,6 +238,6 @@ class PdsGateway implements \yii\base\Configurable
             return $response;
         }
 
-        throw new \Exception($response->getStatusCode() . ': ' . $response->getReasonPhrase());
+        throw new \Exception($response->getReasonPhrase());
     }
 }
