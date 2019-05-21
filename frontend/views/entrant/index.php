@@ -16,8 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <div class="entrant-index student-block">
-    <?php Pjax::begin(); ?>
-
     <div class="card-body">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -58,5 +56,4 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
     </div>
-    <?php Pjax::end(); ?>
 </div>

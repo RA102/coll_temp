@@ -26,13 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row justify-content-center">
                 <div class="col-md-8 col-lg-6">
                     <div class="card mx-4 mt-4">
-                        <?php
-                        Pjax::begin([
-                            'id' => 'list-pjax',
-                            'formSelector' => '#js-update',
-                            'scrollTo' => 'false',
-                        ]);
-                        ?>
                         <?php $form = ActiveForm::begin([
                             'id' => 'js-update',
                             'enableClientValidation' => false,
@@ -205,7 +198,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             ) ?>
                         </div>
                         <?php ActiveForm::end(); ?>
-                        <?php Pjax::end(); ?>
                     </div>
                 </div>
             </div>

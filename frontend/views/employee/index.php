@@ -23,7 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="employee-index student-block">
 
-    <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="card-header">
         <ul class="nav nav-tabs">
@@ -110,7 +109,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
     </div>
-    <?php Pjax::end(); ?>
 </div>
 
 

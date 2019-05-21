@@ -14,7 +14,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php $this->beginBlock('content') ?>
     <div class="speciality-index">
-        <?php Pjax::begin(); ?>
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -38,7 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]); ?>
-        <?php Pjax::end(); ?>
     </div>
 <?php $this->endBlock() ?>
 

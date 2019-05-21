@@ -18,13 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <div class="specialities-index" style="background-color: #FFF;">
-    <?php
-    Pjax::begin([
-        'id' => 'list-pjax',
-        'formSelector' => '#js-update',
-        'scrollTo' => 'false',
-    ]);
-    ?>
     <div class="card-header" style="padding: 20px 20px">
         <div>Поиск специальности</div>
     </div>
@@ -116,5 +109,4 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-    <?php Pjax::end(); ?>
 </div>

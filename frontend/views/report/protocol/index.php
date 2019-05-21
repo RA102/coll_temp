@@ -32,7 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="card">
     <div class="card-body">
 
-        <?php Pjax::begin(); ?>
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'columns'      => [
@@ -58,6 +57,5 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]); ?>
-        <?php Pjax::end(); ?>
     </div>
 </div>

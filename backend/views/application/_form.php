@@ -19,13 +19,6 @@ use common\models\Country;
 ?>
 
 <div class="institution-application-form">
-    <?php
-    Pjax::begin([
-        'id' => 'list-pjax',
-        'formSelector' => '#js-update',
-        'scrollTo' => 'false',
-    ]);
-    ?>
     <?php $activeForm = ActiveForm::begin([
         'id' => 'js-update',
         'enableClientValidation' => false,
@@ -222,5 +215,4 @@ use common\models\Country;
     </div>
 
     <?php ActiveForm::end(); ?>
-    <?php Pjax::end(); ?>
 </div>

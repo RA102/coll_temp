@@ -22,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="reception-group-index skin-white">
 
-    <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <div class="card-body">
@@ -40,5 +39,4 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
     </div>
-    <?php Pjax::end(); ?>
 </div>
