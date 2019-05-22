@@ -1,9 +1,8 @@
 <?php
 
-use yii\helpers\ArrayHelper;
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use common\components\ActiveForm;
-use yii\widgets\Pjax;
 
 $this->title = Yii::t('app', 'Specialities');
 $this->params['breadcrumbs'][] = $this->title;
@@ -49,10 +48,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     $label = 'Квалификация';
                 }
                 $model->hasSpecialityId = true;
-                echo $form->field($model, "speciality_ids[{$count}]")->dropDownList(
-                    ArrayHelper::map($children, 'id', 'caption_current'), [
-                    'class' => 'form-control active-form-refresh-control',
-                    'prompt' => ''
+
+                echo $form->field($model, "speciality_ids[{$count}]")->widget(Select2::classname(), [
+                    'data' => \yii\helpers\ArrayHelper::map($children, 'id', function (\common\models\handbook\Speciality $model) {
+                        return $model->getCaptionWithCode();
+                    }),
+                    'options' => ['placeholder' => '', 'class' => "form-control active-form-refresh-control"],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
                 ])->label($label);
 
                 if (isset($model->speciality_ids[$count]) && $model->speciality_ids[$count]) {
