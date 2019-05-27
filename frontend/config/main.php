@@ -21,7 +21,7 @@ return [
             'identityClass' => 'common\models\person\Person',
             'enableAutoLogin' => true,
             'loginUrl' => '/site/login',
-//            'absoluteAuthTimeout' => \Yii::$app->params['session_timeout'],
+            'absoluteAuthTimeout' => 3600 * 24 * 1,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
         'session' => [
