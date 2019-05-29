@@ -340,4 +340,6 @@ return [
     // ADMISSION ORDER
     'Exam form' => 'Тип экзамена',
     'Order of admission' => 'Приказ о зачислении',
+
+    'Person is attached to institution' => 'Пользователь уже привязан к одному из заведении',
 ];
