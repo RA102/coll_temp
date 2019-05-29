@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= GridView::widget([
                         'dataProvider' => $studentsWithoutGroupDataProvider,
                         'filterModel' => $withoutGroupSearch,
-                        'layout'=>"{items}",
+                        'layout' => "{items}\n{pager}",
                         'tableOptions' => [
                             'class' => 'table table-striped table-condensed'
                         ],
@@ -96,12 +96,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="col-md-6">
                     <div class="card-header">
-                        <?=Yii::t('app', 'Added to group')?> (<?=$studentsFromGroupDataProvider->count?>)
+                        <?=Yii::t('app', 'Added to group')?> (<?=$studentsFromGroupDataProvider->totalCount?>)
                     </div>
                     <?= GridView::widget([
                         'dataProvider' => $studentsFromGroupDataProvider,
                         'filterModel' => $fromCurrentGroupSearch,
-                        'layout'=>"{items}",
+                        'layout' => "{items}\n{pager}",
                         'tableOptions' => [
                             'class' => 'table table-striped table-condensed'
                         ],
