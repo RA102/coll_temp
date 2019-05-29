@@ -30,7 +30,8 @@ class PersonService
         PersonCredentialService $personCredentialService,
         PdsService $pdsService,
         TransactionManager $transactionManager
-    ) {
+    )
+    {
         $this->notificationService = $notificationService;
         $this->personCredentialService = $personCredentialService;
         $this->transactionManager = $transactionManager;
@@ -54,7 +55,8 @@ class PersonService
         $credential_type = PersonCredentialHelper::TYPE_EMAIL,
         $accessToken,
         $role
-    ) {
+    )
+    {
         if (!$model->isNewRecord) {
             throw new \yii\base\InvalidCallException('Model already created');
         }
@@ -63,7 +65,7 @@ class PersonService
         $person = Person::findOne(['iin' => $model->iin]);
         if ($person) {
             if ($person->institution) {
-                throw new \Exception('Person is attached to institution');
+                throw new \Exception(\Yii::t('app', 'Person is attached to institution'));
             }
 
             $person->setAttributes(array_filter($model->getAttributes(), function ($value) {
