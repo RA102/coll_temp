@@ -15,7 +15,6 @@ class PdsPersonInterface
     public $iin;
     public $indentity;
     public $credential_type = PersonCredentialHelper::TYPE_EMAIL;
-    public $generate_credential;
     public $validation;
     public $is_new;
 

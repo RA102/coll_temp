@@ -43,7 +43,6 @@ class PersonService
      * @param Person $model
      * @param string $identity
      * @param string $credential_type
-     * @param bool $generate_credential
      * @return PdsPersonInterface
      * @throws ForbiddenHttpException
      * @throws \Throwable
@@ -52,8 +51,7 @@ class PersonService
     public function create(
         Person $model,
         string $identity,
-        string $credential_type,
-        bool $generate_credential
+        string $credential_type
     ): PdsPersonInterface {
 //        if (!empty($model->portal_uid)) {
 //            throw new ForbiddenHttpException('Person already exists');
@@ -66,7 +64,6 @@ class PersonService
         $newPerson->iin = $model->iin;
         $newPerson->indentity = $identity; // FIXME: Typo
         $newPerson->credential_type = $credential_type;
-        $newPerson->generate_credential = $generate_credential;
         if ($model->birth_date) {
             $birthDate = new \DateTime($model->birth_date);
             $newPerson->birth_date = $birthDate->format('Y-m-d');
