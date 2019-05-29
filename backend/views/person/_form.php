@@ -96,6 +96,8 @@ use yii\widgets\DetailView;
                     'theme' => 'default',
                 ]) ?>
 
+                <?= $activeForm->field($form, 'portal_uid')->textInput() ?>
+
                 <?php if ($model->isNewRecord): ?>
                     <?= $activeForm->field($form, 'indentity')->textInput() ?>
                 <?php endif; ?>

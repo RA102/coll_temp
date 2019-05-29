@@ -40,7 +40,6 @@ class PersonService
     /**
      * @param Person $model
      * @param int $institution_id
-     * @param bool $create_identity
      * @param string $identity
      * @param string $credential_type
      * @param string $accessToken
@@ -51,7 +50,6 @@ class PersonService
     public function create(
         Person $model,
         $institution_id,
-        $create_identity,
         $identity,
         $credential_type = PersonCredentialHelper::TYPE_EMAIL,
         $accessToken,
@@ -78,7 +76,6 @@ class PersonService
         $this->transactionManager->execute(function () use (
             $person,
             $institution_id,
-            $create_identity,
             $identity,
             $credential_type,
             $accessToken,
@@ -87,8 +84,7 @@ class PersonService
             $pdsPerson = $this->pdsService->create(
                 $person,
                 $identity,
-                $credential_type,
-                $create_identity
+                $credential_type
             );
             $person->portal_uid = $pdsPerson->id;
 
@@ -101,7 +97,14 @@ class PersonService
             }
 
             // TODO: add email to contacts
-            if ($pdsPerson->is_new && $create_identity) {
+            if (!empty($identity)) {
+                $this->personCredentialService->create(
+                    $person->id,
+                    $identity,
+                    $accessToken,
+                    $role
+                );
+
                 $personCredential = PersonCredential::add($person, $identity);
                 $personCredential->save();
 
@@ -109,15 +112,6 @@ class PersonService
                 $this->notificationService->sendPersonCreatedNotification(
                     $identity,
                     $pdsPerson->validation
-                );
-            }
-
-            if (!$pdsPerson->is_new && $create_identity) {
-                $this->personCredentialService->create(
-                    $person->id,
-                    $identity,
-                    $accessToken,
-                    $role
                 );
             }
 

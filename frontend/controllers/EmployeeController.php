@@ -168,7 +168,7 @@ class EmployeeController extends Controller
      * Creates a new Employee model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
-     * @throws \yii\db\Exception
+     * @throws \Exception
      */
     public function actionCreate()
     {
@@ -180,7 +180,6 @@ class EmployeeController extends Controller
             $model = $this->personService->create(
                 $model,
                 Yii::$app->user->identity->institution->id,
-                $form->generate_credential,
                 $form->indentity,
                 $form->credential_type,
                 Yii::$app->user->identity->activeAccessToken->token,

@@ -21,7 +21,7 @@ return [
             'identityClass' => 'common\models\person\Person',
             'enableAutoLogin' => true,
             'loginUrl' => '/site/login',
-            'absoluteAuthTimeout' => 3600 * 24 * 1,
+            'absoluteAuthTimeout' => 3600 * 12,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
         'session' => [

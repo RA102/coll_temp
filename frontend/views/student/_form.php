@@ -57,8 +57,6 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
 
-    <?= $form->field($model, 'generate_credential')->checkbox() ?>
-
     <?= $form->field($model, 'indentity')->textInput() ?>
 
     <div class="form-group">
