@@ -25,6 +25,7 @@ class PersonForm extends Model
     public $birth_date;
     public $institution_id;
     public $indentity;
+    public $portal_uid;
 
     /**
      * {@inheritdoc}
@@ -35,7 +36,7 @@ class PersonForm extends Model
             [['firstname', 'lastname', 'middlename', 'iin', 'person_type', 'birth_date', 'type', 'institution_id', 'indentity', 'status'], 'required'],
 
             [['status', 'sex', 'nationality_id', 'type', 'person_type'], 'default', 'value' => null],
-            [['status', 'sex', 'nationality_id', 'type', 'id', 'institution_id'], 'integer'],
+            [['status', 'sex', 'nationality_id', 'type', 'id', 'institution_id', 'portal_uid'], 'integer'],
 
             [['birth_date'], 'safe'],
             [['nickname', 'firstname', 'lastname', 'middlename', 'iin', 'person_type', 'indentity'], 'string', 'max' => 100],
@@ -60,6 +61,7 @@ class PersonForm extends Model
             'iin' => Yii::t('app', 'Iin'),
             'type' => Yii::t('app', 'Type'),
             'person_type' => Yii::t('app', 'Person Type'),
+            'portal_uid' => Yii::t('app', 'PDS ID'),
             'indentity' => Yii::t('app', 'Логин'),
             'institution_id' => Yii::t('app', 'Колледж'),
         ];
