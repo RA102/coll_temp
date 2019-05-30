@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'is_subscribed:boolean',
                 'portal_uid',
                 //'photo',
-                //'type',
+                'type',
                 //'create_ts',
                 //'delete_ts',
                 //'import_ts',

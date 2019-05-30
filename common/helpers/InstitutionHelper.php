@@ -19,7 +19,7 @@ class InstitutionHelper
     public static function getList()
     {
         /* @var $models Institution[] */
-        $models = Institution::find()->all();
+        $models = Institution::find()->orderBy('name')->all();
         $result = [];
         foreach ($models as $model) {
             $result[$model->id] = $model->name;
