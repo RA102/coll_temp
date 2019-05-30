@@ -116,6 +116,9 @@ class PersonController extends Controller
                     Yii::$app->user->identity->activeAccessToken->token,
                     Yii::$app->user->identity->person_type
                 );
+
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Success'));
+
                 return $this->redirect(['view', 'id' => $model->id]);
             } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error',
@@ -158,6 +161,8 @@ class PersonController extends Controller
 
             $this->personService->update($model, $form->institution_id);
 
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Success'));
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -188,6 +193,8 @@ class PersonController extends Controller
                     Yii::$app->user->identity->activeAccessToken->token,
                     $model->person_type
                 );
+
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Success'));
             } catch (ValidationException $e) {
                 $form->addErrors($e->errors);
             } catch (\Exception $e) {
