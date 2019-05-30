@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\components\Model;
+use common\models\person\Person;
 use common\models\person\Student;
 use common\models\PersonRelative;
 use common\services\person\PersonContactService;
@@ -47,7 +48,7 @@ class StudentController extends Controller
                             'view', 'view-contacts', 'view-documents', 'view-authorization', 'view-relatives',
                             'create',
                             'update', 'update-contacts', 'update-documents', 'update-relatives',
-                            'delete', 'fire',
+                            'delete', 'fire', 'revert', 'move'
                         ],
                         'allow'   => true,
                         'roles'   => ['@'],
@@ -59,6 +60,7 @@ class StudentController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                     'fire'   => ['POST'],
+                    'revert' => ['POST'],
                 ],
             ],
         ];
@@ -337,6 +339,8 @@ class StudentController extends Controller
 
         $this->personService->delete($model);
 
+        Yii::$app->session->setFlash('success', 'Пользователь успешно удален');
+
         return $this->redirect(['index']);
     }
 
@@ -346,7 +350,42 @@ class StudentController extends Controller
 
         $this->personService->fire($model);
 
+        Yii::$app->session->setFlash('success', 'Пользователь успешно отчислен');
+
         return $this->redirect(['index']);
+    }
+
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionRevert($id)
+    {
+        $model = $this->findModel($id);
+        $status = $model->status;
+        $this->personService->revert($model);
+
+        Yii::$app->session->setFlash('success', 'Пользователь успешно восстановлен');
+
+        return $this->redirect(['index', 'status' => $status]);
+    }
+
+    /**
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionMove($id)
+    {
+        $model = $this->findModel($id);
+        $status = $model->status;
+
+        $this->personService->changeType($this->findModel($id), Person::TYPE_EMPLOYEE);
+
+        Yii::$app->session->setFlash('success', 'Пользователь успешно перемещен');
+
+        return $this->redirect(['index', 'status' => $status]);
     }
 
     /**
