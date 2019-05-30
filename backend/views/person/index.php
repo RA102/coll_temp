@@ -7,7 +7,6 @@ use common\models\person\Person;
 use common\models\person\PersonCredential;
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\PersonSearch */
@@ -26,9 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'filterModel' => $searchModel,
             'columns' => [
                 'id',
-                'firstname',
-                'lastname',
-                'middlename',
+                [
+                    'attribute' => 'fullName',
+                    'value' => function (Person $model) {
+                        return $model->getFullName();
+                    }
+                ],
                 [
                     'format' => 'html',
                     'header' => 'Логин',
@@ -80,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'owner_id',
                 //'server_id',
                 //'is_subscribed:boolean',
-                //'portal_uid',
+                'portal_uid',
                 //'photo',
                 //'type',
                 //'create_ts',

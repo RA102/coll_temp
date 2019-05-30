@@ -15,6 +15,7 @@ class PersonSearch extends Person
 {
     public $indentity;
     public $institution_filter;
+    public $fullName;
 
     /**
      * {@inheritdoc}
@@ -22,19 +23,43 @@ class PersonSearch extends Person
     public function rules()
     {
         return [
-            [['id', 'status', 'sex', 'nationality_id', 'is_pluralist', 'birth_country_id', 'birth_city_id', 'oid', 'alledu_id', 'alledu_server_id', 'pupil_id', 'owner_id', 'server_id', 'portal_uid', 'type', 'institution_filter'], 'integer'],
-            [['nickname', 'firstname', 'lastname', 'middlename', 'birth_date', 'iin', 'birth_place', 'language', 'photo', 'create_ts', 'delete_ts', 'import_ts', 'person_type', 'indentity'], 'safe'],
+            [[
+                'id',
+                'status',
+                'sex',
+                'nationality_id',
+                'is_pluralist',
+                'birth_country_id',
+                'birth_city_id',
+                'oid',
+                'alledu_id',
+                'alledu_server_id',
+                'pupil_id',
+                'owner_id',
+                'server_id',
+                'portal_uid',
+                'type',
+                'institution_filter'
+            ], 'integer'],
+            [[
+                'fullName',
+                'nickname',
+                'firstname',
+                'lastname',
+                'middlename',
+                'birth_date',
+                'iin',
+                'birth_place',
+                'language',
+                'photo',
+                'create_ts',
+                'delete_ts',
+                'import_ts',
+                'person_type',
+                'indentity'
+            ], 'safe'],
             [['is_subscribed'], 'boolean'],
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
     }
 
     /**
@@ -96,6 +121,21 @@ class PersonSearch extends Person
             ->andFilterWhere(['ilike', Person::tableName() . '.birth_place', $this->birth_place])
             ->andFilterWhere(['ilike', Person::tableName() . '.language', $this->language])
             ->andFilterWhere(['ilike', Person::tableName() . '.photo', $this->photo]);
+
+        $names = explode(' ', $this->fullName);
+        if (count($names) > 0) {
+            foreach ($names as $name) {
+                if (empty($name)) {
+                    continue;
+                }
+                $query->andWhere([
+                    'OR',
+                    ['ilike', Person::tableName() . '.firstname', $name],
+                    ['ilike', Person::tableName() . '.lastname', $name],
+                    ['ilike', Person::tableName() . '.middlename', $name]
+                ]);
+            }
+        }
 
         if ($this->indentity) {
             $query->joinWith('personCredentials')

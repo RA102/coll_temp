@@ -78,11 +78,6 @@ use kartik\select2\Select2;
 
     <div class="row">
         <div class="col-md-4">
-            <?= $form->field($model, 'generate_credential')->checkbox() ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
             <?= $form->field($model, 'indentity')->textInput() ?>
         </div>
     </div>

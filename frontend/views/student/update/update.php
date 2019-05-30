@@ -57,7 +57,7 @@ use kartik\select2\Select2;
 
         <div class="row">
             <div class="col-md-4">
-                <?= $activeForm->field($model, 'nationality_id')->widget(Select2::classname(), [
+                <?= $activeForm->field($form, 'nationality_id')->widget(Select2::classname(), [
                     'data' => \yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name'),
                     'options' => ['placeholder' => ''],
                     'pluginOptions' => [
