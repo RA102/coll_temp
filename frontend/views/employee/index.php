@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
-    <h1><?=$this->title?> (<?=$dataProvider->totalCount?>)</h1>
+    <h1><?= $this->title ?> (<?= $dataProvider->totalCount ?>)</h1>
     <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 
@@ -26,17 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="card-header">
         <ul class="nav nav-tabs">
-            <li role="presentation" class="<?=$searchModel->isActive() ? 'active' : ''?>">
+            <li role="presentation" class="<?= $searchModel->isActive() ? 'active' : '' ?>">
                 <?= Html::a(Yii::t('app', 'Current employees'), Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_ACTIVE,
                 ])) ?>
             </li>
-            <li role="presentation" class="<?=$searchModel->isFired() ? 'active' : ''?>">
+            <li role="presentation" class="<?= $searchModel->isFired() ? 'active' : '' ?>">
                 <?= Html::a('Уволенные сотрудники', Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_FIRED,
                 ])) ?>
             </li>
-            <li role="presentation" class="<?=$searchModel->status == Person::STATUS_DELETED ? 'active' : ''?>">
+            <li role="presentation" class="<?= $searchModel->status == Person::STATUS_DELETED ? 'active' : '' ?>">
                 <?= Html::a('Удаленные сотрудники', Url::current([
                     Html::getInputName($searchModel, 'status') => Person::STATUS_DELETED,
                 ])) ?>
@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="card-body">
         <?= GridView::widget([
-            'layout' =>  "{items}\n{pager}",
+            'layout' => "{items}\n{pager}",
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {fire} {delete}',
+                    'template' => '{revert} {move} {view} {fire} {delete}',
                     'buttons' => [
                         'fire' => function ($url, Employee $model) {
                             return Html::a('<span class="glyphicon glyphicon-fire"></span>',
@@ -94,6 +94,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'title' => Yii::t('app', 'Fire Employee'),
                                 ]);
                         },
+                        'revert' => function ($url, Employee $model) {
+                            return Html::a('<span class="glyphicon glyphicon-retweet"></span>',
+                                ['employee/revert', 'id' => $model->id], [
+                                    'data-confirm' => Yii::t('app', 'Are you sure?'),
+                                    'data-method' => 'post',
+                                    'title' => Yii::t('app', 'Revert'),
+                                ]);
+                        },
+                        'move' => function ($url, Employee $model) {
+                            return Html::a('<span class="glyphicon glyphicon-share-alt"></span>',
+                                ['employee/move', 'id' => $model->id], [
+                                    'data-confirm' => Yii::t('app', 'Are you sure?'),
+                                    'data-method' => 'post',
+                                    'title' => Yii::t('app', 'Move to student'),
+                                ]);
+                        }
                     ],
                     'visibleButtons' => [
                         'fire' => function (Employee $model) {
@@ -104,6 +120,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             /** @see \common\services\person\PersonService::delete() */
                             return !$model->isDeleted();
                         },
+                        'revert' => function (Employee $model) {
+                            return $model->isDeleted() || $model->isFired();
+                        }
                     ],
                 ],
             ],

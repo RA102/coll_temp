@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {fire} {delete}',
+                    'template' => '{revert} {move} {view} {fire} {delete}',
                     'buttons' => [
                         'fire' => function ($url, Student $model) {
                             return Html::a('<span class="glyphicon glyphicon-fire"></span>',
@@ -94,6 +94,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'title' => Yii::t('app', 'Fire Student'),
                                 ]);
                         },
+                        'revert' => function ($url, Student $model) {
+                            return Html::a('<span class="glyphicon glyphicon-retweet"></span>',
+                                ['student/revert', 'id' => $model->id], [
+                                    'data-confirm' => Yii::t('app', 'Are you sure?'),
+                                    'data-method' => 'post',
+                                    'title' => Yii::t('app', 'Revert'),
+                                ]);
+                        },
+                        'move' => function ($url, Student $model) {
+                            return Html::a('<span class="glyphicon glyphicon-share-alt"></span>',
+                                ['student/move', 'id' => $model->id], [
+                                    'data-confirm' => Yii::t('app', 'Are you sure?'),
+                                    'data-method' => 'post',
+                                    'title' => Yii::t('app', 'Move to employee'),
+                                ]);
+                        }
                     ],
                     'visibleButtons' => [
                         'fire' => function (Student $model) {
@@ -104,6 +120,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             /** @see \common\services\person\PersonService::delete() */
                             return !$model->isDeleted();
                         },
+                        'revert' => function (Student $model) {
+                            return $model->isDeleted() || $model->isFired();
+                        }
                     ],
                 ],
             ],

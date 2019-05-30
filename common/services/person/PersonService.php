@@ -196,4 +196,33 @@ class PersonService
 
         return $model;
     }
+
+    public function revert(Person $model)
+    {
+        if ($model->isNewRecord) {
+            throw new \yii\base\InvalidCallException('Model not created');
+        }
+
+        $this->transactionManager->execute(function () use ($model) {
+            $model->status = Person::STATUS_ACTIVE;
+            $model->delete_ts = null;
+            if (!$model->save()) {
+                throw new \RuntimeException('Saving error.');
+            }
+        });
+
+        return $model;
+    }
+
+    public function changeType(Person $model, $targetType)
+    {
+        $this->transactionManager->execute(function () use ($model, $targetType) {
+            $model->type = $targetType;
+            if (!$model->save()) {
+                throw new \RuntimeException('Saving error.');
+            }
+        });
+
+        return $model;
+    }
 }
