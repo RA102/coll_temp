@@ -161,7 +161,7 @@ class GroupController extends Controller
 
         $groups = [];
         if ($allocationModel->class) {
-//            $groups = $this->groupService->getByClass($allocationModel->class, Yii::$app->user->identity->institution->id);
+            $groups = $this->groupService->getByClass($allocationModel->class, Yii::$app->user->identity->institution->id);
         }
 
         $fromCurrentGroupSearch = new StudentSearch();
