@@ -170,7 +170,7 @@ class PersonService
             $model->delete_ts = date('Y-m-d H:i:s');
             $model->status = Person::STATUS_DELETED;
             if (!$model->save()) {
-                throw new \RuntimeException('Saving error.');
+                throw new \RuntimeException(json_encode($model->errors));
             }
         });
 
@@ -190,7 +190,7 @@ class PersonService
         $this->transactionManager->execute(function () use ($model) {
             $model->status = Person::STATUS_FIRED;
             if (!$model->save()) {
-                throw new \RuntimeException('Saving error.');
+                throw new \RuntimeException(json_encode($model->errors));
             }
         });
 
