@@ -280,9 +280,12 @@ class EmployeeController extends Controller
     {
         $model = $this->findModel($id);
 
-        $this->personService->delete($model);
-
-        Yii::$app->session->setFlash('success', 'Пользователь успешно удален');
+        try {
+            $this->personService->delete($model);
+            Yii::$app->session->setFlash('success', 'Пользователь успешно удален');
+        } catch (\Exception $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
 
         return $this->redirect(['index']);
     }
@@ -291,9 +294,12 @@ class EmployeeController extends Controller
     {
         $model = $this->findModel($id);
 
-        $this->personService->fire($model);
-
-        Yii::$app->session->setFlash('success', 'Пользователь успешно уволен');
+        try {
+            $this->personService->fire($model);
+            Yii::$app->session->setFlash('success', 'Пользователь успешно уволен');
+        } catch (\Exception $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
 
         return $this->redirect(['index', 'status' => Employee::STATUS_FIRED]);
     }
