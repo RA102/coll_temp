@@ -102,9 +102,7 @@ class EmployeeSearch extends Employee
             $query->joinWith(['personInstitutionLinks' => function (ActiveQuery $query) {
                 return $query->andWhere([
                     /** @see PersonInstitutionLink::$institution_id */
-                    PersonInstitutionLink::tableName() . '.institution_id' => $this->institution_id,
-                    PersonInstitutionLink::tableName() . '.to_ts' => null,
-                    PersonInstitutionLink::tableName() . '.is_deleted' => false
+                    PersonInstitutionLink::tableName() . '.institution_id' => $this->institution_id
                 ]);
             }]);
         }
