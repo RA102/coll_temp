@@ -41,7 +41,11 @@ class GroupSearch extends Group
      */
     public function search($params)
     {
-        $query = Group::find()->andWhere(['delete_ts' => null]);
+        $query = Group::find()
+            ->andWhere([
+                'delete_ts' => null,
+                'is_deleted' => false,
+            ]);
 
         // add conditions that should always apply here
 
