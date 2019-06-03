@@ -11,6 +11,16 @@ class GroupService
 {
     // TODO getGroup(Institution $institution, $id): Group
 
+    /**
+     * List of groups in associative array filtered by class
+     * @param int $class
+     * @param int $institution_id
+     * @param int|null $education_form
+     * @param int|null $education_pay_form
+     * @param int|null $speciality_id
+     * @param string|null $language
+     * @return array
+     */
     public function getAssociativeByClass(
         int $class,
         int $institution_id,
@@ -62,6 +72,12 @@ class GroupService
         ])->one();
     }
 
+    /**
+     * List of groups by class
+     * @param int $class
+     * @param int $institution_id
+     * @return array
+     */
     public function getByClass(int $class, int $institution_id): array
     {
         $groups = Group::find()
