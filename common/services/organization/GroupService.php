@@ -63,7 +63,13 @@ class GroupService
 
     public function getByClass(int $class, int $institution_id): array
     {
-        $groups = Group::find()->where(['class' => $class, 'institution_id' => $institution_id])->all();
+        $groups = Group::find()
+            ->where(['class' => $class, 'institution_id' => $institution_id])
+            ->andWhere([
+                'delete_ts' => null,
+                'is_deleted' => false,
+            ])
+            ->all();
         return ArrayHelper::map($groups, 'id', 'caption_current');
     }
 
