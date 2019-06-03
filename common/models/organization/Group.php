@@ -12,6 +12,7 @@ use Yii;
 
 /**
  * This is the model class for table "organization.group".
+ * Group is an entity for college group of students
  *
  * @property int $id
  * @property array $caption
@@ -49,6 +50,7 @@ class Group extends \yii\db\ActiveRecord
     const EDUCATION_PAY_FORM_CONTRACT = 2;
     const EDUCATION_PAY_FORM_MIXED = 3;
 
+    // name of group in current locale
     public $caption_current;
 
     public $caption_ru;
@@ -114,6 +116,7 @@ class Group extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
+        // set json caption from two non json fields
         $this->caption = [
             'ru' => $this->caption_ru,
             'kk' => $this->caption_kk,
@@ -125,7 +128,9 @@ class Group extends \yii\db\ActiveRecord
     public function afterFind()
     {
         $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
+        // set current caption, can be used as default caption variant
         $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'] ?? $this->caption['kk'] ?? null;
+        // set caption in russian and kazakh
         $this->caption_ru = $this->caption['ru'] ?? null;
         $this->caption_kk = $this->caption['kk'] ?? null;
 

@@ -152,6 +152,10 @@ class GroupController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     * Allocate students into groups
+     * @return string
+     */
     public function actionAllocate()
     {
         $allocationModel = new GroupAllocationForm();
@@ -164,11 +168,13 @@ class GroupController extends Controller
             $groups = $this->groupService->getByClass($allocationModel->class, Yii::$app->user->identity->institution->id);
         }
 
+        // students from selected group
         $fromCurrentGroupSearch = new StudentSearch();
         $fromCurrentGroupSearch->formName = 'withGroup';
         $fromCurrentGroupSearch->institution_id = Yii::$app->user->identity->institution->id;
         $studentsFromGroupDataProvider = new ActiveDataProvider();
 
+        // not allocated students (without groups)
         $withoutGroupSearch = new StudentSearch();
         $withoutGroupSearch->formName = 'withoutGroup';
         $withoutGroupSearch->status = Person::STATUS_ACTIVE;
@@ -196,18 +202,38 @@ class GroupController extends Controller
         ]);
     }
 
+    /**
+     * Add student to group
+     * @param $id
+     * @param $group_id
+     * @param $class
+     * @return \yii\web\Response
+     */
     public function actionAddStudent($id, $group_id, $class)
     {
         $this->groupService->addStudent($id, $group_id);
         return $this->redirect(['group/allocate', 'class' => $class, 'group_id' => $group_id]);
     }
 
+    /**
+     * Delete student from group
+     * @param $id
+     * @param $group_id
+     * @param $class
+     * @return \yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function actionDeleteStudent($id, $group_id, $class)
     {
         $this->groupService->deleteStudent($id, $group_id);
         return $this->redirect(['group/allocate', 'class' => $class, 'group_id' => $group_id]);
     }
 
+    /**
+     * List of groups by year(class or course) for dependent dropdown
+     * @return string
+     */
     public function actionByYear()
     {
         $parents = Yii::$app->request->post('depdrop_parents');

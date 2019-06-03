@@ -11,6 +11,16 @@ class GroupService
 {
     // TODO getGroup(Institution $institution, $id): Group
 
+    /**
+     * List of groups in associative array filtered by class
+     * @param int $class
+     * @param int $institution_id
+     * @param int|null $education_form
+     * @param int|null $education_pay_form
+     * @param int|null $speciality_id
+     * @param string|null $language
+     * @return array
+     */
     public function getAssociativeByClass(
         int $class,
         int $institution_id,
@@ -23,11 +33,12 @@ class GroupService
 
         /* @var Group[] $groups */
         $groups = Group::find()->where(['class' => $class, 'institution_id' => $institution_id])
+            ->andWhere(['IS', 'delete_ts', new \yii\db\Expression('NULL')])
             ->andFilterWhere([
-                'education_form'     => $education_form,
+                'education_form' => $education_form,
                 'education_pay_form' => $education_pay_form,
-                'speciality_id'      => $speciality_id,
-                'language'           => $language
+                'speciality_id' => $speciality_id,
+                'language' => $language
             ])->all();
 
         foreach ($groups as $group) {
@@ -61,9 +72,18 @@ class GroupService
         ])->one();
     }
 
+    /**
+     * List of groups by class
+     * @param int $class
+     * @param int $institution_id
+     * @return array
+     */
     public function getByClass(int $class, int $institution_id): array
     {
-        $groups = Group::find()->where(['class' => $class, 'institution_id' => $institution_id])->all();
+        $groups = Group::find()
+            ->where(['class' => $class, 'institution_id' => $institution_id])
+            ->andWhere(['IS', 'delete_ts', new \yii\db\Expression('NULL')])
+            ->all();
         return ArrayHelper::map($groups, 'id', 'caption_current');
     }
 
@@ -80,17 +100,19 @@ class GroupService
         $link->save();
     }
 
+    /**
+     * @param int $id
+     * @param int $group_id
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function deleteStudent(int $id, int $group_id)
     {
         /* @var StudentGroupLink $link */
-        $link = StudentGroupLink::find()
+        StudentGroupLink::find()
             ->where(['student_id' => $id])
             ->andWhere(['group_id' => $group_id])
-            ->one();
-
-        if ($link) {
-            $link->delete_ts = date('Y-m-d H:i:s');
-            $link->save();
-        }
+            ->one()
+            ->delete();
     }
 }
