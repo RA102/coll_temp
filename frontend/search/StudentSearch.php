@@ -3,8 +3,8 @@
 namespace frontend\search;
 
 use common\models\link\PersonInstitutionLink;
+use common\models\organization\Institution;
 use common\models\person\Person;
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\person\Student;
@@ -82,12 +82,8 @@ class StudentSearch extends Student
         }
 
         if (!empty($this->institution_id)) {
-            $query->joinWith(['personInstitutionLinks' => function (ActiveQuery $query) {
-                return $query->andWhere([
-                    /** @see PersonInstitutionLink::$institution_id */
-                    PersonInstitutionLink::tableName() . '.institution_id' => $this->institution_id
-                ]);
-            }]);
+            $query->joinWith('institutions');
+            $query->andWhere([Institution::tableName().'.id' => $this->institution_id]);
         }
 
         if (!empty($this->group_id)) {
