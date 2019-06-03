@@ -93,17 +93,12 @@ class StudentSearch extends Student
         if (!empty($this->group_id)) {
             $query->joinWith('groups');
             $query->andFilterWhere(['link.student_group_link.group_id' => $this->group_id]);
-            $query->andWhere(['is', 'link.student_group_link.delete_ts', new \yii\db\Expression('null')]);
+            $query->andWhere(['IS', 'link.student_group_link.delete_ts', new \yii\db\Expression('NULL')]);
         }
 
         if ($this->withoutGroup) {
-            $query->joinWith('groups', false, 'LEFT OUTER JOIN');
-            // search without link, or with soft deleted link
-            $query->andFilterWhere([
-                'OR',
-                ['IS', 'link.student_group_link.group_id', new \yii\db\Expression('NULL')],
-                ['IS NOT', 'link.student_group_link.delete_ts', new \yii\db\Expression('NULL')]
-            ]);
+            $query->joinWith('studentGroupLinks', false, 'LEFT OUTER JOIN');
+            $query->andWhere(['IS', 'link.student_group_link.group_id', new \yii\db\Expression('NULL')]);
         }
 
         // grid filtering conditions

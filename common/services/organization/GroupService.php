@@ -80,17 +80,19 @@ class GroupService
         $link->save();
     }
 
+    /**
+     * @param int $id
+     * @param int $group_id
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
     public function deleteStudent(int $id, int $group_id)
     {
         /* @var StudentGroupLink $link */
-        $link = StudentGroupLink::find()
+        StudentGroupLink::find()
             ->where(['student_id' => $id])
             ->andWhere(['group_id' => $group_id])
-            ->one();
-
-        if ($link) {
-            $link->delete_ts = date('Y-m-d H:i:s');
-            $link->save();
-        }
+            ->one()
+            ->delete();
     }
 }
