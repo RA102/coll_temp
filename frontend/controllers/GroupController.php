@@ -154,6 +154,7 @@ class GroupController extends Controller
 
     public function actionAllocate()
     {
+        try {
         $allocationModel = new GroupAllocationForm();
         $years = Yii::$app->user->identity->institution->getYearList();
 
@@ -194,6 +195,12 @@ class GroupController extends Controller
             'studentsWithoutGroupDataProvider' => $studentsWithoutGroupDataProvider,
             'studentsFromGroupDataProvider' => $studentsFromGroupDataProvider
         ]);
+        }
+        catch (\Exception $e) {
+            return $this->render('error', [
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     public function actionAddStudent($id, $group_id, $class)
