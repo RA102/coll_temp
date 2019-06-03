@@ -45,6 +45,11 @@ class GroupSearch extends Group
             ->andWhere([
                 'delete_ts' => null,
                 'is_deleted' => false,
+            ])
+            ->andWhere([
+                'OR',
+                ['type' => 1],
+                ['type' => null],
             ]);
 
         // add conditions that should always apply here
