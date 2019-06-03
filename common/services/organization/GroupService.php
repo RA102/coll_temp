@@ -23,9 +23,8 @@ class GroupService
 
         /* @var Group[] $groups */
         $groups = Group::find()->where(['class' => $class, 'institution_id' => $institution_id])
+            ->andWhere(['IS', 'delete_ts', new \yii\db\Expression('NULL')])
             ->andFilterWhere([
-                'delete_ts' => null,
-                'is_deleted' => false,
                 'education_form' => $education_form,
                 'education_pay_form' => $education_pay_form,
                 'speciality_id' => $speciality_id,
@@ -67,10 +66,7 @@ class GroupService
     {
         $groups = Group::find()
             ->where(['class' => $class, 'institution_id' => $institution_id])
-            ->andWhere([
-                'delete_ts' => null,
-                'is_deleted' => false,
-            ])
+            ->andWhere(['IS', 'delete_ts', new \yii\db\Expression('NULL')])
             ->all();
         return ArrayHelper::map($groups, 'id', 'caption_current');
     }
