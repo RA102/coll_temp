@@ -97,7 +97,7 @@ class StudentSearch extends Student
             // search without link, or with soft deleted link
             $query->andFilterWhere([
                 'OR',
-                ['IS', 'group_id', new \yii\db\Expression('NULL')],
+                ['IS', 'link.student_group_link.group_id', new \yii\db\Expression('NULL')],
                 ['IS NOT', 'link.student_group_link.delete_ts', new \yii\db\Expression('NULL')]
             ]);
         }
