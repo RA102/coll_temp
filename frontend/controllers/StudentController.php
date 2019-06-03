@@ -381,7 +381,7 @@ class StudentController extends Controller
         $model = $this->findModel($id);
         $status = $model->status;
 
-        $this->personService->changeType($this->findModel($id), Person::TYPE_EMPLOYEE);
+        $this->personService->changeType($model, Person::TYPE_EMPLOYEE);
 
         Yii::$app->session->setFlash('success', 'Пользователь успешно перемещен');
 
