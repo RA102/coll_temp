@@ -90,21 +90,16 @@ class EmployeeSearch extends Employee
 
         if (isset($this->status)) {
             if ($this->status == Person::STATUS_DELETED) {
-                $query->andWhere(['NOT', ['delete_ts' => null]]);
+                $query->andWhere(['NOT', [self::tableName().'.delete_ts' => null]]);
             } else {
-                $query->andFilterWhere([static::tableName() . '.status' => $this->status]);
-                $query->andWhere(['delete_ts' => null]);
+                $query->andFilterWhere([self::tableName().'.status' => $this->status]);
+                $query->andWhere([self::tableName().'.delete_ts' => null]);
             }
         }
 
         if ($this->institution_id) {
-            /** @see Employee::getPersonInstitutionLinks() */
-            $query->joinWith(['personInstitutionLinks' => function (ActiveQuery $query) {
-                return $query->andWhere([
-                    /** @see PersonInstitutionLink::$institution_id */
-                    PersonInstitutionLink::tableName() . '.institution_id' => $this->institution_id
-                ]);
-            }]);
+            $query->joinWith('institutions');
+            $query->andWhere([Institution::tableName().'.id' => $this->institution_id]);
         }
 
         if (!empty($this->commission_id)) {
