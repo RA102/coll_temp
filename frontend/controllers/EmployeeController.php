@@ -327,9 +327,15 @@ class EmployeeController extends Controller
      */
     public function actionMove($id)
     {
-        $this->personService->changeType($this->findModel($id), Person::TYPE_STUDENT);
+        $model = $this->findModel($id);
+        $status = $model->status;
 
-        return $this->goBack();
+        $this->personService->changeType($model, Person::TYPE_STUDENT);
+
+        Yii::$app->session->setFlash('success', 'Пользователь успешно перемещен');
+
+        return $this->redirect(['index', 'status' => $status]);
+
     }
 
     /**
