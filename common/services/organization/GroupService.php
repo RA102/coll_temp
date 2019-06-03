@@ -24,10 +24,12 @@ class GroupService
         /* @var Group[] $groups */
         $groups = Group::find()->where(['class' => $class, 'institution_id' => $institution_id])
             ->andFilterWhere([
-                'education_form'     => $education_form,
+                'delete_ts' => null,
+                'is_deleted' => false,
+                'education_form' => $education_form,
                 'education_pay_form' => $education_pay_form,
-                'speciality_id'      => $speciality_id,
-                'language'           => $language
+                'speciality_id' => $speciality_id,
+                'language' => $language
             ])->all();
 
         foreach ($groups as $group) {
