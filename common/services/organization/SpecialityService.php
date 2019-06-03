@@ -7,6 +7,10 @@ use common\models\organization\InstitutionSpecialityInfo;
 
 class SpecialityService
 {
+    /**
+     * Remove speciality to institution
+     * @param int $specialityInfoId
+     */
     public function unlink(int $specialityInfoId): void
     {
         $specialityInfo = InstitutionSpecialityInfo::findOne($specialityInfoId);
@@ -14,6 +18,11 @@ class SpecialityService
         $specialityInfo->save();
     }
 
+    /**
+     * Add speciality to institution
+     * @param int $specialityId
+     * @param int $institutionId
+     */
     public function link(int $specialityId, int $institutionId)
     {
         $speciality = Speciality::findOne($specialityId);

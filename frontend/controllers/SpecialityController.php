@@ -55,6 +55,7 @@ class SpecialityController extends Controller
         $model = new AddSpecialityForm();
         $model->load(Yii::$app->request->post());
 
+        // add speciality
         if ($model->is_submitted) {
             $this->specialityService->link(
                 end($model->speciality_ids),
