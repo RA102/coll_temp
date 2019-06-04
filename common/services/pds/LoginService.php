@@ -28,17 +28,15 @@ class LoginService
      */
     public function login(string $username, string $password): bool
     {
-        try {
+//        try {
             $authData = $this->getPdsAuthData($username, $password);
             $person = $this->getPerson($authData['person']);
             $this->saveToken($person, $authData);
             \Yii::$app->user->login($person);
             return true;
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-            die();
-            return false;
-        }
+//        } catch (\Exception $e) {
+//            return false;
+//        }
     }
 
     /**
