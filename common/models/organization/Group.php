@@ -125,6 +125,18 @@ class Group extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
 
+    public static function find()
+    {
+        // some group were moved from old project
+        // that project had two types of groups: studying process and reception commission
+        // in this project  groups for studying process "Group" and for reception commission "ReceptionGroup"
+        return parent::find()->andWhere([
+            'OR',
+            ['institution.group.type' => 1], // type "studying process", from study.bilimal.kz
+            ['institution.group.type' => null] // groups created in college.bilimal.kz
+        ]);
+    }
+
     public function afterFind()
     {
         $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
