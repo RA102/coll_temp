@@ -132,8 +132,8 @@ class Group extends \yii\db\ActiveRecord
         // in this project  groups for studying process "Group" and for reception commission "ReceptionGroup"
         return parent::find()->andWhere([
             'OR',
-            ['institution.group.type' => 1], // type "studying process", from study.bilimal.kz
-            ['institution.group.type' => null] // groups created in college.bilimal.kz
+            ['organization.group.type' => 1], // type "studying process", from study.bilimal.kz
+            ['organization.group.type' => null] // groups created in college.bilimal.kz
         ]);
     }
 
