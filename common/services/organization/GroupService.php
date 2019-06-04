@@ -34,6 +34,11 @@ class GroupService
         /* @var Group[] $groups */
         $groups = Group::find()->where(['class' => $class, 'institution_id' => $institution_id])
             ->andWhere(['IS', 'delete_ts', new \yii\db\Expression('NULL')])
+            ->andWhere([
+                'OR',
+                ['organization.group.type' => 1], // type "studying process", from study.bilimal.kz
+                ['organization.group.type' => null] // groups created in college.bilimal.kz
+            ])
             ->andFilterWhere([
                 'education_form' => $education_form,
                 'education_pay_form' => $education_pay_form,
@@ -53,9 +58,13 @@ class GroupService
 
     public function getGroups(Institution $institution)
     {
-        return Group::find()->andWhere([
-            'institution_id' => $institution->id,
-        ])->all();
+        return Group::find()
+            ->andWhere([
+                'OR',
+                ['organization.group.type' => 1], // type "studying process", from study.bilimal.kz
+                ['organization.group.type' => null] // groups created in college.bilimal.kz
+            ])->andWhere(['institution_id' => $institution->id])
+            ->all();
     }
 
     /**
