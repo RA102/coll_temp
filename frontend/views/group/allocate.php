@@ -1,5 +1,6 @@
 <?php
 
+use common\models\person\Student;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\depdrop\DepDrop;
@@ -81,8 +82,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             [
                                 'class' => 'yii\grid\ActionColumn',
-                                'template' => '{add}',
+                                'template' => '{fire} {add}',
                                 'buttons' => [
+                                    'fire' => function ($url, \common\models\person\Student $model) use($allocationModel) {
+                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>',
+                                            ['group/delete-student-from-institution', 'id' => $model->id, 'group_id' => $allocationModel->group_id, 'class' => $allocationModel->class], [
+                                                'data-confirm' => Yii::t('app', 'Are you sure?')
+                                            ]
+                                        );
+                                    },
                                     'add' => function ($url, \common\models\person\Student $model) use($allocationModel) {
                                         return Html::a('<span class="glyphicon glyphicon-plus"></span>',
                                             ['group/add-student', 'id' => $model->id, 'group_id' => $allocationModel->group_id, 'class' => $allocationModel->class]
