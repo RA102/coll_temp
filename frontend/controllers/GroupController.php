@@ -3,7 +3,9 @@
 namespace frontend\controllers;
 
 use common\models\person\Person;
+use common\models\person\Student;
 use common\services\organization\GroupService;
+use common\services\person\PersonService;
 use frontend\models\forms\GroupAllocationForm;
 use frontend\search\StudentSearch;
 use Yii;
@@ -23,11 +25,13 @@ use yii\filters\VerbFilter;
 class GroupController extends Controller
 {
     public $groupService;
+    private $personService;
 
-    public function __construct(string $id, $module, GroupService $groupService, array $config = [])
+    public function __construct(string $id, $module, GroupService $groupService, PersonService $personService, array $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->groupService = $groupService;
+        $this->personService = $personService;
     }
 
     /**
@@ -227,6 +231,20 @@ class GroupController extends Controller
     public function actionDeleteStudent($id, $group_id, $class)
     {
         $this->groupService->deleteStudent($id, $group_id);
+        return $this->redirect(['group/allocate', 'class' => $class, 'group_id' => $group_id]);
+    }
+
+    /**
+     * Sometimes deleting students from institution in group allocation is needed
+     * @param $id
+     * @param $group_id
+     * @param $class
+     * @return \yii\web\Response
+     */
+    public function actionDeleteStudentFromInstitution($id, $group_id, $class) {
+        $model = Student::findOne($id);
+        $this->personService->delete($model);
+
         return $this->redirect(['group/allocate', 'class' => $class, 'group_id' => $group_id]);
     }
 
