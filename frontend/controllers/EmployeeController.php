@@ -212,9 +212,14 @@ class EmployeeController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model->setAttributes($form->attributes);
-            $this->personService->update($model, Yii::$app->user->identity->institution->id);
 
-            return $this->redirect(['view', 'id' => $model->id]);
+            try {
+                $this->personService->update($model, Yii::$app->user->identity->institution->id);
+                return $this->redirect(['view', 'id' => $model->id]);
+            } catch (\Exception $e) {
+                Yii::$app->session->setFlash('error', $e->getMessage());
+                return $this->redirect(['update', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update/update', [
