@@ -3,7 +3,8 @@
     <section class="sidebar">
         <?php
         $commissionService = new \common\services\reception\CommissionService;
-        $activeCommission = $commissionService->getActiveInstitutionCommission(\Yii::$app->user->identity->institution);
+        $person = \Yii::$app->user->identity;
+        $activeCommission = $commissionService->getActiveInstitutionCommission($person->institution);
         ?>
 
         <?= dmstr\widgets\Menu::widget(
@@ -14,6 +15,7 @@
                         'label' => Yii::t('app', 'Selection committee'),
                         'icon'  => 'far fa-id-card',
                         'url'   => '#',
+                        'visible' => !$person->isStudent(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Текушая комиссия'),
@@ -44,6 +46,7 @@
                         'label' => Yii::t('app', 'Картотека'),
                         'icon'  => 'far fa-list-alt',
                         'url'   => '#',
+                        'visible' => !$person->isStudent(),
                         'items' => [
                             ['label' => Yii::t('app', 'Employees'), 'icon' => 'file-code-o', 'url' => ['/employee']],
                             ['label' => Yii::t('app', 'Students'), 'icon' => 'dashboard', 'url' => ['/student/index']],
@@ -53,6 +56,7 @@
                         'label' => Yii::t('app', 'Учебный процесс'),
                         'icon'  => 'book',
                         'url'   => '#',
+                        'visible' => !$person->isStudent(),
                         'items' => [
                             ['label' => Yii::t('app', 'Группы'), 'icon' => 'file-code-o', 'url' => ['/group']],
                             [
@@ -79,6 +83,7 @@
                         'label' => Yii::t('app', 'Настройки'),
                         'icon'  => 'cog',
                         'url'   => '#',
+                        'visible' => !$person->isStudent(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Специальности'),
