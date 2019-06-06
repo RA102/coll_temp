@@ -326,4 +326,9 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     {
         $this->delete_ts = intval($this->status) === Person::STATUS_ACTIVE ? null : date('Y-m-d H:i:s');
     }
+
+    public function isStudent()
+    {
+        return in_array($this->type, [Person::TYPE_STUDENT, Person::TYPE_ENTRANT]);
+    }
 }
