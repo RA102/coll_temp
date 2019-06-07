@@ -31,8 +31,8 @@ class ApplicationController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'allow'   => true,
-                        'roles'   => ['@'],
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                 ],
             ],
@@ -50,7 +50,8 @@ class ApplicationController extends Controller
         Module $module,
         InstitutionApplicationService $applicationService,
         array $config = []
-    ) {
+    )
+    {
         $this->applicationService = $applicationService;
         parent::__construct($id, $module, $config);
     }
@@ -153,8 +154,9 @@ class ApplicationController extends Controller
             $this->applicationService->approve($model);
             Yii::$app->session->setFlash('success', "Заявка одобрена");
         } catch (\Exception $e) {
-            Yii::$app->session->setFlash('error', "Произошла ошибка при сохранении: " . $e->getMessage());
-            Yii::$app->session->setFlash('error', $e->getTraceAsString());
+            Yii::$app->session->addFlash('error', "Произошла ошибка при сохранении: " . $e->getMessage());
+            Yii::$app->session->addFlash('error', $e->getTraceAsString());
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->redirect(['index']);

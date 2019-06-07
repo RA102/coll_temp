@@ -89,7 +89,6 @@ class InstitutionApplicationService
             $this->personService->create(
                 $person,
                 $institution->id,
-                true,
                 $application->email,
                 PersonCredentialHelper::TYPE_EMAIL,
                 Yii::$app->user->identity->activeAccessToken->token,
