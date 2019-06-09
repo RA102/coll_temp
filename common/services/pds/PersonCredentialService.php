@@ -34,10 +34,6 @@ class PersonCredentialService
      */
     public function create(int $person_id, string $identity, string $token, string $role): PersonCredential
     {
-        echo 'person_id: ';
-        var_dump($person_id);
-        die();
-
         $person = Person::findIdentity($person_id);
         if (!$person) {
             throw new \RuntimeException("Person Does Not Exist");
