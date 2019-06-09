@@ -1,5 +1,6 @@
 <?php
 
+use common\models\person\Student;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -68,6 +69,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 'middlename',
                 'birth_date',
                 'iin',
+
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'buttons' => [
+                        'view' => function ($url, Student $model) {
+                            return Html::a(
+                                    '<span class="glyphicon glyphicon-eye-open"></span>',
+                                ['/student/view', 'id' => $model->id]
+                            );
+                        }
+                    ],
+                ],
             ],
         ]); ?>
 
