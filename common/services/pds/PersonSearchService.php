@@ -35,28 +35,16 @@ class PersonSearchService
 
         $persons = $this->findByID($query, $userToken->token, $user->person_type);
         if (!empty($persons)) {
-            var_dump($query);
-            echo 'by id';
-            die();
-
             return $this->getPersonObject($persons[0], false);
         }
 
         $persons = $this->findByIIN($query, $userToken->token, $user->person_type);
         if (!empty($persons)) {
-            var_dump($query);
-            echo 'by iin';
-            die();
-
             return $this->getPersonObject($persons[0], false);
         }
 
         $persons = $this->findBy($query, $userToken->token, $user->person_type);
         if (!empty($persons)) {
-            var_dump($query);
-            echo 'by query';
-            die();
-
             return $this->getPersonObject($persons[0], false);
         }
 
