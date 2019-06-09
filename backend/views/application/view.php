@@ -59,7 +59,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'type_id',
                     'value' => function(\common\models\organization\InstitutionApplication $model) {
-                        return $model->institutionType->caption_current;
+                        $type = $model->institutionType;
+                        return $type ? $type->caption_current : null;
                     }
                 ],
                 'firstname',
