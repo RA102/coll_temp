@@ -1,5 +1,6 @@
 <?php
 
+use common\models\person\Person;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -33,7 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'attributes' => [
                 'id',
-                'iin',
+                [
+                    'attribute' => 'iin',
+                    'value' => function (\common\models\organization\InstitutionApplication $model) {
+                        $exists = Person::find()->where(['iin' => $model->iin])->exists();
+                        return $model->iin . " " . ($exists ? "(Существует)" : "");
+                    }
+                ],
                 [
                     'attribute' => 'sex',
                     'value' => function(\common\models\organization\InstitutionApplication $model) {
