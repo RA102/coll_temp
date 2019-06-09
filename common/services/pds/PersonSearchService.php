@@ -30,6 +30,9 @@ class PersonSearchService
      */
     public function findOne(array $query)
     {
+        var_dump($query);
+        die();
+        
         $userToken = $this->getAccessToken();
         $user = $this->getUser();
 
