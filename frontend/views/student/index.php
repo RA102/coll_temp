@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="student-index student-block">
 
+    <?= Html::beginForm(['process'], 'post'); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="card-header">
         <ul class="nav nav-tabs">
@@ -46,11 +47,59 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <div class="card-body">
+        <?php if (intval($searchModel->status) !== Student::STATUS_ACTIVE): ?>
+            <?= Html::submitButton(
+                'Восстановить',
+                [
+                    'class' => 'btn btn-default',
+                    'name' => 'action',
+                    'value' => 'revert',
+                    'visible' => false
+                ]
+            ); ?>
+        <?php endif; ?>
+        <?= Html::submitButton(
+            'Переместить',
+            [
+                'class' => 'btn btn-primary',
+                'name' => 'action',
+                'value' => 'move',
+                'visible' => false
+            ]
+        ); ?>
+        <?php if (intval($searchModel->status) === Student::STATUS_ACTIVE): ?>
+            <?= Html::submitButton(
+                'Отчислить',
+                [
+                    'class' => 'btn btn-warning',
+                    'name' => 'action',
+                    'value' => 'fire',
+                    'visible' => false
+                ]
+            ); ?>
+        <?php endif; ?>
+        <?php if (intval($searchModel->status) !== Student::STATUS_DELETED): ?>
+            <?= Html::submitButton(
+                'Удалить',
+                [
+                    'class' => 'btn btn-danger',
+                    'name' => 'action',
+                    'value' => 'delete',
+                    'visible' => false
+                ]
+            ); ?>
+        <?php endif; ?>
         <?= GridView::widget([
             'layout' =>  "{items}\n{pager}",
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
+                [
+                    'class' => 'yii\grid\CheckboxColumn',
+                    'checkboxOptions' => function ($model) {
+                        return ['value' => $model->id];
+                    },
+                ],
                 ['class' => 'yii\grid\SerialColumn'],
 
                 //                'id',
@@ -128,6 +177,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
     </div>
+    <?= Html::endForm();?>
 </div>
 
 

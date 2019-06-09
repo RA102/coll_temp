@@ -48,7 +48,7 @@ class StudentController extends Controller
                             'view', 'view-contacts', 'view-documents', 'view-authorization', 'view-relatives',
                             'create',
                             'update', 'update-contacts', 'update-documents', 'update-relatives',
-                            'delete', 'fire', 'revert', 'move'
+                            'delete', 'fire', 'revert', 'move', 'process',
                         ],
                         'allow'   => true,
                         'roles'   => ['@'],
@@ -61,6 +61,7 @@ class StudentController extends Controller
                     'delete' => ['POST'],
                     'fire'   => ['POST'],
                     'revert' => ['POST'],
+                    'process' => ['POST'],
                 ],
             ],
         ];
@@ -242,6 +243,49 @@ class StudentController extends Controller
             'form'  => $form,
             'model' => $model,
         ]);
+    }
+
+    public function actionProcess()
+    {
+        $action = \Yii::$app->request->post('action');
+        $selection = \Yii::$app->request->post('selection');
+
+        try {
+            switch ($action) {
+                case 'move':
+                    foreach ($selection as $item) {
+                        $this->personService->changeType(
+                            $this->findModel(intval($item)),
+                            Person::TYPE_EMPLOYEE
+                        );
+                    }
+                    break;
+                case 'fire':
+                    foreach ($selection as $item) {
+                        $this->personService->fire($this->findModel(intval($item)));
+                    }
+                    break;
+                case 'delete':
+                    foreach ($selection as $item) {
+                        $this->personService->delete($this->findModel(intval($item)));
+                    }
+                    break;
+                case 'revert':
+                    foreach ($selection as $item) {
+                        $this->personService->revert($this->findModel(intval($item)));
+                    }
+                    break;
+                default:
+                    throw new \DomainException('No action found');
+                    break;
+            }
+
+            Yii::$app->session->setFlash('success', 'Успешно сохранено');
+        } catch (\Exception $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+
+        return $this->redirect('index');
     }
 
     public function actionUpdateContacts($id)
