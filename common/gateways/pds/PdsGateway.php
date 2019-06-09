@@ -205,6 +205,12 @@ class PdsGateway implements \yii\base\Configurable
             'Authorization' => "Bearer {$token}",
             'Access-Role'   => $role
         ];
+
+        echo '<pre>';
+        var_dump($headers);
+        var_dump($body);
+        die();
+
         $request = $this->requestFactory->create('post', 'person-credential', $headers, json_encode($body));
         $response = $this->send($request);
         return $this->jsonDecoder->decode($response->getBody()->getContents(), PersonCredentialResponse::class);
