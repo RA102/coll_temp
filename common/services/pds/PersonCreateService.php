@@ -21,9 +21,6 @@ class PersonCreateService extends PersonSearchService
         $query = array_filter($person->getAttributes());
         $person = $this->findOne($query);
 
-        var_dump($person);
-        die();
-
         if ($person !== null) {
             throw new PersonAlreadyExistException('Person already exists');
         }
