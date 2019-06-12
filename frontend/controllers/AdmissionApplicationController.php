@@ -234,7 +234,8 @@ class AdmissionApplicationController extends Controller
             ->andWhere([
                 'speciality_id'  => $admissionApplication->properties['speciality_id'],
                 'education_form' => $admissionApplication->properties['education_form'],
-                'language'       => $admissionApplication->properties['language']
+                'language'       => $admissionApplication->properties['language'],
+                'commission_id'  => $admissionApplication->commission_id
             ])->all();
         return $this->render('change-status', [
             'admissionApplication' => $admissionApplication,
