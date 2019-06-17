@@ -3,6 +3,7 @@
 use common\helpers\PersonHelper;
 use common\models\Nationality;
 use kartik\date\DatePicker;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\jui\AutoComplete;
@@ -56,15 +57,8 @@ use kartik\select2\Select2;
 
     <div class="row">
         <div class="col-md-4">
-            <?= $form->field($model, 'nationality_id')->widget(Select2::classname(), [
-                    'data' => \yii\helpers\ArrayHelper::map(Nationality::find()->all(), 'id', 'name'),
-                    'options' => ['placeholder' => ''],
-                    'theme' => 'default',
-                    'pluginOptions' => [
-                        'allowClear' => true
-                    ],
-                ]);
-            ?>
+            <?= $form->field($model, 'nationality_id')
+                ->dropDownList(ArrayHelper::map(Nationality::find()->orderBy('name')->all(), 'id', 'name')); ?>
         </div>
         <div class="col-md-4">
             <?= $form->field($model, 'iin')
