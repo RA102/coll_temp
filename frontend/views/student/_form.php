@@ -19,9 +19,9 @@ use kartik\select2\Select2;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'lastname')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'firstname')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'middlename')->textInput(['maxlength' => true]) ?>
 
