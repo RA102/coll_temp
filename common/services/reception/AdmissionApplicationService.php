@@ -151,7 +151,6 @@ class AdmissionApplicationService
             $person = $this->personService->create(
                 $entrant,
                 $admissionApplication->institution_id,
-                true,
                 $admissionApplication->properties['email'],
                 PersonCredentialHelper::TYPE_EMAIL,
                 $user->activeAccessToken->token,

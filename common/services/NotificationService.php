@@ -43,7 +43,7 @@ class NotificationService
      * @param string $password
      * @throws \Exception
      */
-    public function sendPersonCreatedNotification(string $email, string $password)
+    public function sendPersonCreatedNotification($email, $password)
     {
         $htmlMessage = $this->emailRenderer->render('welcome', [
             'password' => $password

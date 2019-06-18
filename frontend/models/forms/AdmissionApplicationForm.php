@@ -102,7 +102,6 @@ class AdmissionApplicationForm extends Model
                     'application_date',
                     'nationality_id',
                     'citizenship_location',
-                    'email',
 
                     'filing_form',
                     'education_form',
@@ -153,6 +152,7 @@ class AdmissionApplicationForm extends Model
                 'targetClass' => Person::class,
                 'on'          => self::SCENARIO_DEFAULT
             ],
+            ['email', 'safe'],
             [
                 'email',
                 'unique',
