@@ -96,7 +96,6 @@ class AdmissionApplicationForm extends Model
                     'iin',
                     'firstname',
                     'lastname',
-                    'middlename',
                     'sex',
                     'birth_date',
                     'application_date',
