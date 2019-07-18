@@ -135,7 +135,9 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
                 'data'          => \yii\helpers\ArrayHelper::map(
                     $specialities,
                     'id',
-                    'caption_current'
+                    function (\common\models\handbook\Speciality $model) {
+                        return $model->getCaptionWithCode();
+                    }
                 ),
                 'options'       => [
                     'placeholder' => Yii::t('app', 'Введите поисковый запрос'),
