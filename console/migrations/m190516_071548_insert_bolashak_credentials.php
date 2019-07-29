@@ -14,6 +14,7 @@ class m190516_071548_insert_bolashak_credentials extends Migration
      */
     public function safeUp()
     {
+        return true;
         $this->insertCredentialsWithIIN();
         $this->insertCredentialsWithoutIIN();
     }
