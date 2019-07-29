@@ -198,7 +198,7 @@ class PersonController extends Controller
             } catch (ValidationException $e) {
                 $form->addErrors($e->errors);
             } catch (\Exception $e) {
-                Yii::$app->session->setFlash('error', $e->getTraceAsString());
+                Yii::$app->session->setFlash('error', $e->getMessage() . ": " . $e->getTraceAsString());
             }
         }
 
