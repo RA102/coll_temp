@@ -16,6 +16,7 @@ class m190429_105048_insert_groups extends Migration
      */
     public function safeUp()
     {
+        return true;
         $this->insertInstitutions();
 
         $this->insertPersonsLink();
