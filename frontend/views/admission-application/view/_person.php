@@ -70,7 +70,7 @@ $arrivalLocationCountry = $model->properties['arrival_location']
             'label' => Yii::t('app', 'Speciality ID'),
             'value' => function (AdmissionApplication $admissionApplication) {
                 $speciality = \common\models\handbook\Speciality::findOne($admissionApplication->properties['speciality_id']);
-                return $speciality ? $speciality->caption_current : null;
+                return $speciality ? $speciality->caption_current ." ($speciality->code)" : null;
             },
         ],
         [

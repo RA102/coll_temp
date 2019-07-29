@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'format'    => 'html',
                     'attribute' => 'speciality_id',
                     'value'     => function (\common\models\organization\Group $model) {
-                        return $model->speciality->caption_current ?? null;
+                        return $model->speciality->getCaptionWithCode() ?? null;
                     },
                 ],
                 'class',
