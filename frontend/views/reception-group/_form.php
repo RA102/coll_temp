@@ -1,5 +1,6 @@
 <?php
 
+use kartik\select2\Select2;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -18,8 +19,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
 
-    <?= $form->field($model, 'speciality_id')->dropDownList(\yii\helpers\ArrayHelper::map(
-        $specialities, 'id', 'caption_current')) ?>
+    <?= $form->field($model, 'speciality_id')->widget(Select2::classname(), [
+        'data' => \yii\helpers\ArrayHelper::map($specialities, 'id', function (\common\models\handbook\Speciality $model) {
+            return $model->getCaptionWithCode();
+        }),
+        'options' => ['placeholder' => ''],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);
+    ?>
+
 
     <?= $form->field($model, 'education_form')->dropDownList(\common\helpers\GroupHelper::getEducationFormList()) ?>
 
