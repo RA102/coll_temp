@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'entrant_id')->widget(Select2::classname(), [
         'data' => \yii\helpers\ArrayHelper::map($entrants, 'id', function(\common\models\person\Entrant $model) {
-            return $model['lastname'].' '.$model['firstname'].' '.$model['middlename'].' '.$model['iin'];
+            return $model['lastname'].' '.$model['firstname'].' '.$model['middlename'];
         }),
         'options' => ['placeholder' => ''],
         'theme' => 'default',
