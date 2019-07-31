@@ -41,7 +41,7 @@ class AppealCommission extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['caption', 'from_date', 'to_date', 'order_date', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
+            [['caption', 'from_date', 'to_date', 'order_date', 'create_ts', 'update_ts', 'delete_ts', 'caption_ru', 'caption_kk'], 'safe'],
             [['commission_id'], 'default', 'value' => null],
             [['commission_id'], 'integer'],
             [['order_number'], 'string', 'max' => 255],
