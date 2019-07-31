@@ -110,7 +110,6 @@ class PersonController extends Controller
                 $model = $this->personService->create(
                     $model,
                     $form->institution_id,
-                    true,
                     $form->indentity,
                     PersonCredentialHelper::TYPE_EMAIL,
                     Yii::$app->user->identity->activeAccessToken->token,
