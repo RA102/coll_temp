@@ -70,9 +70,14 @@ class AppealCommissionController extends Controller
         $model->from_date = $commission->from_date;
         $model->to_date = $commission->to_date;
         $model->caption = $commission->caption;
-        $model->save();
 
-        return $this->redirect(['view', 'id' => $id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $id]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**

@@ -288,6 +288,7 @@ return [
     // APPEAL COMMISSIONS
     'Appeal Commissions' => 'Апелляционные комиссии',
     'Appeal Commission' => 'Апелляционная комиссия',
+    'Create Appeal Commission' => 'Создание апелляционной комиссии',
 
     // ENTRANTS
     'Entrants' => 'Абитуриенты',

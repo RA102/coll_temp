@@ -110,7 +110,6 @@ class PersonController extends Controller
                 $model = $this->personService->create(
                     $model,
                     $form->institution_id,
-                    true,
                     $form->indentity,
                     PersonCredentialHelper::TYPE_EMAIL,
                     Yii::$app->user->identity->activeAccessToken->token,
@@ -198,7 +197,7 @@ class PersonController extends Controller
             } catch (ValidationException $e) {
                 $form->addErrors($e->errors);
             } catch (\Exception $e) {
-                Yii::$app->session->setFlash('error', $e->getTraceAsString());
+                Yii::$app->session->setFlash('error', $e->getMessage() . ": " . $e->getTraceAsString());
             }
         }
 

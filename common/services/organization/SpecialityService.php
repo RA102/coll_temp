@@ -11,7 +11,7 @@ class SpecialityService
      * Remove speciality to institution
      * @param int $specialityInfoId
      */
-    public function unlink(int $specialityInfoId): void
+    public function unlink(int $specialityInfoId)
     {
         $specialityInfo = InstitutionSpecialityInfo::findOne($specialityInfoId);
         $specialityInfo->is_deleted = true;
