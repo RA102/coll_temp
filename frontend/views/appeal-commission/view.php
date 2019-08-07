@@ -30,10 +30,15 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php if ($model) {?>
             <?= DetailView::widget([
                 'model' => $model,
+                'formatter' => [
+                    'class' => '\yii\i18n\Formatter',
+                    'dateFormat' => 'dd.MM.yyyy',
+                    'datetimeFormat' => 'dd.MM.yyyy HH:mm::ss',
+                ],
                 'attributes' => [
                     'caption_current',
-                    'from_date',
-                    'to_date',
+                    'from_date:date',
+                    'to_date:date',
 //                    'order_number',
 //                    'order_date',
                 ],

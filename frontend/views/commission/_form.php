@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
         'language' => 'ru',
         'pluginOptions' => [
             'autoclose' => true,
-            'format' => 'yyyy-mm-dd'
+            'format' => 'dd-mm-yyyy'
         ]
     ]); ?>
     <?= $activeForm->field($form, 'to_date')->widget(\kartik\date\DatePicker::class, [
