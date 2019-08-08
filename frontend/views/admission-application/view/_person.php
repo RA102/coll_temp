@@ -18,6 +18,11 @@ $arrivalLocationCountry = $model->properties['arrival_location']
 
 <?= DetailView::widget([
     'model'      => $model,
+    'formatter' => [
+        'class' => '\yii\i18n\Formatter',
+        'dateFormat' => 'dd.MM.yyyy',
+        'datetimeFormat' => 'dd.MM.yyyy HH:mm::ss',
+    ],
     'attributes' => [
         'person.iin',
         [
@@ -37,11 +42,11 @@ $arrivalLocationCountry = $model->properties['arrival_location']
                 return $admissionApplication->person->getSex();
             }
         ],
-        'person.birth_date',
+        'person.birth_date:date',
         [
             'attribute' => 'properties.application_date',
             'label'     => Yii::t('app', 'Дата подачи'),
-            'value'     => $model->properties['application_date'],
+            'value'     => date('d.m.Y', strtotime($model->properties['application_date'])),
         ],
         [
             'attribute' => 'person.nationality_id',

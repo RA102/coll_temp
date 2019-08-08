@@ -217,6 +217,7 @@ class ProtocolController extends \yii\web\Controller
 
         $admissionProtocolForm = new AdmissionProtocolForm($commission->id);
         $admissionProtocolForm->setAttributes($admissionProtocol->getAttributes());
+        $admissionProtocolForm->completion_date = date('d-m-Y', strtotime($admissionProtocol->completion_date));
 
         if ($admissionProtocolForm->load(Yii::$app->request->post()) && $admissionProtocolForm->validate()) {
             try {

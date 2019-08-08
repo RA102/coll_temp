@@ -76,7 +76,7 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
                 'language'      => 'ru',
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format'    => 'yyyy-mm-dd'
+                    'format'    => 'dd-mm-yyyy'
                 ],
                 'disabled'      => $blockPersonalDataEditing
             ]); ?>
@@ -84,7 +84,7 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
                 'language'      => 'ru',
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format'    => 'yyyy-mm-dd'
+                    'format'    => 'dd-mm-yyyy'
                 ]
             ]); ?>
             <?= $form->field($admissionApplicationForm, 'nationality_id')->widget(Select2::classname(), [
