@@ -40,7 +40,7 @@
     </div>
 
     <div class="units-row">
-        <p>Решением Приемной комисси и на основании протокола № <span class="line-bottom"><?=$protocol->number?></span> от «<?=$protocol->completion_date?>» . <b>ПРИКАЗЫВАЮ</b> допустить к вступительным экзаменам следующих абитуриентов: </p>
+        <p>Решением Приемной комисси и на основании протокола № <span class="line-bottom"><?=$protocol->number?></span> от «<?=date('d-m-Y', strtotime($protocol->completion_date))?>» . <b>ПРИКАЗЫВАЮ</b> допустить к вступительным экзаменам следующих абитуриентов: </p>
     </div>
 
     <?php $number = 1;?>

@@ -190,6 +190,9 @@ class AdmissionApplicationController extends Controller
     {
         $admissionApplication = $this->findModel($id);
         $admissionApplicationForm = new AdmissionApplicationForm($admissionApplication);
+        $admissionApplicationForm->birth_date = date('d-m-Y', strtotime($admissionApplicationForm->birth_date));
+        $admissionApplicationForm->application_date = date('d-m-Y', strtotime($admissionApplicationForm->application_date));
+        //$admissionApplicationForm->contract_date = date('d-m-Y', strtotime($admissionApplicationForm->contract_date));
 
         if ($admissionApplicationForm->load(Yii::$app->request->post()) && $admissionApplicationForm->validate()) {
             $admissionApplication = $this->admissionApplicationService->update(

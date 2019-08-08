@@ -47,14 +47,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= DetailView::widget([
             'model'      => $model,
+            'formatter' => [
+                'class' => '\yii\i18n\Formatter',
+                'dateFormat' => 'dd.MM.yyyy',
+                'datetimeFormat' => 'dd.MM.yyyy HH:mm::ss',
+            ],
             'attributes' => [
                 'caption_current',
-                'from_date',
-                'to_date',
+                'from_date:date',
+                'to_date:date',
                 'order_number',
-                'order_date',
-                'exam_start_date',
-                'exam_end_date',
+                'order_date:date',
+                'exam_start_date:date',
+                'exam_end_date:date',
                 [
                     'attribute' => 'institution_discipline_ids',
                     'value'     => function (\common\models\reception\Commission $model) {
