@@ -12,6 +12,11 @@ use yii\widgets\DetailView;
 <?php $this->beginBlock('view-content') ?>
         <?= DetailView::widget([
             'model' => $model,
+            'formatter' => [
+                'class' => '\yii\i18n\Formatter',
+                'dateFormat' => 'dd.MM.yyyy',
+                'datetimeFormat' => 'dd.MM.yyyy HH:mm::ss',
+            ],
             'attributes' => [
                 [
                     'attribute' => 'firstname',
@@ -20,7 +25,7 @@ use yii\widgets\DetailView;
                     }
                 ],
                 'iin',
-                'birth_date',
+                'birth_date:date',
                 [
                     'attribute' => 'sex',
                     'value' => function(Employee $model) {

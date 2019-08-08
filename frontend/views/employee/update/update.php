@@ -40,7 +40,7 @@ use yii\widgets\ActiveForm;
                     'language' => 'ru',
                     'pluginOptions' => [
                         'autoclose' => true,
-                        'format' => 'yyyy-mm-dd'
+                        'format' => 'dd-mm-yyyy'
                     ]
                 ]); ?>
             </div>

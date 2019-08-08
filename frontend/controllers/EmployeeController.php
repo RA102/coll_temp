@@ -210,6 +210,7 @@ class EmployeeController extends Controller
         $model = $this->findModel($id);
         $form = new StudentGeneralForm();
         $form->setAttributes($model->attributes);
+        $form->birth_date = date('d-m-Y', strtotime($form->birth_date));
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model->setAttributes($form->attributes);

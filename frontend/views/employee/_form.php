@@ -40,7 +40,7 @@ use kartik\select2\Select2;
                 'language' => 'ru',
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format' => 'yyyy-mm-dd'
+                    'format' => 'dd-mm-yyyy'
                 ]
             ]); ?>
         </div>

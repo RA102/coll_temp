@@ -93,6 +93,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'layout' => "{items}\n{pager}",
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
+            'formatter' => [
+                'class' => '\yii\i18n\Formatter',
+                'dateFormat' => 'dd.MM.yyyy',
+                'datetimeFormat' => 'dd.MM.yyyy HH:mm::ss',
+            ],
             'columns' => [
                 [
                     'class' => 'yii\grid\CheckboxColumn',
@@ -108,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'lastname',
                 'firstname',
                 'middlename',
-                'birth_date',
+                'birth_date:date',
                 //'sex',
                 //'nationality_id',
                 'iin',
