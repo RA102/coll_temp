@@ -107,9 +107,13 @@ class AccountabilityController extends Controller
                 $query->andWhere(new Expression("properties @> '{\"language\": \"{$form->language}\"}'"));
             }
 
-            $query->joinWith([
+            if ($form->speciality_id) {
+                $query->andWhere(new Expression("properties @> '{\"speciality_id\": \"{$form->speciality_id}\"}'"));
+            }
+
+            //$query->joinWith([
                 /** @see AdmissionApplication::getStudent() */
-                'student' => function (ActiveQuery $query) use ($form) {
+                /*'student' => function (ActiveQuery $query) use ($form) {
                     if ($form->speciality_id) {
                         $query->joinWith([
                             'receptionGroup' => function (ActiveQuery $query) use ($form) {
@@ -121,7 +125,7 @@ class AccountabilityController extends Controller
                     }
                     return $query;
                 }
-            ]);
+            ]);*/
 
             if ($form->export) {
                 $specialitiesMap = [];
