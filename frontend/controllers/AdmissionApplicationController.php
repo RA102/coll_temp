@@ -9,6 +9,7 @@ use common\models\ReceptionGroup;
 use common\services\PdfService;
 use common\services\reception\AdmissionApplicationService;
 use common\services\reception\CommissionService;
+use app\models\link\EntrantReceptionGroupLink;
 use frontend\models\forms\AdmissionApplicationForm;
 use frontend\models\forms\EnlistEntrantForm;
 use frontend\models\reception\admission_application\ChangeStatusForm;
@@ -71,6 +72,7 @@ class AdmissionApplicationController extends Controller
                             'update',
                             'delete',
                             'change-status',
+                            'change-speciality',
                             'enlist',
                             'receipt'
                         ],
@@ -209,6 +211,34 @@ class AdmissionApplicationController extends Controller
         ]);
     }
 
+    public function actionChangeSpeciality($id)
+    {
+        $admissionApplication = $this->findModel($id);
+        $admissionApplicationForm = new AdmissionApplicationForm($admissionApplication);
+        $admissionApplicationForm->birth_date = date('d-m-Y', strtotime($admissionApplicationForm->birth_date));
+        $admissionApplicationForm->application_date = date('d-m-Y', strtotime($admissionApplicationForm->application_date));
+        //$admissionApplicationForm->contract_date = date('d-m-Y', strtotime($admissionApplicationForm->contract_date));
+
+        if ($admissionApplicationForm->load(Yii::$app->request->post()) && $admissionApplicationForm->validate()) {
+            $admissionApplication = $this->admissionApplicationService->update(
+                $admissionApplication->id,
+                $admissionApplicationForm
+            );
+
+            $entrantReceptionGroupLink = EntrantReceptionGroupLink::find()->where(['entrant_id' => $admissionApplication->person_id])->one();
+            if (!empty($entrantReceptionGroupLink)) {
+                $entrantReceptionGroupLink->delete();
+            }
+            return $this->redirect(['view', 'id' => $admissionApplication->id]);
+        }
+
+        return $this->render('change-speciality', [
+            'admissionApplication'     => $admissionApplication,
+            'admissionApplicationForm' => $admissionApplicationForm,
+            'specialities'             => Yii::$app->user->identity->institution->specialities
+        ]);
+    }
+
     /**
      * @param $id
      * @return string|\yii\web\Response
@@ -221,7 +251,7 @@ class AdmissionApplicationController extends Controller
         $changeStatusForm->reason = $admissionApplication->reason;
 
         if ($changeStatusForm->load(Yii::$app->request->post()) && $changeStatusForm->validate()) {
-            if ($admissionApplication->status != $changeStatusForm->status) {
+            //if ($admissionApplication->status != $changeStatusForm->status) {
                 $this->admissionApplicationService->changeStatus(
                     $id,
                     $changeStatusForm->status,
@@ -229,7 +259,7 @@ class AdmissionApplicationController extends Controller
                     $changeStatusForm->reception_group_id,
                     $changeStatusForm->reason
                 );
-            }
+            //}
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
         }
 

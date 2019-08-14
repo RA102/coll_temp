@@ -78,6 +78,16 @@ $arrivalLocationCountry = $model->properties['arrival_location']
                 return $speciality ? $speciality->caption_current ." ($speciality->code)" : null;
             },
         ],
+        /*[
+            'label' => 'Группа',
+            'value' => function (AdmissionApplication $admissionApplication) {
+                try {
+                    return $admissionApplication->person->receptionGroup->caption['ru'] ?? null;
+                } catch (Exception $e) {
+                    return null;
+                }
+            },
+        ],   */     
         [
             'label' => Yii::t('app', 'Форма оплаты'),
             'value' => function (AdmissionApplication $admissionApplication) {

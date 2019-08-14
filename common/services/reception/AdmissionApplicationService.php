@@ -80,6 +80,23 @@ class AdmissionApplicationService
         return $admissionApplication;
     }
 
+    public function changeSpeciality(
+        int $id,
+        AdmissionApplicationForm $admissionApplicationForm
+    ): AdmissionApplication {
+        $admissionApplication = AdmissionApplication::findOne($id);
+        if (!$admissionApplication) {
+            throw new \Exception('Not Found');
+        }
+
+        $admissionApplication->properties['speciality_id'] = $admissionApplicationForm->speciality_id;
+        if (!$admissionApplication->save()) {
+            throw new \Exception('Saving Error');
+        }
+
+        return $admissionApplication;
+    }
+
     /**
      * @param int $id
      * @param int $status
@@ -128,19 +145,23 @@ class AdmissionApplicationService
         if (!$admissionApplication) {
             throw new \Exception('Not Found');
         }
-        if ($admissionApplication->status !== ApplicationHelper::STATUS_CREATED) {
+        if ($admissionApplication->status !== ApplicationHelper::STATUS_CREATED && $admissionApplication->status !== ApplicationHelper::STATUS_ACCEPTED) {
             throw new \Exception('Forbidden');
         }
         $admissionApplication->status = ApplicationHelper::STATUS_ACCEPTED;
 
-        $entrant = Entrant::add(
-            null,
-            $admissionApplication->properties['firstname'],
-            $admissionApplication->properties['lastname'],
-            $admissionApplication->properties['middlename'],
-            $admissionApplication->properties['iin']
-        );
-        $entrant->setAttributes($admissionApplication->properties);
+        if (Entrant::find()->where(['id' => $admissionApplication->person_id])->one() == null) {
+            $entrant = Entrant::add(
+                null,
+                $admissionApplication->properties['firstname'],
+                $admissionApplication->properties['lastname'],
+                $admissionApplication->properties['middlename'],
+                $admissionApplication->properties['iin']
+            );
+            $entrant->setAttributes($admissionApplication->properties);
+        } else {
+            $entrant = Entrant::find()->where(['id' => $admissionApplication->person_id])->one();
+        }
 
         $this->transactionManager->execute(function () use (
             $entrant,
@@ -148,20 +169,28 @@ class AdmissionApplicationService
             &$admissionApplication,
             $reception_group_id
         ) {
-            $person = $this->personService->create(
-                $entrant,
-                $admissionApplication->institution_id,
-                $admissionApplication->properties['email'],
-                PersonCredentialHelper::TYPE_EMAIL,
-                $user->activeAccessToken->token,
-                $user->person_type
-            );
+            if (Entrant::find()->where(['id' => $admissionApplication->person_id])->one() == null) {
+                $person = $this->personService->create(
+                    $entrant,
+                    $admissionApplication->institution_id,
+                    $admissionApplication->properties['email'],
+                    PersonCredentialHelper::TYPE_EMAIL,
+                    $user->activeAccessToken->token,
+                    $user->person_type
+                );
+            } else {
+                $person = Entrant::find()->where(['id' => $admissionApplication->person_id])->one();
+            }
 
             $admissionApplication->person_id = $person->id;
             if (!$admissionApplication->save()) {
                 throw new \Exception('Saving error');
             }
 
+            if (EntrantReceptionGroupLink::find()->where(['entrant_id' => $person->id])->one() !== null) {
+                EntrantReceptionGroupLink::find()->where(['entrant_id' => $person->id])->one()->delete();
+            }
+            
             $entrantReceptionGroupLink = EntrantReceptionGroupLink::add(
                 $person->id,
                 $reception_group_id

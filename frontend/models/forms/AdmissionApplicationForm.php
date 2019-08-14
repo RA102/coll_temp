@@ -182,7 +182,7 @@ class AdmissionApplicationForm extends Model
 
             '!filing_form',
             '!education_form',
-            '!speciality_id',
+            'speciality_id',
             '!language',
 
             '!needs_dormitory',
