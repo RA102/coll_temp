@@ -115,7 +115,6 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
             <legend style="padding: 8px;">Контактные данные</legend>
             <?= $form->field($admissionApplicationForm, 'email')->textInput([
                 'maxlength' => true,
-                'disabled'  => $blockPersonalDataEditing
             ]) ?>
             <?= $form->field($admissionApplicationForm, 'contact_phone_home')->textInput(['maxlength' => true]) ?>
             <?= $form->field($admissionApplicationForm, 'contact_phone_mobile')->textInput(['maxlength' => true]) ?>
