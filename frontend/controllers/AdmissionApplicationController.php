@@ -249,7 +249,11 @@ class AdmissionApplicationController extends Controller
         $changeStatusForm = new ChangeStatusForm();
         $changeStatusForm->setCurrentStatus($admissionApplication->status);
         $changeStatusForm->reason = $admissionApplication->reason;
-        $changeStatusForm->reception_group_id = EntrantReceptionGroupLink::find()->where(['entrant_id' => $admissionApplication->person_id])->one()->reception_group_id;
+
+        $entrantReception = EntrantReceptionGroupLink::find()->where(['entrant_id' => $admissionApplication->person_id])->one();
+        if ($entrantReception !== null) {
+            $changeStatusForm->reception_group_id = $entrantReception->reception_group_id;
+        }
 
         if ($changeStatusForm->load(Yii::$app->request->post()) && $changeStatusForm->validate()) {
             //if ($admissionApplication->status != $changeStatusForm->status) {

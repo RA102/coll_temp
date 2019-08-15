@@ -39,6 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php 
         $speciality = \common\models\handbook\Speciality::findOne($model->properties['speciality_id']);
         ?>
+        <p><?=$model->person_id?></p>
         <p><b>Статус заявления:</b> ЗАРЕГИСТРИРОВАНО</p>
         <p><b>Специальность:</b> <?=$speciality->caption_current ." ($speciality->code)"?></p>
         <p><b>Группа:</b> 

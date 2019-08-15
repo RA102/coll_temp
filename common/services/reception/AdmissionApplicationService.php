@@ -7,6 +7,7 @@ use common\helpers\ApplicationHelper;
 use common\helpers\PersonCredentialHelper;
 use common\helpers\PersonTypeHelper;
 use common\models\link\StudentGroupLink;
+use common\models\link\PersonInstitutionLink;
 use common\models\person\Entrant;
 use common\models\person\Person;
 use common\models\reception\AdmissionApplication;
@@ -259,13 +260,31 @@ class AdmissionApplicationService
             throw new \Exception('Admission application not found');
         }
 
+
+        /* TODO: переписать нормально */
+        $entrant = Person::find()->where(['id' => $admissionApplication->person_id])->one();
+        if ($entrant !== null) {
+            $entrantReceptionGroupLink = EntrantReceptionGroupLink::find()->where(['entrant_id' => $admissionApplication->person_id])->one();
+            if (!empty($entrantReceptionGroupLink)) {
+                $entrantReceptionGroupLink->delete();
+            }
+            $personInstitutionLink = PersonInstitutionLink::find()->where(['person_id' => $admissionApplication->person_id])->one();
+            if (!empty($personInstitutionLink)) {
+                $personInstitutionLink->delete();
+            }
+        }
+
         $admissionApplication->status = ApplicationHelper::STATUS_DELETED;
         $admissionApplication->is_deleted = true;
         $admissionApplication->delete_ts = date("Y-m-d H:i:s");
-
+        $admissionApplication->person_id = null;
+   
         if (!$admissionApplication->save()) {
             throw new \Exception('Saving error');
         }
+
+        $entrant->delete();
+
 
         return $admissionApplication;
     }
