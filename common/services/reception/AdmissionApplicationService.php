@@ -261,8 +261,8 @@ class AdmissionApplicationService
         }
 
 
-        /* TODO: переписать нормально */
-        $entrant = Person::find()->where(['id' => $admissionApplication->person_id])->one();
+        /* TODO: переписать нормально + удалить из pds */
+        /*$entrant = Person::find()->where(['id' => $admissionApplication->person_id])->one();
         if ($entrant !== null) {
             $entrantReceptionGroupLink = EntrantReceptionGroupLink::find()->where(['entrant_id' => $admissionApplication->person_id])->one();
             if (!empty($entrantReceptionGroupLink)) {
@@ -272,7 +272,7 @@ class AdmissionApplicationService
             if (!empty($personInstitutionLink)) {
                 $personInstitutionLink->delete();
             }
-        }
+        }*/
 
         $admissionApplication->status = ApplicationHelper::STATUS_DELETED;
         $admissionApplication->is_deleted = true;
@@ -283,7 +283,7 @@ class AdmissionApplicationService
             throw new \Exception('Saving error');
         }
 
-        $entrant->delete();
+        //$entrant->delete();
 
 
         return $admissionApplication;
