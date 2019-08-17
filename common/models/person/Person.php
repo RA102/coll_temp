@@ -333,6 +333,11 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         return in_array($this->type, [Person::TYPE_STUDENT, Person::TYPE_ENTRANT]);
     }
 
+    public function isTeacher()
+    {
+        return in_array($this->type, [Person::TYPE_EMPLOYEE]);
+    }
+
     public function isHr()
     {
         return in_array($this->type, [Person::TYPE_HR]);
