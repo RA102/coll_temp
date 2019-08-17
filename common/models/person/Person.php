@@ -64,6 +64,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     const TYPE_STUDENT = 1;
     const TYPE_EMPLOYEE = 2;
     const TYPE_ENTRANT = 3;
+    const TYPE_HR = 4;
 
     const SEX_NONE = 0;
     const SEX_MALE = 1;
@@ -330,5 +331,10 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function isStudent()
     {
         return in_array($this->type, [Person::TYPE_STUDENT, Person::TYPE_ENTRANT]);
+    }
+
+    public function isHr()
+    {
+        return in_array($this->type, [Person::TYPE_HR]);
     }
 }

@@ -15,7 +15,7 @@
                         'label' => Yii::t('app', 'Selection committee'),
                         'icon'  => 'far fa-id-card',
                         'url'   => '#',
-                        'visible' => !$person->isStudent(),
+                        'visible' => !$person->isStudent() && !$person->isHr(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Текушая комиссия'),
@@ -48,15 +48,24 @@
                         'url'   => '#',
                         'visible' => !$person->isStudent(),
                         'items' => [
-                            ['label' => Yii::t('app', 'Employees'), 'icon' => 'file-code-o', 'url' => ['/employee']],
-                            ['label' => Yii::t('app', 'Students'), 'icon' => 'dashboard', 'url' => ['/student/index']],
+                            [
+                                'label' => Yii::t('app', 'Employees'), 
+                                'icon' => 'file-code-o', 
+                                'url' => ['/employee'],
+                            ],
+                            [
+                                'label' => Yii::t('app', 'Students'), 
+                                'icon' => 'dashboard', 
+                                'url' => ['/student/index'],
+                                'visible' => !$person->isHr(),
+                            ],
                         ],
                     ],
                     [
                         'label' => Yii::t('app', 'Учебный процесс'),
                         'icon'  => 'book',
                         'url'   => '#',
-                        'visible' => !$person->isStudent(),
+                        'visible' => !$person->isStudent() && !$person->isHr(),
                         'items' => [
                             ['label' => Yii::t('app', 'Группы'), 'icon' => 'file-code-o', 'url' => ['/group']],
                             [
@@ -83,7 +92,7 @@
                         'label' => Yii::t('app', 'Настройки'),
                         'icon'  => 'cog',
                         'url'   => '#',
-                        'visible' => !$person->isStudent(),
+                        'visible' => !$person->isStudent() && !$person->isHr(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Специальности'),
