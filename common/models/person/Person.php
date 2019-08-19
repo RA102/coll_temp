@@ -65,6 +65,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     const TYPE_EMPLOYEE = 2;
     const TYPE_ENTRANT = 3;
     const TYPE_HR = 4;
+    const GLOBAL_ADMIN = 5;
 
     const SEX_NONE = 0;
     const SEX_MALE = 1;
@@ -333,13 +334,24 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         return in_array($this->type, [Person::TYPE_STUDENT, Person::TYPE_ENTRANT]);
     }
 
-    public function isTeacher()
-    {
-        return in_array($this->type, [Person::TYPE_EMPLOYEE]);
-    }
-
     public function isHr()
     {
-        return in_array($this->type, [Person::TYPE_HR]);
+        if ($this->personType->name == 'hr') {
+            return true;
+        } else return false;
+    }
+
+    public function isTeacher()
+    {
+        if ($this->personType->name == 'teacher') {
+            return true;
+        } else return false;
+    }
+
+    public function isAdmin()
+    {
+        if ($this->personType->name == 'admin') {
+            return true;
+        } else return false;
     }
 }

@@ -12,6 +12,12 @@
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
                 'items'   => [
                     [
+                        'label' => Yii::t('app', 'Все колледжи'),
+                        'icon'  => 'far fa-archway',
+                        'url'   => '/institution/all',
+                        'visible' => $person->isAdmin(),
+                    ],
+                    [
                         'label' => Yii::t('app', 'Selection committee'),
                         'icon'  => 'far fa-id-card',
                         'url'   => '#',
