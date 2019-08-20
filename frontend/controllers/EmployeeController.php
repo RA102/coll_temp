@@ -249,8 +249,13 @@ class EmployeeController extends Controller
                     }
 
                     $link = PersonInstitutionLink::findOne(['person_id' => $person->id, 'institution_id' => Yii::$app->user->identity->institution->id]);
-                    if ($link && $link->is_deleted == true) {
-                        $link->activate();
+                    if ($link) {
+                        if ($link->is_deleted == true) {
+                            $link->activate();
+                        }
+                        if ($link->is_pluralist == null || $link->is_pluralist == false) {
+                            $link->is_pluralist = true;
+                        }
                     } else {
                         $link = PersonInstitutionLink::add($person->id, Yii::$app->user->identity->institution->id, $person->is_pluralist);
                     }

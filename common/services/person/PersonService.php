@@ -139,11 +139,18 @@ class PersonService
             }
 
             if ($model->institution->id !== $institution_id) {
-                //PersonInstitutionLink::updateAll(['is_deleted' => true], ['person_id' => $model->id]);
-                $link = PersonInstitutionLink::findOne(['person_id' => $model->id, 'institution_id' => $institution_id]);
+                PersonInstitutionLink::updateAll(['is_deleted' => true], ['person_id' => $model->id]);
+                $link = PersonInstitutionLink::findOne(['person_id' => $model->id, 'institution_id' => $model->institution->id, 'is_pluralist' => null]);
 
-                if ($link && $link->is_deleted == true) {
-                    $link->activate();
+                if ($link) {
+                    if ($link->is_deleted == true) {
+                        $link->activate();
+                    }
+                    $link->institution_id = $institution_id;
+
+                    if (!$link->save()) {
+                        throw new \RuntimeException('Saving error.');
+                    }                
                 } else {
                     $link = PersonInstitutionLink::add($model->id, $institution_id);
                 }
