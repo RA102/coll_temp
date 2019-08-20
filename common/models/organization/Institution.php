@@ -211,6 +211,23 @@ class Institution extends \yii\db\ActiveRecord
             });        
     }
 
+    public function getEmployeesOther()
+    {
+        return Employee::find()
+            ->joinWith('institutions')
+            ->where(['!=', 'institution_id', $this->id]);
+    }
+
+    public function getPluralists()
+    {
+        return $this->hasMany(Employee::className(), ['id' => 'person_id'])
+            ->andOnCondition(['status' => 1])
+            ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+                $query->andWhere(['link.person_institution_link.is_pluralist' => true]);
+            });                
+    }
+
     public function getStudents()
     {
         return $this->hasMany(Student::className(), ['id' => 'person_id'])

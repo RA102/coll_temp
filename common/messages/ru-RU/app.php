@@ -77,6 +77,7 @@ return [
     'Edit profile' => 'Редактирование профиля',
     'Current employees' => 'Сотрудники колледжа',
     'Language of instruction' => 'Язык преподавания',
+    'Is Pluralist' => 'Совместитель',
 
     // ORGANIZATION
     'Title' => 'Название',

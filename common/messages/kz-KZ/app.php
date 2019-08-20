@@ -47,6 +47,7 @@ return [
     'Employees' => 'Сотрудники',
     'Create Employee' => 'Добавление сотрудника',
     'Fire Employee' => 'Уволить сотрудника',
+    'Is Pluralist' => 'Совместитель',
 
     // ORGANIZATION
     'Title' => 'Название',

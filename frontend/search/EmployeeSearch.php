@@ -70,7 +70,7 @@ class EmployeeSearch extends Employee
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $institution=true)
     {
         $query = Employee::find();
 
@@ -97,9 +97,16 @@ class EmployeeSearch extends Employee
             }
         }
 
-        if ($this->institution_id) {
-            $query->joinWith('institutions');
-            $query->andWhere([Institution::tableName().'.id' => $this->institution_id]);
+        if ($institution == true) {
+            if ($this->institution_id) {
+                $query->joinWith('institutions');
+                $query->andWhere([Institution::tableName().'.id' => $this->institution_id]);
+            }
+        } else {
+            if ($this->institution_id) {
+                $query->joinWith('institutions');
+                $query->andWhere(['!=', Institution::tableName().'.id', $this->institution_id]);
+            }            
         }
 
         if (!empty($this->commission_id)) {

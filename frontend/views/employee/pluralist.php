@@ -11,45 +11,43 @@ use yii\helpers\Url;
 /* @var $searchModel frontend\search\EmployeeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Employees');
+$this->title = 'Совместители';
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Employees'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
     <h1><?= $this->title ?> (<?= $dataProvider->totalCount ?>)</h1>
-    <?= Html::a('Совместители', ['pluralist'], ['class' => 'btn btn-primary']) ?>
-    <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
+    <?= Html::a('Создать', ['create-pluralist'], ['class' => ' btn btn-primary']) ?>
+    <?= Html::a('Выбрать из системы', ['choose-pluralist'], ['class' => ' btn btn-primary']) ?>
+    <hr>
 </div>
 
 
 <div class="employee-index student-block">
-
     <?= Html::beginForm(['process'], 'post'); ?>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="card-header">
         <ul class="nav nav-tabs">
-            <li role="presentation" class="<?= $searchModel->isActive() ? 'active' : '' ?>">
-                <?= Html::a(Yii::t('app', 'Current employees'), Url::current([
-                    Html::getInputName($searchModel, 'status') => Person::STATUS_ACTIVE,
-                ])) ?>
+            <li role="presentation" class="">
+                <?= Html::a(Yii::t('app', 'Current employees'), [
+                    '/employee?status=' . Person::STATUS_ACTIVE,
+                ]) ?>
             </li>
-            <li role="presentation">
+            <li role="presentation" class="active">
                 <?= Html::a('Совместители', ['pluralist'], []) ?>
             </li>
-            <li role="presentation" class="<?= $searchModel->isFired() ? 'active' : '' ?>">
-                <?= Html::a('Уволенные сотрудники', Url::current([
-                    Html::getInputName($searchModel, 'status') => Person::STATUS_FIRED,
-                ])) ?>
+            <li role="presentation" class="">
+                <?= Html::a('Уволенные сотрудники', [
+                    '/employee?status=' . Person::STATUS_FIRED
+                ]) ?>
             </li>
-            <li role="presentation" class="<?= $searchModel->status == Person::STATUS_DELETED ? 'active' : '' ?>">
-                <?= Html::a('Удаленные сотрудники', Url::current([
-                    Html::getInputName($searchModel, 'status') => Person::STATUS_DELETED,
-                ])) ?>
+            <li role="presentation" class="">
+                <?= Html::a('Удаленные сотрудники', [
+                    '/employee?status=' . Person::STATUS_DELETED,
+                ]) ?>
             </li>
         </ul>
     </div>
-
     <div class="card-body">
         <?php if (intval($searchModel->status) !== Employee::STATUS_ACTIVE): ?>
             <?= Html::submitButton(

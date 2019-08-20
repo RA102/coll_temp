@@ -192,6 +192,11 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->status == self::STATUS_ACTIVE && !$this->isDeleted();
     }
 
+    public function isPuralist()
+    {
+        return $this->status == self::STATUS_PLURALIST && !$this->isDeleted();
+    }
+
     public function isFired()
     {
         return $this->status == self::STATUS_FIRED && !$this->isDeleted();
@@ -350,7 +355,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function isAdmin()
     {
-        if ($this->personType->name == 'admin') {
+        if ($this->personType->name == 'superadmin') {
             return true;
         } else return false;
     }
