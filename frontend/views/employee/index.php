@@ -17,7 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div style="position: relative;">
     <h1><?= $this->title ?> (<?= $dataProvider->totalCount ?>)</h1>
-    <?= Html::a('Совместители', ['pluralist'], ['class' => 'btn btn-primary']) ?>
     <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 

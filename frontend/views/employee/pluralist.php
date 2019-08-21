@@ -49,27 +49,6 @@ $this->params['breadcrumbs'][] = $this->title;
         </ul>
     </div>
     <div class="card-body">
-        <?php if (intval($searchModel->status) !== Employee::STATUS_ACTIVE): ?>
-            <?= Html::submitButton(
-                'Восстановить',
-                [
-                    'class' => 'btn btn-default',
-                    'name' => 'action',
-                    'value' => 'revert',
-                    'visible' => false
-                ]
-            ); ?>
-        <?php endif; ?>
-        <?= Html::submitButton(
-            'Переместить',
-            [
-                'class' => 'btn btn-primary',
-                'name' => 'action',
-                'value' => 'move',
-                'visible' => false
-            ]
-        ); ?>
-        <?php if (intval($searchModel->status) === Employee::STATUS_ACTIVE): ?>
         <?= Html::submitButton(
             'Уволить',
             [
@@ -79,8 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visible' => false
             ]
         ); ?>
-        <?php endif; ?>
-        <?php if (intval($searchModel->status) !== Employee::STATUS_DELETED): ?>
         <?= Html::submitButton(
             'Удалить',
             [
@@ -90,7 +67,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visible' => false
             ]
         ); ?>
-        <?php endif; ?>
         <?= GridView::widget([
             'layout' => "{items}\n{pager}",
             'dataProvider' => $dataProvider,
