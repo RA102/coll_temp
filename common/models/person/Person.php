@@ -298,7 +298,11 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getInstitution()
     {
-        return $this->getInstitutions()->one();
+        if ($this->current_institution !== null) {
+            return Institution::findOne($this->current_institution);
+        } else {
+            return $this->getInstitutions()->one();
+        }
     }
 
     public function getFullName()

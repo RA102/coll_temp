@@ -9,6 +9,7 @@ use common\models\reception\Commission;
 use common\services\organization\InstitutionService;
 use frontend\search\InstitutionSearch;
 use frontend\search\EmployeeSearch;
+use frontend\models\forms\CurrentInstitutionForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -70,14 +71,37 @@ class InstitutionController extends Controller
     public function actionIndex()
     {
         $model = $this->findModel(Yii::$app->user->identity->institution->id);
+        $institutions = Yii::$app->user->identity->institutions;
+        $person = Employee::findOne(Yii::$app->user->id);
         $form = new InstitutionForm($model);
+        $form2 = new CurrentInstitutionForm();
+        $form2->setAttributes($person->attributes);
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $this->institutionService->update($model, $form);
         }
 
+        if ($form2->load(Yii::$app->request->post()) && $form2->validate()) {
+            $person->current_institution = $form2->current_institution;
+            if (!$person->save()) {
+                if (YII_DEBUG) {
+                    $errors = $person->errors;
+                    throw new \RuntimeException(reset($errors)[0]);
+                }
+                throw new \RuntimeException('Saving error.');
+            }
+    
+            return $this->render('index', [
+                'form' => $form,
+                'form2' => $form2,
+                'institutions' => $institutions
+            ]);
+        }
+
         return $this->render('index', [
-            'form' => $form
+            'form' => $form,
+            'form2' => $form2,
+            'institutions' => $institutions
         ]);
     }
 

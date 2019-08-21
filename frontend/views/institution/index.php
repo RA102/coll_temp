@@ -20,6 +20,28 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?=$this->title?></h1>
 </div>
 
+<?php $activeForm = ActiveForm::begin([
+    'enableClientValidation' => false,
+    'options' => [
+        'validateOnSubmit' => true,
+    ],    
+]); ?>
+
+    <div class="row">
+        <?= Html::tag('div', $activeForm->field($form2, 'current_institution')->dropDownList(
+        ArrayHelper::map($institutions, 'id', 'name'), [
+        'class' => 'form-control',
+        'prompt' => ''
+    ]), ['class' => 'col-md-9']) ?>
+    </div>
+
+    <div class="form-group">
+        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+    </div>
+
+<?php ActiveForm::end(); ?>
+
+
 <div class="institution-form skin-white">
     <div class="card-body">
 
