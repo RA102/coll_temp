@@ -22,7 +22,6 @@ class LessonForm extends Model
     public $end;
     public $title;
     public $groups;
-    public $weeks;
     public $group_id;
 
     /**
@@ -34,7 +33,7 @@ class LessonForm extends Model
             [['teacher_course_id', 'group_id'], 'required'],
             [['teacher_course_id', 'teacher_id', 'group_id'], 'integer'],
             [['start', 'end'], 'required'],
-            [['start', 'end', 'weeks'], 'string'],
+            [['start', 'end'], 'string'],
             [['id'], 'integer'],
         ];
     }
@@ -50,7 +49,6 @@ class LessonForm extends Model
             'group_id' => Yii::t('app', 'Group ID'),
             'start' => Yii::t('app', 'Lesson Start Date'),
             'end' => Yii::t('app', 'Lesson End Date'),
-            'weeks' => 'Weeks',
         ];
     }
 

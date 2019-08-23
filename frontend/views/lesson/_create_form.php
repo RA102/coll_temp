@@ -52,9 +52,7 @@ use yii\web\View;
                     'readonly' => true,
                 ]) ?>
 
-                <?= $form->field($model, 'group_id') ?>
-
-                <?= $form->field($model, 'weeks') ?>
+                <?= $form->field($model, 'group_id')->textInput(['value' => $group_id]) ?>
 
                 <?php ActiveForm::end(); ?>
 

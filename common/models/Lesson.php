@@ -19,7 +19,6 @@ use yii\db\ArrayExpression;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
- * @property int[] $weeks
  * @property int $group_id
  *
  * @property TeacherCourse $teacherCourse
@@ -27,6 +26,7 @@ use yii\db\ArrayExpression;
  */
 class Lesson extends \yii\db\ActiveRecord
 {
+    public $dates;
     /**
      * {@inheritdoc}
      */
@@ -44,8 +44,8 @@ class Lesson extends \yii\db\ActiveRecord
             [['teacher_course_id', 'date_ts', 'group_id'], 'required'],
             [['teacher_course_id', 'teacher_id', 'duration'], 'default', 'value' => null],
             [['teacher_course_id', 'teacher_id', 'duration', 'group_id'], 'integer'],
-            [['weeks'], 'each', 'rule' => ['integer']],
             [['date_ts'], 'safe'],
+            [['dates'], 'string'],
             [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['teacher_id' => 'id']],
             [['teacher_course_id'], 'exist', 'skipOnError' => true, 'targetClass' => TeacherCourse::class, 'targetAttribute' => ['teacher_course_id' => 'id']],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::class, 'targetAttribute' => ['group_id' => 'id']],
@@ -66,7 +66,6 @@ class Lesson extends \yii\db\ActiveRecord
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
-            'weeks' => Yii::t('app', 'Weeks'),
             'group_id' => Yii::t('app', 'Group ID'),
         ];
     }

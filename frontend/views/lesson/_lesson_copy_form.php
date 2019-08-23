@@ -19,6 +19,7 @@ use yii\widgets\ActiveForm;
     <p><b>Начало курса: </b><?=$teacherCourse->start_ts?></p>
     <p><b>Конец курса: </b><?=$teacherCourse->end_ts?></p>
     <p><b>Длительность курса (недель): </b><?=count($weeks)?></p>
+    <p><b>День недели: </b><?=$current_day?></p>
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -26,18 +27,16 @@ use yii\widgets\ActiveForm;
         'readonly' => true,
     ]) ?>
 
-    <?= $form->field($model, 'weeks')->widget(Select2::class, [
-        'data' => $weeks,
-        'options' => [
-            'placeholder' => '...',
-            'class' => 'active-form-refresh-control',
-            'multiple' => true,
-        ],
-        'theme' => 'default',
-        'pluginOptions' => [
-            'allowClear' => true,
-        ],
-    ]) ?>
+    <?php 
+    foreach ($all_days as $day) {
+        echo $form->field($model, 'dates')->checkbox(
+            [
+                'name' => "Date[$all_days[$day]]",
+                'value' => $day,
+            ], false)->label($day);
+    }
+    ?>
+
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

@@ -19,6 +19,8 @@ $this->title = 'Продублировать занятие';
         'model' => $model,
         'teacherCourse' => $teacherCourse,
         'weeks' => $weeks,
+        'current_day' => $current_day,
+        'all_days' => $all_days,
     ]) ?>
 
 </div>

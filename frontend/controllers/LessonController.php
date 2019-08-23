@@ -164,13 +164,11 @@ class LessonController extends Controller
         ]);
     }
 
-    /* copy lesson to another weeks of course duration */
+    /* duplicate lesson to another weeks of course duration */
     public function actionCopy($lesson_id)
     {
         $model = Lesson::findOne($lesson_id);
         $teacherCourse = TeacherCourse::findOne($model->teacher_course_id);
-        $current_date = $model->date_ts;
-        $current_day = date('l', strtotime($model->date_ts));
 
         $start = \DateTime::createFromFormat('Y-m-d H:i:s', $teacherCourse->start_ts);
         $end = \DateTime::createFromFormat('Y-m-d H:i:s', $teacherCourse->end_ts);
@@ -182,19 +180,44 @@ class LessonController extends Controller
             $weeks_numbers[$i] = $i;
         }
 
+        $current_date = $model->date_ts;
+        $current_day = date('l', strtotime($model->date_ts));
+        $first_day = date('Y-m-d', strtotime("first " . $current_day . " " . date('Y-m', strtotime($teacherCourse->start_ts))));
+        $very_last_day = date('Y-m-d', strtotime($teacherCourse->end_ts));
+        $all_days = [];
+        for ($i = $first_day; $i <= $very_last_day; $i = date('Y-m-d', strtotime('+1 week ' . $i))) {
+            $all_days[$i] = $i;
+        }
+
         if ($model->load(Yii::$app->request->post())) {
             /*if ($model->save()) {
                 return $this->redirect(['schedule', 'group_id' => $model->group_id]);
             }*/
-            foreach ($model->weeks as $week) {
-                
+            $dates = $_REQUEST['Date'];
+            foreach ($dates as $date) {
+                if ($date !== date('Y-m-d', strtotime($model->date_ts)) && $date != 0) {
+            //var_dump($dates);die();
+                    $lesson = Lesson::findOne(['date_ts' => date('Y-m-d H:i:s', strtotime($date . ' ' . date('H:i:s', strtotime($model->date_ts))))]);
+                    if (!isset($lesson)) {
+                        $lesson = new Lesson();
+                        $lesson->teacher_course_id = $model->teacher_course_id;
+                        $lesson->teacher_id = $model->teacher_id;
+                        $lesson->date_ts = date('Y-m-d H:i:s', strtotime($date . ' ' . date('H:i:s', strtotime($model->date_ts))));
+                        $lesson->duration = $model->duration;
+                        $lesson->group_id = $model->group_id;
+                        $lesson->save();
+                    }
+                }
             }
+            return $this->redirect(['schedule', 'group_id' => $model->group_id]);
         }
 
         return $this->render('copy', [
             'model' => $model,
             'teacherCourse' => $teacherCourse,
             'weeks' => $weeks_numbers,
+            'current_day' => $current_day,
+            'all_days' => $all_days
         ]);
     }
 
