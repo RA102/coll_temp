@@ -29,12 +29,27 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'caption_current',
                     'value' => function (Group $model) {
                         return Html::a($model->caption_current, [
-                            'lesson/index',
+                            'lesson/schedule',
                             'group_id' => $model->id,
                         ]);
                     },
                     'format' => 'html',
                 ],
+                [
+                    'format'    => 'html',
+                    'attribute' => 'language',
+                    'value'     => function (\common\models\organization\Group $model) {
+                        return $model->getLanguage();
+                    },
+                ],
+                [
+                    'format'    => 'html',
+                    'attribute' => 'speciality_id',
+                    'value'     => function (\common\models\organization\Group $model) {
+                        return $model->speciality->getCaptionWithCode() ?? null;
+                    },
+                ],
+                'class',
             ],
         ]); ?>
     </div>

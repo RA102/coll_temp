@@ -15,6 +15,8 @@ $this->title = Yii::t('app', 'Заявления');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
+<?php echo INTL_ICU_VERSION; die();?>
+
 <div style="position: relative;">
     <h1><?= $this->title ?> (<?= $dataProvider->totalCount ?>)</h1>
     <?= Html::a(Yii::t('app', 'Добавить'), ['create'], ['class' => 'title-action btn btn-primary']) ?>

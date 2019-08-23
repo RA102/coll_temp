@@ -78,7 +78,7 @@
                             [
                                 'label' => Yii::t('app', 'Расписание'),
                                 'icon'  => 'dashboard',
-                                'url'   => ['/lesson/groups']
+                                'url'   => ['/lesson/index']
                             ],
                             [
                                 'label' => Yii::t('app', 'Распределение'),

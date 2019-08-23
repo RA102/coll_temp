@@ -20,6 +20,7 @@ class FullcalendarAsset extends AssetBundle
         'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js',
         'js/fullcalendar/ru.js',
         'js/lessons.js',
+        'js/teacher-card.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

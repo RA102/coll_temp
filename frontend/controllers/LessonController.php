@@ -2,11 +2,14 @@
 
 namespace frontend\controllers;
 
+use common\models\person\Employee;
+use common\models\organization\Group;
 use common\models\organization\Institution;
 use common\models\TeacherCourse;
 use common\services\organization\GroupService;
 use common\services\person\EmployeeService;
 use frontend\models\forms\LessonForm;
+use frontend\models\forms\LessonCopyForm;
 use frontend\search\GroupSearch;
 use Yii;
 use common\models\Lesson;
@@ -18,6 +21,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\base\Module;
+use yii\data\ActiveDataProvider;
 
 /**
  * LessonController implements the CRUD actions for Lesson model.
@@ -39,7 +43,7 @@ class LessonController extends Controller
                 'rules' => [
                     [
                         'actions' => [
-                            'index', 'groups',
+                            'index', 'groups', 'schedule', 'teachers', 'teacher-card', 'copy',
                             'ajax-feed', 'ajax-create', 'ajax-delete',
                         ],
                         'allow' => true,
@@ -79,12 +83,29 @@ class LessonController extends Controller
         return true;
     }
 
+    public function actionIndex()
+    {
+        return $this->render('index');
+    }
+
+    public function actionGroups()
+    {
+        $searchModel = new GroupSearch();
+        $searchModel->institution_id = $this->institution->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('groups', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Lists all Lesson models.
      * @param $group_id
      * @return mixed
      */
-    public function actionIndex($group_id)
+    public function actionSchedule($group_id)
     {
         $group = $this->findGroup($this->institution, $group_id);
 
@@ -98,7 +119,16 @@ class LessonController extends Controller
         $searchModel = new LessonSearch();
         $searchModel->group_id = $group_id;
 
-        return $this->render('index', [
+        /*$lessons = $dataProvider->getModels();
+        $result = [];
+        foreach ($lessons as $lesson) {
+            $result[] = LessonForm::createFromLesson($lesson, $group_id);
+        }
+
+        var_dump($result[0]['weeks_numbers']);
+        die();*/
+
+        return $this->render('schedule', [
             'group' => $group,
             'teacherCourses' => $teacherCourses,
             'teachers' => $this->employeeService->getTeachers($this->institution),
@@ -106,15 +136,65 @@ class LessonController extends Controller
         ]);
     }
 
-    public function actionGroups()
+    public function actionTeachers()
     {
-        $searchModel = new GroupSearch();
-        $searchModel->institution_id = $this->institution->id;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $query = $this->employeeService->getTeachersQuery($this->institution);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
 
-        return $this->render('groups', [
-            'searchModel' => $searchModel,
+        return $this->render('teachers',[
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionTeacherCard($teacher_id)
+    {
+        $model = Employee::findOne($teacher_id);
+        $searchModel = new LessonSearch();
+        $searchModel->teacher_id = $teacher_id;
+        $dataProvider = $searchModel->search();
+        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        //$query = Lesson::find()->where(['teacher_id' => $teacher_id]);
+
+        return $this->render('teacher-card', [
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider
+        ]);
+    }
+
+    /* copy lesson to another weeks of course duration */
+    public function actionCopy($lesson_id)
+    {
+        $model = Lesson::findOne($lesson_id);
+        $teacherCourse = TeacherCourse::findOne($model->teacher_course_id);
+        $current_date = $model->date_ts;
+        $current_day = date('l', strtotime($model->date_ts));
+
+        $start = \DateTime::createFromFormat('Y-m-d H:i:s', $teacherCourse->start_ts);
+        $end = \DateTime::createFromFormat('Y-m-d H:i:s', $teacherCourse->end_ts);
+        $interval = $start->diff($end);
+        $weeks = (int)(($interval->days) / 7);
+        $weeks_numbers = [];
+
+        for ($i=1; $i<=$weeks; $i++) {
+            $weeks_numbers[$i] = $i;
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            /*if ($model->save()) {
+                return $this->redirect(['schedule', 'group_id' => $model->group_id]);
+            }*/
+            foreach ($model->weeks as $week) {
+                
+            }
+        }
+
+        return $this->render('copy', [
+            'model' => $model,
+            'teacherCourse' => $teacherCourse,
+            'weeks' => $weeks_numbers,
         ]);
     }
 
@@ -143,7 +223,7 @@ class LessonController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
-    public function actionAjaxFeed($start, $end)
+    public function actionAjaxFeed($group_id=null, $start, $end)
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
@@ -157,7 +237,7 @@ class LessonController extends Controller
         /** @var Lesson[] $lessons */
         $lessons = $dataProvider->getModels();
         foreach ($lessons as $lesson) {
-            $result[] = LessonForm::createFromLesson($lesson);
+            $result[] = LessonForm::createFromLesson($lesson, $group_id);
         }
 
         return $result;
@@ -178,6 +258,30 @@ class LessonController extends Controller
             }
 
             $form->apply($model);
+            $model->save();
+
+            return $model;
+        }
+
+        return $form;
+    }
+
+    public function actionAjaxCopy($lesson_id)
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $form = new LessonCopyForm();
+        $form->load(Yii::$app->request->post());
+
+        if ($form->validate()) {
+            if ($form->id) {
+                $model = $this->findModel($form->id);
+                $teacherCourse = TeacherCourse::findOne($model->teacher_course_id);
+            } else {
+                $model = new Lesson();
+            }
+
+            $form->copy($model);
             $model->save();
 
             return $model;

@@ -1,8 +1,11 @@
 <?php
 
 use kartik\select2\Select2;
+use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use yii\web\View;
 
 /* @var $model frontend\models\forms\LessonForm */
 /* @var $teacherCourses common\models\TeacherCourse[] */
@@ -49,10 +52,17 @@ use yii\widgets\ActiveForm;
                     'readonly' => true,
                 ]) ?>
 
+                <?= $form->field($model, 'group_id') ?>
+
+                <?= $form->field($model, 'weeks') ?>
+
                 <?php ActiveForm::end(); ?>
 
                 <button class="btn btn-success js-modal-save" type="button">
                     <?= Yii::t('app', 'Save') ?>
+                </button>
+                <button class="btn btn-primary js-modal-copy" type="button">
+                    <?= Yii::t('app', 'Copy') ?>
                 </button>
                 <button class="btn btn-default js-modal-cancel" data-dismiss="modal" type="button">
                     <?= Yii::t('app', 'Cancel') ?>
@@ -70,6 +80,19 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 </div>
+
+<?= $this->render('_copy_form', [
+    'model' => new \frontend\models\forms\LessonCopyForm(),
+    'lesson_id' => $model->id,
+]); ?>
+
+<?php
+$copyUrl = json_encode(Url::to(['lesson/ajax-copy', '$lesson_id' => $model->id]));
+
+$this->registerJs("
+var copyUrl = {$copyUrl};
+", View::POS_BEGIN);
+?>
 
 <style>
     .loader {

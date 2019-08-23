@@ -69,6 +69,10 @@ class LessonSearch extends Lesson
 
         // add conditions that should always apply here
 
+        if (isset($this->teacher_id)) {
+            $query->andWhere([self::tableName().'.teacher_id' => $this->teacher_id]);
+        }
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -83,7 +87,7 @@ class LessonSearch extends Lesson
         $query->andFilterWhere([
             'id' => $this->id,
             'teacher_course_id' => $this->teacher_course_id,
-            'teacher_id' => $this->teacher_id,
+            //'teacher_id' => $this->teacher_id,
             'date_ts' => $this->date_ts,
             'duration' => $this->duration,
             'create_ts' => $this->create_ts,
