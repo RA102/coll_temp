@@ -11,7 +11,7 @@ return [
     'name' => 'Бiлiмал. Электронды колледж',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'timeZone' => 'Asia/Almaty',
+    'timeZone' => 'Asia/Omsk',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
