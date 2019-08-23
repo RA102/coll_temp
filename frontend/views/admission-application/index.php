@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
-    <h1><?= $this->title ?> (<?= $dataProvider->totalCount ?>) test</h1>
+    <h1><?= $this->title ?> (<?= $dataProvider->totalCount ?>)</h1>
     <?= Html::a(Yii::t('app', 'Добавить'), ['create'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 
