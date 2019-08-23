@@ -8,6 +8,7 @@ use yii\web\View;
 /* @var $group common\models\organization\Group */
 /* @var $teacherCourses common\models\TeacherCourse[] */
 /* @var $teachers common\models\person\Employee[] */
+/* @var $classrooms common\models\organization\Classroom[] */
 /* @var $searchModel frontend\search\LessonSearch */
 
 \frontend\assets\FullcalendarAsset::register($this);
@@ -30,7 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
     'model' => new \frontend\models\forms\LessonForm(),
     'teacherCourses' => $teacherCourses,
     'teachers' => $teachers,
-    'group_id' => $group->id
+    'group_id' => $group->id,
+    'classrooms' => $classrooms
 ]); ?>
 
 <?php

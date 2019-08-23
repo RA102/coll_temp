@@ -1,8 +1,6 @@
 var modal = $("#modal-lesson-create");
 var modalForm = $('#modal-form');
 var loader = $('.js-loader');
-var copymodal = $("#modal-lesson-copy")
-var copymodalForm = $('#modal-form-copy');
 
 $(document).ready(function () {
 
@@ -40,6 +38,7 @@ $(document).ready(function () {
             modal.find('#end').val(end.format('YYYY-MM-DD HH:mm:ss'));
             modal.find('#teacher_course_id').val(null).trigger("change");
             modal.find('#teacher_id').val(null).trigger("change");
+            modal.find('#classroom_id').val(null).trigger("change");
 
             // }
             // $('#calendar').fullCalendar('unselect');
@@ -65,7 +64,7 @@ $(document).ready(function () {
             modal.find('#teacher_id').val(event.teacher_id).trigger("change");
             modal.find('#id').val(event.id);
             modal.find('#group_id').val(event.group_id);
-            modal.find('#weeks').val(event.weeks);
+            modal.find('#classroom_id').val(event.classroom_id).trigger("change");
         },
         eventDrop: function (event, delta, revertFunc) {
             event.color = 'red';
@@ -144,6 +143,7 @@ modalForm.on('beforeSubmit', function (e) {
             start: $('#start').val(),
             end: $('#end').val(),
             group_id: $('#group_id').val(),
+            classroom_id: $('#classroom_id').val(),
         }
     }).done(function (data) {
         modal.modal('toggle');

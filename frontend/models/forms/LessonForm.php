@@ -23,6 +23,7 @@ class LessonForm extends Model
     public $title;
     public $groups;
     public $group_id;
+    public $classroom_id;
 
     /**
      * {@inheritdoc}
@@ -30,8 +31,8 @@ class LessonForm extends Model
     public function rules()
     {
         return [
-            [['teacher_course_id', 'group_id'], 'required'],
-            [['teacher_course_id', 'teacher_id', 'group_id'], 'integer'],
+            [['teacher_course_id', 'group_id', 'classroom_id'], 'required'],
+            [['teacher_course_id', 'teacher_id', 'group_id', 'classroom_id'], 'integer'],
             [['start', 'end'], 'required'],
             [['start', 'end'], 'string'],
             [['id'], 'integer'],
@@ -49,6 +50,7 @@ class LessonForm extends Model
             'group_id' => Yii::t('app', 'Group ID'),
             'start' => Yii::t('app', 'Lesson Start Date'),
             'end' => Yii::t('app', 'Lesson End Date'),
+            'classroom_id' => Yii::t('app', 'Classroom ID'),
         ];
     }
 
@@ -61,6 +63,7 @@ class LessonForm extends Model
         $model->id = $lesson->id;
         $model->teacher_course_id = $lesson->teacher_course_id;
         $model->teacher_id = $lesson->teacher_id;
+        $model->classroom_id = $lesson->classroom_id;
         if ($group_id !== null) {
             $model->group_id = $group_id;
         } else $model->group_id = $lesson->group_id;
@@ -85,6 +88,7 @@ class LessonForm extends Model
         $lesson->date_ts = $startDate->format('Y-m-d H:i:s');
         $lesson->duration = ($endDate->getTimestamp() - $startDate->getTimestamp()) / 60;
         $lesson->group_id = $this->group_id;
+        $lesson->classroom_id = $this->classroom_id;
 
         return $lesson;
     }

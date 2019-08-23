@@ -44,6 +44,15 @@ use yii\web\View;
                     ],
                 ]) ?>
 
+                <?= $form->field($model, 'classroom_id')->widget(Select2::class, [
+                    'data' => ArrayHelper::map($classrooms, 'id', 'number'), // TODO rework to ajax
+                    'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+                    'theme' => 'default',
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                ]) ?>
+
                 <?= $form->field($model, 'start')->textInput([
                     'readonly' => true,
                 ]) ?>
@@ -52,7 +61,7 @@ use yii\web\View;
                     'readonly' => true,
                 ]) ?>
 
-                <?= $form->field($model, 'group_id')->textInput(['value' => $group_id]) ?>
+                <?= $form->field($model, 'group_id')->hiddenInput(['value' => $group_id])->label(false) ?>
 
                 <?php ActiveForm::end(); ?>
 
@@ -78,11 +87,6 @@ use yii\web\View;
         </div>
     </div>
 </div>
-
-<?= $this->render('_copy_form', [
-    'model' => new \frontend\models\forms\LessonCopyForm(),
-    'lesson_id' => $model->id,
-]); ?>
 
 <?php
 $copyUrl = json_encode(Url::to(['lesson/ajax-copy', '$lesson_id' => $model->id]));

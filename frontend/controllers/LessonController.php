@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\person\Employee;
 use common\models\organization\Group;
 use common\models\organization\Institution;
+use common\models\organization\Classroom;
 use common\models\TeacherCourse;
 use common\services\organization\GroupService;
 use common\services\person\EmployeeService;
@@ -44,7 +45,7 @@ class LessonController extends Controller
                     [
                         'actions' => [
                             'index', 'groups', 'schedule', 'teachers', 'teacher-card', 'copy',
-                            'ajax-feed', 'ajax-create', 'ajax-delete',
+                            'ajax-feed', 'ajax-create', 'ajax-delete', 'classrooms', 'classroom-card',
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -116,6 +117,8 @@ class LessonController extends Controller
             }
         ])->all();
 
+        $classrooms = Classroom::find()->all();
+
         $searchModel = new LessonSearch();
         $searchModel->group_id = $group_id;
 
@@ -133,6 +136,7 @@ class LessonController extends Controller
             'teacherCourses' => $teacherCourses,
             'teachers' => $this->employeeService->getTeachers($this->institution),
             'searchModel' => $searchModel,
+            'classrooms' => $classrooms
         ]);
     }
 
@@ -158,6 +162,32 @@ class LessonController extends Controller
         //$query = Lesson::find()->where(['teacher_id' => $teacher_id]);
 
         return $this->render('teacher-card', [
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider
+        ]);
+    }
+
+    public function actionClassrooms()
+    {
+        $query = Classroom::find()->where(['institution_id' => $this->institution->id]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('classrooms',[
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionClassroomCard($classroom_id)
+    {
+        $model = Classroom::findOne($classroom_id);
+        $searchModel = new LessonSearch();
+        $searchModel->classroom_id = $classroom_id;
+        $dataProvider = $searchModel->search();
+
+        return $this->render('classroom-card', [
             'model' => $model,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider
@@ -205,6 +235,7 @@ class LessonController extends Controller
                         $lesson->date_ts = date('Y-m-d H:i:s', strtotime($date . ' ' . date('H:i:s', strtotime($model->date_ts))));
                         $lesson->duration = $model->duration;
                         $lesson->group_id = $model->group_id;
+                        $lesson->classroom_id = $model->classroom_id;
                         $lesson->save();
                     }
                 }
@@ -281,30 +312,6 @@ class LessonController extends Controller
             }
 
             $form->apply($model);
-            $model->save();
-
-            return $model;
-        }
-
-        return $form;
-    }
-
-    public function actionAjaxCopy($lesson_id)
-    {
-        \Yii::$app->response->format = Response::FORMAT_JSON;
-
-        $form = new LessonCopyForm();
-        $form->load(Yii::$app->request->post());
-
-        if ($form->validate()) {
-            if ($form->id) {
-                $model = $this->findModel($form->id);
-                $teacherCourse = TeacherCourse::findOne($model->teacher_course_id);
-            } else {
-                $model = new Lesson();
-            }
-
-            $form->copy($model);
             $model->save();
 
             return $model;

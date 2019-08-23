@@ -118,6 +118,11 @@
                                 'icon'  => 'file-code-o',
                                 'url'   => ['/institution']
                             ],
+                            [
+                                'label' => Yii::t('app', 'Аудитории'),
+                                'icon'  => 'file-code-o',
+                                'url'   => ['/classroom']
+                            ],
 //                            ['label' => Yii::t('app','Система рейтинга'), 'icon' => 'file-code-o', 'url' => ['/']],
                         ],
                     ],

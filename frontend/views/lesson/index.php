@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <a href="/lesson/teachers">Карты занятости учителей</a>
             </div>
             <div class="col-md-3">
-                <a href="/lesson/teachers">Карты занятости аудиторий</a>
+                <a href="/lesson/classrooms">Карты занятости аудиторий</a>
             </div>
         </div>
     </div>
