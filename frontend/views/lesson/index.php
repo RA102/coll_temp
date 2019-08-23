@@ -19,10 +19,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-body">
         <div class="row">
             <div class="col-md-3">
+                <a href="/lesson/groups">Группы</a>
+            </div>
+            <div class="col-md-3">
                 <a href="/lesson/teachers">Карты занятости учителей</a>
             </div>
             <div class="col-md-3">
-                <a href="/lesson/groups">Группы</a>
+                <a href="/lesson/teachers">Карты занятости аудиторий</a>
             </div>
         </div>
     </div>
