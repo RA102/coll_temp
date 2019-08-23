@@ -98,6 +98,7 @@ class AdmissionApplicationController extends Controller
      */
     public function actionIndex()
     {
+        echo INTL_ICU_VERSION; die();
         $commission = $this->commissionService->getActiveInstitutionCommission(
             Yii::$app->user->identity->institution
         );
