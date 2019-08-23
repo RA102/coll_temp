@@ -70,14 +70,10 @@ class Lesson extends \yii\db\ActiveRecord
         ];
     }
 
-    public function afterFind()
+    /*public function afterFind()
     {
         parent::afterFind();
-
-        if ($this->weeks instanceof ArrayExpression) {
-            $this->weeks = $this->weeks->getValue();
-        }
-    }
+    }*/
 
     /**
      * @return \yii\db\ActiveQuery
