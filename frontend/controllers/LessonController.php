@@ -181,6 +181,26 @@ class LessonController extends Controller
         ]);
     }
 
+    public function actionVarTwoClassroom($classroom_id)
+    {
+        $classroom = Classroom::findOne($classroom_id);
+        $lessons = Lesson::find()->where(['date_ts' => null])->andWhere(['classroom_id' => $classroom_id])->all();
+        $weekdays = [
+            '1' => 'Понедельник',
+            '2' => 'Вторник',
+            '3' => 'Среда',
+            '4' => 'Четверг',
+            '5' => 'Пятница',
+            '6' => 'Суббота'
+        ];
+
+        return $this->render('var-two-classroom', [
+            'lessons' => $lessons,
+            'weekdays' => $weekdays,
+            'classroom' => $classroom
+        ]);
+    }
+
     public function actionCreate($group_id)
     {
         $group = $this->findGroup($this->institution, $group_id);
