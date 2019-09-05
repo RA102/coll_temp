@@ -58,7 +58,7 @@
                                 'label' => Yii::t('app', 'Employees'), 
                                 'icon' => 'file-code-o', 
                                 'url' => ['/employee'],
-                                'visible' => !$person->isTeacher(),
+                                //'visible' => !$person->isTeacher(),
                             ],
                             [
                                 'label' => Yii::t('app', 'Students'), 
