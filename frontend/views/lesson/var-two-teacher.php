@@ -7,13 +7,12 @@ use yii\grid\GridView;
 /* @var $searchModel frontend\search\GroupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Расписание 2 ') . $group->caption_current;
+$this->title = Yii::t('app', 'Карта учителя 2 ') . $teacher->getFullname();
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
     <h1><?=$this->title?></h1>
-    <?= Html::a(Yii::t('app', 'Добавить'), ['create', 'group_id' => $group->id], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 
 <div class="group-index skin-white">
@@ -33,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			    			<?php foreach ($lessons as $lesson):?>
 			    				<?php if ($lesson->number == $i && $lesson->weekday == $key):?>
 			    					<?=$lesson->teacherCourse->getFullname()?> <br>
-			    					<?=$lesson->teacher->getFullname()?> <br>
+			    					<?=$lesson->group->caption_current?> <br>
 			    					<?=$lesson->classroom->number?>
 			    				<?php endif;?>
 							<?php endforeach;?>

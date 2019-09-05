@@ -46,7 +46,7 @@ class LessonController extends Controller
                         'actions' => [
                             'index', 'groups', 'schedule', 'teachers', 'teacher-card', 'copy',
                             'ajax-feed', 'ajax-create', 'ajax-delete', 'classrooms', 'classroom-card',
-                            'var-two', 'create'
+                            'var-two', 'create', 'var-two-teacher', 'var-two-classroom'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -158,6 +158,26 @@ class LessonController extends Controller
             'group' => $group,
             'lessons' => $lessons,
             'weekdays' => $weekdays
+        ]);
+    }
+
+    public function actionVarTwoTeacher($teacher_id)
+    {
+        $teacher = Employee::findOne($teacher_id);
+        $lessons = Lesson::find()->where(['date_ts' => null])->andWhere(['teacher_id' => $teacher_id])->all();
+        $weekdays = [
+            '1' => 'Понедельник',
+            '2' => 'Вторник',
+            '3' => 'Среда',
+            '4' => 'Четверг',
+            '5' => 'Пятница',
+            '6' => 'Суббота'
+        ];
+
+        return $this->render('var-two-teacher', [
+            'lessons' => $lessons,
+            'weekdays' => $weekdays,
+            'teacher' => $teacher
         ]);
     }
 
