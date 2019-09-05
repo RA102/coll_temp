@@ -46,6 +46,7 @@ class LessonController extends Controller
                         'actions' => [
                             'index', 'groups', 'schedule', 'teachers', 'teacher-card', 'copy',
                             'ajax-feed', 'ajax-create', 'ajax-delete', 'classrooms', 'classroom-card',
+                            'var-two', 'create'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -137,6 +138,61 @@ class LessonController extends Controller
             'teachers' => $this->employeeService->getTeachers($this->institution),
             'searchModel' => $searchModel,
             'classrooms' => $classrooms
+        ]);
+    }
+
+    public function actionVarTwo($group_id)
+    {
+        $group = $this->findGroup($this->institution, $group_id);
+        $lessons = Lesson::find()->where(['date_ts' => null])->andWhere(['group_id' => $group_id])->all();
+        $weekdays = [
+            '1' => 'Понедельник',
+            '2' => 'Вторник',
+            '3' => 'Среда',
+            '4' => 'Четверг',
+            '5' => 'Пятница',
+            '6' => 'Суббота'
+        ];
+
+        return $this->render('var-two', [
+            'group' => $group,
+            'lessons' => $lessons,
+            'weekdays' => $weekdays
+        ]);
+    }
+
+    public function actionCreate($group_id)
+    {
+        $group = $this->findGroup($this->institution, $group_id);
+        $weekdays = [
+            '1' => 'Понедельник', 
+            '2' => 'Вторник',
+            '3' => 'Среда',
+            '4' => 'Четверг',
+            '5' => 'Пятница',
+            '6' => 'Суббота'
+        ];
+        $teacherCourses = TeacherCourse::find()->joinWith([
+            /** @see TeacherCourse::getGroups() */
+            'groups' => function (ActiveQuery $query) use ($group) {
+                $query->andWhere(['group.id' => $group->id]);
+            }
+        ])->all();
+        $classrooms = Classroom::find()->all();
+
+        $model = new Lesson();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['var-two', 'group_id' => $group_id]);
+        }
+
+        return $this->render('create', [
+            'group' => $group,
+            'weekdays' => $weekdays,
+            'teacherCourses' => $teacherCourses,
+            'teachers' => $this->employeeService->getTeachers($this->institution),
+            'classrooms' => $classrooms,
+            'model' => $model,
         ]);
     }
 

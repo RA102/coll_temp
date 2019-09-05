@@ -22,6 +22,8 @@ use yii\db\ArrayExpression;
  * @property string $delete_ts
  * @property int $group_id
  * @property int $classroom_id
+ * @property int $weekday
+ * @property int $number
  *
  * @property TeacherCourse $teacherCourse
  * @property Group $group
@@ -43,9 +45,9 @@ class Lesson extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['teacher_course_id', 'date_ts', 'group_id', 'classroom_id'], 'required'],
+            [['teacher_course_id', 'group_id', 'classroom_id'], 'required'],
             [['teacher_course_id', 'teacher_id', 'duration'], 'default', 'value' => null],
-            [['teacher_course_id', 'teacher_id', 'duration', 'group_id', 'classroom_id'], 'integer'],
+            [['teacher_course_id', 'teacher_id', 'duration', 'group_id', 'classroom_id', 'weekday', 'number'], 'integer'],
             [['date_ts'], 'safe'],
             [['dates'], 'string'],
             [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['teacher_id' => 'id']],
@@ -71,6 +73,8 @@ class Lesson extends \yii\db\ActiveRecord
             'delete_ts' => Yii::t('app', 'Delete Ts'),
             'group_id' => Yii::t('app', 'Group ID'),
             'classroom_id' => Yii::t('app', 'Classroom ID'),
+            'weekday' => 'Weekday',
+            'number' => 'number',
         ];
     }
 
