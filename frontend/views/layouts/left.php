@@ -81,6 +81,11 @@
                                 'url'   => ['/lesson/index']
                             ],
                             [
+                                'label' => Yii::t('app', 'Журнал'),
+                                'icon'  => 'dashboard',
+                                'url'   => ['/journal/index']
+                            ],
+                            [
                                 'label' => Yii::t('app', 'Распределение'),
                                 'icon'  => 'dashboard',
                                 'url'   => ['/group/allocate']
