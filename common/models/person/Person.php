@@ -64,6 +64,8 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     const TYPE_STUDENT = 1;
     const TYPE_EMPLOYEE = 2;
     const TYPE_ENTRANT = 3;
+    const TYPE_HR = 4;
+    const GLOBAL_ADMIN = 5;
 
     const SEX_NONE = 0;
     const SEX_MALE = 1;
@@ -190,6 +192,11 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->status == self::STATUS_ACTIVE && !$this->isDeleted();
     }
 
+    public function isPuralist()
+    {
+        return $this->status == self::STATUS_PLURALIST && !$this->isDeleted();
+    }
+
     public function isFired()
     {
         return $this->status == self::STATUS_FIRED && !$this->isDeleted();
@@ -291,7 +298,11 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getInstitution()
     {
-        return $this->getInstitutions()->one();
+        if ($this->current_institution !== null) {
+            return Institution::findOne($this->current_institution);
+        } else {
+            return $this->getInstitutions()->one();
+        }
     }
 
     public function getFullName()
@@ -300,7 +311,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+         * @return \yii\db\ActiveQuery
      */
     public function getPersonInstitutionLinks()
     {
@@ -330,5 +341,26 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function isStudent()
     {
         return in_array($this->type, [Person::TYPE_STUDENT, Person::TYPE_ENTRANT]);
+    }
+
+    public function isHr()
+    {
+        if ($this->personType->name == 'hr') {
+            return true;
+        } else return false;
+    }
+
+    public function isTeacher()
+    {
+        if ($this->personType->name == 'teacher') {
+            return true;
+        } else return false;
+    }
+
+    public function isAdmin()
+    {
+        if ($this->personType->name == 'superadmin') {
+            return true;
+        } else return false;
     }
 }

@@ -140,6 +140,12 @@ class CommissionController extends Controller
         $form->caption_ru = $model->caption_ru;
         $form->setAttributes($model->getAttributes());
 
+        $form->from_date = date('d-m-Y', strtotime($model->from_date));
+        $form->to_date = date('d-m-Y', strtotime($model->to_date));
+        $form->order_date = date('d-m-Y', strtotime($model->order_date));
+        $form->exam_start_date = date('d-m-Y', strtotime($model->exam_start_date));
+        $form->exam_end_date = date('d-m-Y', strtotime($model->exam_end_date));
+
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model->setAttributes($form->getAttributes());
             $model->institution_id = $this->institution->id;

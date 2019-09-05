@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 
+use common\helpers\ApplicationHelper;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
@@ -15,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
 ?>
+
     <div style="display: flex;">
         <div>
             <h1><?= $this->title ?></h1>
@@ -31,6 +33,34 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
     </div>
+
+<?php if ($model->status === ApplicationHelper::STATUS_ACCEPTED): ?>
+    <div class="status-accepted student-block">
+        <?php 
+        $speciality = \common\models\handbook\Speciality::findOne($model->properties['speciality_id']);
+        ?>
+        <p><?=$model->person_id?></p>
+        <p><b>Статус заявления:</b> ЗАРЕГИСТРИРОВАНО</p>
+        <p><b>Специальность:</b> <?=$speciality->caption_current ." ($speciality->code)"?></p>
+        <p><b>Группа:</b> 
+            <?php 
+            if ($model->person->receptionGroup !== null) {
+                echo $model->person->receptionGroup->caption['ru'];
+            }
+            else {
+                echo 'Не выбрана';
+            }
+            ?>
+        </p>
+    </div>
+    <div style="text-left: right; flex: 1">
+        <?= Html::a(Yii::t('app', 'Поменять специальность'), ['change-speciality', 'id' => $model->id],
+            ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Поменять группу'), ['change-status', 'id' => $model->id],
+            ['class' => 'btn btn-primary']) ?>
+    </div>
+<?php endif;?>
+
 
     <div class="admission-application-view student-block">
         <?= \yii\bootstrap\Tabs::widget([

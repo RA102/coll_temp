@@ -34,7 +34,7 @@ class AdmissionProtocolForm extends Model
             ['number', 'integer'],
             ['number', 'filter', 'filter' => 'strval'],
 
-            ['completion_date', 'date', 'format' => 'php:Y-m-d'],
+            //['completion_date', 'date', 'format' => 'php:Y-m-d'],
 
             ['commission_members', 'each', 'rule' => ['integer']],
             [

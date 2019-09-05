@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $admissionProtocol->number;
         <?= DetailView::widget([
             'model'      => $admissionProtocol,
             'attributes' => [
-                'completion_date',
+                'completion_date:date',
                 [
                     'attribute' => 'status',
                     'value'     => $admissionProtocol->getStatusLabel()

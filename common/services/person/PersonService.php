@@ -64,9 +64,9 @@ class PersonService
         // TODO: Remove. Probably deprecated, pass to transaction manager $model variable instead of $person
         $person = Person::findOne(['iin' => $model->iin]);
         if ($person) {
-            if ($person->institution) {
+            /*if ($person->institution) {
                 throw new \Exception(\Yii::t('app', 'Person is attached to institution'));
-            }
+            }*/
 
             $person->setAttributes(array_filter($model->getAttributes(), function ($value) {
                 return !is_null($value);
@@ -117,7 +117,7 @@ class PersonService
                 );
             }
 
-            $link = PersonInstitutionLink::add($person->id, $institution_id);
+            $link = PersonInstitutionLink::add($person->id, $institution_id, $person->is_pluralist);
             $link->save();
         });
 
@@ -139,7 +139,7 @@ class PersonService
             }
 
             if ($model->institution->id !== $institution_id) {
-                PersonInstitutionLink::updateAll(['is_deleted' => true], ['person_id' => $model->id]);
+                PersonInstitutionLink::updateAll(['is_deleted' => true], ['person_id' => $model->id, 'is_pluralist' => null]);
                 $link = PersonInstitutionLink::findOne(['person_id' => $model->id, 'institution_id' => $institution_id]);
 
                 if ($link) {
@@ -150,6 +150,25 @@ class PersonService
                 if (!$link->save()) {
                     throw new \RuntimeException('Saving error.');
                 }
+
+                /*PersonInstitutionLink::updateAll(['is_deleted' => true], ['person_id' => $model->id]);
+                $link = PersonInstitutionLink::findOne(['person_id' => $model->id, 'institution_id' => $model->institution->id, 'is_pluralist' => null]);
+
+                if ($link) {
+                    if ($link->is_deleted == true) {
+                        $link->activate();
+                    }
+                    $link->institution_id = $institution_id;
+
+                    if (!$link->save()) {
+                        throw new \RuntimeException('Saving error.');
+                    }                
+                } else {
+                    $link = PersonInstitutionLink::add($model->id, $institution_id);
+                }
+                if (!$link->save()) {
+                    throw new \RuntimeException('Saving error.');
+                }*/
             }
         });
 

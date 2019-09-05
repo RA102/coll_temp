@@ -50,6 +50,16 @@ $this->params['breadcrumbs'][] = $this->title;
 //                    'birth_country_id',
 //                    'birth_city_id',
                     'birth_place',
+                    [
+                        'label' => 'Группа',
+                        'value' => function (Entrant $model) {
+                            try {
+                                return $model->receptionGroup->caption['ru'];
+                            } catch (Exception $e) {
+                                return null;
+                            }
+                        }
+                    ],
 //                    'language',
 //                    'oid',
 //                    'alledu_id',

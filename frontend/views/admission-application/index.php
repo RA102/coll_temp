@@ -77,6 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'label' => Yii::t('app', 'Дата подачи'),
                     'value' => 'properties.application_date',
+                    'format' => ['date', 'php: d-m-Y'],
                 ],
                 'person.iin',
                 [

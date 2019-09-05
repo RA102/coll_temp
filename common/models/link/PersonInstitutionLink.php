@@ -84,11 +84,14 @@ class PersonInstitutionLink extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function add($person_id, $institution_id)
+    public static function add($person_id, $institution_id, $is_pluralist=null)
     {
         $model = new self();
         $model->person_id = $person_id;
         $model->institution_id = $institution_id;
+        if ($is_pluralist == true) {
+            $model->is_pluralist = true;
+        }
 
         return $model;
     }

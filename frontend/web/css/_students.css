@@ -11,3 +11,11 @@
 .student-block .nav > li > a {
     padding: 20px 15px
 }
+
+.status-accepted {
+	padding: 20px;
+}
+.status-accepted p {
+	line-height: 2em;
+	margin-bottom: 0;
+}

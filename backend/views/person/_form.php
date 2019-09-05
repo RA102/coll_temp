@@ -89,10 +89,11 @@ use yii\widgets\DetailView;
                 ]) ?>
 
                 <?= $activeForm->field($form, 'type')->dropDownList([
-                    Person::TYPE_UNDEFINED => '',
+                    Person::TYPE_UNDEFINED => 'undefined',
                     Person::TYPE_STUDENT => 'Обучающийся',
                     Person::TYPE_EMPLOYEE => 'Сотрудник',
                     Person::TYPE_ENTRANT => 'Абитуриент',
+                    Person::TYPE_HR => 'HR',
                 ]) ?>
 
                 <?= $activeForm->field($form, 'person_type')->widget(Select2::class, [

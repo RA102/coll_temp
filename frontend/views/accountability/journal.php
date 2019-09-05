@@ -50,7 +50,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'data' => \yii\helpers\ArrayHelper::map(
                         $specialities,
                         'id',
-                        'caption_current'
+                        function (\common\models\handbook\Speciality $model) {
+                            return $model->getCaptionWithCode();
+                        }
                     ),
                     'options' => [
                         'placeholder' => Yii::t('app', 'Введите поисковый запрос'),
@@ -93,6 +95,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value' => 'properties.application_date',
                 ],
                 'person.iin',
+                [
+                    'label' => Yii::t('app', 'Специальность'),
+                    'value' => 'properties.speciality_id',
+                ],                
 //                [
 //                    'label' => Yii::t('app', 'Phone'),
 //                    'value' => 'properties.phone',
@@ -104,7 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         $labelText = ApplicationHelper::$list[$admissionApplication->status];
                         $statusClass = (function () use ($admissionApplication) {
                             if ($admissionApplication->status === ApplicationHelper::STATUS_CREATED) {
-                                return 'label label-secondary';
+                                return 'label label-primary';
                             }
                             if ($admissionApplication->status === ApplicationHelper::STATUS_ACCEPTED) {
                                 return 'label label-success';

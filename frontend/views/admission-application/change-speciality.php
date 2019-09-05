@@ -42,11 +42,11 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
 ]); ?>
 
     <div class="card">
-        <fieldset>
+        <fieldset class="hidden">
             <legend style="padding: 8px;">Персональные данные</legend>
             <?= $form->field($admissionApplicationForm, 'iin')->textInput([
                 'maxlength' => 12,
-                'disabled'  => $blockPersonalDataEditing
+                'disabled'  => $blockPersonalDataEditing,
             ]) ?>
             <?= $form->field($admissionApplicationForm, 'firstname')->textInput([
                 'maxlength' => 100,
@@ -111,10 +111,11 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
                 ]); ?>
         </fieldset>
 
-        <fieldset>
+        <fieldset class="hidden">
             <legend style="padding: 8px;">Контактные данные</legend>
             <?= $form->field($admissionApplicationForm, 'email')->textInput([
                 'maxlength' => true,
+                'disabled'  => $blockPersonalDataEditing
             ]) ?>
             <?= $form->field($admissionApplicationForm, 'contact_phone_home')->textInput(['maxlength' => true]) ?>
             <?= $form->field($admissionApplicationForm, 'contact_phone_mobile')->textInput(['maxlength' => true]) ?>
@@ -122,11 +123,11 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
 
         <fieldset>
             <legend style="padding: 8px;">Сведения о поступлении</legend>
-            <?= $form->field($admissionApplicationForm, 'filing_form')->dropDownList([
+            <?= $form->field($admissionApplicationForm, 'filing_form', ['options' => ['class' => 'hidden']])->dropDownList([
                 0 => Yii::t('app', 'Обычным способом'),
                 1 => Yii::t('app', 'Онлайн')
             ], ['disabled' => $blockPersonalDataEditing]) ?>
-            <?= $form->field($admissionApplicationForm, 'education_form')->dropDownList(
+            <?= $form->field($admissionApplicationForm, 'education_form', ['options' => ['class' => 'hidden']])->dropDownList(
                 EducationHelper::getEducationFormTypes(),
                 ['prompt' => Yii::t('app', 'Выбрать'), 'disabled' => $blockPersonalDataEditing]
             ) ?>
@@ -140,23 +141,22 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
                 ),
                 'options'       => [
                     'placeholder' => Yii::t('app', 'Введите поисковый запрос'),
-                    'disabled'    => $blockPersonalDataEditing
                 ],
                 'theme'         => 'default',
                 'pluginOptions' => ['allowClear' => true],
             ]) ?>
-            <?= $form->field($admissionApplicationForm, 'language')->dropDownList(
+            <?= $form->field($admissionApplicationForm, 'language', ['options' => ['class' => 'hidden']])->dropDownList(
                 \common\helpers\LanguageHelper::getLanguageList(),
                 ['prompt' => Yii::t('app', 'Выбрать'), 'disabled' => $blockPersonalDataEditing]
             ) ?>
         </fieldset>
 
         <?= $form->field($admissionApplicationForm,
-            'needs_dormitory')->checkbox(['disabled' => $blockPersonalDataEditing], false) ?>
+            'needs_dormitory', ['options' => ['class' => 'hidden']])->checkbox(['disabled' => $blockPersonalDataEditing], false) ?>
         <?= $form->field($admissionApplicationForm, 'reason_for_dormitory',
             ['options' => ['class' => "form-group" . ($admissionApplicationForm->needs_dormitory ? '' : ' hidden')]])->textInput(['disabled' => $blockPersonalDataEditing]) ?>
 
-        <?= $form->field($admissionApplicationForm, 'education_pay_form')->dropDownList(
+        <?= $form->field($admissionApplicationForm, 'education_pay_form', ['options' => ['class' => 'hidden']])->dropDownList(
             EducationHelper::getPaymentFormTypes(),
             ['prompt' => Yii::t('app', 'Выбрать'), 'disabled' => $blockPersonalDataEditing]
         ) ?>
@@ -202,13 +202,13 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
                             : ' hidden')
                 ]
             ])->textInput(['disabled' => $blockPersonalDataEditing]); ?>
-        <?= $form->field($admissionApplicationForm, 'based_classes')->dropDownList(
+        <?= $form->field($admissionApplicationForm, 'based_classes', ['options' => ['class' => 'hidden']])->dropDownList(
             \common\helpers\ApplicationHelper::getBasedClassesArray(),
             ['prompt' => Yii::t('app', 'Выбрать'), 'disabled' => $blockPersonalDataEditing]
         ) ?>
 
 
-        <fieldset>
+        <fieldset class="hidden">
             <legend style="padding: 8px;">Льготы</legend>
             <?= $form->field($admissionApplicationForm, 'social_statuses', [
                 'horizontalCssClasses' => [

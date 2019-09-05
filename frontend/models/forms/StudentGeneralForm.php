@@ -19,6 +19,7 @@ class StudentGeneralForm extends Model
     public $iin;
     public $nationality_id;
     public $language;
+    public $is_pluralist;
 
     public $credential_type = PersonCredentialHelper::TYPE_EMAIL;
     public $indentity;
@@ -37,6 +38,7 @@ class StudentGeneralForm extends Model
             'iinString'         => [['iin'], 'string', 'min' => 12, 'max' => 12],
 
             ['indentity', 'email', 'skipOnEmpty' => true],
+            ['is_pluralist', 'boolean'],
 
             [['nationality_id', 'iin'], 'required'], // TODO foreign key check
             ['nationality_id', 'integer'],
@@ -61,6 +63,7 @@ class StudentGeneralForm extends Model
             'iin'                 => Yii::t('app', 'Iin'),
             'language'            => Yii::t('app', 'Language of education'),
             'indentity'           => Yii::t('app', 'Email'),
+            'is_pluralist'        => Yii::t('app', 'Is Pluralist'),
         ];
     }
 }

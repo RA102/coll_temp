@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\link\PersonInstitutionLink;
 use common\models\person\Employee;
 use common\models\person\Person;
+use common\models\organization\Institution;
 use common\services\person\PersonContactService;
 use common\services\person\PersonInfoService;
 use common\services\person\PersonLocationService;
@@ -19,6 +20,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\data\ActiveDataProvider;
 
 /**
  * EmployeeController implements the CRUD actions for Employee model.
@@ -43,8 +45,9 @@ class EmployeeController extends Controller
                     [
                         'actions' => [
                             'index',
+                            'pluralist',
                             'view', 'view-contacts', 'view-documents', 'view-authorization',
-                            'create',
+                            'create', 'create-pluralist', 'choose-pluralist',
                             'update', 'update-contacts', 'update-documents',
                             'delete', 'fire', 'move', 'revert', 'process',
                         ],
@@ -103,6 +106,20 @@ class EmployeeController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionPluralist()
+    {
+        $searchModel = new EmployeeSearch($this->institution);
+        $query = $this->institution->getPluralists();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('pluralist', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -198,6 +215,83 @@ class EmployeeController extends Controller
         ]);
     }
 
+    /* создание совместителя, не зарегистрированного в системе*/
+    public function actionCreatePluralist($id = null)
+    {
+        $form = new StudentGeneralForm();
+
+        $person = Employee::findOne($id);
+        $block = false;
+        if ($person !== null) {
+            $form->setAttributes($person->getAttributes());
+            $block = true;
+        }
+
+        if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            if ($person == null) {
+                $model = Employee::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
+                $model->setAttributes($form->attributes);
+
+                $model = $this->personService->create(
+                    $model,
+                    Yii::$app->user->identity->institution->id,
+                    $form->indentity,
+                    $form->credential_type,
+                    Yii::$app->user->identity->activeAccessToken->token,
+                    Yii::$app->user->identity->person_type
+                );
+            } else {
+                try {
+                    //$this->personService->update($person, Yii::$app->user->identity->institution->id);
+                    $person->is_pluralist = 1;
+                    if (!$person->save()) {
+                        throw new \RuntimeException('Saving error.');
+                    }
+
+                    $link = PersonInstitutionLink::findOne(['person_id' => $person->id, 'institution_id' => Yii::$app->user->identity->institution->id]);
+                    if ($link) {
+                        if ($link->is_deleted == true) {
+                            $link->activate();
+                        }
+                        if ($link->is_pluralist == null || $link->is_pluralist == false) {
+                            $link->is_pluralist = true;
+                        }
+                    } else {
+                        $link = PersonInstitutionLink::add($person->id, Yii::$app->user->identity->institution->id, $person->is_pluralist);
+                    }
+                    if (!$link->save()) {
+                        throw new \RuntimeException('Saving error.');
+                    }
+
+                    return $this->redirect(['pluralist']);
+                } catch (\Exception $e) {
+                    Yii::$app->session->setFlash('error', $e->getMessage());
+                    return $this->redirect(['create-pluralist', 'id' => $person->id]);
+                }                
+            }
+
+            return $this->redirect(['employee/pluralist']);
+        }
+
+        return $this->render('create-pluralist', [
+            'model' => $form,
+            'block' => $block
+        ]);
+    }
+
+    /* выбрать совместителя из системы */
+    public function actionChoosePluralist()
+    {
+        $searchModel = new EmployeeSearch($this->institution);
+        $searchModel->status = Employee::STATUS_ACTIVE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, false);        
+
+        return $this->render('choose-pluralist', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Updates an existing EmployeeEmployee model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -210,6 +304,7 @@ class EmployeeController extends Controller
         $model = $this->findModel($id);
         $form = new StudentGeneralForm();
         $form->setAttributes($model->attributes);
+        $form->birth_date = date('d-m-Y', strtotime($form->birth_date));
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model->setAttributes($form->attributes);

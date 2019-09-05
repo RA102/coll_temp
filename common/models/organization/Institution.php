@@ -10,6 +10,8 @@ use common\models\Course;
 use common\models\handbook\Speciality;
 use common\models\link\PersonInstitutionLink;
 use common\models\person\Person;
+use common\models\person\Employee;
+use common\models\person\Student;
 use common\models\Street;
 use Yii;
 use yii\db\ActiveQuery;
@@ -198,6 +200,41 @@ class Institution extends \yii\db\ActiveRecord
     public function getPersonInstitutionLinks()
     {
         return $this->hasMany(PersonInstitutionLink::class, ['institution_id' => 'id']);
+    }
+
+    public function getEmployees()
+    {
+        return $this->hasMany(Employee::className(), ['id' => 'person_id'])
+            ->andOnCondition(['status' => 1])
+            ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+            });        
+    }
+
+    public function getEmployeesOther()
+    {
+        return Employee::find()
+            ->joinWith('institutions')
+            ->where(['!=', 'institution_id', $this->id]);
+    }
+
+    public function getPluralists()
+    {
+        return $this->hasMany(Employee::className(), ['id' => 'person_id'])
+            ->andOnCondition(['status' => 1])
+            ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+                $query->andWhere(['link.person_institution_link.is_pluralist' => true]);
+            });                
+    }
+
+    public function getStudents()
+    {
+        return $this->hasMany(Student::className(), ['id' => 'person_id'])
+            ->andOnCondition(['status' => 1])
+            ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+            });        
     }
 
     public function getYearList()

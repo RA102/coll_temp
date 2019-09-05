@@ -7,6 +7,7 @@ use common\helpers\ApplicationHelper;
 use common\helpers\PersonCredentialHelper;
 use common\helpers\PersonTypeHelper;
 use common\models\link\StudentGroupLink;
+use common\models\link\PersonInstitutionLink;
 use common\models\person\Entrant;
 use common\models\person\Person;
 use common\models\reception\AdmissionApplication;
@@ -80,6 +81,23 @@ class AdmissionApplicationService
         return $admissionApplication;
     }
 
+    public function changeSpeciality(
+        int $id,
+        AdmissionApplicationForm $admissionApplicationForm
+    ): AdmissionApplication {
+        $admissionApplication = AdmissionApplication::findOne($id);
+        if (!$admissionApplication) {
+            throw new \Exception('Not Found');
+        }
+
+        $admissionApplication->properties['speciality_id'] = $admissionApplicationForm->speciality_id;
+        if (!$admissionApplication->save()) {
+            throw new \Exception('Saving Error');
+        }
+
+        return $admissionApplication;
+    }
+
     /**
      * @param int $id
      * @param int $status
@@ -128,19 +146,23 @@ class AdmissionApplicationService
         if (!$admissionApplication) {
             throw new \Exception('Not Found');
         }
-        if ($admissionApplication->status !== ApplicationHelper::STATUS_CREATED) {
+        if ($admissionApplication->status !== ApplicationHelper::STATUS_CREATED && $admissionApplication->status !== ApplicationHelper::STATUS_ACCEPTED) {
             throw new \Exception('Forbidden');
         }
         $admissionApplication->status = ApplicationHelper::STATUS_ACCEPTED;
 
-        $entrant = Entrant::add(
-            null,
-            $admissionApplication->properties['firstname'],
-            $admissionApplication->properties['lastname'],
-            $admissionApplication->properties['middlename'],
-            $admissionApplication->properties['iin']
-        );
-        $entrant->setAttributes($admissionApplication->properties);
+        if (Entrant::find()->where(['id' => $admissionApplication->person_id])->one() == null) {
+            $entrant = Entrant::add(
+                null,
+                $admissionApplication->properties['firstname'],
+                $admissionApplication->properties['lastname'],
+                $admissionApplication->properties['middlename'],
+                $admissionApplication->properties['iin']
+            );
+            $entrant->setAttributes($admissionApplication->properties);
+        } else {
+            $entrant = Entrant::find()->where(['id' => $admissionApplication->person_id])->one();
+        }
 
         $this->transactionManager->execute(function () use (
             $entrant,
@@ -148,20 +170,28 @@ class AdmissionApplicationService
             &$admissionApplication,
             $reception_group_id
         ) {
-            $person = $this->personService->create(
-                $entrant,
-                $admissionApplication->institution_id,
-                $admissionApplication->properties['email'],
-                PersonCredentialHelper::TYPE_EMAIL,
-                $user->activeAccessToken->token,
-                $user->person_type
-            );
+            if (Entrant::find()->where(['id' => $admissionApplication->person_id])->one() == null) {
+                $person = $this->personService->create(
+                    $entrant,
+                    $admissionApplication->institution_id,
+                    $admissionApplication->properties['email'],
+                    PersonCredentialHelper::TYPE_EMAIL,
+                    $user->activeAccessToken->token,
+                    $user->person_type
+                );
+            } else {
+                $person = Entrant::find()->where(['id' => $admissionApplication->person_id])->one();
+            }
 
             $admissionApplication->person_id = $person->id;
             if (!$admissionApplication->save()) {
                 throw new \Exception('Saving error');
             }
 
+            if (EntrantReceptionGroupLink::find()->where(['entrant_id' => $person->id])->one() !== null) {
+                EntrantReceptionGroupLink::find()->where(['entrant_id' => $person->id])->one()->delete();
+            }
+            
             $entrantReceptionGroupLink = EntrantReceptionGroupLink::add(
                 $person->id,
                 $reception_group_id
@@ -230,13 +260,31 @@ class AdmissionApplicationService
             throw new \Exception('Admission application not found');
         }
 
+
+        /* TODO: переписать нормально + удалить из pds */
+        /*$entrant = Person::find()->where(['id' => $admissionApplication->person_id])->one();
+        if ($entrant !== null) {
+            $entrantReceptionGroupLink = EntrantReceptionGroupLink::find()->where(['entrant_id' => $admissionApplication->person_id])->one();
+            if (!empty($entrantReceptionGroupLink)) {
+                $entrantReceptionGroupLink->delete();
+            }
+            $personInstitutionLink = PersonInstitutionLink::find()->where(['person_id' => $admissionApplication->person_id])->one();
+            if (!empty($personInstitutionLink)) {
+                $personInstitutionLink->delete();
+            }
+        }*/
+
         $admissionApplication->status = ApplicationHelper::STATUS_DELETED;
         $admissionApplication->is_deleted = true;
         $admissionApplication->delete_ts = date("Y-m-d H:i:s");
-
+        $admissionApplication->person_id = null;
+   
         if (!$admissionApplication->save()) {
             throw new \Exception('Saving error');
         }
+
+        //$entrant->delete();
+
 
         return $admissionApplication;
     }

@@ -31,7 +31,7 @@ $this->title = Yii::t('app', 'Order of admission to entrance exams');
                     'language' => 'ru',
                     'pluginOptions' => [
                         'autoclose' => true,
-                        'format' => 'yyyy-mm-dd'
+                        'format' => 'dd-mm-yyyy'
                     ]
                 ]); ?>
             </div>

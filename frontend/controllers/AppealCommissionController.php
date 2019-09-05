@@ -67,8 +67,8 @@ class AppealCommissionController extends Controller
 
         $model = new AppealCommission();
         $model->commission_id = $id;
-        $model->from_date = $commission->from_date;
-        $model->to_date = $commission->to_date;
+        $model->from_date = date('d-m-Y', strtotime($commission->from_date));
+        $model->to_date = date('d-m-Y', strtotime($commission->to_date));
         $model->caption = $commission->caption;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

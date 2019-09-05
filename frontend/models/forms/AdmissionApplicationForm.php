@@ -178,11 +178,11 @@ class AdmissionApplicationForm extends Model
             '!nationaltity_id',
             '!citizenship_location',
 
-            '!email',
+            'email',
 
             '!filing_form',
             '!education_form',
-            '!speciality_id',
+            'speciality_id',
             '!language',
 
             '!needs_dormitory',
