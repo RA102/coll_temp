@@ -16,17 +16,13 @@ use Yii;
  *
  * @property int $id
  * @property int $type
- * @property int $student_id
+ * @property int $institution_id
  * @property int $group_id
- * @property int $lesson_id
  * @property int $teacher_id
- * @property int $course_id
- * @property string $date
- * @property string $topic
- * @property int $mark
+ * @property int $teacher_course_id
  *
  */
-class Classroom extends \yii\db\ActiveRecord
+class Journal extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -42,8 +38,7 @@ class Classroom extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'student_id', 'group_id', 'lesson_id', 'teacher_id', 'course_id', 'mark'], 'integer'],
-            [['date', 'topic'], 'string'],
+            [['type', 'institution_id', 'group_id', 'teacher_id', 'teacher_course_id',], 'integer'],
             [['type'], 'required'],
         ];
     }
@@ -55,15 +50,20 @@ class Classroom extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'type' => Yii::t('app', 'Type ID'),
-            'student_id' => Yii::t('app', 'Student ID'),
+            'type' => Yii::t('app', 'Type'),
+            'institution_id' => Yii::t('app', 'Institution ID'),
             'group_id' => Yii::t('app', 'Group ID'),
             'lesson_id' => Yii::t('app', 'Lesson ID'),
             'teacher_id' => Yii::t('app', 'Teacher ID'),
-            'course_id' => Yii::t('app', 'Course ID'),
-            'mark' => Yii::t('app', 'Mark'),
-            'date' => Yii::t('app', 'Date'),
-            'topic' => Yii::t('app', 'Topic'),
+            'teacher_course_id' => Yii::t('app', 'Course ID'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeacherCourse()
+    {
+        return $this->hasOne(TeacherCourse::class, ['id' => 'teacher_course_id']);
     }
 }

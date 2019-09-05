@@ -2,24 +2,29 @@
 
 namespace frontend\controllers;
 
+use common\models\organization\Journal;
 use common\models\organization\Classroom;
 use frontend\search\ClassroomSearch;
 use common\models\person\Person;
 use common\models\person\Student;
+use common\models\TeacherCourse;
 use common\services\organization\GroupService;
 use common\services\person\PersonService;
+use common\services\person\EmployeeService;
+use common\models\organization\Group;
 use frontend\models\forms\GroupAllocationForm;
 use frontend\search\StudentSearch;
 use frontend\search\GroupSearch;
 use Yii;
-use common\models\organization\Group;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\ServerErrorHttpException;
 
 /**
  * GroupController implements the CRUD actions for Group model.
@@ -28,12 +33,20 @@ class JournalController extends Controller
 {
     public $groupService;
     private $personService;
+    private $employeeService;
 
-    public function __construct(string $id, $module, GroupService $groupService, PersonService $personService, array $config = [])
-    {
+    public function __construct(
+        string $id, 
+        $module, 
+        GroupService $groupService, 
+        PersonService $personService, 
+        EmployeeService $employeeService,
+        array $config = []
+    ) {
         parent::__construct($id, $module, $config);
         $this->groupService = $groupService;
         $this->personService = $personService;
+        $this->employeeService = $employeeService;
     }
 
     /**
@@ -77,43 +90,67 @@ class JournalController extends Controller
     }
 
     /**
-     * Displays a single Group model.
+     * Displays a single Journal model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($group_id)
     {
-        $studentsSearch = new StudentSearch();
-        $studentsSearch->formName = 'withGroup';
-        $studentsSearch->institution_id = Yii::$app->user->identity->institution->id;
-        $studentsSearch->group_id = $id;
-        $studentsDataProvider = $studentsSearch->search(Yii::$app->request->queryParams);
+        $journals = Journal::find()->where(['group_id' => $group_id])->all();
+        $group = Group::findOne($group_id);
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'studentsSearch' => $studentsSearch,
-            'studentsDataProvider' => $studentsDataProvider
+            'journals' => $journals,
+            'group' => $group,
         ]);
     }
 
     /**
-     * Creates a new Group model.
+     * Creates a new Journal model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($group_id)
     {
-        $model = new Classroom();
+        $group = Group::findOne($group_id);
+
+        $types = [
+            '1' => 'журнал теоретического обучения',
+            '2' => 'журнал курсовых проектов',
+            '3' => 'журнал контрольных работ',
+        ];
+
+        $model = new Journal();
         $model->institution_id = Yii::$app->user->identity->institution->id;
+        $model->group_id = $group_id;
+
+        $teacherCourses = TeacherCourse::find()->joinWith([
+            /** @see TeacherCourse::getGroups() */
+            'groups' => function (ActiveQuery $query) use ($group) {
+                $query->andWhere(['group.id' => $group->id]);
+            }
+        ])->all();
+
+        $classrooms = Classroom::find()->where(['institution_id' => Yii::$app->user->identity->institution->id])->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            //return $this->redirect(['index']);
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+
         }
 
         return $this->render('create', [
             'model' => $model,
+            'teacherCourses' => $teacherCourses,
+            'teachers' => $this->employeeService->getTeachers(\Yii::$app->user->identity->institution),
+            'types' => $types,
         ]);
+    }
+
+    public function actionSingle()
+    {
+        throw new ServerErrorHttpException('Failed to update the object for unknown reason.');
     }
 
     /**
@@ -164,7 +201,7 @@ class JournalController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Classroom::findOne($id)) !== null) {
+        if (($model = Journal::findOne($id)) !== null) {
             return $model;
         }
 

@@ -7,22 +7,22 @@ use common\models\organization\Group;
 use common\models\organization\Institution;
 use common\models\organization\Classroom;
 use common\models\TeacherCourse;
+use common\models\Lesson;
 use common\services\organization\GroupService;
 use common\services\person\EmployeeService;
 use frontend\models\forms\LessonForm;
 use frontend\models\forms\LessonCopyForm;
 use frontend\search\GroupSearch;
-use Yii;
-use common\models\Lesson;
 use frontend\search\LessonSearch;
-use yii\db\ActiveQuery;
-use yii\filters\AccessControl;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\web\Response;
+use Yii;
 use yii\base\Module;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * LessonController implements the CRUD actions for Lesson model.

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel frontend\search\GroupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Groups');
+$this->title = 'Журнал';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-body">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
@@ -43,7 +42,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'class',
 
-                ['class' => 'yii\grid\ActionColumn'],
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}{update}{delete}',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['view', 'group_id' => $model->id], [
+                                    'title' => Yii::t('app', 'lead-view'),
+                            ]);
+                        },
+
+                        'update' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                        'title' => Yii::t('app', 'lead-update'),
+                            ]);
+                        },
+                        'delete' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                        'title' => Yii::t('app', 'lead-delete'),
+                            ]);
+                        }
+                    ],
+                ],
             ],
         ]); ?>
     </div>
