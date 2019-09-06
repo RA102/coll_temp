@@ -20,22 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <p><a href="/lesson/var-two-classroom?classroom_id=<?=$model->id?>">расписание II</a></p>
 </div>
 
-<div class="skin-white">
-    <p><b>Часов в неделю: </b><?= $dataProvider->totalCount ?></p>
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-
-                'id',
-
-                ['class' => 'yii\grid\ActionColumn'],
-            ],
-        ]); ?>
-
-</div>
-
 <div class="lesson-index skin-white">
     <div class="card-body">
         <div id="teacher-calendar" class="fc fc-unthemed fc-ltr"></div>

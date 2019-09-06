@@ -150,7 +150,7 @@ class JournalController extends Controller
 
     public function actionSingle()
     {
-        throw new ServerErrorHttpException('Failed to update the object for unknown reason.');
+        return 'РАЗДЕЛ В РАЗРАБОТКЕ';
     }
 
     /**
