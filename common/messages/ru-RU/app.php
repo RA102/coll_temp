@@ -116,6 +116,8 @@ return [
     'Organization'                         => 'Организация',
     'Country unit'                         => 'Населенный пункт',
     'Institutions'                         => 'Колледжи',
+    'Classroom ID'                         => 'Аудитория',
+    'Copy'                                 => 'Продублировать',
 
     // APPLICATIONS
     'Street'                               => 'Улица',

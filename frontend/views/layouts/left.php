@@ -78,7 +78,12 @@
                             [
                                 'label' => Yii::t('app', 'Расписание'),
                                 'icon'  => 'dashboard',
-                                'url'   => ['/lesson/groups']
+                                'url'   => ['/lesson/index']
+                            ],
+                            [
+                                'label' => Yii::t('app', 'Журнал'),
+                                'icon'  => 'dashboard',
+                                'url'   => ['/journal/index']
                             ],
                             [
                                 'label' => Yii::t('app', 'Распределение'),
@@ -117,6 +122,11 @@
                                 'label' => Yii::t('app', 'Организация'),
                                 'icon'  => 'file-code-o',
                                 'url'   => ['/institution']
+                            ],
+                            [
+                                'label' => Yii::t('app', 'Аудитории'),
+                                'icon'  => 'file-code-o',
+                                'url'   => ['/classroom']
                             ],
 //                            ['label' => Yii::t('app','Система рейтинга'), 'icon' => 'file-code-o', 'url' => ['/']],
                         ],

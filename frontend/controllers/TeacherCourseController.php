@@ -152,6 +152,8 @@ class TeacherCourseController extends Controller
         $form->setAttributes($teacherCourse->getAttributes());
         $group_ids = ArrayHelper::getColumn($teacherCourse->getGroups()->all(), 'id');
         $form->group_ids = $group_ids;
+        $form->start_ts = date('d.m.Y', strtotime($teacherCourse->start_ts));
+        $form->end_ts = date('d.m.Y', strtotime($teacherCourse->end_ts));
 
         if ($form->load(Yii::$app->request->post())) {
             $teacherCourse->setAttributes($form->getAttributes());
