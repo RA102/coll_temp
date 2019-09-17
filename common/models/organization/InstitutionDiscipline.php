@@ -4,6 +4,7 @@ namespace common\models\organization;
 
 use common\helpers\SchemeHelper;
 use common\models\Discipline;
+use common\models\person\Employee;
 use Yii;
 use yii\db\ArrayExpression;
 
@@ -19,6 +20,7 @@ use yii\db\ArrayExpression;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ * @property int[] $teachers
  *
  * @property Institution $institution
  * @property Discipline $discipline
@@ -51,6 +53,10 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
             $this->types = $this->types->getValue();
         }
 
+        if ($this->teachers instanceof ArrayExpression) {
+            $this->teachers = $this->teachers->getValue();
+        }
+
         $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
         $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
         $this->caption_ru = $this->caption['ru'];
@@ -76,8 +82,10 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
             [['institution_id'], 'required'],
             [['institution_id', 'status'], 'default', 'value' => null],
             [['types'], 'default', 'value' => []],
+            [['teachers'], 'default', 'value' => []],
             [['institution_id', 'status'], 'integer'],
             [['types'], 'each', 'rule' => ['integer']],
+            [['teachers'], 'each', 'rule' => ['integer']],
             [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
             [['slug'], 'string', 'max' => 255],
             [['caption_ru', 'caption_kk'], 'string'],
@@ -102,6 +110,7 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
+            'teachers' => Yii::t('app', 'Teachers'),
         ];
     }
 
@@ -120,5 +129,15 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
     public function getDiscipline()
     {
         return $this->hasOne(Discipline::class, ['id' => 'discipline_id']);
+    }
+
+
+    /**
+     * @deprecated
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeachers()
+    {
+        return Employee::find()->where(['id' => $this->teachers])->all();
     }
 }

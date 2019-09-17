@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <table class="table table-bordered table-striped">
             <?php foreach ($journals as $journal):?>
                 <tr>
-                    <td><a href="single"><?=$journal->teacherCourse->course->caption_current?></a></td>
+                    <td><a href="single?group_id=<?=$group->id?>"><?=$journal->teacherCourse->course->caption_current?></a></td>
                 </tr>
             <?php endforeach;?>
         </table>

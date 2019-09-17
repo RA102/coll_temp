@@ -53,6 +53,20 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
 
+        <hr>
+
+        <h4>Преподаватели</h4>
+        <?= \yii\grid\GridView::widget([
+            'summary'      => false,
+            'showHeader'   => false,
+            'dataProvider' => new \yii\data\ArrayDataProvider([
+                'models' => $model->getTeachers()
+            ]),
+            'columns'      => [
+                'fullName'
+            ]
+        ]) ?>
+
     </div>
 <?php $this->endBlock() ?>
 <?= $this->render('_layout') ?>

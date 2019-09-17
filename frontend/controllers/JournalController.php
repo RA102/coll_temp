@@ -148,9 +148,11 @@ class JournalController extends Controller
         ]);
     }
 
-    public function actionSingle()
+    public function actionSingle($group_id)
     {
-        return 'РАЗДЕЛ В РАЗРАБОТКЕ';
+        $group = Group::findOne($group_id);
+
+        return $this->render('single', ['group' => $group]);
     }
 
     /**
