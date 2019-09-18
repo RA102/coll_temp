@@ -12,14 +12,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div style="position: relative;">
     <h1><?= Html::encode($this->title) ?></h1>
-    <?= Html::a('Добавить', ['create', 'group_id' => $group->id], ['class' => 'title-action btn btn-primary']) ?>
+    <!-- <?= Html::a('Добавить', ['create', 'group_id' => $group->id], ['class' => 'title-action btn btn-primary']) ?> -->
 </div>
 <div class="card">
     <div class="card-body">
         <table class="table table-bordered table-striped">
-            <?php foreach ($journals as $journal):?>
+            <tr>
+                <th>Предмет</th>
+                <th>Преподаватель</th>
+            </tr>
+            <?php foreach ($teacherCourses as $teacherCourse):?>
                 <tr>
-                    <td><a href="single?group_id=<?=$group->id?>"><?=$journal->teacherCourse->course->caption_current?></a></td>
+                    <td><?= Html::a($teacherCourse->course->institutionDiscipline->caption_current, ['single', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], ['class' => '']) ?>                        
+                    </td>
+                    <td><?=$teacherCourse->person->getFullname()?></td>
                 </tr>
             <?php endforeach;?>
         </table>

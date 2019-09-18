@@ -7,6 +7,7 @@ use common\models\organization\Classroom;
 use frontend\search\ClassroomSearch;
 use common\models\person\Person;
 use common\models\person\Student;
+use common\models\Lesson;
 use common\models\TeacherCourse;
 use common\services\organization\GroupService;
 use common\services\person\PersonService;
@@ -17,6 +18,7 @@ use frontend\search\StudentSearch;
 use frontend\search\GroupSearch;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\db\ActiveQuery;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
@@ -97,12 +99,31 @@ class JournalController extends Controller
      */
     public function actionView($group_id)
     {
-        $journals = Journal::find()->where(['group_id' => $group_id])->all();
+        //$journals = Journal::find()->where(['group_id' => $group_id])->all();
         $group = Group::findOne($group_id);
+        $teacherCourses = $group->teacherCourses;
 
         return $this->render('view', [
-            'journals' => $journals,
+            //'journals' => $journals,
             'group' => $group,
+            'teacherCourses' => $teacherCourses,
+        ]);
+    }
+
+    public function actionSingle($group_id, $teacher_course_id)
+    {
+        $group = Group::findOne($group_id);
+        /*$dataProvider = new ArrayDataProvider([
+            'allModels' => $group->students,
+        ]);*/
+        $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+        $lessons = Lesson::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id])->orderBy(['date_ts' => SORT_ASC])->all();
+
+        return $this->render('single', [
+            'group' => $group,
+            'teacherCourse' => $teacherCourse,
+            'lessons' => $lessons,
+            //'dataProvider' => $dataProvider
         ]);
     }
 
@@ -146,13 +167,6 @@ class JournalController extends Controller
             'teachers' => $this->employeeService->getTeachers(\Yii::$app->user->identity->institution),
             'types' => $types,
         ]);
-    }
-
-    public function actionSingle($group_id)
-    {
-        $group = Group::findOne($group_id);
-
-        return $this->render('single', ['group' => $group]);
     }
 
     /**

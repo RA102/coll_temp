@@ -19,8 +19,9 @@ $(document).ready(function () {
         selectHelper: true,
         slotLabelFormat: 'HH:mm',
         slotLabelInterval: '01:00',
-        slotDuration: '01:00',
+        slotDuration: '00:30',
         minTime: '07:00',
+        //displayEventTime: false, // uncomment if time isn't needed
         maxTime: '23:00',
         timeFormat: 'HH:mm',
         select: function (start, end) {
@@ -82,7 +83,8 @@ $(document).ready(function () {
         },
         eventRender: function (event, element, view) {
             if (event.hasOwnProperty('groups')) {
-                element.find('.fc-title').append("<br/>" + "<small>" + event.groups.join(", ") + "</small>");
+                //element.find('.fc-title').append("<br/>" + "<small>" + event.groups.join(", ") + "</small>");
+                element.find('.fc-title').append();
             }
         }
     });

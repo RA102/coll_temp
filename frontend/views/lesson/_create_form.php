@@ -27,13 +27,13 @@ use yii\web\View;
                 <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
                 <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
-                    'data' => ArrayHelper::map($teacherCourses, 'id', 'fullname'), /** @see \common\models\TeacherCourse::getFullname() */
+                    'data' => ArrayHelper::map($teacherCourses, 'id', 'disciplineName'), /** @see \common\models\TeacherCourse::getFullname() */
                     'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
                     'theme' => 'default',
                     'pluginOptions' => [
                         'allowClear' => true,
                     ],
-                ]) ?>
+                ])->label('Предмет') ?>
 
                 <?= $form->field($model, 'teacher_id')->widget(Select2::class, [
                     'data' => ArrayHelper::map($teachers, 'id', 'fullName'), // TODO rework to ajax

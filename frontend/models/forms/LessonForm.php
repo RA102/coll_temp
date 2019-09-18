@@ -70,7 +70,7 @@ class LessonForm extends Model
         $model->start = $startDate->format(DATE_ATOM);
         $model->end = $endDate->format(DATE_ATOM);
 
-        $model->title = $lesson->teacherCourse->getFullname();
+        $model->title = $lesson->teacherCourse->course->institutionDiscipline->caption_current;
         $model->groups = array_map(function (Group $group) {
             return $group->caption_current;
         }, $lesson->teacherCourse->groups);
