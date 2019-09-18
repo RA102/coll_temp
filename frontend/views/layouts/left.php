@@ -76,6 +76,11 @@
                         'items' => [
                             ['label' => Yii::t('app', 'Группы'), 'icon' => 'file-code-o', 'url' => ['/group']],
                             [
+                                'label' => Yii::t('app', 'Планирование учебного процесса'),
+                                'icon'  => 'dashboard',
+                                'url'   => ['/plan/index']
+                            ],
+                            [
                                 'label' => Yii::t('app', 'Расписание'),
                                 'icon'  => 'dashboard',
                                 'url'   => ['/lesson/index']

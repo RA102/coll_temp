@@ -19,6 +19,7 @@ class StudentGeneralForm extends Model
     public $iin;
     public $nationality_id;
     public $language;
+    public $person_type;
     public $is_pluralist;
 
     public $credential_type = PersonCredentialHelper::TYPE_EMAIL;
@@ -44,6 +45,8 @@ class StudentGeneralForm extends Model
             ['nationality_id', 'integer'],
             ['language', 'required'],
             ['language', 'string', 'min' => 2, 'max' => 2],
+            ['person_type', 'default', 'value' => null],
+            ['person_type', 'string', 'max' => 100],
         ];
     }
 
@@ -64,6 +67,7 @@ class StudentGeneralForm extends Model
             'language'            => Yii::t('app', 'Language of education'),
             'indentity'           => Yii::t('app', 'Email'),
             'is_pluralist'        => Yii::t('app', 'Is Pluralist'),
+            'person_type'         => Yii::t('app', 'Person Type'),
         ];
     }
 }

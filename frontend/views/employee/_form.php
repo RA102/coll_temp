@@ -76,6 +76,17 @@ use kartik\select2\Select2;
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'person_type')->widget(Select2::class, [
+                'data' => PersonTypeHelper::getList(),
+                'options' => ['placeholder' => ''],
+                'theme' => 'default',
+            ]) ?>
+        </div>
+    </div>
+
+
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

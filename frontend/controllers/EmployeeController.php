@@ -302,6 +302,7 @@ class EmployeeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $person = \Yii::$app->user->identity;
         $form = new StudentGeneralForm();
         $form->setAttributes($model->attributes);
         $form->birth_date = date('d-m-Y', strtotime($form->birth_date));
@@ -321,6 +322,7 @@ class EmployeeController extends Controller
         return $this->render('update/update', [
             'form' => $form,
             'model' => $model,
+            'person' => $person,
         ]);
     }
 

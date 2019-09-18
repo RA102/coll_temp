@@ -7,17 +7,33 @@ use yii\grid\GridView;
 $this->title = 'Журнал ' . $group->caption_current;
 ?>
 
-<p>Группа: <?=$group->caption_current?> <br>
-    Предмет: <?=$teacherCourse->course->institutionDiscipline->caption_current?> <br>
-    Преподаватель: <?=$teacherCourse->person->getFullname()?> <br>
-    Начало курса: <?=date('d-m-Y', strtotime($teacherCourse->start_ts))?> <br>
-    Окончание курса: <?=date('d-m-Y', strtotime($teacherCourse->end_ts))?>
-</p>
 
 <div class="card">
 	<div class="card-header">
+		<table class="table table-bordered">
+			<tr>
+				<th>Группа:</th>
+				<td><?=$group->caption_current?></td>
+			</tr>
+			<tr>
+				<th>Предмет:</th>
+				<td><?=$teacherCourse->course->institutionDiscipline->caption_current?></td>
+			</tr>
+			<tr>
+				<th>Преподаватель:</th> 
+				<td><?=$teacherCourse->person->getFullname()?> </td>
+			</tr>
+			<tr>
+		    	<th>Начало курса:</th> 
+		    	<td><?=date('d-m-Y', strtotime($teacherCourse->start_ts))?></td>
+		    </tr>
+		    <tr>
+		    	<th>Окончание курса:</th> 
+		    	<td><?=date('d-m-Y', strtotime($teacherCourse->end_ts))?></td>
+		    </tr>
+		</table>
         <ul class="nav nav-tabs">
-            <li role="presentation">
+            <li role="presentation" class="active">
                 <?= Html::a('Теоретическое обучение', ['pluralist'], []) ?>
             </li>
             <li role="presentation">
