@@ -82,9 +82,11 @@ class LessonForm extends Model
     {
         $startDate = \DateTime::createFromFormat('Y-m-d H:i:s', $this->start);
         $endDate = \DateTime::createFromFormat('Y-m-d H:i:s', $this->end);
+        $teacherCourse = TeacherCourse::findOne($this->teacher_course_id);
 
         $lesson->teacher_course_id = $this->teacher_course_id;
-        $lesson->teacher_id = $this->teacher_id;
+        //$lesson->teacher_id = $this->teacher_id;
+        $lesson->teacher_id = $teacherCourse->teacher_id;
         $lesson->date_ts = $startDate->format('Y-m-d H:i:s');
         $lesson->duration = ($endDate->getTimestamp() - $startDate->getTimestamp()) / 60;
         $lesson->group_id = $this->group_id;

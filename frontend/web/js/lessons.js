@@ -62,7 +62,7 @@ $(document).ready(function () {
             modal.find('#start').val(event.start.format('YYYY-MM-DD HH:mm:ss'));
             modal.find('#end').val(event.end.format('YYYY-MM-DD HH:mm:ss'));
             modal.find('#teacher_course_id').val(event.teacher_course_id).trigger("change");
-            modal.find('#teacher_id').val(event.teacher_id).trigger("change");
+            //modal.find('#teacher_id').val(event.teacher_id).trigger("change");
             modal.find('#id').val(event.id);
             modal.find('#group_id').val(event.group_id);
             modal.find('#classroom_id').val(event.classroom_id).trigger("change");
@@ -141,7 +141,7 @@ modalForm.on('beforeSubmit', function (e) {
         data: {
             id: $('#id').val(),
             teacher_course_id: $('#teacher_course_id').val(),
-            teacher_id: $('#teacher_id').val(),
+            //teacher_id: $('#teacher_id').val(),
             start: $('#start').val(),
             end: $('#end').val(),
             group_id: $('#group_id').val(),
