@@ -97,29 +97,41 @@ class JournalController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($group_id)
+    public function actionGroup($group_id)
     {
-        //$journals = Journal::find()->where(['group_id' => $group_id])->all();
         $group = Group::findOne($group_id);
         $teacherCourses = $group->teacherCourses;
 
-        return $this->render('view', [
-            //'journals' => $journals,
+        return $this->render('group', [
             'group' => $group,
             'teacherCourses' => $teacherCourses,
         ]);
     }
 
-    public function actionSingle($group_id, $teacher_course_id)
+    public function actionView($group_id, $teacher_course_id, $type)
     {
         $group = Group::findOne($group_id);
         /*$dataProvider = new ArrayDataProvider([
             'allModels' => $group->students,
         ]);*/
         $teacherCourse = TeacherCourse::findOne($teacher_course_id);
-        $lessons = Lesson::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id])->orderBy(['date_ts' => SORT_ASC])->all();
+        $lessons = Lesson::find()
+                    ->where(['group_id' => $group_id])
+                    ->andWhere(['teacher_course_id' => $teacher_course_id])
+                    ->orderBy(['date_ts' => SORT_ASC])
+                    ->all();
 
-        return $this->render('single', [
+        if ($type == 1) {
+            $page = 'theory';
+        } 
+        elseif ($type == 2) {
+            $page = 'practical';
+        }
+        elseif ($type == 3) {
+            $page = 'exam';
+        }
+
+        return $this->render($page, [
             'group' => $group,
             'teacherCourse' => $teacherCourse,
             'lessons' => $lessons,
