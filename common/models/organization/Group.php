@@ -191,6 +191,6 @@ class Group extends \yii\db\ActiveRecord
      */
     public function getStudents()
     {
-        return $this->hasMany(Student::class, ['id' => 'student_id'])->via('studentGroupLinks');
+        return $this->hasMany(Student::class, ['id' => 'student_id'])->via('studentGroupLinks')->orderBy(['lastname' => SORT_ASC]);
     }
 }

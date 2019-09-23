@@ -29,11 +29,13 @@ use yii\widgets\ActiveForm;
 
     <?php 
     foreach ($all_days as $day) {
-        echo $form->field($model, 'dates')->checkbox(
-            [
-                'name' => "Date[$all_days[$day]]",
-                'value' => $day,
-            ], false)->label($day);
+        if ($day !== date('Y-m-d', strtotime($model->date_ts))) {
+            echo $form->field($model, 'dates')->checkbox(
+                [
+                    'name' => "Date[$all_days[$day]]",
+                    'value' => $day,
+                ], false)->label(date('d-m-Y', strtotime($day)));
+        }
     }
     ?>
 

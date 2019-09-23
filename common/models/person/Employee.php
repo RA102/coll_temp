@@ -4,6 +4,7 @@ namespace common\models\person;
 
 use common\helpers\PersonTypeHelper;
 use common\models\CommissionMemberLink;
+use common\models\organization\InstitutionDiscipline;
 use common\models\reception\Commission;
 
 /**
@@ -61,4 +62,14 @@ class Employee extends Person
     {
         return $this->hasMany(CommissionMemberLink::class, ['employee_id' => 'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInstitutionDisciplines()
+    {
+        return $this->hasMany(InstitutionDiscipline::class, ['teachers' => 'id']);
+    }
+
+    
 }

@@ -7,6 +7,7 @@ use common\models\organization\Classroom;
 use frontend\search\ClassroomSearch;
 use common\models\person\Person;
 use common\models\person\Student;
+use common\models\Lesson;
 use common\models\TeacherCourse;
 use common\services\organization\GroupService;
 use common\services\person\PersonService;
@@ -17,6 +18,7 @@ use frontend\search\StudentSearch;
 use frontend\search\GroupSearch;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\db\ActiveQuery;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
@@ -95,14 +97,45 @@ class JournalController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($group_id)
+    public function actionGroup($group_id)
     {
-        $journals = Journal::find()->where(['group_id' => $group_id])->all();
         $group = Group::findOne($group_id);
+        $teacherCourses = $group->teacherCourses;
 
-        return $this->render('view', [
-            'journals' => $journals,
+        return $this->render('group', [
             'group' => $group,
+            'teacherCourses' => $teacherCourses,
+        ]);
+    }
+
+    public function actionView($group_id, $teacher_course_id, $type)
+    {
+        $group = Group::findOne($group_id);
+        /*$dataProvider = new ArrayDataProvider([
+            'allModels' => $group->students,
+        ]);*/
+        $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+        $lessons = Lesson::find()
+                    ->where(['group_id' => $group_id])
+                    ->andWhere(['teacher_course_id' => $teacher_course_id])
+                    ->orderBy(['date_ts' => SORT_ASC])
+                    ->all();
+
+        if ($type == 1) {
+            $page = 'theory';
+        } 
+        elseif ($type == 2) {
+            $page = 'practical';
+        }
+        elseif ($type == 3) {
+            $page = 'exam';
+        }
+
+        return $this->render($page, [
+            'group' => $group,
+            'teacherCourse' => $teacherCourse,
+            'lessons' => $lessons,
+            //'dataProvider' => $dataProvider
         ]);
     }
 
@@ -111,46 +144,59 @@ class JournalController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($group_id)
+    public function actionCreate($group_id, $date, $teacher_course_id, $type)
     {
         $group = Group::findOne($group_id);
 
         $types = [
-            '1' => 'журнал теоретического обучения',
-            '2' => 'журнал курсовых проектов',
-            '3' => 'журнал контрольных работ',
+            '1' => 'Журнал теоретического обучения',
+            '2' => 'Журнал курсовых проектов, лабораторно-практических и графических работ',
+            '3' => 'Журнал контрольных работ',
         ];
 
-        $model = new Journal();
-        $model->institution_id = Yii::$app->user->identity->institution->id;
-        $model->group_id = $group_id;
+        $model = Journal::find()
+                ->where(['group_id' => $group_id])
+                ->andWhere(['date_ts' => $date])
+                ->andWhere(['teacher_course_id' => $teacher_course_id])
+                ->andWhere(['type' => $type])
+                ->one();
 
-        $teacherCourses = TeacherCourse::find()->joinWith([
-            /** @see TeacherCourse::getGroups() */
-            'groups' => function (ActiveQuery $query) use ($group) {
-                $query->andWhere(['group.id' => $group->id]);
-            }
-        ])->all();
+        if ($model == null) {
+            $model = new Journal();
+            $model->type = $type;
+            $model->institution_id = Yii::$app->user->identity->institution->id;
+            $model->group_id = $group_id;
+            $model->teacher_course_id = $teacher_course_id;
+            $model->date_ts = $date;
+            $model->data = $model->getAttributes();
+        } else {
+            $model->type = $model->type;
+            $model->institution_id = $model->institution_id;
+            $model->group_id = $model->group_id;
+            $model->teacher_course_id = $model->teacher_course_id;
+            $model->date_ts = $model->date_ts;
+            //$model->data = $model->data;
+            //var_dump($model->data);die();
+        }
+
+        $teacherCourse = TeacherCourse::findOne($teacher_course_id);
 
         $classrooms = Classroom::find()->where(['institution_id' => Yii::$app->user->identity->institution->id])->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['index']);
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+            return $this->redirect(['view', 'group_id' => $group_id, 'teacher_course_id' => $teacher_course_id, 'type' => 1]);
+        //throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
 
         }
 
         return $this->render('create', [
             'model' => $model,
-            'teacherCourses' => $teacherCourses,
-            'teachers' => $this->employeeService->getTeachers(\Yii::$app->user->identity->institution),
+            'group' => $group,
+            'date' => $date,
+            'type' => $type,
+            'teacherCourse' => $teacherCourse,
             'types' => $types,
         ]);
-    }
-
-    public function actionSingle()
-    {
-        return 'РАЗДЕЛ В РАЗРАБОТКЕ';
     }
 
     /**

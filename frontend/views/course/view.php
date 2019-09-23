@@ -2,6 +2,7 @@
 
 use common\models\Course;
 use common\models\TeacherCourse;
+use common\models\organization\Group;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -76,6 +77,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'type',
+            [
+                'attribute' => 'groups',
+                'value' => function (TeacherCourse $model) {
+                    return implode(', ', array_map(function (Group $group) {
+                        return $group->caption_current;
+                    }, $model->groups));
+                }
+            ],
             'start_ts',
             'end_ts',
             //'create_ts',

@@ -124,4 +124,9 @@ class TeacherCourse extends \yii\db\ActiveRecord
     {
         return $this->course->caption_current . ' (' . $this->type . ')';
     }
+
+    public function getDisciplineName()
+    {
+        return $this->course->institutionDiscipline->caption_current;
+    }
 }

@@ -14,44 +14,25 @@ use yii\web\View;
 ?>
 
 <div class="journal-form">
+    <div class="card-body">
+        <?php $form = ActiveForm::begin(['options' => ['class => edit-journal-form']]); ?>
+            <div class="row">
+                <?php foreach ($group->students as $student):?>
+                    <div class="col-md-6">
+                        <?= $form->field($model, 'data['.$student->id.'][attendance]')->radioList([
+                            '1' => 'н/б',
+                            '2' => 'н/у',
+                            '3' => 'присутствует',
+                        ], ['value' => array_key_exists($student->id, $model->data) ? $model->data[$student->id] : '3'])->label($student->getFullname()) ?> 
+                        <?= $form->field($model, 'data['.$student->id.'][mark]')->textInput() ?>
+                    </div>
+                <?php endforeach;?>
+            </div>
 
-    <?php $form = ActiveForm::begin(); ?>
+            <div class="form-group">
+                <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+            </div>
 
-    <?= $form->field($model, 'type')->dropDownList(
-		$types,
-		[]
-	) ?>
-
-
-    <?= $form->field($model, 'institution_id')->textInput() ?>
-
-
-    <?= $form->field($model, 'group_id')->textInput() ?>
-
-    <?= $form->field($model, 'teacher_id')->textInput() ?>
-
-    <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
-        'data' => ArrayHelper::map($teacherCourses, 'id', 'fullname'), /** @see \common\models\TeacherCourse::getFullname() */
-        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
-        'theme' => 'default',
-        'pluginOptions' => [
-            'allowClear' => true,
-        ],
-    ]) ?>
-
-    <?= $form->field($model, 'teacher_id')->widget(Select2::class, [
-        'data' => ArrayHelper::map($teachers, 'id', 'fullName'), // TODO rework to ajax
-        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
-        'theme' => 'default',
-        'pluginOptions' => [
-            'allowClear' => true,
-        ],
-    ]) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?php ActiveForm::end(); ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>
