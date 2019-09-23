@@ -59,12 +59,12 @@ $this->title = 'Журнал ' . $group->caption_current;
 					<td><?=$student->getFullname()?></td>
 					<?php foreach ($lessons as $lesson):?>
 						<?php $attendance = $student->checkAttendance(1, $group->id, $student->id, $teacherCourse->id, date('d.m.y', strtotime($lesson->date_ts)));?>
-						<?php if ($attendance == 1):?>
+						<?php if ($attendance[0] == 1):?>
 							<td class="btn-danger">н/б</td>
-						<?php elseif ($attendance == 2):?>
+						<?php elseif ($attendance[0] == 2):?>
 							<td class="btn-warning">н/у</td>
-						<?php elseif ($attendance == 3):?>
-							<td class="btn-success"></td>
+						<?php elseif ($attendance[0] == 3):?>
+							<td class=""><?=$attendance[1]?></td>
 						<?php else:?>
 							<td></td>
 						<?php endif;?>

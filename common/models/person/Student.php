@@ -93,8 +93,10 @@ class Student extends Person
 
         if($journal !== null) {
             $data = $journal->data;
-            $attendance = $data[$student_id];
-            return $attendance;
+            $attendance = $data[$student_id]['attendance'];
+            $mark = $data[$student_id]['mark'];
+            $values = [$attendance, $mark];
+            return $values;
         }
     }
 
