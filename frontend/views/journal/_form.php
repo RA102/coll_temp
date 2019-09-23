@@ -16,37 +16,13 @@ use yii\web\View;
 <div class="journal-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'type')->dropDownList(
-		$types,
-		[]
-	) ?>
-
-
-    <?= $form->field($model, 'institution_id')->textInput() ?>
-
-
-    <?= $form->field($model, 'group_id')->textInput() ?>
-
-    <?= $form->field($model, 'teacher_id')->textInput() ?>
-
-    <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
-        'data' => ArrayHelper::map($teacherCourses, 'id', 'fullname'), /** @see \common\models\TeacherCourse::getFullname() */
-        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
-        'theme' => 'default',
-        'pluginOptions' => [
-            'allowClear' => true,
-        ],
-    ]) ?>
-
-    <?= $form->field($model, 'teacher_id')->widget(Select2::class, [
-        'data' => ArrayHelper::map($teachers, 'id', 'fullName'), // TODO rework to ajax
-        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
-        'theme' => 'default',
-        'pluginOptions' => [
-            'allowClear' => true,
-        ],
-    ]) ?>
+    <?php foreach ($group->students as $student):?>
+        <?= $form->field($model, 'data['.$student->id.']')->radioList([
+            '1' => 'н/б',
+            '2' => 'н/у',
+            '3' => 'присутствует',
+        ], ['value' => array_key_exists($student->id, $model->data) ? $model->data[$student->id] : '3'])->label($student->getFullname()) ?> 
+    <?php endforeach;?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

@@ -18,12 +18,17 @@ use Yii;
  * @property int $type
  * @property int $institution_id
  * @property int $group_id
- * @property int $teacher_id
  * @property int $teacher_course_id
+ * @property string $date_ts
+ * @property array $data
  *
  */
 class Journal extends \yii\db\ActiveRecord
 {
+    const TYPE_THEORY = 1; // теоретическое обучение
+    const TYPE_COURSE_PROJECT = 2; // курсовые проекты, лабораторно-практические и графические работы
+    const TYPE_TEST = 3; // контрольные работы
+
     /**
      * {@inheritdoc}
      */
@@ -38,8 +43,8 @@ class Journal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'institution_id', 'group_id', 'teacher_id', 'teacher_course_id',], 'integer'],
-            [['type'], 'required'],
+            [['type', 'institution_id', 'group_id', 'teacher_course_id',], 'integer'],
+            [['data'], 'safe'],
         ];
     }
 
@@ -50,12 +55,12 @@ class Journal extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'type' => Yii::t('app', 'Type'),
             'institution_id' => Yii::t('app', 'Institution ID'),
-            'group_id' => Yii::t('app', 'Group ID'),
-            'lesson_id' => Yii::t('app', 'Lesson ID'),
-            'teacher_id' => Yii::t('app', 'Teacher ID'),
+            'group_id' => Yii::t('app', 'Group'),
             'teacher_course_id' => Yii::t('app', 'Course ID'),
+            'type' => Yii::t('app', 'Type'),
+            'data' => 'Ученики',
+            'date_ts' => Yii::t('app', 'Date'),
         ];
     }
 

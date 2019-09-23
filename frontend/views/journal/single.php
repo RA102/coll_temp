@@ -50,7 +50,7 @@ $this->title = 'Журнал ' . $group->caption_current;
 				<th>№</th>
 				<th>ФИО</th>
 				<?php foreach ($lessons as $lesson):?>
-					<th><?=date('d.m.y', strtotime($lesson->date_ts))?></th>
+					<th><a href="create?group_id=<?=$group->id?>&date=<?=date('d.m.y', strtotime($lesson->date_ts))?>&teacher_course_id=<?=$lesson->teacher_course_id?>&type=1"><?=date('d.m.y', strtotime($lesson->date_ts))?></a></th>
 				<?php endforeach;?>
 			</tr>
 			<?php foreach ($group->students as $key=>$student):?>
