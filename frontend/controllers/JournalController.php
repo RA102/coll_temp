@@ -184,7 +184,7 @@ class JournalController extends Controller
         $classrooms = Classroom::find()->where(['institution_id' => Yii::$app->user->identity->institution->id])->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['single', 'group_id' => $group_id, 'teacher_course_id' => $teacher_course_id]);
+            return $this->redirect(['view', 'group_id' => $group_id, 'teacher_course_id' => $teacher_course_id, 'type' => 1]);
         //throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
 
         }
