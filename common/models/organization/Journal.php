@@ -71,4 +71,20 @@ class Journal extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TeacherCourse::class, ['id' => 'teacher_course_id']);
     }
+
+    public function checkAttendance($type, $group_id, $student_id, $teacher_course_id, $date)
+    {
+        $journal = Journal::find()
+                    ->where(['group_id' => $group_id])
+                    ->andWhere(['date_ts' => $date])
+                    ->andWhere(['teacher_course_id' => $teacher_course_id])
+                    ->andWhere(['type' => $type])
+                    ->one();
+
+        $data = $journal->data;
+        if($journal !== null) {
+            $attendance = $data[$student_id];
+        }
+        return $attendance;
+    }
 }

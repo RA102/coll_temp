@@ -58,7 +58,16 @@ $this->title = 'Журнал ' . $group->caption_current;
 					<td><?=$key+1?></td>
 					<td><?=$student->getFullname()?></td>
 					<?php foreach ($lessons as $lesson):?>
-						<td></td>
+						<?php $attendance = $student->checkAttendance(1, $group->id, $student->id, $teacherCourse->id, date('d.m.y', strtotime($lesson->date_ts)));?>
+						<?php if ($attendance == 1):?>
+							<td class="btn-danger">н/б</td>
+						<?php elseif ($attendance == 2):?>
+							<td class="btn-warning">н/у</td>
+						<?php elseif ($attendance == 3):?>
+							<td class="btn-success"></td>
+						<?php else:?>
+							<td></td>
+						<?php endif;?>
 					<?php endforeach;?>
 				</tr>
 			<?php endforeach;?>
