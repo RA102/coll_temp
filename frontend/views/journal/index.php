@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
-    <h1><?=$this->title?></h1>
+    <h1>Группы</h1>
 </div>
 
 <div class="group-index skin-white">
