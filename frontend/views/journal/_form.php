@@ -24,7 +24,7 @@ use yii\web\View;
                             '2' => 'н/у',
                             '3' => 'присутствует',
                         ], ['value' => array_key_exists($student->id, $model->data) ? $model->data[$student->id] : '3'])->label($student->getFullname()) ?> 
-                        <?= $form->field($model, 'data['.$student->id.'][mark]')->textInput() ?>
+                        <?= $form->field($model, 'data['.$student->id.'][mark]')->textInput()->label('оценка') ?>
                     </div>
                 <?php endforeach;?>
             </div>
