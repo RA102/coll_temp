@@ -49,22 +49,51 @@
                         ],
                     ],
                     [
-                        'label' => Yii::t('app', 'Картотека'),
-                        'icon'  => 'far fa-list-alt',
+                        'label' => Yii::t('app', 'Управление организацией'),
+                        'icon'  => 'far fa-archway',
                         'url'   => '#',
-                        'visible' => !$person->isStudent(),
                         'items' => [
                             [
-                                'label' => Yii::t('app', 'Employees'), 
-                                'icon' => 'file-code-o', 
-                                'url' => ['/employee'],
-                                //'visible' => !$person->isTeacher(),
+                                'label' => Yii::t('app', 'Картотека'),
+                                'icon'  => 'far fa-list-alt',
+                                'url'   => '#',
+                                'visible' => !$person->isStudent(),
+                                'items' => [
+                                    [
+                                        'label' => Yii::t('app', 'Employees'), 
+                                        'icon' => 'file-code-o', 
+                                        'url' => ['/employee'],
+                                        //'visible' => !$person->isTeacher(),
+                                    ],
+                                    [
+                                        'label' => Yii::t('app', 'Students'), 
+                                        'icon' => 'dashboard', 
+                                        'url' => ['/student/index'],
+                                        'visible' => !$person->isHr(),
+                                    ],
+                                ],
                             ],
                             [
-                                'label' => Yii::t('app', 'Students'), 
-                                'icon' => 'dashboard', 
-                                'url' => ['/student/index'],
-                                'visible' => !$person->isHr(),
+                                'label' => Yii::t('app','Хозяйственная часть'),
+                                'icon' => 'far fa-building',
+                                'url' => '#',
+                                'items' => [
+                                    [
+                                        'label' => Yii::t('app', 'Аудитории'),
+                                        'icon'  => 'file-code-o',
+                                        'url'   => ['/classroom']
+                                    ],
+                                ],
+                            ],
+                            [
+                                'label' => Yii::t('app','Приказы'),
+                                'icon' => 'far fa-building',
+                                'url' => '#',
+                            ],
+                            [
+                                'label' => Yii::t('app','Отчеты'),
+                                'icon' => 'far fa-building',
+                                'url' => '#',
                             ],
                         ],
                     ],
@@ -74,11 +103,15 @@
                         'url'   => '#',
                         'visible' => !$person->isStudent() && !$person->isHr(),
                         'items' => [
-                            ['label' => Yii::t('app', 'Группы'), 'icon' => 'file-code-o', 'url' => ['/group']],
                             [
                                 'label' => Yii::t('app', 'Планирование учебного процесса'),
                                 'icon'  => 'dashboard',
                                 'url'   => ['/plan/index']
+                            ],
+                            [
+                                'label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'),
+                                'icon'  => 'dashboard',
+                                'url'   => ['/personnel/index']
                             ],
                             [
                                 'label' => Yii::t('app', 'Расписание'),
@@ -86,10 +119,16 @@
                                 'url'   => ['/lesson/index']
                             ],
                             [
-                                'label' => Yii::t('app', 'Журнал'),
+                                'label' => Yii::t('app', 'Электронный журнал'),
                                 'icon'  => 'dashboard',
                                 'url'   => ['/journal/index']
                             ],
+                            [
+                                'label' => Yii::t('app', 'Электронный сессия'),
+                                'icon'  => 'dashboard',
+                                'url'   => ['/session/index']
+                            ],
+                            ['label' => Yii::t('app', 'Группы'), 'icon' => 'file-code-o', 'url' => ['/group']],
                             [
                                 'label' => Yii::t('app', 'Распределение'),
                                 'icon'  => 'dashboard',
@@ -97,14 +136,6 @@
                             ],
                         ],
                     ],
-//                    [
-//                        'label' => Yii::t('app','Хозяйственная часть'),
-//                        'icon' => 'far fa-building',
-//                        'url' => '#',
-//                        'items' => [
-//                            ['label' => Yii::t('app','Здания'), 'icon' => 'file-code-o', 'url' => ['/']],
-//                        ],
-//                    ],
                     [
                         'label' => Yii::t('app', 'Настройки'),
                         'icon'  => 'cog',
@@ -117,7 +148,7 @@
                                 'url'   => ['/speciality']
                             ],
                             [
-                                'label' => Yii::t('app', 'Предметы'),
+                                'label' => Yii::t('app', 'Дисциплины'),
                                 'icon'  => 'file-code-o',
                                 'url'   => ['/institution-discipline']
                             ],
@@ -128,11 +159,7 @@
                                 'icon'  => 'file-code-o',
                                 'url'   => ['/institution']
                             ],
-                            [
-                                'label' => Yii::t('app', 'Аудитории'),
-                                'icon'  => 'file-code-o',
-                                'url'   => ['/classroom']
-                            ],
+                            
 //                            ['label' => Yii::t('app','Система рейтинга'), 'icon' => 'file-code-o', 'url' => ['/']],
                         ],
                     ],

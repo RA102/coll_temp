@@ -17,7 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div style="position: relative;">
     <h1><?=$this->title?></h1>
-    <p><a href="/lesson/var-two-classroom?classroom_id=<?=$model->id?>">расписание II</a></p>
 </div>
 
 <div class="lesson-index skin-white">

@@ -76,7 +76,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->person->getFullName();
                 }
             ],
-            'type',
+            [
+                'attribute' => 'type',
+                'value' => function (TeacherCourse $model) {
+                    return $model->getType($model->type);
+                }
+            ],
             [
                 'attribute' => 'groups',
                 'value' => function (TeacherCourse $model) {

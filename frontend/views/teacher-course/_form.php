@@ -37,7 +37,15 @@ use yii\widgets\ActiveForm;
         ],
     ]) ?>
 
-    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'type')->widget(Select2::class, [
+        'data' => $types,
+        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+        'theme' => 'default',
+        'pluginOptions' => [
+            'allowClear' => true,
+        ],
+    ]) ?>
+
 
     <?= $form->field($model, 'start_ts')->widget(DatePicker::class, [
         'pluginOptions' => [
