@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="employee-create">
         <?= $this->render('_form', [
             'model' => $model,
+            'person' => $person,
         ]) ?>
     </div>
 <?php $this->endBlock() ?>

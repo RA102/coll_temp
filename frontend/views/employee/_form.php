@@ -1,6 +1,7 @@
 <?php
 
 use common\helpers\PersonHelper;
+use common\helpers\PersonTypeHelper;
 use common\models\Nationality;
 use kartik\date\DatePicker;
 use yii\helpers\ArrayHelper;
@@ -75,6 +76,18 @@ use kartik\select2\Select2;
             <?= $form->field($model, 'indentity')->textInput() ?>
         </div>
     </div>
+
+    <?php if ($person->isAdmin()):?>
+        <div class="row">
+            <div class="col-md-4">
+                <?= $form->field($model, 'person_type')->widget(Select2::class, [
+                    'data' => PersonTypeHelper::getList(),
+                    'options' => ['placeholder' => ''],
+                    'theme' => 'default',
+                ]) ?>
+            </div>
+        </div>
+    <?php endif;?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

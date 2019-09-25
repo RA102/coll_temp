@@ -67,7 +67,7 @@ class StudentGeneralForm extends Model
             'language'            => Yii::t('app', 'Language of education'),
             'indentity'           => Yii::t('app', 'Email'),
             'is_pluralist'        => Yii::t('app', 'Is Pluralist'),
-            'person_type'         => Yii::t('app', 'Person Type'),
+            'person_type'         => Yii::t('app', 'Роль в системе'),
         ];
     }
 }

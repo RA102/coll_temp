@@ -194,6 +194,7 @@ class EmployeeController extends Controller
     public function actionCreate()
     {
         $form = new StudentGeneralForm();
+        $person = \Yii::$app->user->identity;
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model = Employee::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
@@ -212,6 +213,7 @@ class EmployeeController extends Controller
 
         return $this->render('create', [
             'model' => $form,
+            'person' => $person,
         ]);
     }
 
