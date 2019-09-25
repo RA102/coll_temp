@@ -61,7 +61,8 @@ class TeacherCourse extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'course_id' => Yii::t('app', 'Course ID'),
             'teacher_id' => Yii::t('app', 'Teacher ID'),
-            'type' => Yii::t('app', 'Type'),
+            'type' => 'Способ',
+            'groups' => 'Группы',
             'start_ts' => Yii::t('app', 'Teacher Course Start TS'),
             'end_ts' => Yii::t('app', 'Teacher Course End TS'),
             'create_ts' => Yii::t('app', 'Create Ts'),
@@ -128,5 +129,24 @@ class TeacherCourse extends \yii\db\ActiveRecord
     public function getDisciplineName()
     {
         return $this->course->institutionDiscipline->caption_current;
+    }
+
+    public function getType($key)
+    {
+        $types = [
+            '1' => 'Теоретическое обучение', 
+            '2' => 'Производственное обучение', 
+            '3' => 'Учебная практика', 
+            '4' => 'Профессиональная практика', 
+            '5' => 'Промежуточная и итоговая аттестация', 
+            '6' => 'Написание и защита дипломной работы', 
+            '7' => 'Факультативные курсы'
+        ];
+
+        if (array_key_exists($key, $types)) {
+            return $types[$key];
+        } else {
+            return 'Не указан';
+        }
     }
 }

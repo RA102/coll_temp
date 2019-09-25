@@ -57,7 +57,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     }, $model->groups));
                 }
             ],
-            'type',
+            [
+                'attribute' => 'type',
+                'value' => function (TeacherCourse $model) {
+                    return $model->getType($model->type);
+                }
+            ],
             'start_ts',
             'end_ts',
             'create_ts',

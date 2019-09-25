@@ -113,6 +113,15 @@ class TeacherCourseController extends Controller
         $teacherCourse = new TeacherCourse();
 
         $form = new TeacherCourseForm();
+        $types = [
+            '1' => 'Теоретическое обучение', 
+            '2' => 'Производственное обучение', 
+            '3' => 'Учебная практика', 
+            '4' => 'Профессиональная практика', 
+            '5' => 'Промежуточная и итоговая аттестация', 
+            '6' => 'Написание и защита дипломной работы', 
+            '7' => 'Факультативные курсы'
+        ];
 
         if ($form->load(Yii::$app->request->post())) {
             $teacherCourse->setAttributes($form->getAttributes());
@@ -133,6 +142,7 @@ class TeacherCourseController extends Controller
             'course' => $course,
             'teachers' => $this->employeeService->getTeachers($this->institution),
             'groups' => $this->groupService->getGroups($this->institution),
+            'types' => $types,
         ]);
     }
 
@@ -148,10 +158,23 @@ class TeacherCourseController extends Controller
         $course = $this->findCourse($this->institution, $course_id);
         $teacherCourse = $this->findTeacherCourse($course, $id);
 
+        $types = [
+            '1' => 'Теоретическое обучение', 
+            '2' => 'Производственное обучение', 
+            '3' => 'Учебная практика', 
+            '4' => 'Профессиональная практика', 
+            '5' => 'Промежуточная и итоговая аттестация', 
+            '6' => 'Написание и защита дипломной работы', 
+            '7' => 'Факультативные курсы'
+        ];
+
         $form = new TeacherCourseForm(); // dirtyAttribute trait needed
         $form->setAttributes($teacherCourse->getAttributes());
         $group_ids = ArrayHelper::getColumn($teacherCourse->getGroups()->all(), 'id');
         $form->group_ids = $group_ids;
+        if (array_key_exists($form->type, $types)) {
+            $form->type = $types[$form->type];
+        }
         $form->start_ts = date('d.m.Y', strtotime($teacherCourse->start_ts));
         $form->end_ts = date('d.m.Y', strtotime($teacherCourse->end_ts));
 
@@ -179,6 +202,7 @@ class TeacherCourseController extends Controller
             'course' => $course,
             'teachers' => $this->employeeService->getTeachers($this->institution),
             'groups' => $this->groupService->getGroups($this->institution),
+            'types' => $types,
         ]);
     }
 

@@ -35,7 +35,7 @@ class TeacherCourseForm extends Model
         return [
             'teacher_id' => Yii::t('app', 'Teacher ID'),
             'group_ids' => Yii::t('app', 'Groups'),
-            'type' => Yii::t('app', 'Type'),
+            'type' => 'Способ',
             'start_ts' => Yii::t('app', 'Teacher Course Start TS'),
             'end_ts' => Yii::t('app', 'Teacher Course End TS'),
         ];
