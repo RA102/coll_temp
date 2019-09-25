@@ -117,7 +117,7 @@
                                 'url'   => ['/speciality']
                             ],
                             [
-                                'label' => Yii::t('app', 'Предметы'),
+                                'label' => Yii::t('app', 'Дисциплины'),
                                 'icon'  => 'file-code-o',
                                 'url'   => ['/institution-discipline']
                             ],
