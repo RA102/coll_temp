@@ -16,13 +16,13 @@ use yii\db\ArrayExpression;
  * @property int $discipline_id
  * @property int $group_id
  * @property int $teacher_id
- * @property int $semester
- * @property string $lections_hours
- * @property string $seminars_hours
- * @property string $course_works_hours
- * @property string $tests_hours
- * @property string $consultations_hours
- * @property string $exams_hours
+ * @property array $lections_hours
+ * @property array $seminars_hours
+ * @property array $course_works_hours
+ * @property array $tests_hours
+ * @property array $offsets_hours
+ * @property array $consultations_hours
+ * @property array $exams_hours
  *
  */
 class RequiredDisciplines extends \yii\db\ActiveRecord
@@ -41,9 +41,10 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['discipline_id', 'group_id', 'teacher_id', 'semester'], 'required'],
-            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'consultations_hours', 'exams_hours'], 'default', 'value' => null],
-            [['discipline_id', 'group_id', 'teacher_id', 'semester'], 'integer'],
+            [['discipline_id', 'group_id', 'teacher_id'], 'required'],
+            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours'], 'default', 'value' => null],
+            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours'], 'safe'],
+            [['discipline_id', 'group_id', 'teacher_id'], 'integer'],
         ];
     }
 
@@ -63,11 +64,11 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
             'discipline_id' => Yii::t('app', 'Discipline ID'),
             'group_id' => Yii::t('app', 'Group'),
             'teacher_id' => Yii::t('app', 'Teacher ID'),
-            'semester' => 'Семестр',
             'lections_hours' => 'Кол-во часов на лекции',
             'seminars_hours' => 'Кол-во часов на семинары',
             'course_works_hours' => 'Кол-во часов на курсовые работы',
             'tests_hours' => 'Кол-во часов на контрольные работы',
+            'offsets_hours' => 'Кол-во часов на зачёт',
             'consultations_hours' => 'Кол-во часов на консультации',
             'exams_hours' => 'Кол-во часов на экзамены',
         ];
@@ -95,6 +96,11 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
     public function getTeacher()
     {
         return $this->hasOne(Employee::class, ['id' => 'teacher_id']);
+    }
+
+    public function forYear ($property)
+    {
+        return $this->$property[1] + $this->$property[2];
     }
 
 }

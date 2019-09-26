@@ -59,39 +59,45 @@ $this->title = 'Дисциплина';
 			</tr>
 			<tr>
 				<th>Лекции (ч)</th>
-				<td><?=$model->lections_hours?></td>
-				<td></td>
-				<td></td>
+				<td><?=$model->lections_hours[1]?></td>
+				<td><?=$model->lections_hours[2]?></td>
+				<td><?=$model->forYear('lections_hours')?></td>
 			</tr>
 			<tr>
 				<th>Семинары (ч)</th>
-				<td><?=$model->seminars_hours?></td>
-				<td></td>
-				<td></td>
+				<td><?=$model->seminars_hours[1]?></td>
+				<td><?=$model->seminars_hours[2]?></td>
+				<td><?=$model->forYear('seminars_hours')?></td>
 			</tr>
 			<tr>
 				<th>Курсовые (ч)</th>
-				<td><?=$model->course_works_hours?></td>
-				<td></td>
-				<td></td>
+				<td><?=$model->course_works_hours[1]?></td>
+				<td><?=$model->course_works_hours[2]?></td>
+				<td><?=$model->forYear('course_works_hours')?></td>
 			</tr>
 			<tr>
 				<th>Контрольные (ч)</th>
-				<td><?=$model->tests_hours?></td>
-				<td></td>
-				<td></td>
+				<td><?=$model->tests_hours[1]?></td>
+				<td><?=$model->tests_hours[2]?></td>
+				<td><?=$model->forYear('tests_hours')?></td>
+			</tr>
+			<tr>
+				<th>Зачёт (ч)</th>
+				<td><?=$model->offsets_hours[1]?></td>
+				<td><?=$model->offsets_hours[2]?></td>
+				<td><?=$model->forYear('offsets_hours')?></td>
 			</tr>
 			<tr>
 				<th>Консультации (ч)</th>
-				<td><?=$model->consultations_hours?></td>
-				<td></td>
-				<td></td>
+				<td><?=$model->consultations_hours[1]?></td>
+				<td><?=$model->consultations_hours[2]?></td>
+				<td><?=$model->forYear('consultations_hours')?></td>
 			</tr>
 			<tr>
 				<th>Экзамены (ч)</th>
-				<td><?=$model->exams_hours?></td>
-				<td></td>
-				<td></td>
+				<td><?=$model->exams_hours[1]?></td>
+				<td><?=$model->exams_hours[2]?></td>
+				<td><?=$model->forYear('exams_hours')?></td>
 			</tr>
 		</table>
 

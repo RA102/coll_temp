@@ -97,14 +97,16 @@ class PlanController extends Controller
 
     public function actionCreateRequired()
     {
-        $model = new RequiredDisciplines();
-
         $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
         $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
         $teachers = $this->employeeService->getTeachers($this->institution);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['required']);
+        $model = new RequiredDisciplines();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                return $this->redirect(['required']);
+            }
         }
 
         return $this->render('required/create', [
@@ -117,10 +119,30 @@ class PlanController extends Controller
 
     public function actionViewRequired($id)
     {
-        $model = RequiredDisciplines::findOne($id);
-
+        $model = RequiredDisciplines::findOne($id); //semester 1;
+        
         return $this->render('required/view', [
             'model' => $model,
+        ]);
+    }
+
+    public function actionUpdateRequired($id)
+    {
+        $model = RequiredDisciplines::findOne($id);
+
+        $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
+        $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
+        $teachers = $this->employeeService->getTeachers($this->institution);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-required', 'id' => $id]);
+        }
+
+        return $this->render('required/update', [
+            'model' => $model,
+            'institutionDisciplines' => $institutionDisciplines,
+            'groups' => $groups,
+            'teachers' => $teachers,
         ]);
     }
 

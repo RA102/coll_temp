@@ -44,19 +44,47 @@ $groups = ArrayHelper::map($groups, 'id', 'caption_current');
         ],
     ]) ?>
 
-    <?= $form->field($model, 'semester')->textInput() ?>
+    <div class="row">
+        <div class="col-md-4">
 
-    <?= $form->field($model, 'lections_hours')->textInput() ?>
+            <p>I</p>
 
-    <?= $form->field($model, 'seminars_hours')->textInput() ?>
+            <?= $form->field($model, 'lections_hours[1]')->textInput() ?>
 
-    <?= $form->field($model, 'course_works_hours')->textInput() ?>
+            <?= $form->field($model, 'seminars_hours[1]')->textInput() ?>
 
-    <?= $form->field($model, 'tests_hours')->textInput() ?>
+            <?= $form->field($model, 'course_works_hours[1]')->textInput() ?>
 
-    <?= $form->field($model, 'consultations_hours')->textInput() ?>
+            <?= $form->field($model, 'tests_hours[1]')->textInput() ?>
 
-    <?= $form->field($model, 'exams_hours')->textInput() ?>
+            <?= $form->field($model, 'offsets_hours[1]')->textInput() ?>
+
+            <?= $form->field($model, 'consultations_hours[1]')->textInput() ?>
+
+            <?= $form->field($model, 'exams_hours[1]')->textInput() ?>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <p>II</p>
+
+            <?= $form->field($model, 'lections_hours[2]')->textInput() ?>
+
+            <?= $form->field($model, 'seminars_hours[2]')->textInput() ?>
+
+            <?= $form->field($model, 'course_works_hours[2]')->textInput() ?>
+
+            <?= $form->field($model, 'tests_hours[2]')->textInput() ?>
+
+            <?= $form->field($model, 'offsets_hours[2]')->textInput() ?>
+
+            <?= $form->field($model, 'consultations_hours[2]')->textInput() ?>
+
+            <?= $form->field($model, 'exams_hours[2]')->textInput() ?>
+            
+        </div>
+    </div>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
