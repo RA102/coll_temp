@@ -99,6 +99,12 @@ $this->title = 'Дисциплина';
 				<td><?=$model->exams_hours[2]?></td>
 				<td><?=$model->forYear('exams_hours')?></td>
 			</tr>
+			<tr class="success">
+				<th>Всего за год</th>
+				<td><?=$model->totalHours(1)?></td>
+				<td><?=$model->totalHours(2)?></td>
+				<td><?=$model->totalHours(3)?></td>
+			</tr>
 		</table>
 
     </div>

@@ -47,7 +47,7 @@ $groups = ArrayHelper::map($groups, 'id', 'caption_current');
     <div class="row">
         <div class="col-md-4">
 
-            <p>I</p>
+            <p>I семестр</p>
 
             <?= $form->field($model, 'lections_hours[1]')->textInput() ?>
 
@@ -67,7 +67,7 @@ $groups = ArrayHelper::map($groups, 'id', 'caption_current');
 
         <div class="col-md-4">
 
-            <p>II</p>
+            <p>II семестр</p>
 
             <?= $form->field($model, 'lections_hours[2]')->textInput() ?>
 

@@ -104,6 +104,17 @@ class PlanController extends Controller
         $model = new RequiredDisciplines();
 
         if ($model->load(Yii::$app->request->post())) {
+            $query = RequiredDisciplines::find()
+                        ->where(['group_id' => $model->group_id]) 
+                        ->andWhere(['discipline_id' => $model->discipline_id])
+                        ->one();
+
+            if ($query !== null) {
+                Yii::$app->session->setFlash('error',
+                    Yii::t('app', 'Данная связка группа-дисциплина уже существует!')); 
+                    return $this->redirect(['required']);
+            }
+
             if ($model->save()) {
                 return $this->redirect(['required']);
             }
@@ -144,6 +155,14 @@ class PlanController extends Controller
             'groups' => $groups,
             'teachers' => $teachers,
         ]);
+    }
+
+    public function actionDeleteRequired($id)
+    {
+        $model = RequiredDisciplines::findOne($id);
+        $model->delete();
+
+        return $this->redirect(['required']);
     }
 
     public function actionOptional()

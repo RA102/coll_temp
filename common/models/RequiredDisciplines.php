@@ -98,9 +98,19 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
         return $this->hasOne(Employee::class, ['id' => 'teacher_id']);
     }
 
-    public function forYear ($property)
+    public function forYear($property)
     {
         return $this->$property[1] + $this->$property[2];
+    }
+
+    public function totalHours($semester)
+    {
+        if ($semester == 3) {
+            $total = $this->forYear('lections_hours') + $this->forYear('seminars_hours') + $this->forYear('course_works_hours') + $this->forYear('tests_hours') + $this->forYear('offsets_hours') + $this->forYear('consultations_hours') + $this->forYear('exams_hours');
+        }
+        else $total = $this->lections_hours[$semester] + $this->seminars_hours[$semester] + $this->course_works_hours[$semester] + $this->tests_hours[$semester] + $this->offsets_hours[$semester] + $this->consultations_hours[$semester] + $this->exams_hours[$semester];
+
+        return $total;
     }
 
 }
