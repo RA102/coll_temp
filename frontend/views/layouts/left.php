@@ -106,7 +106,13 @@
                             [
                                 'label' => Yii::t('app', 'Планирование учебного процесса'),
                                 'icon'  => 'dashboard',
-                                'url'   => ['/plan/index']
+                                'url'   => ['/plan/index'],
+                                'items' => [
+                                    [
+                                        'label' => Yii::t('app', 'КТП'),
+                                        'url'   => ['/plan/ktp']
+                                    ]
+                                ],
                             ],
                             [
                                 'label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'),
