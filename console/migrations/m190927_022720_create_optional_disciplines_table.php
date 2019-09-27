@@ -17,7 +17,6 @@ class m190927_022720_create_optional_disciplines_table extends Migration
             'id' => $this->primaryKey(),
             'discipline_id' => $this->integer(),
             'teacher_id' => $this->integer(),
-            'semester' => $this->integer(),
             'lections_hours' => 'jsonb',
             'seminars_hours' => 'jsonb',
             'course_works_hours' => 'jsonb',//курсовые работы
