@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use common\models\RequiredDisciplines;
 use common\models\OptionalDisciplines;
+use common\models\Exams;
+use common\models\Ktp;
 use common\models\organization\Group;
 use common\models\organization\Institution;
 use common\models\organization\InstitutionDiscipline;
@@ -186,6 +188,36 @@ class PlanController extends Controller
         ]);
     }
 
+    public function actionKtpCreate($id)
+    {
+        $model = RequiredDisciplines::findOne($id);
+
+        $formmodel = new \yii\base\DynamicModel(['week', 'lesson_number', 'lesson_topic', 'type']);
+
+        if ($formmodel->load(Yii::$app->request->post())) {
+            $number = $_POST['DynamicModel']['lesson_number'];
+            $data[$number] = [];
+
+            $data[$number]['lesson_number'] = $_POST['DynamicModel']['lesson_number'];
+            $data[$number]['week'] = $_POST['DynamicModel']['week'];
+            $data[$number]['lesson_topic'] = $_POST['DynamicModel']['lesson_topic'];
+            $data[$number]['type'] =  $_POST['DynamicModel']['type'];
+            
+            $modelktp = $model->ktp;            
+            array_push($modelktp, $data[$number]);
+            $model->ktp = $modelktp;
+
+            if ($model->save()) {
+                return $this->redirect(['view-required', 'id' => $id]);
+            }
+        }
+        
+        return $this->render('ktp-create', [
+            'model' => $model,
+            'formmodel' => $formmodel,
+        ]);
+    }
+
     public function actionViewOptional($id)
     {
         $model = OptionalDisciplines::findOne($id);
@@ -264,6 +296,136 @@ class PlanController extends Controller
         $model->delete();
 
         return $this->redirect(['required']);
+    }
+
+    public function actionDeleteOptional($id)
+    {
+        $model = OptionalDisciplines::findOne($id);
+        $model->delete();
+
+        return $this->redirect(['optional']);
+    }
+
+    public function actionExams()
+    {
+        $exams = Exams::find()->all();
+        $required = RequiredDisciplines::find()->all();
+
+        $tests = [];
+        foreach ($required as $r) {
+            foreach ($r->ktp as $key => $value) {
+                if ($value['type'] == 8) {
+                    array_push($tests, ['group_id' => $r->group_id, 'discipline_id' => $r->discipline_id, 'week' => $value['week']]);
+                }
+            }
+        }
+
+        $course_works = [];
+        foreach ($required as $r) {
+            foreach ($r->ktp as $key => $value) {
+                if ($value['type'] == 3) {
+                    array_push($course_works, ['group_id' => $r->group_id, 'discipline_id' => $r->discipline_id, 'week' => $value['week']]);
+                }
+            }
+        }
+
+        return $this->render('exams',[
+            'exams' => $exams,
+            'tests' => $tests,
+            'course_works' => $course_works,
+        ]);
+    }
+
+    public function actionAddExam()
+    {
+        $model = new Exams();
+
+        $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
+        $required = RequiredDisciplines::find()
+                ->joinWith('institutionDiscipline')
+                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);
+        $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                return $this->redirect(['exams']);
+            }
+        }
+ 
+        return $this->render('exams/create', [
+            'model' => $model,
+            'required' => $required,
+            'groups' => $groups,
+            'institutionDisciplines' => $institutionDisciplines,
+        ]);
+    }
+
+    public function actionKtp()
+    {
+        $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
+        $required = RequiredDisciplines::find()
+                ->joinWith('institutionDiscipline')
+                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);
+
+        $query = Ktp::find()
+                ->joinWith('institutionDiscipline')
+                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);
+
+        $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
+
+        $dataProvider = new ActiveDataProvider([
+                    'query' => $query,
+                ]);
+
+        return $this->render('ktp',[
+            'dataProvider' => $dataProvider,
+            'institutionDisciplines' => $institutionDisciplines,
+        ]);
+    }
+
+    public function actionCreateKtp()
+    {
+        $model = new Ktp();
+
+        $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
+        $required = RequiredDisciplines::find()
+                ->joinWith('institutionDiscipline')
+                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);
+        $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
+        $teachers = $this->employeeService->getTeachers($this->institution);
+
+        if ($model->load(Yii::$app->request->post())) {
+            $week = $_POST['Ktp']['week'];
+            $data[$week] = [];
+
+            $data[$week]['lesson_number'] = $_POST['Ktp']['lesson_number'];
+            $data[$week]['lesson_topic'] = $_POST['Ktp']['lesson_topic'];
+            $data[$week]['type'] =  $_POST['Ktp']['type'];
+            //$model->lessons = $_POST['Ktp']['lesson_topic'];
+            $model->lessons = $data;
+            //var_dump($model->lessons);die();
+
+            if ($model->save()) {
+                return $this->redirect(['ktp']);
+            }
+        }
+ 
+        return $this->render('ktp/create', [
+            'model' => $model,
+            'required' => $required,
+            'groups' => $groups,
+            'institutionDisciplines' => $institutionDisciplines,
+            'teachers' => $teachers,
+        ]);
+    }
+
+    public function actionKtpView($id)
+    {
+        $model = Ktp::findOne($id);
+
+        return $this->render('ktp/view', [
+            'model' => $model,
+        ]);
     }
 
 }

@@ -23,10 +23,14 @@ use yii\db\ArrayExpression;
  * @property array $offsets_hours
  * @property array $consultations_hours
  * @property array $exams_hours
+ * @property array $ktp
  *
  */
 class RequiredDisciplines extends \yii\db\ActiveRecord
 {
+    public $exam_type;
+    public $exam_week;
+
     /**
      * {@inheritdoc}
      */
@@ -42,8 +46,8 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
     {
         return [
             [['discipline_id', 'group_id', 'teacher_id'], 'required'],
-            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours'], 'default', 'value' => null],
-            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours'], 'safe'],
+            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'ktp'], 'default', 'value' => null],
+            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'ktp'], 'safe'],
             [['discipline_id', 'group_id', 'teacher_id'], 'integer'],
         ];
     }
@@ -111,6 +115,52 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
         else $total = $this->lections_hours[$semester] + $this->seminars_hours[$semester] + $this->course_works_hours[$semester] + $this->tests_hours[$semester] + $this->offsets_hours[$semester] + $this->consultations_hours[$semester] + $this->exams_hours[$semester];
 
         return $total;
+    }
+
+    public function types()
+    {
+        $types = [
+            'Теоретическое обучение' => [
+                '1' => 'Лекция', 
+                '2' => 'Семинар (ЛПЗ)', 
+                '3' => 'Курсовая работа (проект)',
+                '4' => 'Консультации',
+            ],
+            '5' => 'Учебная практика',
+            'Профессиональная практика' => [
+                '6' => 'Технологическая', 
+                '7' => 'Производственная',
+            ], 
+            'Промежуточная и итоговая аттестация' => [
+                '8' => 'Контрольная работа',
+                '9' => 'Зачёт',
+                '10' => 'Экзамен',
+            ],
+            '11' => 'Написание и защита дипломной работы (проекта)',
+            '12' => 'Факультативные курсы',
+        ];
+
+        return $types;
+    }
+
+    public function getType($type)
+    {
+        $types = [
+            '1' => 'Лекция', 
+            '2' => 'Семинар (ЛПЗ)', 
+            '3' => 'Курсовая работа (проект)',
+            '4' => 'Консультации',
+            '5' => 'Учебная практика',
+            '6' => 'Технологическая', 
+            '7' => 'Производственная',
+            '8' => 'Контрольная работа',
+            '9' => 'Зачёт',
+            '10' => 'Экзамен',
+            '11' => 'Написание и защита дипломной работы (проекта)',
+            '12' => 'Факультативные курсы',
+        ];
+
+        return $types[$type];
     }
 
 }
