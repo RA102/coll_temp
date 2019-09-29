@@ -21,7 +21,7 @@ $this->title = 'График экзаменов';
 <div class="exams">
 	<div class="card-body skin-white">
 			<h2>График экзаменов</h2>
-s		<div class="row">
+		<div class="row">
 			<div class="col-md-8">
 				<table class="table table-bordered">
 					<tr>

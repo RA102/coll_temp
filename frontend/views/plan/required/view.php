@@ -22,6 +22,7 @@ $this->title = 'Дисциплина';
                     'method' => 'post',
                 ],
             ]) ?>
+            <?= Html::a(Yii::t('app', 'Планируемый объем нагрузки на на группу'), ['load-group', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         </p>
 
         <?= DetailView::widget([
