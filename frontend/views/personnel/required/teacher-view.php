@@ -4,12 +4,11 @@ use common\models\RequiredDisciplines;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Планируемый объем нагрузки по дисциплинам (обязательным)';
+$this->title = 'Планируемый объем нагрузки на преподавателя по дисциплинам (обязательным)';
 ?>
 
 <div style="position: relative;">
     <h1><?=$this->title?></h1>
-    <?= Html::a('Добавить', ['create-required'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 
 <div class="required-index skin-white">
