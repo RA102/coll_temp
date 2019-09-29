@@ -2,10 +2,12 @@
 
 namespace frontend\controllers;
 
+use common\models\Facultative;
 use common\models\RequiredDisciplines;
 use common\models\OptionalDisciplines;
 use common\models\Exams;
 use common\models\Ktp;
+use common\models\TeacherCourse;
 use common\models\organization\Group;
 use common\models\organization\Institution;
 use common\models\organization\InstitutionDiscipline;
@@ -114,6 +116,18 @@ class PlanController extends Controller
         ]);
     }
 
+    public function actionFacultative()
+    {
+        $query = Facultative::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('facultative',[
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     public function actionCreateRequired()
     {
         $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
@@ -180,6 +194,28 @@ class PlanController extends Controller
         ]);
     }
 
+    public function actionCreateFacultative()
+    {
+        $teacherCourses = TeacherCourse::find()->where(['type' => 7])->all();
+        $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
+        $teachers = $this->employeeService->getTeachersActive($this->institution);
+
+        $model = new Facultative();
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                return $this->redirect(['facultative']);
+            }
+        }
+
+        return $this->render('facultative/create', [
+            'model' => $model,
+            'teacherCourses' => $teacherCourses,
+            'groups' => $groups,
+            'teachers' => $teachers,
+        ]);
+    }
+
     public function actionViewRequired($id)
     {
         $model = RequiredDisciplines::findOne($id);
@@ -241,6 +277,15 @@ class PlanController extends Controller
         ]);
     }
 
+    public function actionViewFacultative($id)
+    {
+        $model = Facultative::findOne($id);
+
+        return $this->render('facultative/view', [
+            'model' => $model,
+        ]);
+    }
+
     public function actionAddStudents($id)
     {
         $model = OptionalDisciplines::findOne($id);
@@ -277,7 +322,7 @@ class PlanController extends Controller
 
         $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
         $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
-        $teachers = $this->employeeService->getTeachersActive($this->institution, Employee::STATUS_ACTIVE);
+        $teachers = $this->employeeService->getTeachersActive($this->institution);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view-required', 'id' => $id]);
@@ -286,6 +331,26 @@ class PlanController extends Controller
         return $this->render('required/update', [
             'model' => $model,
             'institutionDisciplines' => $institutionDisciplines,
+            'groups' => $groups,
+            'teachers' => $teachers,
+        ]);
+    }
+
+    public function actionUpdateFacultative($id)
+    {
+        $model = Facultative::findOne($id);
+
+        $teacherCourses = TeacherCourse::find()->where(['type' => 7])->all();
+        $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
+        $teachers = $this->employeeService->getTeachersActive($this->institution);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-facultative', 'id' => $id]);
+        }
+
+        return $this->render('facultative/update', [
+            'model' => $model,
+            'teacherCourses' => $teacherCourses,
             'groups' => $groups,
             'teachers' => $teachers,
         ]);

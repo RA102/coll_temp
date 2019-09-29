@@ -52,7 +52,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'week')->textInput()->label('Неделя') ?>
 
             <?= $form->field($model, 'type')->widget(Select2::class, [
-                'data' => $model->types(), /** @see Employee::getFullName() */ // TODO rework to ajax
+                'data' => $model->types(),
                 'options' => ['placeholder' => 'Выберите способ', 'class' => 'active-form-refresh-control'],
                 'theme' => 'default',
                 'pluginOptions' => [

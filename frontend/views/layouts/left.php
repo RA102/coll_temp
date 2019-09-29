@@ -117,7 +117,7 @@
                                     ],
                                     [
                                         'label' => 'Факультативные курсы',
-                                        'url'   => ['/plan/additional'],
+                                        'url'   => ['/plan/facultative'],
                                     ],
                                     [
                                         'label' => 'Практика',

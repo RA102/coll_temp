@@ -20,10 +20,10 @@ class EmployeeService
         ])->all();
     }
 
-    public function getTeachersActive(Institution $institution, $status)
+    public function getTeachersActive(Institution $institution)
     {
         return Employee::find()
-            ->andFilterWhere([Employee::tableName().'.status' => $status])
+            ->andFilterWhere([Employee::tableName().'.status' => Employee::STATUS_ACTIVE])
             ->joinWith([
                 /** @see Person::getPersonInstitutionLinks() */
                 'personInstitutionLinks' => function (\yii\db\ActiveQuery $query) use ($institution) {
