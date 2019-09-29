@@ -13,6 +13,7 @@ use common\models\person\Employee;
 use common\models\person\Student;
 use common\services\organization\InstitutionDisciplineService;
 use common\services\person\EmployeeService;
+use frontend\search\EmployeeSearch;
 use Yii;
 use yii\base\Module;
 use yii\data\ActiveDataProvider;
@@ -276,7 +277,7 @@ class PlanController extends Controller
 
         $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
         $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
-        $teachers = $this->employeeService->getTeachers($this->institution);
+        $teachers = $this->employeeService->getTeachersActive($this->institution, Employee::STATUS_ACTIVE);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view-required', 'id' => $id]);
