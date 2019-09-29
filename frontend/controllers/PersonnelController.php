@@ -2,10 +2,12 @@
 
 namespace frontend\controllers;
 
+use common\models\Facultative;
 use common\models\RequiredDisciplines;
 use common\models\OptionalDisciplines;
 use common\models\Exams;
 use common\models\Ktp;
+use common\models\TeacherCourse;
 use common\models\organization\Group;
 use common\models\organization\Institution;
 use common\models\organization\InstitutionDiscipline;
@@ -162,4 +164,72 @@ class PersonnelController extends Controller
         ]);
     }
 
+    public function actionFacultativeGroup()
+    {
+        $searchModel = new GroupSearch();
+        $searchModel->institution_id = Yii::$app->user->identity->institution->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('facultative/group', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionFacultativeDiscipline()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => TeacherCourse::find()->andWhere([
+                'type' => 7
+            ])
+        ]);
+
+        return $this->render('facultative/facultative', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionFacultativeGroupView($group_id)
+    {
+        $facultative = Facultative::find()
+                ->where(['group_id' => $group_id])
+                ->all();
+
+        return $this->render('facultative/group-view', [
+            'facultative' => $facultative,
+        ]);
+    }
+
+    public function actionFacultativeDisciplineView($teacher_course_id)
+    {
+        $facultatives = Facultative::find()
+                ->where([Facultative::tableName().'.teacher_course_id' => $teacher_course_id])
+                ->all();
+
+        return $this->render('facultative/facultative-view', [
+            'facultatives' => $facultatives,
+        ]);
+    }
+
+    public function actionFacultativeTeacher()
+    {
+        $searchModel = new EmployeeSearch($this->institution);
+        $searchModel->status = Employee::STATUS_ACTIVE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('facultative/teacher', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);    }
+
+    public function actionFacultativeTeacherView($teacher_id)
+    {
+        $facultatives = Facultative::find()
+                ->where([Facultative::tableName().'.teacher_id' => $teacher_id])
+                ->all();
+
+        return $this->render('facultative/teacher-view', [
+            'facultatives' => $facultatives,
+        ]);
+    }
 }

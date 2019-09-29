@@ -86,8 +86,9 @@ class Facultative extends \yii\db\ActiveRecord
         return $this->hasOne(Employee::class, ['id' => 'teacher_id']);
     }
 
-    public function forYear($property)
+    public function forYear()
     {
         return $this->hours[1] + $this->hours[2];
     }
+
 }
