@@ -20,13 +20,13 @@ use frontend\search\EmployeeSearch;
 use Yii;
 use yii\base\Module;
 use yii\data\ActiveDataProvider;
+use yii\db\Expression;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
 class PersonnelController extends Controller
 {
     private $institution;
@@ -161,6 +161,57 @@ class PersonnelController extends Controller
 
         return $this->render('required/teacher-view', [
         	'required' => $required,
+        ]);
+    }
+
+    public function actionOptionalDiscipline()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => InstitutionDiscipline::find()
+                    ->andWhere([
+                        'institution_id' => $this->institution->id, /** TODO @see InstitutionDisciplineService::getInstitutionDisciplines() */
+                    ])
+        ]);
+
+        return $this->render('optional/discipline', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionOptionalDisciplineView($discipline_id)
+    {
+        $data = OptionalDisciplines::find()
+                ->where([OptionalDisciplines::tableName().'.discipline_id' => $discipline_id])
+                ->joinWith('institutionDiscipline')
+                ->andWhere([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id])
+                ->all();
+
+        return $this->render('optional/discipline-view', [
+            'data' => $data,
+        ]);
+    }
+
+    public function actionOptionalTeacher()
+    {
+        $searchModel = new EmployeeSearch($this->institution);
+        $searchModel->status = Employee::STATUS_ACTIVE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('optional/teacher', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);    }
+
+    public function actionOptionalTeacherView($teacher_id)
+    {
+        $data = OptionalDisciplines::find()
+                ->where(['teacher_id' => $teacher_id])
+                ->joinWith('institutionDiscipline')
+                ->andWhere([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id])
+                ->all();
+
+        return $this->render('optional/teacher-view', [
+            'data' => $data,
         ]);
     }
 

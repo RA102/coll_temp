@@ -107,4 +107,9 @@ class OptionalDisciplines extends \yii\db\ActiveRecord
         return $total;
     }
 
+    public function countStudents()
+    {
+        return count($this->students);
+    }
+
 }
