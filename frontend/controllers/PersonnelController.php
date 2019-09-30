@@ -373,5 +373,33 @@ class PersonnelController extends Controller
 
     public function actionTeacherView($teacher_id)
     {
+        $teacher = Employee::findOne($teacher_id);
+
+        $required = RequiredDisciplines::find()
+                ->where(['teacher_id' => $teacher_id])
+                ->joinWith('institutionDiscipline')
+                ->andWhere([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id])
+                ->all();
+
+        $optional = OptionalDisciplines::find()
+                ->where(['teacher_id' => $teacher_id])
+                ->joinWith('institutionDiscipline')
+                ->andWhere([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id])
+                ->all();
+
+        $facultatives = Facultative::find()
+                ->where([Facultative::tableName().'.teacher_id' => $teacher_id])
+                ->all();
+
+        $sql = "SELECT * FROM ".Practice::tableName()." WHERE teacher ->> '1' = '".$teacher_id."' OR teacher ->> '2' = '".$teacher_id."'";
+        $practices = Practice::findBySql($sql)->all();
+
+        return $this->render('teacher-view', [
+            'teacher' => $teacher,
+            'required' => $required,
+            'optional' => $optional,
+            'facultatives' => $facultatives,
+            'practices' => $practices,
+        ]);
     }
 }
