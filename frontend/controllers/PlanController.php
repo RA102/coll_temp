@@ -275,7 +275,9 @@ class PlanController extends Controller
             $data[$number]['lesson_topic'] = $_POST['DynamicModel']['lesson_topic'];
             $data[$number]['type'] =  $_POST['DynamicModel']['type'];
             
-            $modelktp = $model->ktp;            
+            if ($model->ktp !== null) {
+                $modelktp = $model->ktp;            
+            } else $modelktp = [];
             array_push($modelktp, $data[$number]);
             $model->ktp = $modelktp;
 
