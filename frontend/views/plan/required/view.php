@@ -113,27 +113,9 @@ $this->title = 'Дисциплина';
 
 		    </div>
 		</div>
-		<div class="col-md-6">
-		    <div class="card-body skin-white">
-		    	<h2>Календарно-тематический план</h2>
-		        <?= Html::a(Yii::t('app', 'Добавить'), ['ktp-create', 'id' => $model->id], ['class' => 'btn btn-alert']) ?>
-		    	<table class="table table-bordered">
-		    		<tr>
-		    			<th>№ занятия</th>
-		    			<th>Тема урока</th>
-		    			<th>Недельный период</th>
-		    			<th>Способ обучения</th>
-		    		</tr>
-		    		<?php foreach($model->ktp as $key => $value) :?>
-		    			<tr>
-		    				<td><?=$value['lesson_number']?></td>
-		    				<td><?=$value['lesson_topic']?></td>
-		    				<td><?=$value['week']?></td>
-		    				<td><?=$model->getType($value['type'])?></td>
-		    			</tr>
-		    		<?php endforeach;?>
-		    	</table>
-		    </div>
-		</div>
+		<?php 
+		var_dump($model->ktp);
+		phpversion();
+		die();?>
 	</div>
 </div>
