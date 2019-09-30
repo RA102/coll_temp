@@ -124,14 +124,16 @@ $this->title = 'Дисциплина';
 		    			<th>Недельный период</th>
 		    			<th>Способ обучения</th>
 		    		</tr>
-		    		<?php foreach($model->ktp as $key => $value) :?>
-		    			<tr>
-		    				<td><?=$value['lesson_number']?></td>
-		    				<td><?=$value['lesson_topic']?></td>
-		    				<td><?=$value['week']?></td>
-		    				<td><?=$model->getType($value['type'])?></td>
-		    			</tr>
-		    		<?php endforeach;?>
+		    		<?php if($model->ktp !== null):?>
+			    		<?php foreach($model->ktp as $key => $value) :?>
+			    			<tr>
+			    				<td><?=$value['lesson_number']?></td>
+			    				<td><?=$value['lesson_topic']?></td>
+			    				<td><?=$value['week']?></td>
+			    				<td><?=$model->getType($value['type'])?></td>
+			    			</tr>
+			    		<?php endforeach;?>
+			    	<?php endif;?>
 		    	</table>
 		    </div>
 		</div>
