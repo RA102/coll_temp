@@ -228,6 +228,17 @@ class PersonnelController extends Controller
         ]);
     }
 
+    public function actionFacultativeGroupView($group_id)
+    {
+        $facultative = Facultative::find()
+                ->where(['group_id' => $group_id])
+                ->all();
+
+        return $this->render('facultative/group-view', [
+            'facultative' => $facultative,
+        ]);
+    }
+
     public function actionFacultativeDiscipline()
     {
         $dataProvider = new ActiveDataProvider([
@@ -238,17 +249,6 @@ class PersonnelController extends Controller
 
         return $this->render('facultative/facultative', [
             'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    public function actionFacultativeGroupView($group_id)
-    {
-        $facultative = Facultative::find()
-                ->where(['group_id' => $group_id])
-                ->all();
-
-        return $this->render('facultative/group-view', [
-            'facultative' => $facultative,
         ]);
     }
 
@@ -282,6 +282,79 @@ class PersonnelController extends Controller
 
         return $this->render('facultative/teacher-view', [
             'facultatives' => $facultatives,
+        ]);
+    }
+
+    public function actionPracticeGroup()
+    {
+        $searchModel = new GroupSearch();
+        $searchModel->institution_id = Yii::$app->user->identity->institution->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('practice/group', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionPracticeGroupView($group_id)
+    {
+        $data = Practice::find()
+                ->where(['group_id' => $group_id])
+                ->all();
+
+        return $this->render('practice/group-view', [
+            'data' => $data,
+        ]);
+    }
+
+    public function actionPracticeDiscipline()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => TeacherCourse::find()->andWhere([
+                'type' => 7
+            ])
+        ]);
+
+        return $this->render('practice/practice', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionPracticeDisciplineView($teacher_course_id)
+    {
+        $data = Practice::find()
+                ->where([Practice::tableName().'.teacher_course_id' => $teacher_course_id])
+                ->all();
+
+        return $this->render('practice/practice-view', [
+            'data' => $data,
+        ]);
+    }
+
+    public function actionPracticeTeacher()
+    {
+        $searchModel = new EmployeeSearch($this->institution);
+        $searchModel->status = Employee::STATUS_ACTIVE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('practice/teacher', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);    }
+
+    public function actionPracticeTeacherView($teacher_id)
+    {
+        //$data = Practice::find()
+          //      ->where([Practice::tableName().'.teacher' => $teacher_id])
+            //    ->all();
+        $sql = "SELECT * FROM ".Practice::tableName()." WHERE teacher ->> '1' = '".$teacher_id."' OR teacher ->> '2' = '".$teacher_id."'";
+        $data = Practice::findBySql($sql)->all();
+        $teacher = Employee::findOne($teacher_id);
+
+        return $this->render('practice/teacher-view', [
+            'data' => $data,
+            'teacher' => $teacher,
         ]);
     }
 }
