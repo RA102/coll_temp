@@ -341,7 +341,8 @@ class PersonnelController extends Controller
         return $this->render('practice/teacher', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);    }
+        ]);    
+    }
 
     public function actionPracticeTeacherView($teacher_id)
     {
@@ -356,5 +357,21 @@ class PersonnelController extends Controller
             'data' => $data,
             'teacher' => $teacher,
         ]);
+    }
+
+    public function actionTeacher()
+    {
+        $searchModel = new EmployeeSearch($this->institution);
+        $searchModel->status = Employee::STATUS_ACTIVE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('teacher', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionTeacherView($teacher_id)
+    {
     }
 }
