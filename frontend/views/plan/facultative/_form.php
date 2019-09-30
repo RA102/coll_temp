@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\reception\AppealApplication */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $entrants \common\models\person\Entrant[] */
-$institutionDisciplines = ArrayHelper::map($institutionDisciplines, 'id', 'caption_current');
+$teacherCourses = ArrayHelper::map($teacherCourses, 'id', 'disciplineName');
 $groups = ArrayHelper::map($groups, 'id', 'caption_current');
 ?>
 
@@ -17,8 +17,8 @@ $groups = ArrayHelper::map($groups, 'id', 'caption_current');
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'discipline_id')->widget(Select2::class, [
-        'data' => $institutionDisciplines, // TODO rework to ajax
+    <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
+        'data' => $teacherCourses, // TODO rework to ajax
         'options' => ['placeholder' => 'Выберите дисциплину', 'class' => 'active-form-refresh-control'],
         'theme' => 'default',
         'pluginOptions' => [
@@ -49,19 +49,7 @@ $groups = ArrayHelper::map($groups, 'id', 'caption_current');
 
             <p>I семестр</p>
 
-            <?= $form->field($model, 'lections_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'seminars_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'course_works_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'tests_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'offsets_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'consultations_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'exams_hours[1]')->textInput() ?>
+            <?= $form->field($model, 'hours[1]')->textInput() ?>
 
         </div>
 
@@ -69,19 +57,7 @@ $groups = ArrayHelper::map($groups, 'id', 'caption_current');
 
             <p>II семестр</p>
 
-            <?= $form->field($model, 'lections_hours[2]')->textInput() ?>
-
-            <?= $form->field($model, 'seminars_hours[2]')->textInput() ?>
-
-            <?= $form->field($model, 'course_works_hours[2]')->textInput() ?>
-
-            <?= $form->field($model, 'tests_hours[2]')->textInput() ?>
-
-            <?= $form->field($model, 'offsets_hours[2]')->textInput() ?>
-
-            <?= $form->field($model, 'consultations_hours[2]')->textInput() ?>
-
-            <?= $form->field($model, 'exams_hours[2]')->textInput() ?>
+            <?= $form->field($model, 'hours[2]')->textInput() ?>
             
         </div>
     </div>

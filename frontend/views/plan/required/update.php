@@ -1,6 +1,6 @@
 <?php
 
-$this->title = 'Добавить дисциплину по выбору';
+$this->title = 'Редактировать обязательную дисциплину';
 ?>
 
 <div style="position: relative;">

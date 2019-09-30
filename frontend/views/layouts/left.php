@@ -106,7 +106,36 @@
                             [
                                 'label' => Yii::t('app', 'Планирование учебного процесса'),
                                 'icon'  => 'dashboard',
-                                'url'   => ['/plan/index']
+                                'items' => [
+                                    [
+                                        'label' => 'Обязательные дисциплины',
+                                        'url'   => ['/plan/required'],
+                                    ],
+                                    [
+                                        'label' => 'Дисциплины по выбору',
+                                        'url'   => ['/plan/optional'],
+                                    ],
+                                    [
+                                        'label' => 'Факультативные курсы',
+                                        'url'   => ['/plan/facultative'],
+                                    ],
+                                    [
+                                        'label' => 'Практика',
+                                        'url' => ['/plan/practice'],
+                                    ],
+                                    [
+                                        'label' => 'Контроль знаний',
+                                        'url' => ['/plan/exams'],
+                                    ],
+                                    [
+                                        'label' => 'Профессиональная практика',
+                                        'url' => ['/plan/practice-professional'],
+                                    ],
+                                    [
+                                        'label' => 'КТП',
+                                        'url' => ['/plan/ktp'],
+                                    ],
+                                ],
                             ],
                             [
                                 'label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'),

@@ -172,3 +172,7 @@
 .login-page, .register-page {
     background: #e4e5e6 !important;
 }
+
+.sidebar-menu {
+    white-space: normal;
+}

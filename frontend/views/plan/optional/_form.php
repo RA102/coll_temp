@@ -26,15 +26,6 @@ $groups = ArrayHelper::map($groups, 'id', 'caption_current');
         ],
     ]) ?>
 
-    <?= $form->field($model, 'group_id')->widget(Select2::class, [
-        'data' => $groups, // TODO rework to ajax
-        'options' => ['placeholder' => 'Выберите группу', 'class' => 'active-form-refresh-control'],
-        'theme' => 'default',
-        'pluginOptions' => [
-            'allowClear' => true,
-        ],
-    ]) ?>
-
     <?= $form->field($model, 'teacher_id')->widget(Select2::class, [
         'data' => ArrayHelper::map($teachers, 'id', 'fullName'), /** @see Employee::getFullName() */ // TODO rework to ajax
         'options' => ['placeholder' => 'Выберите преподавателя', 'class' => 'active-form-refresh-control'],
