@@ -4,7 +4,7 @@ use common\models\person\Employee;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Планируемый объем нагрузки на преподавателя по практике, дипломному проектированию.';
+$this->title = 'Планируемый объем педагогической нагрузки на преподавателя';
 ?>
 
 <div style="position: relative;">
