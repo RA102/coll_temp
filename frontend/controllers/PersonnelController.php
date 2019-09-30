@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Facultative;
 use common\models\RequiredDisciplines;
 use common\models\OptionalDisciplines;
+use common\models\Practice;
 use common\models\Exams;
 use common\models\Ktp;
 use common\models\TeacherCourse;
