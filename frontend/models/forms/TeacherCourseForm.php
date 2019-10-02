@@ -12,6 +12,7 @@ class TeacherCourseForm extends Model
     public $type;
     public $start_ts;
     public $end_ts;
+    public $status;
 
     /**
      * {@inheritdoc}
@@ -21,6 +22,7 @@ class TeacherCourseForm extends Model
         return [
             [['teacher_id', 'start_ts', 'end_ts'], 'required'],
             [['type'], 'string', 'max' => 255],
+            [['status'], 'integer'],
             [['group_ids'], 'each', 'rule' => ['integer']],
             [['group_ids'], 'required'],
             [['start_ts', 'end_ts'], 'safe'],
@@ -38,6 +40,7 @@ class TeacherCourseForm extends Model
             'type' => 'Способ',
             'start_ts' => Yii::t('app', 'Teacher Course Start TS'),
             'end_ts' => Yii::t('app', 'Teacher Course End TS'),
+            'status' => Yii::t('app', 'Тип'),
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\helpers\SchemeHelper;
+use common\models\TeacherCourse;
 use common\models\organization\InstitutionDiscipline;
 use common\models\organization\Group;
 use common\models\person\Employee;
@@ -76,6 +77,14 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
             'consultations_hours' => 'Кол-во часов на консультации',
             'exams_hours' => 'Кол-во часов на экзамены',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeacherCourse()
+    {
+        return $this->hasOne(TeacherCourse::class, ['id' => 'teacher_course_id']);
     }
 
     /**

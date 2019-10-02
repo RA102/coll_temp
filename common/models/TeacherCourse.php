@@ -20,6 +20,7 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ * @property int $status
  *
  * @property Course $course
  * @property Lesson[] $lessons
@@ -28,6 +29,9 @@ use Yii;
  */
 class TeacherCourse extends \yii\db\ActiveRecord
 {
+    const REQUIRED = 1; // обязательный предмет
+    const OPTIONAL = 2; // по выбору
+
     /**
      * {@inheritdoc}
      */
@@ -44,7 +48,7 @@ class TeacherCourse extends \yii\db\ActiveRecord
         return [
             [['course_id', 'teacher_id', 'start_ts', 'end_ts'], 'required'],
             [['course_id', 'teacher_id'], 'default', 'value' => null],
-            [['course_id', 'teacher_id'], 'integer'],
+            [['course_id', 'teacher_id', 'status'], 'integer'],
             [['start_ts', 'end_ts'], 'safe'],
             [['type'], 'string', 'max' => 255],
             [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['teacher_id' => 'id']],
@@ -68,6 +72,7 @@ class TeacherCourse extends \yii\db\ActiveRecord
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
+            'status' => 'Тип',
         ];
     }
 
@@ -131,22 +136,72 @@ class TeacherCourse extends \yii\db\ActiveRecord
         return $this->course->institutionDiscipline->caption_current;
     }
 
-    public function getType($key)
+    public function statusList()
+    {
+        $list = [
+            '1' => 'Обязательный',
+            '2' => 'По выбору',
+        ];
+
+        return $list;
+    }
+
+    public function getStatus($status)
+    {
+        $list = $this->statusList();
+
+        if ($list[$status] !== null) {
+            return $list[$status];
+        }
+        else return null;
+    }
+
+    public function getTypes()
     {
         $types = [
-            '1' => 'Теоретическое обучение', 
-            '2' => 'Производственное обучение', 
-            '3' => 'Учебная практика', 
-            '4' => 'Профессиональная практика', 
-            '5' => 'Промежуточная и итоговая аттестация', 
-            '6' => 'Написание и защита дипломной работы', 
-            '7' => 'Факультативные курсы'
+            'Теоретическое обучение' => [
+                '1' => 'Лекция', 
+                '2' => 'Семинар (ЛПЗ)', 
+                '3' => 'Курсовая работа (проект)',
+                '4' => 'Консультации',
+            ],
+            'Практика' => [
+                '5' => 'Учебная практика',
+            ],
+            'Профессиональная практика' => [
+                '6' => 'Технологическая', 
+                '7' => 'Производственная',
+            ], 
+            'Промежуточная и итоговая аттестация' => [
+                '8' => 'Контрольная работа',
+                '9' => 'Зачёт',
+                '10' => 'Экзамен',
+            ],
+            'Дипломная работы' =>[
+                '11' => 'Написание и защита дипломной работы (проекта)',
+            ],
+            'Дополнительно' => [
+                '12' => 'Факультативные курсы',
+            ],
         ];
+
+        return $types;
+    }
+
+    public function getType($key)
+    {
+        $types = $this->getTypes();
 
         if (array_key_exists($key, $types)) {
             return $types[$key];
         } else {
-            return 'Не указан';
+            foreach ($types as $type) {
+                if (is_array($type)) {
+                    if (array_key_exists($key, $type)) {
+                        return $type[$key];
+                    }
+                }
+            }
         }
     }
 }

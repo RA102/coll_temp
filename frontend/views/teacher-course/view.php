@@ -58,6 +58,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute' => 'status',
+                'value' => function (TeacherCourse $model) {
+                    return $model->getStatus($model->status);
+                }
+            ],
+            [
                 'attribute' => 'type',
                 'value' => function (TeacherCourse $model) {
                     return $model->getType($model->type);
