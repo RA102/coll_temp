@@ -1,6 +1,7 @@
 <?php
 
-use common\models\RequiredDisciplines;
+use common\models\TeacherCourse;
+use common\models\organization\Group;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -21,20 +22,22 @@ $this->title = 'Обязательные дисциплины';
 
                 [
                     'attribute' => 'discipline_id',
-                    'value' => function (RequiredDisciplines $model) {
-                        return $model->institutionDiscipline->caption_current;
+                    'value' => function (TeacherCourse $model) {
+                        return $model->getDisciplineName();
                     },
                 ],
                 [
-                    'attribute' => 'group_id',
-                    'value' => function (RequiredDisciplines $model) {
-                        return $model->group->caption_current;
-                    },
+                'attribute' => 'groups',
+                    'value' => function (TeacherCourse $model) {
+                        return implode(', ', array_map(function (Group $group) {
+                            return $group->caption_current;
+                        }, $model->groups));
+                    }
                 ],
                 [
                     'attribute' => 'teacher_id',
-                    'value' => function (RequiredDisciplines $model) {
-                        return $model->teacher->getFullname();
+                    'value' => function (TeacherCourse $model) {
+                        return $model->person->getFullname();
                     },
                 ],
 
@@ -42,15 +45,15 @@ $this->title = 'Обязательные дисциплины';
                 	'class' => 'yii\grid\ActionColumn',
                 	'urlCreator' => function ($action, $model, $key, $index) {
 		            if ($action === 'view') {
-		                $url ='view-required?id='.$model->id;
+		                $url ='view-required?teacher_course_id='.$model->id;
 		                return $url;
 		            }
 		            if ($action === 'update') {
-		                $url ='update-required?id='.$model->id;
+		                $url ='update-required?teacher_course_id='.$model->id;
 		                return $url;
 		            }
 		            if ($action === 'delete') {
-		                $url ='delete-required?id='.$model->id;
+		                $url ='delete-required?teacher_course_id='.$model->id;
 		                return $url;
 		            }
 		          }

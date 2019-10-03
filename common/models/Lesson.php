@@ -22,8 +22,7 @@ use yii\db\ArrayExpression;
  * @property string $delete_ts
  * @property int $group_id
  * @property int $classroom_id
- * @property int $weekday
- * @property int $number
+ * @property string $topic
  *
  * @property TeacherCourse $teacherCourse
  * @property Group $group
@@ -47,9 +46,9 @@ class Lesson extends \yii\db\ActiveRecord
         return [
             [['teacher_course_id', 'group_id', 'classroom_id'], 'required'],
             [['teacher_course_id', 'teacher_id', 'duration'], 'default', 'value' => null],
-            [['teacher_course_id', 'teacher_id', 'duration', 'group_id', 'classroom_id', 'weekday', 'number'], 'integer'],
+            [['teacher_course_id', 'teacher_id', 'duration', 'group_id', 'classroom_id'], 'integer'],
             [['date_ts'], 'safe'],
-            [['dates'], 'string'],
+            [['dates', 'topic'], 'string'],
             [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['teacher_id' => 'id']],
             [['teacher_course_id'], 'exist', 'skipOnError' => true, 'targetClass' => TeacherCourse::class, 'targetAttribute' => ['teacher_course_id' => 'id']],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::class, 'targetAttribute' => ['group_id' => 'id']],
@@ -73,8 +72,7 @@ class Lesson extends \yii\db\ActiveRecord
             'delete_ts' => Yii::t('app', 'Delete Ts'),
             'group_id' => Yii::t('app', 'Group ID'),
             'classroom_id' => Yii::t('app', 'Classroom ID'),
-            'weekday' => 'Weekday',
-            'number' => 'number',
+            'topic' => Yii::t('app', 'Тема'),
         ];
     }
 

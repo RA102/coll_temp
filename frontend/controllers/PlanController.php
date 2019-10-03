@@ -9,6 +9,7 @@ use common\models\Practice;
 use common\models\Exams;
 use common\models\Ktp;
 use common\models\TeacherCourse;
+use common\models\Lesson;
 use common\models\organization\Group;
 use common\models\organization\Institution;
 use common\models\organization\InstitutionDiscipline;
@@ -18,9 +19,11 @@ use common\services\organization\InstitutionDisciplineService;
 use common\services\person\EmployeeService;
 use frontend\search\EmployeeSearch;
 use Yii;
+use DateTime;
 use yii\base\Module;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -91,9 +94,10 @@ class PlanController extends Controller
 
     public function actionRequired()
     {
-        $query = RequiredDisciplines::find()
+        /*$query = RequiredDisciplines::find()
                 ->joinWith('institutionDiscipline')
-                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);
+                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);*/
+        $query = TeacherCourse::find()->where(['type' => TeacherCourse::REQUIRED]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -174,6 +178,30 @@ class PlanController extends Controller
         ]);
     }
 
+    public function actionEditRequired($teacher_course_id)
+    {
+        $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+
+        $model = RequiredDisciplines::find()
+                        ->where(['teacher_course_id' => $teacher_course_id]) 
+                        ->one();
+        if ($model == null) {
+            $model = new RequiredDisciplines();
+            $model->teacher_course_id = $teacher_course_id;
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                return $this->redirect(['view-required', 'teacher_course_id' => $teacher_course_id]);
+            }
+        }
+
+        return $this->render('required/edit', [
+            'model' => $model,
+            'teacherCourse' => $teacherCourse, 
+        ]);
+    }
+
     public function actionCreateOptional()
     {
         $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
@@ -251,20 +279,65 @@ class PlanController extends Controller
         ]);
     }
 
-    public function actionViewRequired($id)
+    /*public function actionViewRequired($id)
     {
         $model = RequiredDisciplines::findOne($id);
         
         return $this->render('required/view', [
             'model' => $model,
         ]);
+    }*/
+
+    public function actionViewRequired($teacher_course_id)
+    {
+        $model = RequiredDisciplines::find()->where(['teacher_course_id' => $teacher_course_id])->one();
+
+        $groups = $model->teacherCourse->groups;
+        $group_ids = ArrayHelper::getColumn($groups, 'id');
+
+
+        $weeks = strtotime($model->teacherCourse->end_ts) - strtotime($model->teacherCourse->start_ts);
+
+        if ($model !== null) {
+            $lessons = Lesson::find()
+                    ->where(['in', 'group_id', $group_ids])
+                    ->andWhere(['teacher_course_id' => $teacher_course_id])
+                    ->orderBy(['date_ts' => SORT_ASC])
+                    ->all();
+    
+            $dates = ArrayHelper::getColumn($lessons, 'date_ts');
+            $weeks = [];
+            $w = 1;
+            foreach ($dates as $date) {
+                $ddate = date('Y-m-d', strtotime($date));
+                $d = new DateTime($ddate);
+                $week = $d->format("W");
+                $weeks[$w][] = $date;
+                if (isset($week_prev) && $week_prev == $week) {
+                    $w++;
+                }
+                $week_prev = $week;
+            }
+                //var_dump($weeks);die();
+        } else $lessons = null;
+
+        return $this->render('required/view', [
+            'model' => $model,
+            'teacher_course_id' => $teacher_course_id,
+            'lessons' => $lessons,
+            'weeks' => $weeks,
+        ]);
     }
 
-    public function actionKtpCreate($id)
+    public function actionKtpCreate($teacher_course_id, $lesson_number = null)
     {
-        $model = RequiredDisciplines::findOne($id);
+        $model = RequiredDisciplines::findOne(['teacher_course_id' => $teacher_course_id]);
 
         $formmodel = new \yii\base\DynamicModel(['week', 'lesson_number', 'lesson_topic', 'type']);
+        $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
+        $formmodel['lesson_topic'] = $model->ktp[$lesson_number]['lesson_topic'];
+        $formmodel['week'] = $model->ktp[$lesson_number]['week'];
+        $formmodel['type'] = $model->ktp[$lesson_number]['type'];
 
         if ($formmodel->load(Yii::$app->request->post())) {
             $number = $_POST['DynamicModel']['lesson_number'];
@@ -278,17 +351,32 @@ class PlanController extends Controller
             if ($model->ktp !== null) {
                 $modelktp = $model->ktp;            
             } else $modelktp = [];
-            array_push($modelktp, $data[$number]);
+
+            $modelktp[$number] = $data[$number];
+            //var_dump($modelktp);die();
             $model->ktp = $modelktp;
 
             if ($model->save()) {
-                return $this->redirect(['view-required', 'id' => $id]);
+                return $this->redirect(['view-required', 'teacher_course_id' => $teacher_course_id]);
             }
         }
         
         return $this->render('ktp-create', [
             'model' => $model,
             'formmodel' => $formmodel,
+        ]);
+    }
+
+    public function actionAddTopic($lesson_id)
+    {
+        $model = Lesson::findOne($lesson_id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-required', 'teacher_course_id' => $model->teacherCourse->id]);
+        }
+
+        return $this->render('add-topic', [
+            'model' => $model, 
         ]);
     }
 

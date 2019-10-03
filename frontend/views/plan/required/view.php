@@ -13,41 +13,35 @@ $this->title = 'Дисциплина';
 <h1><?= Html::encode($this->title) ?></h1>
 
 <div class="view-required">
+    <?php if ($model !== null):?>
 	<div class="card-head">
-		<p>
-            <?= Html::a(Yii::t('app', 'Delete'), ['delete-reuired', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                    'method' => 'post',
-                ],
-            ]) ?>
-            <?= Html::a(Yii::t('app', 'Планируемый объем нагрузки на на группу'), ['load-group', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        </p>
-
-        <?= DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                [
-                    'attribute' => 'discipline_id',
-                    'value' => function (RequiredDisciplines $model) {
-                        return $model->institutionDiscipline->caption_current;
-                    },
-                ],
-                [
-                    'attribute' => 'group_id',
-                    'value' => function (RequiredDisciplines $model) {
-                        return $model->group->caption_current;
-                    },
-                ],
-                [
-                    'attribute' => 'teacher_id',
-                    'value' => function (RequiredDisciplines $model) {
-                        return $model->teacher->getFullname();
-                    },
-                ],
-            ],
-        ]) ?>
+	        <?= DetailView::widget([
+	            'model' => $model,
+	            'attributes' => [
+	                [
+	                    'attribute' => 'teacher_course_id',
+	                    'value' => function (RequiredDisciplines $model) {
+	                        return $model->teacherCourse->getDisciplineName();
+	                    },
+	                ],
+	                [
+	                    'attribute' => 'groups',
+	                    'value' => function (RequiredDisciplines $model) {
+	                        foreach ($model->teacherCourse->groups as $group) {
+	                        	return $group->caption_current;
+	                        }
+	                    },
+	                    'label' => 'Группы'
+	                ],
+	                [
+	                    'attribute' => 'teacher',
+	                    'value' => function (RequiredDisciplines $model) {
+	                        return $model->teacherCourse->person->fullName;
+	                    },
+	                    'label' => 'Преподаватель'
+	                ],
+	            ],
+	        ]) ?>
 	</div>
 	<div class="row">
 		<div class="col-md-6">
@@ -116,7 +110,7 @@ $this->title = 'Дисциплина';
 		<div class="col-md-6">
 		    <div class="card-body skin-white">
 		    	<h2>Календарно-тематический план</h2>
-		        <?= Html::a(Yii::t('app', 'Добавить'), ['ktp-create', 'id' => $model->id], ['class' => 'btn btn-alert']) ?>
+		        <?= Html::a(Yii::t('app', 'Добавить'), ['ktp-create', 'teacher_course_id' => $model->teacher_course_id], ['class' => 'btn btn-alert']) ?>
 		    	<table class="table table-bordered">
 		    		<tr>
 		    			<th>№ занятия</th>
@@ -131,11 +125,48 @@ $this->title = 'Дисциплина';
 			    				<td><?=$value['lesson_topic']?></td>
 			    				<td><?=$value['week']?></td>
 			    				<td><?=$model->getType($value['type'])?></td>
+			    				<td><a href="ktp-create?teacher_course_id=<?=$model->teacher_course_id?>&lesson_number=<?=$value['lesson_number']?>"><i class="fa fa-edit"></i></td>
 			    			</tr>
 			    		<?php endforeach;?>
 			    	<?php endif;?>
 		    	</table>
 		    </div>
 		</div>
+		    <div class="card-body skin-white">
+		    	<h2>Календарно-тематический план</h2>
+		        <?= Html::a(Yii::t('app', 'Добавить'), ['ktp-create', 'teacher_course_id' => $model->teacher_course_id], ['class' => 'btn btn-alert']) ?>
+		    	<table class="table table-bordered">
+		    		<tr>
+		    			<th>№ занятия</th>
+		    			<th>Дата занятия</th>
+		    			<th>Неделя</th>
+		    			<th>Тема занятия</th>
+		    			<th>Способ обучения</th>
+		    		</tr>
+		    		<?php foreach ($lessons as $l => $lesson):?>
+		    			<tr>
+		    				<td><?=$l+1?></td>
+		    				<td><?=date('d.m.Y', strtotime($lesson->date_ts))?></td>
+		    				<?php foreach ($weeks as $key => $value):?>
+		    					<?php foreach ($value as $k => $val):?>
+		    						<?php if ($val == $lesson->date_ts):?>
+				    					<td><?=$key?></td>
+				    				<?php endif;?>				    				
+			    				<?php endforeach;?>
+		    				<?php endforeach;?>
+		    				<td><?=$lesson->topic?></td>
+		    				<td></td>
+		    				<td><a href="add-topic?lesson_id=<?=$lesson->id?>"><i class="fa fa-edit"></i></a></td>
+		    			</tr>
+	    			<?php endforeach;?>
+		    	</table>
+		    </div>
+
 	</div>
+	<?php else:?>
+		<div class="card-body skin-white">
+			<p>План отсутствует</p>
+	        <?= Html::a(Yii::t('app', 'Добавить'), ['edit-required', 'teacher_course_id' => $teacher_course_id], ['class' => 'btn btn-alert']) ?>
+		</div>
+    <?php endif;?>
 </div>

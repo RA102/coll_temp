@@ -14,9 +14,7 @@ use yii\db\ArrayExpression;
  * This is the model class for table "required_disciplines".
  *
  * @property int $id
- * @property int $discipline_id
- * @property int $group_id
- * @property int $teacher_id
+ * @property int $teacher_course_id
  * @property array $lections_hours
  * @property array $seminars_hours
  * @property array $course_works_hours
@@ -46,10 +44,10 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['discipline_id', 'group_id', 'teacher_id'], 'required'],
+            [['teacher_course_id'], 'required'],
             [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'ktp'], 'default', 'value' => null],
             [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'ktp'], 'safe'],
-            [['discipline_id', 'group_id', 'teacher_id'], 'integer'],
+            [['teacher_course_id'], 'integer'],
         ];
     }
 
@@ -66,9 +64,7 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'discipline_id' => Yii::t('app', 'Discipline ID'),
-            'group_id' => Yii::t('app', 'Group'),
-            'teacher_id' => Yii::t('app', 'Teacher ID'),
+            'teacher_course_id' => Yii::t('app', 'Дисциплина'),
             'lections_hours' => 'Кол-во часов на лекции',
             'seminars_hours' => 'Кол-во часов на семинары',
             'course_works_hours' => 'Кол-во часов на курсовые работы',
@@ -90,29 +86,30 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getInstitutionDiscipline()
+    /*public function getInstitutionDiscipline()
     {
         return $this->hasOne(InstitutionDiscipline::class, ['id' => 'discipline_id']);
-    }
+    }*/
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getGroup()
+    /*public function getGroup()
     {
         return $this->hasOne(Group::class, ['id' => 'group_id']);
-    }
+    }*/
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTeacher()
+    /*public function getTeacher()
     {
         return $this->hasOne(Employee::class, ['id' => 'teacher_id']);
-    }
+    }*/
 
     public function forYear($property)
     {
+        
         return $this->$property[1] + $this->$property[2];
     }
 
