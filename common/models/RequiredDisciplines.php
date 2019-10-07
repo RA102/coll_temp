@@ -65,6 +65,8 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'teacher_course_id' => Yii::t('app', 'Дисциплина'),
+            'group_id' => Yii::t('app', 'Group'),
+            'discipline_id' => Yii::t('app', 'Discipline'),
             'lections_hours' => 'Кол-во часов на лекции',
             'seminars_hours' => 'Кол-во часов на семинары',
             'course_works_hours' => 'Кол-во часов на курсовые работы',
@@ -105,6 +107,11 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
     /*public function getTeacher()
     {
         return $this->hasOne(Employee::class, ['id' => 'teacher_id']);
+    }*/
+
+    /*public function getDisciplineName()
+    {
+        return $this->institutionDiscipline->caption_current;
     }*/
 
     public function forYear($property)

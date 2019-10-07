@@ -16,6 +16,7 @@ $this->title = 'Добавить студентов';
 	<div class="card-body">
 
 	    <?php $form = ActiveForm::begin(); ?>
+	    	<?= $form->field($model, 'group')->hiddenInput(['value' => $group->id])->label(false) ?>
 		    <?= $form->field($model, 'students')->widget(Select2::class, [
 		        'data' => ArrayHelper::map($students, 'id', 'fullName'), /** @see Employee::getFullName() */ // TODO rework to ajax
 		        'options' => ['placeholder' => 'Выберите студентов', 'class' => 'active-form-refresh-control'],

@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	</tr>
 	<tr>
 		<th>Предмет</th>
-		<td><?=$teacherCourse->course->institutionDiscipline->caption_current?></td>
+		<td><?=$teacherCourse->disciplineName?></td>
 	</tr>
 	<tr>
 		<th>Преподаватель</th>
@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		<td><?=$types[$type]?></td>
 	</tr>
 </table>
+<?= Html::a('Замена/отмена урока', ['replace', 'group_id' => $group->id, 'date' => $date, 'teacher_course_id' => $teacherCourse->id, 'type' => $type], ['class' => 'btn btn-primary']) ?>
 <?php $this->beginBlock('content') ?>
 <div class="journal-create">
 

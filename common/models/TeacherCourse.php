@@ -100,6 +100,11 @@ class TeacherCourse extends \yii\db\ActiveRecord
         return $this->hasOne(Person::class, ['id' => 'teacher_id']);
     }
 
+    public function getPersonName() // TODO should it be Employee?
+    {
+        return $this->person->fullName;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -148,12 +153,10 @@ class TeacherCourse extends \yii\db\ActiveRecord
 
     public function getStatus($status)
     {
-        $list = $this->statusList();
-
-        if ($list[$status] !== null) {
+        if ($status !== null) {
+            $list = $this->statusList();
             return $list[$status];
         }
-        else return null;
     }
 
     public function getTypes()

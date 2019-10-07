@@ -94,10 +94,10 @@ class PlanController extends Controller
 
     public function actionRequired()
     {
-        /*$query = RequiredDisciplines::find()
+        $query = RequiredDisciplines::find()
                 ->joinWith('institutionDiscipline')
-                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);*/
-        $query = TeacherCourse::find()->where(['type' => TeacherCourse::REQUIRED]);
+                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);
+        //$query = TeacherCourse::find()->where(['type' => TeacherCourse::REQUIRED]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -288,15 +288,11 @@ class PlanController extends Controller
         ]);
     }*/
 
-    public function actionViewRequired($teacher_course_id)
+    public function actionViewRequired($id)
     {
-        $model = RequiredDisciplines::find()->where(['teacher_course_id' => $teacher_course_id])->one();
+        $model = RequiredDisciplines::findOne($id);
 
-        $groups = $model->teacherCourse->groups;
-        $group_ids = ArrayHelper::getColumn($groups, 'id');
-
-
-        $weeks = strtotime($model->teacherCourse->end_ts) - strtotime($model->teacherCourse->start_ts);
+        /*$weeks = strtotime($model->teacherCourse->end_ts) - strtotime($model->teacherCourse->start_ts);
 
         if ($model !== null) {
             $lessons = Lesson::find()
@@ -319,19 +315,19 @@ class PlanController extends Controller
                 $week_prev = $week;
             }
                 //var_dump($weeks);die();
-        } else $lessons = null;
+        } else $lessons = null;*/
 
         return $this->render('required/view', [
             'model' => $model,
-            'teacher_course_id' => $teacher_course_id,
-            'lessons' => $lessons,
-            'weeks' => $weeks,
+            //'teacher_course_id' => $teacher_course_id,
+            //'lessons' => $lessons,
+            //'weeks' => $weeks,
         ]);
     }
 
-    public function actionKtpCreate($teacher_course_id, $lesson_number = null)
+    public function actionKtpCreate($id, $lesson_number = null)
     {
-        $model = RequiredDisciplines::findOne(['teacher_course_id' => $teacher_course_id]);
+        $model = RequiredDisciplines::findOne(['id' => $id]);
 
         $formmodel = new \yii\base\DynamicModel(['week', 'lesson_number', 'lesson_topic', 'type']);
         $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
@@ -357,7 +353,7 @@ class PlanController extends Controller
             $model->ktp = $modelktp;
 
             if ($model->save()) {
-                return $this->redirect(['view-required', 'teacher_course_id' => $teacher_course_id]);
+                return $this->redirect(['view-required', 'id' => $id]);
             }
         }
         
@@ -433,11 +429,23 @@ class PlanController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $new_students = $model->students;
+            
             foreach ($new_students as $new) {
                 if (!in_array($new, $students)) {
                     array_push($students, $new);
                 }
             };
+
+            $groups = $model->groups;
+            if ($groups == null) {
+                $groups = [];
+            }
+            
+            $group_id = $_POST['OptionalDisciplines']['group'];
+            if (!in_array($group_id, $groups)) {
+                array_push($groups, $group_id);
+            }
+            $model->groups = $groups;
             $model->students = $students;
             if ($model->save()) {
                 return $this->redirect(['view-optional', 'id' => $model->id]);
@@ -447,6 +455,7 @@ class PlanController extends Controller
         return $this->render('optional/add-students',[
             'model' => $model,
             'students' => $group->students,
+            'group' => $group,
         ]);
     }
 

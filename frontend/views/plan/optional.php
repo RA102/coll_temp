@@ -9,7 +9,6 @@ $this->title = 'Дисциплины по выбору';
 
 <div style="position: relative;">
     <h1><?=$this->title?></h1>
-    <?= Html::a('Добавить', ['create-optional'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 
 <div class="optional-index skin-white">

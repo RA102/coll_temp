@@ -7,6 +7,8 @@ use common\helpers\LanguageHelper;
 use common\models\handbook\Speciality;
 use common\models\link\StudentGroupLink;
 use common\models\person\Student;
+use common\models\OptionalDisciplines;
+use common\models\RequiredDisciplines;
 use common\models\TeacherCourse;
 use Yii;
 
@@ -178,6 +180,17 @@ class Group extends \yii\db\ActiveRecord
             ->viaTable('link.teacher_course_group_link', ['group_id' => 'id']);
     }
 
+    public function getRequiredDisciplines()
+    {
+        return $this->hasMany(RequiredDisciplines::class, ['group_id' => 'id']);
+    }
+
+    public function getOptionalDisciplines()
+    {
+        //$sql = "SELECT * FROM ".OptionalDisciplines::tableName()." WHERE groups IN [".$this->id."]";
+        return OptionalDisciplines::find()->where(['IN', 'groups', $this->id])->asArray()->all();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -191,6 +204,7 @@ class Group extends \yii\db\ActiveRecord
      */
     public function getStudents()
     {
-        return $this->hasMany(Student::class, ['id' => 'student_id'])->via('studentGroupLinks')->orderBy(['lastname' => SORT_ASC]);
+        return $this->hasMany(Student::class, ['id' => 'student_id'])
+            ->via('studentGroupLinks')->orderBy(['lastname' => SORT_ASC]);
     }
 }

@@ -4,7 +4,7 @@ use common\models\Practice;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Факультативные занятия';
+$this->title = 'Практика';
 ?>
 
 <div style="position: relative;">

@@ -7,6 +7,7 @@ use common\helpers\LanguageHelper;
 use common\models\handbook\Speciality;
 use common\models\link\StudentGroupLink;
 use common\models\person\Student;
+use common\models\person\Employee;
 use common\models\TeacherCourse;
 use Yii;
 
@@ -15,31 +16,25 @@ use Yii;
  * 
  *
  * @property int $id
- * @property int $type
- * @property int $institution_id
  * @property int $group_id
- * @property int $discipline_type
  * @property int $teacher_course_id
+ * @property int $new_teacher_course_id
+ * @property int $new_teacher_id
  * @property string $date_ts
- * @property array $data
- * @property string $mark
+ * @property string $new_date_ts
+ * @property string $reason
+ * @property boolean $canceled
  *
  */
-class Journal extends \yii\db\ActiveRecord
+class ReplacementJournal extends \yii\db\ActiveRecord
 {
-    const TYPE_THEORY = 1; // теоретическое обучение
-    const TYPE_COURSE_PROJECT = 2; // курсовые проекты, лабораторно-практические и графические работы
-    const TYPE_TEST = 3; // контрольные работы
-
-    const DISC_TYPE_REQUIRED = 1; // обязательные дисциплины
-    const DISC_TYPE_OPTIONAL = 2; // по выбору
 
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'organization.journal';
+        return 'organization.replacement_journal';
     }
 
     /**
@@ -48,8 +43,9 @@ class Journal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'institution_id', 'group_id', 'teacher_course_id'], 'integer'],
-            [['data'], 'safe'],
+            [['group_id', 'teacher_course_id', 'new_teacher_course_id', 'new_teacher_id'], 'integer'],
+            [['reason', 'date_ts', 'new_date_ts'], 'string'],
+            [['canceled'], 'boolean'],
         ];
     }
 
@@ -60,14 +56,10 @@ class Journal extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'institution_id' => Yii::t('app', 'Institution ID'),
             'group_id' => Yii::t('app', 'Group'),
-            'discipline_type' => Yii::t('app', 'Вид дисциплины'),
             'teacher_course_id' => Yii::t('app', 'Discipline'),
-            'type' => Yii::t('app', 'Type'),
-            'data' => 'Ученики',
             'date_ts' => Yii::t('app', 'Date'),
-            'mark' => 'Оценка',
+            'reason' => 'причина',
         ];
     }
 
@@ -79,4 +71,17 @@ class Journal extends \yii\db\ActiveRecord
         return $this->hasOne(TeacherCourse::class, ['id' => 'teacher_course_id']);
     }
 
+    public function getNewTeacher()
+    {
+        return $this->hasOne(Employee::class, ['id' => 'new_teacher_id']);
+    }
+
+    public function replaced($group_id, $date, $teacher_course_id) 
+    {
+        $model = ReplacementJournal::find()->andWhere(['group_id' => $group_id, 'date_ts' => date('Y-m-d 00:00:00', $date), 'teacher_course_id' => $teacher_course_id])->one();
+
+        if ($model !== null) {
+            return true;
+        } else return false;
+    }
 }

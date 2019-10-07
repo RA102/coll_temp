@@ -23,6 +23,7 @@ use yii\db\ArrayExpression;
  * @property array $consultations_hours
  * @property array $exams_hours
  * @property array $students
+ * @property array $groups
  *
  */
 class OptionalDisciplines extends \yii\db\ActiveRecord
@@ -44,8 +45,8 @@ class OptionalDisciplines extends \yii\db\ActiveRecord
     {
         return [
             [['discipline_id', 'teacher_id'], 'required'],
-            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'students'], 'default', 'value' => null],
-            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'students'], 'safe'],
+            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'students', 'groups'], 'default', 'value' => null],
+            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'students', 'groups'], 'safe'],
             [['discipline_id', 'teacher_id'], 'integer'],
         ];
     }

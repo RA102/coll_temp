@@ -44,7 +44,7 @@ class LessonController extends Controller
                 'rules' => [
                     [
                         'actions' => [
-                            'index', 'groups', 'schedule', 'teachers', 'teacher-card', 'copy',
+                            'index', 'groups', 'schedule', 'schedule-main', 'teachers', 'teacher-card', 'copy',
                             'ajax-feed', 'ajax-create', 'ajax-delete', 'classrooms', 'classroom-card',
                             'var-two', 'create', 'var-two-teacher', 'var-two-classroom'
                         ],
@@ -133,6 +133,40 @@ class LessonController extends Controller
         die();*/
 
         return $this->render('schedule', [
+            'group' => $group,
+            'teacherCourses' => $teacherCourses,
+            'teachers' => $this->employeeService->getTeachers($this->institution),
+            'searchModel' => $searchModel,
+            'classrooms' => $classrooms
+        ]);
+    }
+
+    public function actionScheduleMain($group_id)
+    {
+        $group = $this->findGroup($this->institution, $group_id);
+
+        $teacherCourses = TeacherCourse::find()->joinWith([
+            /** @see TeacherCourse::getGroups() */
+            'groups' => function (ActiveQuery $query) use ($group) {
+                $query->andWhere(['group.id' => $group->id]);
+            }
+        ])->all();
+
+        $classrooms = Classroom::find()->all();
+
+        $searchModel = new LessonSearch();
+        $searchModel->group_id = $group_id;
+
+        /*$lessons = $dataProvider->getModels();
+        $result = [];
+        foreach ($lessons as $lesson) {
+            $result[] = LessonForm::createFromLesson($lesson, $group_id);
+        }
+
+        var_dump($result[0]['weeks_numbers']);
+        die();*/
+
+        return $this->render('schedule-main', [
             'group' => $group,
             'teacherCourses' => $teacherCourses,
             'teachers' => $this->employeeService->getTeachers($this->institution),

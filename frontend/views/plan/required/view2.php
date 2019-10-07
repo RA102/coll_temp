@@ -29,7 +29,7 @@ $this->title = 'Дисциплина';
 	                    'value' => function (RequiredDisciplines $model) {
                         	return $model->institutionDiscipline->caption_current;
 	                    },
-	                    'label' => 'Группа'
+	                    'label' => 'Группы'
 	                ],
 	                [
 	                    'attribute' => 'teacher_id',
@@ -130,6 +130,36 @@ $this->title = 'Дисциплина';
 		    	</table>
 		    </div>
 		</div>
+		    <div class="card-body skin-white">
+		    	<h2>Календарно-тематический план</h2>
+		        <?= Html::a(Yii::t('app', 'Добавить'), ['ktp-create', 'id' => $model->id], ['class' => 'btn btn-alert']) ?>
+		    	<table class="table table-bordered">
+		    		<tr>
+		    			<th>№ занятия</th>
+		    			<th>Дата занятия</th>
+		    			<th>Неделя</th>
+		    			<th>Тема занятия</th>
+		    			<th>Способ обучения</th>
+		    		</tr>
+		    		<?php foreach ($lessons as $l => $lesson):?>
+		    			<tr>
+		    				<td><?=$l+1?></td>
+		    				<td><?=date('d.m.Y', strtotime($lesson->date_ts))?></td>
+		    				<?php foreach ($weeks as $key => $value):?>
+		    					<?php foreach ($value as $k => $val):?>
+		    						<?php if ($val == $lesson->date_ts):?>
+				    					<td><?=$key?></td>
+				    				<?php endif;?>				    				
+			    				<?php endforeach;?>
+		    				<?php endforeach;?>
+		    				<td><?=$lesson->topic?></td>
+		    				<td></td>
+		    				<td><a href="add-topic?lesson_id=<?=$lesson->id?>"><i class="fa fa-edit"></i></a></td>
+		    			</tr>
+	    			<?php endforeach;?>
+		    	</table>
+		    </div>
+
 	</div>
 	<?php else:?>
 		<div class="card-body skin-white">

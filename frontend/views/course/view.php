@@ -76,7 +76,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->person->getFullName();
                 }
             ],
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => function (TeacherCourse $model) {
+                    return $model->getStatus($model->status);
+                }
+            ],
             [
                 'attribute' => 'type',
                 'value' => function (TeacherCourse $model) {

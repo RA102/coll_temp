@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </tr>
             <?php foreach ($teacherCourses as $teacherCourse):?>
                 <tr>
-                    <td><?= Html::a($teacherCourse->course->institutionDiscipline->caption_current, ['view', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id, 'type' => 1], ['class' => '']) ?>                        
+                    <td><?= Html::a($teacherCourse->disciplineName, ['view', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id, 'type' => 1], ['class' => '']) ?>                        
                     </td>
                     <td><?=$teacherCourse->person->getFullname()?></td>
                 </tr>

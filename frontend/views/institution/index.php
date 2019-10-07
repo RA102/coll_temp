@@ -66,6 +66,52 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="row">
+        <div class="col-md-4">
+            <?= $activeForm->field($form, 'semester_date[1][start]')->widget(\kartik\date\DatePicker::class, [
+                    'language' => 'ru',
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd-mm-yyyy'
+                    ],
+            ])->label('Дата начала 1-ого семестра'); ?>            
+
+            <?= $activeForm->field($form, 'semester_date[1][end]')->widget(\kartik\date\DatePicker::class, [
+                    'language' => 'ru',
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd-mm-yyyy'
+                    ],
+            ])->label('Дата окончания 1-ого семестра'); ?>
+        </div>
+        <div class="col-md-4">
+            <?= $activeForm->field($form, 'semester_date[2][start]')->widget(\kartik\date\DatePicker::class, [
+                    'language' => 'ru',
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd-mm-yyyy'
+                    ],
+            ])->label('Дата начала 2-ого семестра'); ?>
+
+            <?= $activeForm->field($form, 'semester_date[2][end]')->widget(\kartik\date\DatePicker::class, [
+                    'language' => 'ru',
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd-mm-yyyy'
+                    ],
+            ])->label('Дата окончания 2-ого семестра'); ?>
+        </div>
+        <div class="col-md-4">
+            <?php
+                $i = 1;
+                while ($i <= $form->max_shift) :?>
+                    <?= $activeForm->field($form, 'shift_time['.$i.'][start_time]')->textInput(['placeholder' => 'Время начала (Например: 10:00)'])->label('Смена ' . $i) ?>
+                    <?= $activeForm->field($form, 'shift_time['.$i.'][lesson_duration]')->textInput(['placeholder' => 'Продолжительность занятия (мин.)'])->label(false) ?>
+                    <?= $activeForm->field($form, 'shift_time['.$i.'][rest_duration]')->textInput(['placeholder' => 'Продолжительность перемены (мин.)'])->label(false) ?>
+                <?php $i++; endwhile;?>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-md-12">
             <?= $activeForm->field($form, 'description')->textarea(['rows' => 3 ]) ?>
         </div>

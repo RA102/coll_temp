@@ -54,6 +54,8 @@ use yii\db\ActiveQuery;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ * @property array $semester_date
+ * @property array $shift_time
  *
  * @property Speciality[] $specialities
  * @property InstitutionSpecialityInfo[] $specialityInfos
@@ -84,11 +86,11 @@ class Institution extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['country_id', 'city_id', 'parent_id', 'type_id', 'educational_form_id', 'organizational_legal_form_id', 'oid', 'server_id', 'street_id', 'foundation_year', 'max_grade', 'status'], 'default', 'value' => null],
+            [['country_id', 'city_id', 'parent_id', 'type_id', 'educational_form_id', 'organizational_legal_form_id', 'oid', 'server_id', 'street_id', 'foundation_year', 'max_grade', 'status', 'semester_date', 'shift_time'], 'default', 'value' => null],
             [['country_id', 'city_id', 'parent_id', 'type_id', 'educational_form_id', 'organizational_legal_form_id', 'oid', 'server_id', 'street_id', 'foundation_year', 'max_grade', 'status'], 'integer'],
             [['description', 'info'], 'string'],
             [['initialization'], 'boolean'],
-            [['create_ts', 'update_ts', 'delete_ts', 'enable_fraction'], 'safe'],
+            [['create_ts', 'update_ts', 'delete_ts', 'enable_fraction', 'semester_date', 'shift_time'], 'safe'],
             [['name'], 'string', 'max' => 511],
             [['house_number', 'email', 'domain', 'db_name', 'db_user', 'db_password'], 'string', 'max' => 255],
             [['phone', 'fax'], 'string', 'max' => 20],
