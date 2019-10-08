@@ -15,15 +15,11 @@ use yii\widgets\ActiveForm;
 	<table class="table table-bordered">
 		<tr>
 			<th>Дисциплина:</th>
-			<td><?=$teacherCourse->getDisciplineName()?></td>
+			<td><?=$teacherCourse->disciplineName?></td>
 		</tr>
 		<tr>
-			<th>Группы</th>
-			<td>
-				<?php foreach ($teacherCourse->groups as $group):?>
-					<?=$group->caption_current?>
-				<?php endforeach;?>		
-			</td>
+			<th>Группа</th>
+			<td><?=$group->caption_current?></td>
 		</tr>
 		<tr>
 			<th>Преподаватель</th>
@@ -43,19 +39,19 @@ use yii\widgets\ActiveForm;
 
             <p>I семестр</p>
 
-            <?= $form->field($model, 'lections_hours[1]')->textInput(['value' => 0]) ?>
+            <?= $form->field($model, 'lections_hours[1]')->textInput() ?>
 
-            <?= $form->field($model, 'seminars_hours[1]')->textInput(['value' => 0]) ?>
+            <?= $form->field($model, 'seminars_hours[1]')->textInput() ?>
 
-            <?= $form->field($model, 'course_works_hours[1]')->textInput(['value' => 0]) ?>
+            <?= $form->field($model, 'course_works_hours[1]')->textInput() ?>
 
-            <?= $form->field($model, 'tests_hours[1]')->textInput(['value' => 0]) ?>
+            <?= $form->field($model, 'tests_hours[1]')->textInput() ?>
 
-            <?= $form->field($model, 'offsets_hours[1]')->textInput(['value' => 0]) ?>
+            <?= $form->field($model, 'offsets_hours[1]')->textInput() ?>
 
-            <?= $form->field($model, 'consultations_hours[1]')->textInput(['value' => 0]) ?>
+            <?= $form->field($model, 'consultations_hours[1]')->textInput() ?>
 
-            <?= $form->field($model, 'exams_hours[1]')->textInput(['value' => 0]) ?>
+            <?= $form->field($model, 'exams_hours[1]')->textInput() ?>
 
         </div>
 

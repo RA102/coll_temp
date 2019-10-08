@@ -42,7 +42,7 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
             'allowClear' => true,
             'multiple' => true,
         ],
-    ]) ?>
+    ])->label('Преподаватели') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

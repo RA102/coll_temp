@@ -20,21 +20,19 @@ $this->title = 'Дисциплина';
 	            'attributes' => [
 	                [
 	                    'attribute' => 'group_id',
-	                    'value' => function (RequiredDisciplines $model) {
-	                        return $model->group->caption_current;
-	                    },
+	                    'value' => $group->caption_current,
 	                ],
 	                [
 	                    'attribute' => 'discipline_id',
 	                    'value' => function (RequiredDisciplines $model) {
-                        	return $model->institutionDiscipline->caption_current;
+                        	return $model->teacherCourse->disciplineName;
 	                    },
-	                    'label' => 'Группа'
+	                    'label' => 'Дисциплина'
 	                ],
 	                [
 	                    'attribute' => 'teacher_id',
 	                    'value' => function (RequiredDisciplines $model) {
-	                        return $model->teacher->fullName;
+	                        return $model->teacherCourse->person->fullName;
 	                    },
 	                    'label' => 'Преподаватель'
 	                ],
@@ -45,7 +43,7 @@ $this->title = 'Дисциплина';
 		<div class="col-md-6">
 			<div class="card-body skin-white">
 				<h2>Планирумое кол-во часов</h2>
-	            <?= Html::a(Yii::t('app', 'Update'), ['update-required', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+	            <?= Html::a(Yii::t('app', 'Update'), ['edit-required', 'teacher_course_id' => $teacherCourse->id, 'group_id' => $group->id], ['class' => 'btn btn-primary']) ?>
 				<table class="table table-bordered">
 					<tr>
 						<th></th>
@@ -134,7 +132,7 @@ $this->title = 'Дисциплина';
 	<?php else:?>
 		<div class="card-body skin-white">
 			<p>План отсутствует</p>
-	        <?= Html::a(Yii::t('app', 'Добавить'), ['edit-required', 'id' => $id], ['class' => 'btn btn-alert']) ?>
+	        <?= Html::a(Yii::t('app', 'Добавить'), ['edit-required', 'teacher_course_id' => $teacherCourse->id, 'group_id' => $group->id], ['class' => 'btn btn-alert']) ?>
 		</div>
     <?php endif;?>
 </div>

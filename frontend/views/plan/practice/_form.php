@@ -49,7 +49,7 @@ $groups = ArrayHelper::map($groups, 'id', 'caption_current');
 		        'pluginOptions' => [
 		            'allowClear' => true,
 		        ],
-		    ]) ?>
+		    ])->label('Преподаватель') ?>
 
         </div>
 
@@ -66,7 +66,7 @@ $groups = ArrayHelper::map($groups, 'id', 'caption_current');
 		        'pluginOptions' => [
 		            'allowClear' => true,
 		        ],
-		    ]) ?>
+		    ])->label('Преподаватель') ?>
             
         </div>
     </div>

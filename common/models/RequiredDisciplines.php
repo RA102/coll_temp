@@ -15,6 +15,7 @@ use yii\db\ArrayExpression;
  *
  * @property int $id
  * @property int $teacher_course_id
+ * @property int $group_id
  * @property array $lections_hours
  * @property array $seminars_hours
  * @property array $course_works_hours
@@ -47,7 +48,7 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
             [['teacher_course_id'], 'required'],
             [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'ktp'], 'default', 'value' => null],
             [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'ktp'], 'safe'],
-            [['teacher_course_id'], 'integer'],
+            [['teacher_course_id', 'group_id'], 'integer'],
         ];
     }
 
@@ -88,18 +89,28 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    /*public function getInstitutionDiscipline()
+    public function getInstitutionDiscipline()
     {
-        return $this->hasOne(InstitutionDiscipline::class, ['id' => 'discipline_id']);
-    }*/
+        return $this->hasOne(InstitutionDiscipline::class, ['id' => 'institution_discipline_id'])
+            ->via('course');
+    }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    /*public function getGroup()
+    public function getCourse()
+    {
+        return $this->hasOne(Course::class, ['id' => 'course_id'])
+            ->viaTable('public.teacher_course', ['id' => 'teacher_course_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGroup()
     {
         return $this->hasOne(Group::class, ['id' => 'group_id']);
-    }*/
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -117,7 +128,7 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
     public function forYear($property)
     {
         
-        return $this->$property[1] + $this->$property[2];
+        return intval($this->$property[1]) + intval($this->$property[2]);
     }
 
     public function totalHours($semester)
@@ -125,7 +136,7 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
         if ($semester == 3) {
             $total = $this->forYear('lections_hours') + $this->forYear('seminars_hours') + $this->forYear('course_works_hours') + $this->forYear('tests_hours') + $this->forYear('offsets_hours') + $this->forYear('consultations_hours') + $this->forYear('exams_hours');
         }
-        else $total = $this->lections_hours[$semester] + $this->seminars_hours[$semester] + $this->course_works_hours[$semester] + $this->tests_hours[$semester] + $this->offsets_hours[$semester] + $this->consultations_hours[$semester] + $this->exams_hours[$semester];
+        else $total = intval($this->lections_hours[$semester]) + intval($this->seminars_hours[$semester]) + intval($this->course_works_hours[$semester]) + intval($this->tests_hours[$semester]) + intval($this->offsets_hours[$semester]) + intval($this->consultations_hours[$semester]) + intval($this->exams_hours[$semester]);
 
         return $total;
     }

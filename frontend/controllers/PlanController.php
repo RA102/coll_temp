@@ -94,10 +94,10 @@ class PlanController extends Controller
 
     public function actionRequired()
     {
-        $query = RequiredDisciplines::find()
+        /*$query = RequiredDisciplines::find()
                 ->joinWith('institutionDiscipline')
-                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);
-        //$query = TeacherCourse::find()->where(['type' => TeacherCourse::REQUIRED]);
+                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);*/
+        $query = TeacherCourse::find()->where(['status' => TeacherCourse::REQUIRED]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -156,7 +156,7 @@ class PlanController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $query = RequiredDisciplines::find()
                         ->where(['group_id' => $model->group_id]) 
-                        ->andWhere(['discipline_id' => $model->discipline_id])
+                        ->andWhere(['teacher_course_id' => $model->teacher_course_id])
                         ->one();
 
             if ($query !== null) {
@@ -178,27 +178,32 @@ class PlanController extends Controller
         ]);
     }
 
-    public function actionEditRequired($teacher_course_id)
+    public function actionEditRequired($teacher_course_id, $group_id)
     {
         $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+        $group = Group::findOne($group_id);
 
         $model = RequiredDisciplines::find()
-                        ->where(['teacher_course_id' => $teacher_course_id]) 
+                        ->where(['teacher_course_id' => $teacher_course_id])
+                        ->andWhere(['group_id' => $group_id])
                         ->one();
+     
         if ($model == null) {
             $model = new RequiredDisciplines();
             $model->teacher_course_id = $teacher_course_id;
+            $model->group_id = $group_id;
         }
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
-                return $this->redirect(['view-required', 'teacher_course_id' => $teacher_course_id]);
+                return $this->redirect(['view-required', 'teacher_course_id' => $teacher_course_id, 'group_id' => $group_id]);
             }
         }
 
         return $this->render('required/edit', [
             'model' => $model,
             'teacherCourse' => $teacherCourse, 
+            'group' => $group,
         ]);
     }
 
@@ -288,9 +293,20 @@ class PlanController extends Controller
         ]);
     }*/
 
-    public function actionViewRequired($id)
+    public function actionViewRequiredGroups($teacher_course_id)
     {
-        $model = RequiredDisciplines::findOne($id);
+        $model = TeacherCourse::findOne($teacher_course_id);
+
+        return $this->render('required/groups', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionViewRequired($teacher_course_id, $group_id)
+    {
+        $model = RequiredDisciplines::find()->where(['teacher_course_id' => $teacher_course_id])->andWhere(['group_id' => $group_id])->one();
+        $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+        $group = Group::findOne($group_id); 
 
         /*$weeks = strtotime($model->teacherCourse->end_ts) - strtotime($model->teacherCourse->start_ts);
 
@@ -319,6 +335,8 @@ class PlanController extends Controller
 
         return $this->render('required/view', [
             'model' => $model,
+            'teacherCourse' => $teacherCourse,
+            'group' => $group,
             //'teacher_course_id' => $teacher_course_id,
             //'lessons' => $lessons,
             //'weeks' => $weeks,
@@ -330,10 +348,13 @@ class PlanController extends Controller
         $model = RequiredDisciplines::findOne(['id' => $id]);
 
         $formmodel = new \yii\base\DynamicModel(['week', 'lesson_number', 'lesson_topic', 'type']);
-        $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
-        $formmodel['lesson_topic'] = $model->ktp[$lesson_number]['lesson_topic'];
-        $formmodel['week'] = $model->ktp[$lesson_number]['week'];
-        $formmodel['type'] = $model->ktp[$lesson_number]['type'];
+
+        if ($lesson_number !== null) {
+            $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
+            $formmodel['lesson_topic'] = $model->ktp[$lesson_number]['lesson_topic'];
+            $formmodel['week'] = $model->ktp[$lesson_number]['week'];
+            $formmodel['type'] = $model->ktp[$lesson_number]['type'];
+        }
 
         if ($formmodel->load(Yii::$app->request->post())) {
             $number = $_POST['DynamicModel']['lesson_number'];
@@ -353,7 +374,7 @@ class PlanController extends Controller
             $model->ktp = $modelktp;
 
             if ($model->save()) {
-                return $this->redirect(['view-required', 'id' => $id]);
+                return $this->redirect(['view-required', 'teacher_course_id' => $model->teacher_course_id, 'group_id' => $model->group_id]);
             }
         }
         

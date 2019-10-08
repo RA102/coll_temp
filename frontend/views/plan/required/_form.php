@@ -17,8 +17,8 @@ $groups = ArrayHelper::map($groups, 'id', 'caption_current');
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'discipline_id')->widget(Select2::class, [
-        'data' => $institutionDisciplines, // TODO rework to ajax
+    <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
+        'data' => $teacherCourses, // TODO rework to ajax
         'options' => ['placeholder' => 'Выберите дисциплину', 'class' => 'active-form-refresh-control'],
         'theme' => 'default',
         'pluginOptions' => [
