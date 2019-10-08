@@ -16,6 +16,7 @@ use yii\db\ArrayExpression;
  * @property int $teacher_course_id
  * @property int $group_id
  * @property int $teacher_id
+ * @property int $discipline_id
  * @property array $hours
  *
  */
@@ -35,10 +36,10 @@ class Facultative extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['teacher_course_id', 'group_id', 'teacher_id'], 'required'],
+            [['discipline_id', 'teacher_course_id', 'group_id', 'teacher_id'], 'required'],
             [['hours'], 'default', 'value' => null],
             [['hours'], 'safe'],
-            [['teacher_course_id', 'group_id', 'teacher_id'], 'integer'],
+            [['discipline_id', 'teacher_course_id', 'group_id', 'teacher_id'], 'integer'],
         ];
     }
 

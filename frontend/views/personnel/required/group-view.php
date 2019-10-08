@@ -31,9 +31,9 @@ $this->title = 'Планируемый объем нагрузки на груп
 					<td><?=$req->group->caption_current?></td>
 					<td><?=$req->institutionDiscipline->caption_current?></td>
 					<td><?=$req->totalHours(1)?></td>
-					<td><?=$req->teacher->fullName?></td>
+					<td><?=$req->teacherCourse->person->fullName?></td>
 					<td><?=$req->totalHours(2)?></td>
-					<td><?=$req->teacher->fullName?></td>
+					<td><?=$req->teacherCourse->person->fullName?></td>
 					<td><?=$req->totalHours(3)?></td>
 					<td></td>
 					<td></td>

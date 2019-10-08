@@ -124,7 +124,8 @@ class PlanController extends Controller
 
     public function actionFacultative()
     {
-        $query = Facultative::find();
+        //$query = Facultative::find();
+        $query = TeacherCourse::find()->where(['status' => TeacherCourse::FACULTATIVE]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -193,6 +194,7 @@ class PlanController extends Controller
             $model = new RequiredDisciplines();
             $model->teacher_course_id = $teacher_course_id;
             $model->group_id = $group_id;
+            $model->discipline_id = $teacherCourse->discipline->id;
         }
 
         if ($model->load(Yii::$app->request->post())) {
@@ -221,6 +223,7 @@ class PlanController extends Controller
             $model = new OptionalDisciplines();
             $model->teacher_id = $teacherCourse->teacher_id;
             $model->discipline_id = $teacherCourse->discipline->id;
+            $model->teacher_course_id = $teacher_course_id;
         }
 
         if ($model->load(Yii::$app->request->post())) {
@@ -232,6 +235,37 @@ class PlanController extends Controller
         return $this->render('optional/edit', [
             'model' => $model,
             'teacherCourse' => $teacherCourse, 
+        ]);
+    }
+
+    public function actionEditFacultative($teacher_course_id, $group_id)
+    {
+        $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+        $group = Group::findOne($group_id);
+
+        $model = Facultative::find()
+                        ->where(['teacher_course_id' => $teacher_course_id])
+                        ->andWhere(['group_id' => $group_id])
+                        ->one();
+     
+        if ($model == null) {
+            $model = new Facultative();
+            $model->teacher_id = $teacherCourse->person->id;
+            $model->teacher_course_id = $teacher_course_id;
+            $model->group_id = $group_id;
+            $model->discipline_id = $teacherCourse->discipline->id;
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                return $this->redirect(['view-facultative', 'teacher_course_id' => $teacher_course_id, 'group_id' => $group_id]);
+            }
+        }
+
+        return $this->render('facultative/edit', [
+            'model' => $model,
+            'teacherCourse' => $teacherCourse, 
+            'group' => $group,
         ]);
     }
 
@@ -371,7 +405,7 @@ class PlanController extends Controller
         ]);
     }
 
-    public function actionKtpCreate($id, $lesson_number = null)
+    public function actionRequiredKtpCreate($id, $lesson_number = null)
     {
         $model = RequiredDisciplines::findOne(['id' => $id]);
 
@@ -403,6 +437,47 @@ class PlanController extends Controller
 
             if ($model->save()) {
                 return $this->redirect(['view-required', 'teacher_course_id' => $model->teacher_course_id, 'group_id' => $model->group_id]);
+            }
+        }
+        
+        return $this->render('ktp-create', [
+            'model' => $model,
+            'formmodel' => $formmodel,
+        ]);
+    }
+
+    public function actionOptionalKtpCreate($id, $lesson_number = null)
+    {
+        $model = OptionalDisciplines::findOne(['id' => $id]);
+
+        $formmodel = new \yii\base\DynamicModel(['week', 'lesson_number', 'lesson_topic', 'type']);
+
+        if ($lesson_number !== null) {
+            $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
+            $formmodel['lesson_topic'] = $model->ktp[$lesson_number]['lesson_topic'];
+            $formmodel['week'] = $model->ktp[$lesson_number]['week'];
+            $formmodel['type'] = $model->ktp[$lesson_number]['type'];
+        }
+
+        if ($formmodel->load(Yii::$app->request->post())) {
+            $number = $_POST['DynamicModel']['lesson_number'];
+            $data[$number] = [];
+
+            $data[$number]['lesson_number'] = $_POST['DynamicModel']['lesson_number'];
+            $data[$number]['week'] = $_POST['DynamicModel']['week'];
+            $data[$number]['lesson_topic'] = $_POST['DynamicModel']['lesson_topic'];
+            $data[$number]['type'] =  $_POST['DynamicModel']['type'];
+            
+            if ($model->ktp !== null) {
+                $modelktp = $model->ktp;            
+            } else $modelktp = [];
+
+            $modelktp[$number] = $data[$number];
+            //var_dump($modelktp);die();
+            $model->ktp = $modelktp;
+
+            if ($model->save()) {
+                return $this->redirect(['view-optional', 'teacher_course_id' => $model->teacher_course_id]);
             }
         }
         
@@ -479,12 +554,61 @@ class PlanController extends Controller
         ]);
     }
 
-    public function actionViewFacultative($id)
+    public function actionViewFacultativeGroups($teacher_course_id)
+    {
+        $model = TeacherCourse::findOne($teacher_course_id);
+
+        return $this->render('facultative/groups', [
+            'model' => $model,
+        ]);
+    }
+
+    /*public function actionViewFacultative($id)
     {
         $model = Facultative::findOne($id);
 
         return $this->render('facultative/view', [
             'model' => $model,
+        ]);
+    }*/
+    public function actionViewFacultative($teacher_course_id, $group_id)
+    {
+        $model = Facultative::find()->where(['teacher_course_id' => $teacher_course_id])->andWhere(['group_id' => $group_id])->one();
+        $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+        $group = Group::findOne($group_id); 
+
+        /*$weeks = strtotime($model->teacherCourse->end_ts) - strtotime($model->teacherCourse->start_ts);
+
+        if ($model !== null) {
+            $lessons = Lesson::find()
+                    ->where(['in', 'group_id', $group_ids])
+                    ->andWhere(['teacher_course_id' => $teacher_course_id])
+                    ->orderBy(['date_ts' => SORT_ASC])
+                    ->all();
+    
+            $dates = ArrayHelper::getColumn($lessons, 'date_ts');
+            $weeks = [];
+            $w = 1;
+            foreach ($dates as $date) {
+                $ddate = date('Y-m-d', strtotime($date));
+                $d = new DateTime($ddate);
+                $week = $d->format("W");
+                $weeks[$w][] = $date;
+                if (isset($week_prev) && $week_prev == $week) {
+                    $w++;
+                }
+                $week_prev = $week;
+            }
+                //var_dump($weeks);die();
+        } else $lessons = null;*/
+
+        return $this->render('facultative/view', [
+            'model' => $model,
+            'teacherCourse' => $teacherCourse,
+            'group' => $group,
+            //'teacher_course_id' => $teacher_course_id,
+            //'lessons' => $lessons,
+            //'weeks' => $weeks,
         ]);
     }
 
@@ -533,7 +657,7 @@ class PlanController extends Controller
             $model->groups = $groups;
             $model->students = $students;
             if ($model->save()) {
-                return $this->redirect(['view-optional', 'id' => $model->id]);
+                return $this->redirect(['view-optional', 'teacher_course_id' => $model->teacher_course_id]);
             }
         }
 
@@ -649,7 +773,7 @@ class PlanController extends Controller
         foreach ($required as $r) {
             foreach ($r->ktp as $key => $value) {
                 if ($value['type'] == 8) {
-                    array_push($tests, ['group_id' => $r->group_id, 'discipline_id' => $r->discipline_id, 'week' => $value['week']]);
+                    array_push($tests, ['group_id' => $r->group_id, 'discipline_id' => $r->teacherCourse->discipline->id, 'week' => $value['week']]);
                 }
             }
         }

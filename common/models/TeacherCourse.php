@@ -153,6 +153,7 @@ class TeacherCourse extends \yii\db\ActiveRecord
         $list = [
             '1' => 'Обязательный',
             '2' => 'По выбору',
+            '3' => 'Факультатив',
         ];
 
         return $list;

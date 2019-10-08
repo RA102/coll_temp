@@ -106,7 +106,7 @@ $this->title = 'Дисциплина';
 		<div class="col-md-6">
 		    <div class="card-body skin-white">
 		    	<h2>Календарно-тематический план</h2>
-		        <?= Html::a(Yii::t('app', 'Добавить'), ['ktp-create', 'id' => $model->id], ['class' => 'btn btn-alert']) ?>
+		        <?= Html::a(Yii::t('app', 'Добавить'), ['required-ktp-create', 'id' => $model->id], ['class' => 'btn btn-alert']) ?>
 		    	<table class="table table-bordered">
 		    		<tr>
 		    			<th>№ занятия</th>

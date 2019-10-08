@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($formmodel, 'week')->textInput()->label('Неделя') ?>
 
             <?= $form->field($formmodel, 'type')->widget(Select2::class, [
-                'data' => $model->types(), 
+                'data' => $model->teacherCourse->types, 
                 'options' => ['placeholder' => 'Выберите способ', 'class' => 'active-form-refresh-control'],
                 'theme' => 'default',
                 'pluginOptions' => [

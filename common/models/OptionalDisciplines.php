@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\helpers\SchemeHelper;
+use common\models\TeacherCourse;
 use common\models\organization\InstitutionDiscipline;
 use common\models\organization\Group;
 use common\models\person\Employee;
@@ -15,6 +16,7 @@ use yii\db\ArrayExpression;
  * @property int $id
  * @property int $discipline_id
  * @property int $teacher_id
+ * @property int $teacher_course_id
  * @property array $lections_hours
  * @property array $seminars_hours
  * @property array $course_works_hours
@@ -24,6 +26,7 @@ use yii\db\ArrayExpression;
  * @property array $exams_hours
  * @property array $students
  * @property array $groups
+ * @property array $ktp
  *
  */
 class OptionalDisciplines extends \yii\db\ActiveRecord
@@ -44,10 +47,10 @@ class OptionalDisciplines extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['discipline_id', 'teacher_id'], 'required'],
-            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'students', 'groups'], 'default', 'value' => null],
-            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'students', 'groups'], 'safe'],
-            [['discipline_id', 'teacher_id'], 'integer'],
+            [['teacher_course_id', 'discipline_id', 'teacher_id'], 'required'],
+            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'students', 'groups', 'ktp'], 'default', 'value' => null],
+            [['lections_hours', 'seminars_hours', 'course_works_hours', 'tests_hours', 'offsets_hours', 'consultations_hours', 'exams_hours', 'students', 'groups', 'ktp'], 'safe'],
+            [['teacher_course_id', 'discipline_id', 'teacher_id'], 'integer'],
         ];
     }
 
@@ -75,6 +78,14 @@ class OptionalDisciplines extends \yii\db\ActiveRecord
             'exams_hours' => 'Кол-во часов на экзамены',
             'students' => 'Учащиеся',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeacherCourse()
+    {
+        return $this->hasOne(TeacherCourse::class, ['id' => 'teacher_course_id']);
     }
 
     /**
@@ -110,7 +121,9 @@ class OptionalDisciplines extends \yii\db\ActiveRecord
 
     public function countStudents()
     {
-        return count($this->students);
+        if ($this->students !== null) {
+            return count($this->students);
+        }
     }
 
 }

@@ -91,8 +91,8 @@ class RequiredDisciplines extends \yii\db\ActiveRecord
      */
     public function getInstitutionDiscipline()
     {
-        return $this->hasOne(InstitutionDiscipline::class, ['id' => 'institution_discipline_id'])
-            ->via('course');
+        return $this->hasOne(InstitutionDiscipline::class, ['id' => 'discipline_id']);
+            //->via('course');
     }
 
     /**

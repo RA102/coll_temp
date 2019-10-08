@@ -19,17 +19,6 @@ $this->title = 'Дисциплина';
 	<?php if (isset($model)):?>
 		<div class="card-body skin-white">
 
-	        <p>
-	            <?= Html::a(Yii::t('app', 'Update'), ['edit-optional', 'teacher_course_id' => $teacherCourse->id], ['class' => 'btn btn-primary']) ?>
-	            <!-- <?= Html::a(Yii::t('app', 'Delete'), ['delete-optional', 'id' => $model->id], [
-	                'class' => 'btn btn-danger',
-	                'data' => [
-	                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-	                    'method' => 'post',
-	                ],
-	            ]) ?> -->
-	        </p>
-
 	        <?= DetailView::widget([
 	            'model' => $model,
 	            'attributes' => [
@@ -86,65 +75,105 @@ $this->title = 'Дисциплина';
 
 	    </div>
 	    <hr>
-	    <div class="card-body skin-white">
+    	<div class="row">
+    		<div class="col-md-6">
+			    <div class="card-body skin-white">
+					<h2>Планирумое кол-во часов</h2>
+					<p>
+			            <?= Html::a(Yii::t('app', 'Update'), ['edit-optional', 'teacher_course_id' => $teacherCourse->id], ['class' => 'btn btn-primary']) ?>
+			            <!-- <?= Html::a(Yii::t('app', 'Delete'), ['delete-optional', 'id' => $model->id], [
+			                'class' => 'btn btn-danger',
+			                'data' => [
+			                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+			                    'method' => 'post',
+			                ],
+			            ]) ?> -->
+			        </p>
 
-			<table class="table table-bordered">
-				<tr>
-					<th></th>
-					<th>Семестр I</th>
-					<th>Семестр II</th>
-					<th>За год</th>
-				</tr>
-				<tr>
-					<th>Лекции (ч)</th>
-					<td><?=$model->lections_hours[1]?></td>
-					<td><?=$model->lections_hours[2]?></td>
-					<td><?=$model->forYear('lections_hours')?></td>
-				</tr>
-				<tr>
-					<th>Семинары (ч)</th>
-					<td><?=$model->seminars_hours[1]?></td>
-					<td><?=$model->seminars_hours[2]?></td>
-					<td><?=$model->forYear('seminars_hours')?></td>
-				</tr>
-				<tr>
-					<th>Курсовые (ч)</th>
-					<td><?=$model->course_works_hours[1]?></td>
-					<td><?=$model->course_works_hours[2]?></td>
-					<td><?=$model->forYear('course_works_hours')?></td>
-				</tr>
-				<tr>
-					<th>Контрольные (ч)</th>
-					<td><?=$model->tests_hours[1]?></td>
-					<td><?=$model->tests_hours[2]?></td>
-					<td><?=$model->forYear('tests_hours')?></td>
-				</tr>
-				<tr>
-					<th>Зачёт (ч)</th>
-					<td><?=$model->offsets_hours[1]?></td>
-					<td><?=$model->offsets_hours[2]?></td>
-					<td><?=$model->forYear('offsets_hours')?></td>
-				</tr>
-				<tr>
-					<th>Консультации (ч)</th>
-					<td><?=$model->consultations_hours[1]?></td>
-					<td><?=$model->consultations_hours[2]?></td>
-					<td><?=$model->forYear('consultations_hours')?></td>
-				</tr>
-				<tr>
-					<th>Экзамены (ч)</th>
-					<td><?=$model->exams_hours[1]?></td>
-					<td><?=$model->exams_hours[2]?></td>
-					<td><?=$model->forYear('exams_hours')?></td>
-				</tr>
-				<tr class="success">
-					<th>Всего за год</th>
-					<td><?=$model->totalHours(1)?></td>
-					<td><?=$model->totalHours(2)?></td>
-					<td><?=$model->totalHours(3)?></td>
-				</tr>
-			</table>
+			        <table class="table table-bordered">
+						<tr>
+							<th></th>
+							<th>Семестр I</th>
+							<th>Семестр II</th>
+							<th>За год</th>
+						</tr>
+						<tr>
+							<th>Лекции (ч)</th>
+							<td><?=$model->lections_hours[1]?></td>
+							<td><?=$model->lections_hours[2]?></td>
+							<td><?=$model->forYear('lections_hours')?></td>
+						</tr>
+						<tr>
+							<th>Семинары (ч)</th>
+							<td><?=$model->seminars_hours[1]?></td>
+							<td><?=$model->seminars_hours[2]?></td>
+							<td><?=$model->forYear('seminars_hours')?></td>
+						</tr>
+						<tr>
+							<th>Курсовые (ч)</th>
+							<td><?=$model->course_works_hours[1]?></td>
+							<td><?=$model->course_works_hours[2]?></td>
+							<td><?=$model->forYear('course_works_hours')?></td>
+						</tr>
+						<tr>
+							<th>Контрольные (ч)</th>
+							<td><?=$model->tests_hours[1]?></td>
+							<td><?=$model->tests_hours[2]?></td>
+							<td><?=$model->forYear('tests_hours')?></td>
+						</tr>
+						<tr>
+							<th>Зачёт (ч)</th>
+							<td><?=$model->offsets_hours[1]?></td>
+							<td><?=$model->offsets_hours[2]?></td>
+							<td><?=$model->forYear('offsets_hours')?></td>
+						</tr>
+						<tr>
+							<th>Консультации (ч)</th>
+							<td><?=$model->consultations_hours[1]?></td>
+							<td><?=$model->consultations_hours[2]?></td>
+							<td><?=$model->forYear('consultations_hours')?></td>
+						</tr>
+						<tr>
+							<th>Экзамены (ч)</th>
+							<td><?=$model->exams_hours[1]?></td>
+							<td><?=$model->exams_hours[2]?></td>
+							<td><?=$model->forYear('exams_hours')?></td>
+						</tr>
+						<tr class="success">
+							<th>Всего за год</th>
+							<td><?=$model->totalHours(1)?></td>
+							<td><?=$model->totalHours(2)?></td>
+							<td><?=$model->totalHours(3)?></td>
+						</tr>
+					</table>
+				</div>
+			</div>
 
+			<div class="col-md-6">
+				<div class="card-body skin-white">
+					<h2>Календарно-тематический план</h2>
+					<?= Html::a(Yii::t('app', 'Добавить'), ['optional-ktp-create', 'id' => $model->id], ['class' => 'btn btn-alert']) ?>
+			    	<table class="table table-bordered">
+			    		<tr>
+			    			<th>№ занятия</th>
+			    			<th>Тема урока</th>
+			    			<th>Недельный период</th>
+			    			<th>Способ обучения</th>
+			    		</tr>
+			    		<?php if($model->ktp !== null):?>
+				    		<?php foreach($model->ktp as $key => $value) :?>
+				    			<tr>
+				    				<td><?=$value['lesson_number']?></td>
+				    				<td><?=$value['lesson_topic']?></td>
+				    				<td><?=$value['week']?></td>
+				    				<td><?=$model->teacherCourse->getType($value['type'])?></td>
+				    				<td><a href="ktp-create?id=<?=$model->id?>&lesson_number=<?=$value['lesson_number']?>"><i class="fa fa-edit"></i></td>
+				    			</tr>
+				    		<?php endforeach;?>
+				    	<?php endif;?>
+			    	</table>
+				</div>
+			</div>
 	    </div>
 	<?php else:?>
 		<div class="card-body skin-white">

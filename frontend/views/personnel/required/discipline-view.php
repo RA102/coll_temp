@@ -9,7 +9,6 @@ $this->title = 'Планируемый объем нагрузки по дисц
 
 <div style="position: relative;">
     <h1><?=$this->title?></h1>
-    <?= Html::a('Добавить', ['create-required'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 
 <div class="required-index skin-white">
@@ -29,9 +28,9 @@ $this->title = 'Планируемый объем нагрузки по дисц
 					<td><?=$req->institutionDiscipline->caption_current?></td>
 					<td><?=$req->group->caption_current?></td>
 					<td><?=$req->totalHours(1)?></td>
-					<td><?=$req->teacher->fullName?></td>
+					<td><?=$req->teacherCourse->person->fullName?></td>
 					<td><?=$req->totalHours(2)?></td>
-					<td><?=$req->teacher->fullName?></td>
+					<td><?=$req->teacherCourse->person->fullName?></td>
 					<td><?=$req->totalHours(3)?></td>
 				</tr>
 			<?php endforeach;?>

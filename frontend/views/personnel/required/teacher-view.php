@@ -26,7 +26,7 @@ $this->title = 'Планируемый объем нагрузки на преп
 			</tr>
 			<?php foreach ($required as $req):?>
 				<tr>
-					<td><?=$req->teacher->fullName?></td>
+					<td><?=$req->teacherCourse->person->fullName?></td>
 					<td><?=$req->institutionDiscipline->caption_current?></td>
 					<td><?=$req->group->caption_current?></td>
 					<td><?=$req->totalHours(1)?></td>

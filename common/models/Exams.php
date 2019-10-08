@@ -17,6 +17,7 @@ use yii\db\ArrayExpression;
  * @property int $group_id
  * @property int $exam_type
  * @property int $week
+ * @property int $teacher_course_id
  *
  */
 class Exams extends \yii\db\ActiveRecord
@@ -35,8 +36,8 @@ class Exams extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['institution_discipline_id', 'group_id', 'exam_type', 'week'], 'required'],
-            [['institution_discipline_id', 'group_id', 'exam_type', 'week'], 'integer'],
+            [['teacher_course_id', 'institution_discipline_id', 'group_id', 'exam_type', 'week'], 'required'],
+            [['teacher_course_id', 'institution_discipline_id', 'group_id', 'exam_type', 'week'], 'integer'],
         ];
     }
 
@@ -53,6 +54,7 @@ class Exams extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
+            'teacher_course_id' => Yii::t('app', 'Teacher Course ID'),
             'institution_discipline_id' => Yii::t('app', 'Discipline ID'),
             'group_id' => Yii::t('app', 'Group'),
             'exam_type' => 'Способ',

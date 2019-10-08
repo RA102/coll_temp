@@ -39,19 +39,7 @@ use yii\widgets\ActiveForm;
 
             <p>I семестр</p>
 
-            <?= $form->field($model, 'lections_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'seminars_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'course_works_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'tests_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'offsets_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'consultations_hours[1]')->textInput() ?>
-
-            <?= $form->field($model, 'exams_hours[1]')->textInput() ?>
+            <?= $form->field($model, 'hours[1]')->textInput() ?>
 
         </div>
 
@@ -59,20 +47,8 @@ use yii\widgets\ActiveForm;
 
             <p>II семестр</p>
 
-            <?= $form->field($model, 'lections_hours[2]')->textInput() ?>
+            <?= $form->field($model, 'hours[2]')->textInput() ?>
 
-            <?= $form->field($model, 'seminars_hours[2]')->textInput() ?>
-
-            <?= $form->field($model, 'course_works_hours[2]')->textInput() ?>
-
-            <?= $form->field($model, 'tests_hours[2]')->textInput() ?>
-
-            <?= $form->field($model, 'offsets_hours[2]')->textInput() ?>
-
-            <?= $form->field($model, 'consultations_hours[2]')->textInput() ?>
-
-            <?= $form->field($model, 'exams_hours[2]')->textInput() ?>
-            
         </div>
     </div>
 

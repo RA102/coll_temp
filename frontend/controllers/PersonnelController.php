@@ -155,7 +155,8 @@ class PersonnelController extends Controller
     public function actionRequiredTeacherView($teacher_id)
     {
     	$required = RequiredDisciplines::find()
-    			->where(['teacher_id' => $teacher_id])
+                ->joinWith('teacherCourse')
+                ->andWhere([TeacherCourse::tableName().'.teacher_id' => $teacher_id])
                 ->joinWith('institutionDiscipline')
                 ->andWhere([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id])
                 ->all();

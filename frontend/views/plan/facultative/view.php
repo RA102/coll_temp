@@ -13,6 +13,7 @@ $this->title = 'Факультатив';
 <h1><?= Html::encode($this->title) ?></h1>
 
 <div class="view-required">
+    <?php if ($model !== null):?>
 	<div class="card-head">
 		<p>
             <?= Html::a(Yii::t('app', 'Delete'), ['delete-reuired', 'id' => $model->id], [
@@ -71,4 +72,10 @@ $this->title = 'Факультатив';
 		    </div>
 		</div>
 	</div>
+    <?php else:?>
+        <div class="card-body skin-white">
+            <p>План отсутствует</p>
+            <?= Html::a(Yii::t('app', 'Добавить'), ['edit-facultative', 'teacher_course_id' => $teacherCourse->id, 'group_id' => $group->id], ['class' => 'btn btn-alert']) ?>
+        </div>
+    <?php endif;?>
 </div>

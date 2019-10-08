@@ -1,6 +1,6 @@
 <?php
 
-use common\models\Facultative;
+use common\models\TeacherCourse;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -21,28 +21,24 @@ $this->title = 'Факультативные занятия';
 
                 [
                     'attribute' => 'teacher_course_id',
-                    'value' => function (Facultative $model) {
-                        return $model->teacherCourse->disciplineName;
+                    'value' => function (TeacherCourse $model) {
+                        return $model->disciplineName;
                     },
-                ],
-                [
-                    'attribute' => 'group_id',
-                    'value' => function (Facultative $model) {
-                        return $model->group->caption_current;
-                    },
+                    'label' => 'Дисциплина'
                 ],
                 [
                     'attribute' => 'teacher_id',
-                    'value' => function (Facultative $model) {
-                        return $model->teacher->getFullname();
+                    'value' => function (TeacherCourse $model) {
+                        return $model->person->getFullname();
                     },
                 ],
 
                 [
                 	'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
                 	'urlCreator' => function ($action, $model, $key, $index) {
 		            if ($action === 'view') {
-		                $url ='view-facultative?id='.$model->id;
+		                $url ='view-facultative-groups?teacher_course_id='.$model->id;
 		                return $url;
 		            }
 		            if ($action === 'update') {
