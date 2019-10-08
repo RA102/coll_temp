@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\person\Entrant;
 use common\models\organization\Classroom;
 use common\models\organization\Stats;
 use frontend\search\ClassroomSearch;
@@ -9,9 +10,10 @@ use common\models\person\Person;
 use common\models\person\Student;
 use common\services\organization\GroupService;
 use common\services\person\PersonService;
+use common\services\reception\CommissionService;
 use frontend\models\forms\GroupAllocationForm;
 use frontend\search\StudentSearch;
-use Yii;
+use frontend\search\EntrantSearch;use Yii;
 use common\models\organization\Group;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -28,12 +30,14 @@ class StatsController extends Controller
 {
     public $groupService;
     private $personService;
+    protected $commissionService;
 
-    public function __construct(string $id, $module, GroupService $groupService, PersonService $personService, array $config = [])
+    public function __construct(string $id, $module, GroupService $groupService, PersonService $personService, CommissionService $commissionService, array $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->groupService = $groupService;
         $this->personService = $personService;
+        $this->commissionService = $commissionService;
     }
 
     /**
@@ -66,105 +70,40 @@ class StatsController extends Controller
      */
     public function actionIndex()
     {
-        $stats = Stats::findOne($this->institution->id);
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
 
         return $this->render('index', [
-            'stats' => $stats,
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
         ]);
     }
 
-    /**
-     * Displays a single Group model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        $studentsSearch = new StudentSearch();
-        $studentsSearch->formName = 'withGroup';
-        $studentsSearch->institution_id = Yii::$app->user->identity->institution->id;
-        $studentsSearch->group_id = $id;
-        $studentsDataProvider = $studentsSearch->search(Yii::$app->request->queryParams);
-
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-            'studentsSearch' => $studentsSearch,
-            'studentsDataProvider' => $studentsDataProvider
-        ]);
-    }
-
-    /**
-     * Creates a new Group model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Classroom();
-        $model->institution_id = Yii::$app->user->identity->institution->id;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Updates an existing Group model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
-        }
-
-        $specialities = Yii::$app->user->identity->institution->specialities;
-
-        return $this->render('update', [
-            'model' => $model,
-            'specialities' => $specialities,
-        ]);
-    }
-
-    /**
-     * Deletes an existing Group model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $model = $this->findModel($id);
-        $model->delete_ts = date('Y-m-d H:i:s');
-        $model->save();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Group model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Group the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Classroom::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
-    }
 }
