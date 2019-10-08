@@ -1,6 +1,6 @@
 <?php
 
-use common\models\TeacherCourse;
+use common\models\OptionalDisciplines;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -20,30 +20,33 @@ $this->title = 'Дисциплины по выбору';
 
                 [
                     'attribute' => 'discipline_id',
-                    'value' => function (TeacherCourse $model) {
-                        return $model->disciplineName;
+                    'value' => function (OptionalDisciplines $model) {
+                        return $model->institutionDiscipline->caption_current;
                     },
                 ],
                 [
                     'attribute' => 'teacher_id',
-                    'value' => function (TeacherCourse $model) {
-                        return $model->person->getFullname();
+                    'value' => function (OptionalDisciplines $model) {
+                        return $model->teacher->getFullname();
                     },
                 ],
 
                 [
                 	'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {update}',
                 	'urlCreator' => function ($action, $model, $key, $index) {
-    		            if ($action === 'view') {
-    		                $url ='view-optional?teacher_course_id='.$model->id;
-    		                return $url;
-    		            }
-    		            if ($action === 'update') {
-    		                $url ='edit-optional?teacher_course_id='.$model->id;
-    		                return $url;
-    		            }
+		            if ($action === 'view') {
+		                $url ='view-optional?id='.$model->id;
+		                return $url;
 		            }
+		            if ($action === 'update') {
+		                $url ='update-optional?id='.$model->id;
+		                return $url;
+		            }
+		            if ($action === 'delete') {
+		                $url ='delete-optional?id='.$model->id;
+		                return $url;
+		            }
+		          }
                 ],
             ],
         ]); ?>

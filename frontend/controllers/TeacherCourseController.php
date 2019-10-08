@@ -157,12 +157,12 @@ class TeacherCourseController extends Controller
         $form->setAttributes($teacherCourse->getAttributes());
         $group_ids = ArrayHelper::getColumn($teacherCourse->getGroups()->all(), 'id');
         $form->group_ids = $group_ids;
-        if (array_key_exists($form->status, $statuses)) {
+        /*if (array_key_exists($form->status, $statuses)) {
             $form->status = $statuses[$form->status];
         }
         if (array_key_exists($form->type, $types)) {
             $form->type = $types[$form->type];
-        }
+        }*/
         $form->start_ts = date('d.m.Y', strtotime($teacherCourse->start_ts));
         $form->end_ts = date('d.m.Y', strtotime($teacherCourse->end_ts));
 
@@ -171,14 +171,14 @@ class TeacherCourseController extends Controller
             $teacherCourse->course_id = $course->id;
 
             if ($teacherCourse->save()) {
-                foreach (array_diff($group_ids, $form->group_ids) as $group_id) {
-                    $group = $this->groupService->getGroup($this->institution, $group_id);
-                    $this->teacherCourseService->deleteGroup($teacherCourse, $group);
-                }
-                foreach (array_diff($form->group_ids, $group_ids) as $group_id) {
-                    $group = $this->groupService->getGroup($this->institution, $group_id);
-                    $this->teacherCourseService->addGroup($teacherCourse, $group);
-                }
+                    foreach (array_diff($group_ids, $form->group_ids) as $group_id) {
+                        $group = $this->groupService->getGroup($this->institution, $group_id);
+                        $this->teacherCourseService->deleteGroup($teacherCourse, $group);
+                    }
+                    foreach (array_diff($form->group_ids, $group_ids) as $group_id) {
+                        $group = $this->groupService->getGroup($this->institution, $group_id);
+                        $this->teacherCourseService->addGroup($teacherCourse, $group);
+                    }
 
                 return $this->redirect(['view', 'id' => $teacherCourse->id, 'course_id' => $course_id]);
             }

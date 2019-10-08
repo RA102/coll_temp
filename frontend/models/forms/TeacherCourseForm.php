@@ -24,7 +24,7 @@ class TeacherCourseForm extends Model
             [['type'], 'string', 'max' => 255],
             [['status'], 'integer'],
             [['group_ids'], 'each', 'rule' => ['integer']],
-            [['group_ids'], 'required'],
+            //[['group_ids'], 'required'],
             [['start_ts', 'end_ts'], 'safe'],
         ];
     }

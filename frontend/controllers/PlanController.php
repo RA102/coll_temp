@@ -109,9 +109,10 @@ class PlanController extends Controller
 
     public function actionOptional()
     {
-        $query = OptionalDisciplines::find()
+        /*$query = OptionalDisciplines::find()
                 ->joinWith('institutionDiscipline')
-                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);
+                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);*/
+        $query = TeacherCourse::find()->where(['status' => TeacherCourse::OPTIONAL]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -204,6 +205,33 @@ class PlanController extends Controller
             'model' => $model,
             'teacherCourse' => $teacherCourse, 
             'group' => $group,
+        ]);
+    }
+
+    public function actionEditOptional($teacher_course_id)
+    {
+        $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+
+        $model = OptionalDisciplines::find()
+                        ->where(['teacher_id' => $teacherCourse->teacher_id])
+                        ->andWhere(['discipline_id' => $teacherCourse->discipline->id])
+                        ->one();
+     
+        if ($model == null) {
+            $model = new OptionalDisciplines();
+            $model->teacher_id = $teacherCourse->teacher_id;
+            $model->discipline_id = $teacherCourse->discipline->id;
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                return $this->redirect(['view-optional', 'teacher_course_id' => $teacher_course_id]);
+            }
+        }
+
+        return $this->render('optional/edit', [
+            'model' => $model,
+            'teacherCourse' => $teacherCourse, 
         ]);
     }
 
@@ -397,7 +425,7 @@ class PlanController extends Controller
         ]);
     }
 
-    public function actionViewOptional($id)
+    /*public function actionViewOptional($id)
     {
         $model = OptionalDisciplines::findOne($id);
         $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
@@ -416,6 +444,38 @@ class PlanController extends Controller
             'groups' => $groups,
             'formmodel' => $formmodel,
             'students' => $students_array,
+        ]);
+    }*/
+    public function actionViewOptional($teacher_course_id)
+    {
+        $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+        $model = OptionalDisciplines::find()
+            ->where(['discipline_id' => $teacherCourse->discipline->id])
+            ->andWhere(['teacher_id' => $teacherCourse->teacher_id])
+            ->one();
+
+        $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
+
+        $students_array = [];
+        if (isset($model)) {
+            $students_ids = $model->students;
+            if ($students_ids !== null) {
+                foreach ($students_ids as $student_id) {
+                    $student = Student::findOne($student_id);
+                    array_push($students_array, $student);
+                }
+            }
+        }
+
+        $formmodel = new \yii\base\DynamicModel(['group']);
+        $formmodel->addRule(['group'], 'required');
+
+        return $this->render('optional/view', [
+            'model' => $model,
+            'groups' => $groups,
+            'formmodel' => $formmodel,
+            'students' => $students_array,
+            'teacherCourse' => $teacherCourse,
         ]);
     }
 
@@ -443,6 +503,10 @@ class PlanController extends Controller
 
         $students = $model->students;
 
+        if ($students == null) {
+                $students = [];
+        }
+
         if (!empty($_POST['DynamicModel'])) {
             $group_id = $_POST['DynamicModel']['group'];
             $group = Group::findOne($group_id);
@@ -455,7 +519,7 @@ class PlanController extends Controller
                 if (!in_array($new, $students)) {
                     array_push($students, $new);
                 }
-            };
+            }
 
             $groups = $model->groups;
             if ($groups == null) {
@@ -493,6 +557,26 @@ class PlanController extends Controller
         }
 
         return $this->render('required/update', [
+            'model' => $model,
+            'institutionDisciplines' => $institutionDisciplines,
+            'groups' => $groups,
+            'teachers' => $teachers,
+        ]);
+    }
+
+    public function actionUpdateOptional($id)
+    {
+        $model = OptionalDisciplines::findOne($id);
+
+        $institutionDisciplines = $this->institutionDisciplineService->getInstitutionDisciplines($this->institution);
+        $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
+        $teachers = $this->employeeService->getTeachersActive($this->institution);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view-optional', 'id' => $id]);
+        }
+
+        return $this->render('optional/update', [
             'model' => $model,
             'institutionDisciplines' => $institutionDisciplines,
             'groups' => $groups,
