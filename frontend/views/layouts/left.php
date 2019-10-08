@@ -131,10 +131,6 @@
                                         'label' => 'Профессиональная практика',
                                         'url' => ['/plan/practice-professional'],
                                     ],
-                                    [
-                                        'label' => 'КТП',
-                                        'url' => ['/plan/ktp'],
-                                    ],
                                 ],
                             ],
                             [

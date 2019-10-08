@@ -31,6 +31,8 @@ class TeacherCourse extends \yii\db\ActiveRecord
 {
     const REQUIRED = 1; // обязательный предмет
     const OPTIONAL = 2; // по выбору
+    const FACULTATIVE = 3; // факультатив
+    const PRACTICAL = 4; // практика
 
     /**
      * {@inheritdoc}
@@ -155,6 +157,15 @@ class TeacherCourse extends \yii\db\ActiveRecord
 
         return $list;
     }
+    public function statusName($status)
+    {
+        $list = [
+            '1' => 'Обязательный',
+            '2' => 'По выбору',
+        ];
+
+        return $list[$status];
+    }
 
     public function getStatus($status)
     {
@@ -163,6 +174,11 @@ class TeacherCourse extends \yii\db\ActiveRecord
             return $list[$status];
         }
     }
+    public function getStat()
+    {
+        return $this->statusName($this->status);
+    }
+
 
     public function getTypes()
     {

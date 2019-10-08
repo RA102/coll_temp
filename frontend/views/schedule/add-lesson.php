@@ -12,6 +12,8 @@ use yii\widgets\ActiveForm;
 /* @var $teachers common\models\person\Employee[] */
 /* @var $groups common\models\organization\Group[] */
 
+$this->title = 'Расписание';
+
 ?>
 
 <div class="add-lesson-form">
@@ -20,20 +22,20 @@ use yii\widgets\ActiveForm;
 
 	    <?php $form = ActiveForm::begin(); ?>
 
-	    <?= $form->field($model, 'group_id')->textInput(['value' => $group->caption_current, 'disabled' => true]) ?>
+	    <?= $form->field($model, 'group_id')->textInput(['value' => $group->caption_current, 'disabled' => true])->label('Группа') ?>
 
 	    <?= $form->field($model, 'weekday')->textInput(['value' => $model->getWeekday($model->weekday), 'disabled' => true]) ?>
 
 	    <?= $form->field($model, 'lesson_number')->textInput(['disabled' => true]) ?>
 
 	    <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
-	        'data' => ArrayHelper::map($teacherCourses, 'id', 'disciplineName'), /** @see Employee::getFullName() */ // TODO rework to ajax
+	        'data' => ArrayHelper::map($teacherCourses, 'id', 'disciplineName', 'stat'), /** @see Employee::getFullName() */ // TODO rework to ajax
 	        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
 	        'theme' => 'default',
 	        'pluginOptions' => [
 	            'allowClear' => true,
 	        ],
-	    ]) ?>
+	    ])->label('Предмет') ?>
 
 	    <?= $form->field($model, 'classroom_id')->widget(Select2::class, [
 	        'data' => ArrayHelper::map($classrooms, 'id', 'number'), /** @see Employee::getFullName() */ // TODO rework to ajax

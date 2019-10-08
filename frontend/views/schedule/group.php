@@ -40,6 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
 							        							<?=$lesson->teacherCourse->disciplineName?> <br>
 							        							<?=$lesson->teacherCourse->person->fullName?> <br>
 							        							(<?=$lesson->classroom->number?>)
+							        							<?php if ($lesson->teacherCourse->status == 2):?>
+							        								<br><small>(по выбору)</small>
+							        							<?php endif;?>
 							        							<?= Html::a(Yii::t('app', ''), ['delete', 'id' => $lesson->id], [
 													                'class' => 'glyphicon glyphicon-trash',
 													                'data'  => [
