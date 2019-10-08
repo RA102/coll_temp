@@ -177,7 +177,16 @@
                                 'icon'  => 'file-code-o',
                                 'url'   => ['/institution-discipline']
                             ],
-                            ['label' => Yii::t('app', 'Курсы'), 'icon' => 'file-code-o', 'url' => ['/course/index']],
+                            [
+                                'label' => Yii::t('app', 'Курсы'), 
+                                'icon' => 'file-code-o', 
+                                'url' => ['/course/index']
+                            ],
+                            /*[
+                                'label' => Yii::t('app', 'Практика'), 
+                                'icon' => 'file-code-o', 
+                                'url' => ['/plan/practice']
+                            ],*/
 //                            ['label' => Yii::t('app','Учебный процесс'), 'icon' => 'file-code-o', 'url' => ['/']],
                             [
                                 'label' => Yii::t('app', 'Организация'),

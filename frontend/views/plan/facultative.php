@@ -9,7 +9,7 @@ $this->title = 'Факультативные занятия';
 
 <div style="position: relative;">
     <h1><?=$this->title?></h1>
-    <?= Html::a('Добавить', ['create-facultative'], ['class' => 'title-action btn btn-primary']) ?>
+    <!-- <?= Html::a('Добавить', ['create-facultative'], ['class' => 'title-action btn btn-primary']) ?> -->
 </div>
 
 <div class="optional-index skin-white">

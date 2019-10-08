@@ -244,7 +244,7 @@ class PersonnelController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => TeacherCourse::find()->andWhere([
-                'type' => 7
+                'status' => TeacherCourse::FACULTATIVE,
             ])
         ]);
 
@@ -377,7 +377,8 @@ class PersonnelController extends Controller
         $teacher = Employee::findOne($teacher_id);
 
         $required = RequiredDisciplines::find()
-                ->where(['teacher_id' => $teacher_id])
+                ->joinWith('teacherCourse')
+                ->where([TeacherCourse::tableName().'.teacher_id' => $teacher_id])
                 ->joinWith('institutionDiscipline')
                 ->andWhere([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id])
                 ->all();
