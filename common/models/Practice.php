@@ -17,10 +17,16 @@ use yii\db\ArrayExpression;
  * @property int $group_id
  * @property array $teacher
  * @property array $hours
+ * @property array $caption
  *
  */
 class Practice extends \yii\db\ActiveRecord
 {
+    public $caption_current;
+
+    public $caption_ru;
+    public $caption_kk;
+
     /**
      * {@inheritdoc}
      */
@@ -35,18 +41,12 @@ class Practice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['teacher_course_id', 'group_id'], 'required'],
+            [['caption_ru', 'caption_kk', 'group_id'], 'required'],
             [['teacher', 'hours'], 'default', 'value' => null],
-            [['teacher', 'hours'], 'safe'],
+            [['teacher', 'hours', 'caption'], 'safe'],
             [['teacher_course_id', 'group_id'], 'integer'],
         ];
     }
-
-    public function afterFind()
-    {
-        parent::afterFind();
-    }
-
 
     /**
      * {@inheritdoc}
@@ -55,11 +55,34 @@ class Practice extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'teacher_course_id' => Yii::t('app', 'Факультатив'),
+            'teacher_course_id' => Yii::t('app', 'Практика'),
             'group_id' => Yii::t('app', 'Group'),
             'teacher_id' => Yii::t('app', 'Teacher ID'),
             'hours' => 'Часов',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        // set json caption from two non json fields
+        $this->caption = [
+            'ru' => $this->caption_ru,
+            'kk' => $this->caption_kk,
+        ];
+
+        return parent::beforeSave($insert);
+    }
+
+    public function afterFind()
+    {
+        $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
+        // set current caption, can be used as default caption variant
+        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'] ?? $this->caption['kk'] ?? null;
+        // set caption in russian and kazakh
+        $this->caption_ru = $this->caption['ru'] ?? null;
+        $this->caption_kk = $this->caption['kk'] ?? null;
+
+        parent::afterFind();
     }
 
     /**
@@ -88,7 +111,7 @@ class Practice extends \yii\db\ActiveRecord
 
     public function forYear()
     {
-        return $this->hours[1] + $this->hours[2];
+        return intval($this->hours[1]) + intval($this->hours[2]);
     }
 
 }

@@ -6,6 +6,7 @@ use common\models\Facultative;
 use common\models\RequiredDisciplines;
 use common\models\OptionalDisciplines;
 use common\models\Practice;
+use common\models\ProfessionalPractice;
 use common\models\Exams;
 use common\models\Ktp;
 use common\models\TeacherCourse;
@@ -143,6 +144,18 @@ class PlanController extends Controller
         ]);
 
         return $this->render('practice',[
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionProfessionalPractice()
+    {
+        $query = ProfessionalPractice::find()->where(['institution_id' => $this->institution->id]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('professional-practice/index',[
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -343,6 +356,32 @@ class PlanController extends Controller
             'teacherCourses' => $teacherCourses,
             'groups' => $groups,
             'teachers' => $teachers,
+        ]);
+    }
+
+    public function actionEditProfessionalPractice($id = null)
+    {
+        $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
+        $types = ProfessionalPractice::types();
+
+        if ($id !== null) {
+            $model = ProfessionalPractice::findOne($id);
+        }
+        else {
+            $model = new ProfessionalPractice();
+            $model->institution_id = $this->institution->id;
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                return $this->redirect(['professional-practice']);
+            }
+        }
+
+        return $this->render('professional-practice/create', [
+            'model' => $model,
+            'groups' => $groups,
+            'types' => $types,
         ]);
     }
 
@@ -763,6 +802,14 @@ class PlanController extends Controller
         $model->delete();
 
         return $this->redirect(['optional']);
+    }
+
+    public function actionDeletePractice($id)
+    {
+        $model = Practice::findOne($id);
+        $model->delete();
+
+        return $this->redirect(['practice']);
     }
 
     public function actionExams()

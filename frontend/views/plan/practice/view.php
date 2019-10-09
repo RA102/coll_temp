@@ -28,10 +28,11 @@ $this->title = 'Практика';
             'model' => $model,
             'attributes' => [
                 [
-                    'attribute' => 'teacher_course_id',
+                    'attribute' => 'caption',
                     'value' => function (Practice $model) {
-                        return $model->teacherCourse->disciplineName;
+                        return $model->caption_current;
                     },
+                    'label' => 'Название'
                 ],
                 [
                     'attribute' => 'group_id',
@@ -60,8 +61,16 @@ $this->title = 'Практика';
 			</tr>
 			<tr>
 				<th>Преподаватель</th>
-				<td><?=$model->getTeacher($model->teacher[1])->getFullName()?></td>
-				<td><?=$model->getTeacher($model->teacher[2])->getFullName()?></td>
+				<td>
+					<?php if($model->teacher[1] !== null):?> 
+						<?=$model->getTeacher($model->teacher[1])->getFullName()?>
+					<?php endif;?>
+				</td>
+				<td>
+					<?php if($model->teacher[2] !== ""):?>
+						<?=$model->getTeacher($model->teacher[2])->getFullName()?>
+					<?php endif;?>
+				</td>
 				<td></td>
 			</tr>
 		</table>

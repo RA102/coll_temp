@@ -129,7 +129,7 @@
                                     ],
                                     [
                                         'label' => 'Профессиональная практика',
-                                        'url' => ['/plan/practice-professional'],
+                                        'url' => ['/plan/professional-practice'],
                                     ],
                                 ],
                             ],
@@ -182,11 +182,11 @@
                                 'icon' => 'file-code-o', 
                                 'url' => ['/course/index']
                             ],
-                            /*[
+                            [
                                 'label' => Yii::t('app', 'Практика'), 
                                 'icon' => 'file-code-o', 
-                                'url' => ['/plan/practice']
-                            ],*/
+                                'url' => ['/practice/index']
+                            ],
 //                            ['label' => Yii::t('app','Учебный процесс'), 'icon' => 'file-code-o', 'url' => ['/']],
                             [
                                 'label' => Yii::t('app', 'Организация'),
