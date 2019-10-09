@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'caption_current',
                     'value' => function (Group $model) {
                         return Html::a($model->caption_current, [
-                            'lesson/schedule',
+                            '/schedule/index',
                             'group_id' => $model->id,
                         ]);
                     },

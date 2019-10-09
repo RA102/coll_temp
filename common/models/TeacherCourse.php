@@ -160,10 +160,7 @@ class TeacherCourse extends \yii\db\ActiveRecord
     }
     public function statusName($status)
     {
-        $list = [
-            '1' => 'Обязательный',
-            '2' => 'По выбору',
-        ];
+        $list = $this->statusList();
 
         return $list[$status];
     }
