@@ -19,12 +19,15 @@ $this->title = 'Планируемый объем нагрузки по прак
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'disciplineName',
                 [
-                    'format'    => 'html',
-                    'attribute' => 'teacher_id',
-                    'value'     => function (\common\models\TeacherCourse $model) {
-                        return $model->person->fullName;
+                    'attribute' => 'caption_current',
+                    'label'     => 'Название'
+                ],
+                [
+                    'attribute' => 'group_id',
+                    'label'     => 'Группа',
+                    'value'     => function (\common\models\practice $model) {
+                        return $model->group->caption_current;
                     },
                 ],
 
@@ -33,7 +36,7 @@ $this->title = 'Планируемый объем нагрузки по прак
                     'template' => '{view}',
                     'buttons' => [
                         'view' => function ($url, $model) {
-                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['practice-discipline-view', 'teacher_course_id' => $model->id], [
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['practice-discipline-view', 'id' => $model->id], [
                                     'title' => Yii::t('app', 'lead-view'),
                             ]);
                         },

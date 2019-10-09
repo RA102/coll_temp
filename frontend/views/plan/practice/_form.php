@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\reception\AppealApplication */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $entrants \common\models\person\Entrant[] */
-$teacherCourses = ArrayHelper::map($teacherCourses, 'id', 'disciplineName');
+$practices = ArrayHelper::map($practices, 'id', 'caption_current');
 $groups = ArrayHelper::map($groups, 'id', 'caption_current');
 ?>
 
@@ -17,18 +17,14 @@ $groups = ArrayHelper::map($groups, 'id', 'caption_current');
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <!-- <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
-        'data' => $teacherCourses, // TODO rework to ajax
-        'options' => ['placeholder' => 'Выберите дисциплину', 'class' => 'active-form-refresh-control'],
+    <?= $form->field($model, 'practice_id')->widget(Select2::class, [
+        'data' => $practices, // TODO rework to ajax
+        'options' => ['placeholder' => 'Выберите практику', 'class' => 'active-form-refresh-control'],
         'theme' => 'default',
         'pluginOptions' => [
             'allowClear' => true,
         ],
-    ]) ?> -->
-
-    <?= $form->field($model, 'caption_kk')->textInput()->label('Название на казахском') ?>
-
-    <?= $form->field($model, 'caption_ru')->textInput()->label('Название на русском') ?>
+    ]) ?>
 
     <?= $form->field($model, 'group_id')->widget(Select2::class, [
         'data' => $groups, // TODO rework to ajax

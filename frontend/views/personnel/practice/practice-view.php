@@ -25,7 +25,7 @@ $this->title = 'Планируемый объем нагрузки по факу
 			</tr>
 			<?php foreach ($data as $model):?>
 				<tr>
-					<td><?=$model->teacherCourse->disciplineName?></td>
+					<td><?=$model->caption_current?></td>
 					<td><?=$model->group->caption_current?></td>
 					<td><?=$model->hours[1]?></td>
 					<td><?=$model->getTeacher($model->teacher[1])->fullName?></td>

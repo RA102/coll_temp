@@ -18,8 +18,10 @@ $this->title = 'Планируемый объем нагрузки на груп
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'id',
-                'caption_current',
+                [
+                    'attribute' => 'caption_current',
+                    'label' => 'Группа',
+                ],
                 [
                     'format'    => 'html',
                     'attribute' => 'language',

@@ -1,6 +1,6 @@
     <?php
 
-    use common\models\Practice;
+    use common\models\PracticeData;
     use yii\helpers\Html;
     use yii\grid\GridView;
 
@@ -21,14 +21,14 @@
 
                     [
                         'attribute' => 'caption',
-                        'value' => function (Practice $model) {
-                            return $model->caption_current;
+                        'value' => function (PracticeData $model) {
+                            return $model->practice->caption_current;
                         },
                         'label' => 'Название'
                     ],
                     [
                         'attribute' => 'group_id',
-                        'value' => function (Practice $model) {
+                        'value' => function (PracticeData $model) {
                             return $model->group->caption_current;
                         },
                     ],

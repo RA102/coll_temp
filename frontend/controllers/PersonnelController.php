@@ -312,9 +312,7 @@ class PersonnelController extends Controller
     public function actionPracticeDiscipline()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => TeacherCourse::find()->andWhere([
-                'type' => 7
-            ])
+            'query' => Practice::find()
         ]);
 
         return $this->render('practice/practice', [
@@ -322,7 +320,7 @@ class PersonnelController extends Controller
         ]);
     }
 
-    public function actionPracticeDisciplineView($teacher_course_id)
+    public function actionPracticeDisciplineView($id)
     {
         $data = Practice::find()
                 ->where([Practice::tableName().'.teacher_course_id' => $teacher_course_id])

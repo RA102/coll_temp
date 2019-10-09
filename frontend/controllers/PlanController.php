@@ -6,7 +6,9 @@ use common\models\Facultative;
 use common\models\RequiredDisciplines;
 use common\models\OptionalDisciplines;
 use common\models\Practice;
+use common\models\PracticeData;
 use common\models\ProfessionalPractice;
+use common\models\ProfessionalPracticeData;
 use common\models\Exams;
 use common\models\Ktp;
 use common\models\TeacherCourse;
@@ -138,12 +140,14 @@ class PlanController extends Controller
 
     public function actionPractice()
     {
-        $query = Practice::find();
+        $query = PracticeData::find()
+            ->joinWith('practice')
+            ->where([Practice::tableName().'.institution_id' => $this->institution->id]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
-        return $this->render('practice',[
+        return $this->render('practice/index',[
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -339,11 +343,11 @@ class PlanController extends Controller
 
     public function actionCreatePractice()
     {
-        $teacherCourses = TeacherCourse::find()->where(['type' => 7])->all();
+        $practices = Practice::find()->where(['institution_id' => $this->institution->id])->all();
         $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
         $teachers = $this->employeeService->getTeachersActive($this->institution);
 
-        $model = new Practice();
+        $model = new PracticeData();
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
@@ -353,7 +357,7 @@ class PlanController extends Controller
 
         return $this->render('practice/create', [
             'model' => $model,
-            'teacherCourses' => $teacherCourses,
+            'practices' => $practices,
             'groups' => $groups,
             'teachers' => $teachers,
         ]);
@@ -654,7 +658,7 @@ class PlanController extends Controller
 
     public function actionViewPractice($id)
     {
-        $model = Practice::findOne($id);
+        $model = PracticeData::findOne($id);
 
         return $this->render('practice/view', [
             'model' => $model,
@@ -770,19 +774,18 @@ class PlanController extends Controller
 
     public function actionUpdatePractice($id)
     {
-        $model = Practice::findOne($id);
-        
-        $teacherCourses = TeacherCourse::find()->where(['type' => 7])->all();
+        $model = PracticeData::findOne($id);
+        $practices = Practice::find()->where(['institution_id' => $this->institution->id])->all();
         $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
         $teachers = $this->employeeService->getTeachersActive($this->institution);
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view-facultative', 'id' => $id]);
+            return $this->redirect(['view-practice', 'id' => $id]);
         }
 
         return $this->render('practice/update', [
             'model' => $model,
-            'teacherCourses' => $teacherCourses,
+            'practices' => $practices,
             'groups' => $groups,
             'teachers' => $teachers,
         ]);

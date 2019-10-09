@@ -1,6 +1,6 @@
 <?php
 
-$this->title = 'Планирование практик';
+$this->title = 'Добавить практику';
 ?>
 
 <div style="position: relative;">
@@ -11,9 +11,6 @@ $this->title = 'Планирование практик';
 	<div class="card-body">
 		<?= $this->render('_form', [
             'model' => $model,
-            'practices' => $practices,
-            'groups' => $groups,
-            'teachers' => $teachers,
         ]) ?>
 	</div>
 </div>

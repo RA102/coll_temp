@@ -3,7 +3,7 @@
 namespace common\models;
 
 use common\helpers\SchemeHelper;
-use common\models\TeacherCourse;
+use common\models\Practice;
 use common\models\organization\Group;
 use common\models\person\Employee;
 use Yii;
@@ -13,14 +13,13 @@ use yii\db\ArrayExpression;
  * This is the model class for table "practice".
  *
  * @property int $id
- * @property int $teacher_course_id
+ * @property int $practice_id
  * @property int $group_id
  * @property array $teacher
  * @property array $hours
- * @property array $caption
  *
  */
-class Practice extends \yii\db\ActiveRecord
+class PracticeData extends \yii\db\ActiveRecord
 {
     public $caption_current;
 
@@ -32,7 +31,7 @@ class Practice extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return SchemeHelper::PUBLIC . 'practice';
+        return SchemeHelper::PUBLIC . 'practice_data';
     }
 
     /**
@@ -41,8 +40,10 @@ class Practice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['caption_ru', 'caption_kk'], 'required'],
-            [['caption'], 'safe'],
+            [['practice_id', 'group_id'], 'required'],
+            [['teacher', 'hours'], 'default', 'value' => null],
+            [['teacher', 'hours', 'caption'], 'safe'],
+            [['practice_id', 'group_id'], 'integer'],
         ];
     }
 
@@ -53,40 +54,24 @@ class Practice extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'caption_ru' => Yii::t('app', 'Caption Ru'),
-            'caption_kz' => Yii::t('app', 'Caption Kk'),
+            'practice_id' => Yii::t('app', 'Практика'),
+            'group_id' => Yii::t('app', 'Group'),
+            'teacher' => Yii::t('app', 'Teacher'),
+            'hours' => 'Часов',
         ];
-    }
-
-    public function beforeSave($insert)
-    {
-        // set json caption from two non json fields
-        $this->caption = [
-            'ru' => $this->caption_ru,
-            'kk' => $this->caption_kk,
-        ];
-
-        return parent::beforeSave($insert);
     }
 
     public function afterFind()
     {
-        $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
-        // set current caption, can be used as default caption variant
-        $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'] ?? $this->caption['kk'] ?? null;
-        // set caption in russian and kazakh
-        $this->caption_ru = $this->caption['ru'] ?? null;
-        $this->caption_kk = $this->caption['kk'] ?? null;
-
         parent::afterFind();
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTeacherCourse()
+    public function getPractice()
     {
-        return $this->hasOne(TeacherCourse::class, ['id' => 'teacher_course_id']);
+        return $this->hasOne(Practice::class, ['id' => 'practice_id']);
     }
 
     /**

@@ -25,11 +25,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 [
+                    'attribute' => 'caption',
+                    'value' => function (Course $model) {
+                        return $model->caption_current;
+                    },
+                ],
+                [
                     'attribute' => 'institution_discipline_id',
                     'value' => function (Course $model) {
                         return $model->institutionDiscipline->caption_current;
                     },
                 ],
+                'status',
                 [
                     'attribute' => 'classes',
                     'value' => function (Course $model) {

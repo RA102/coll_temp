@@ -11,7 +11,7 @@ $this->title = 'Планирование практик';
 	<div class="card-body">
 		<?= $this->render('_form', [
             'model' => $model,
-            'teacherCourses' => $teacherCourses,
+            'practices' => $practices,
             'groups' => $groups,
             'teachers' => $teachers,
         ]) ?>
