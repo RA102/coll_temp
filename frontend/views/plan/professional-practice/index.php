@@ -1,6 +1,6 @@
 <?php
 
-use common\models\ProfessionalPractice;
+use common\models\ProfessionalPracticePlan;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -21,21 +21,21 @@ $this->title = 'Профессиональная практика';
 
                 [
                     'attribute' => 'group_id',
-                    'value' => function (ProfessionalPractice $model) {
+                    'value' => function (ProfessionalPracticePlan $model) {
                         return $model->group->caption_current;
                     },
                 ],
 
                 [
                     'attribute' => 'type',
-                    'value' => function (ProfessionalPractice $model) {
-                        return $model->type();
+                    'value' => function (ProfessionalPracticePlan $model) {
+                        return $model->practice->type();
                     },
                 ],
 
                 [
                     'attribute' => 'weeks',
-                    'value' => function (ProfessionalPractice $model) {
+                    'value' => function (ProfessionalPracticePlan $model) {
                         return $model->weeks['first'] . ' - ' . $model->weeks['last'];
                     },
                 ],

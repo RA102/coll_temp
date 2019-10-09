@@ -8,7 +8,7 @@ use common\models\OptionalDisciplines;
 use common\models\Practice;
 use common\models\PracticeData;
 use common\models\ProfessionalPractice;
-use common\models\ProfessionalPracticeData;
+use common\models\ProfessionalPracticePlan;
 use common\models\Exams;
 use common\models\Ktp;
 use common\models\TeacherCourse;
@@ -154,7 +154,9 @@ class PlanController extends Controller
 
     public function actionProfessionalPractice()
     {
-        $query = ProfessionalPractice::find()->where(['institution_id' => $this->institution->id]);
+        $query = ProfessionalPracticePlan::find()
+            ->joinWith('practice')
+            ->where([ProfessionalPractice::tableName().'.institution_id' => $this->institution->id]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -366,14 +368,13 @@ class PlanController extends Controller
     public function actionEditProfessionalPractice($id = null)
     {
         $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
-        $types = ProfessionalPractice::types();
+        $practices = ProfessionalPractice::find()->where(['institution_id' => $this->institution->id])->all();
 
         if ($id !== null) {
-            $model = ProfessionalPractice::findOne($id);
+            $model = ProfessionalPracticePlan::findOne($id);
         }
         else {
-            $model = new ProfessionalPractice();
-            $model->institution_id = $this->institution->id;
+            $model = new ProfessionalPracticePlan();
         }
 
         if ($model->load(Yii::$app->request->post())) {
@@ -382,10 +383,10 @@ class PlanController extends Controller
             }
         }
 
-        return $this->render('professional-practice/create', [
+        return $this->render('professional-practice/edit', [
             'model' => $model,
             'groups' => $groups,
-            'types' => $types,
+            'practices' => $practices,
         ]);
     }
 

@@ -13,6 +13,7 @@ use yii\db\ArrayExpression;
  * This is the model class for table "practice".
  *
  * @property int $id
+ * @property int $practice_id
  * @property int $group_id
  * @property array $weeks
  *
@@ -37,7 +38,7 @@ class ProfessionalPracticePlan extends \yii\db\ActiveRecord
             [['group_id'], 'required'],
             [['weeks'], 'default', 'value' => null],
             [['weeks',], 'safe'],
-            [['group_id'], 'integer'],
+            [['group_id', 'practice_id'], 'integer'],
         ];
     }
 
