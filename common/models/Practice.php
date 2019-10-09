@@ -13,10 +13,6 @@ use yii\db\ArrayExpression;
  * This is the model class for table "practice".
  *
  * @property int $id
- * @property int $teacher_course_id
- * @property int $group_id
- * @property array $teacher
- * @property array $hours
  * @property array $caption
  *
  */

@@ -183,9 +183,14 @@
                                 'url' => ['/course/index']
                             ],
                             [
-                                'label' => Yii::t('app', 'Практика'), 
+                                'label' => Yii::t('app', 'Учебная практика'), 
                                 'icon' => 'file-code-o', 
                                 'url' => ['/practice/index']
+                            ],
+                            [
+                                'label' => Yii::t('app', 'Профессиональная практика'), 
+                                'icon' => 'file-code-o', 
+                                'url' => ['/professional-practice/index']
                             ],
 //                            ['label' => Yii::t('app','Учебный процесс'), 'icon' => 'file-code-o', 'url' => ['/']],
                             [
