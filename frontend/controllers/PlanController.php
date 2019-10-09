@@ -771,18 +771,22 @@ class PlanController extends Controller
 
         $tests = [];
         foreach ($required as $r) {
-            foreach ($r->ktp as $key => $value) {
-                if ($value['type'] == 8) {
-                    array_push($tests, ['group_id' => $r->group_id, 'discipline_id' => $r->teacherCourse->discipline->id, 'week' => $value['week']]);
+            if ($r->ktp !== null) {
+                foreach ($r->ktp as $key => $value) {
+                    if ($value['type'] == 8) {
+                        array_push($tests, ['group_id' => $r->group_id, 'discipline_id' => $r->teacherCourse->discipline->id, 'week' => $value['week']]);
+                    }
                 }
             }
         }
 
         $course_works = [];
         foreach ($required as $r) {
-            foreach ($r->ktp as $key => $value) {
-                if ($value['type'] == 3) {
-                    array_push($course_works, ['group_id' => $r->group_id, 'discipline_id' => $r->discipline_id, 'week' => $value['week']]);
+            if ($r->ktp !== null) {
+                foreach ($r->ktp as $key => $value) {
+                    if ($value['type'] == 3) {
+                        array_push($course_works, ['group_id' => $r->group_id, 'discipline_id' => $r->discipline_id, 'week' => $value['week']]);
+                    }
                 }
             }
         }
