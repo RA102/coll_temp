@@ -1,6 +1,7 @@
 <?php
 
 use common\helpers\InstitutionDisciplineHelper;
+use common\models\Practice;
 use common\models\organization\InstitutionDiscipline;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -21,13 +22,9 @@ $this->title = 'Планируемый объем нагрузки по прак
 
                 [
                     'attribute' => 'caption_current',
-                    'label'     => 'Название'
-                ],
-                [
-                    'attribute' => 'group_id',
-                    'label'     => 'Группа',
-                    'value'     => function (\common\models\practice $model) {
-                        return $model->group->caption_current;
+                    'label'     => 'Название',
+                    'value'     => function (Practice $model) {
+                        return $model->caption_current;
                     },
                 ],
 

@@ -4,7 +4,7 @@ use common\models\RequiredDisciplines;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Планируемый объем нагрузки по факультативам ';
+$this->title = 'Планируемый объем нагрузки по практикам';
 ?>
 
 <div style="position: relative;">
@@ -25,7 +25,7 @@ $this->title = 'Планируемый объем нагрузки по факу
 			</tr>
 			<?php foreach ($data as $model):?>
 				<tr>
-					<td><?=$model->caption_current?></td>
+					<td><?=$model->practice->caption_current?></td>
 					<td><?=$model->group->caption_current?></td>
 					<td><?=$model->hours[1]?></td>
 					<td><?=$model->getTeacher($model->teacher[1])->fullName?></td>
