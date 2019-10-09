@@ -85,11 +85,11 @@
                                     ],
                                 ],
                             ],
-                            [
+                            /*[
                                 'label' => Yii::t('app','Приказы'),
                                 'icon' => 'far fa-building',
                                 'url' => '#',
-                            ],
+                            ],*/
                             [
                                 'label' => Yii::t('app','Отчеты'),
                                 'icon' => 'far fa-building',

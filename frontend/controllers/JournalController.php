@@ -169,6 +169,7 @@ class JournalController extends Controller
         $journal = Journal::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id])->all();
         $teacherCourse = TeacherCourse::findOne($teacher_course_id);
         $schedule = Schedule::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id])->all();
+        $replaced = ReplacementJournal::countReplaced($group_id, $teacher_course_id);
         $new_schedule = [];
 
         foreach ($schedule as $value) {
@@ -203,6 +204,7 @@ class JournalController extends Controller
             'teacherCourse' => $teacherCourse,
             'dates' => $dates,
             'journal' => $journal,
+            'replaced' => $replaced,
             //'dataProvider' => $dataProvider
         ]);
     }

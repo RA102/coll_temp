@@ -21,9 +21,9 @@ use yii\web\View;
             	<div class="col-md-4">
             		<?= $form->field($model, 'date_ts')->textInput(['value' => $date_ts, 'disabled' => true]) ?>
             		<?= $form->field($model, 'group_id')->textInput(['value' => $group->caption_current, 'disabled' => true]) ?>
-            		<?= $form->field($model, 'teacher_course_id')->textInput(['value' => $teacherCourse->disciplineName, 'disabled' => true]) ?>
+            		<?= $form->field($model, 'teacher_course_id')->textInput(['value' => $teacherCourse->disciplineName, 'disabled' => true])->label('Дисциплина') ?>
             		<?= $form->field($model, 'teacher_id')->textInput(['value' => $teacherCourse->person->fullName, 'disabled' => true]) ?>
-		            <?= $form->field($model, 'canceled')->checkbox([], false) ?>
+		            <?= $form->field($model, 'canceled')->checkbox([], false)->label('Отменён') ?>
             		<?= $form->field($model, 'reason')->textInput() ?>
 					<?= $form->field($model, 'new_teacher_id')->widget(Select2::class, [
 				        'data' => ArrayHelper::map($teachers, 'id', 'fullName'), /** @see \common\models\TeacherCourse::getFullname() */

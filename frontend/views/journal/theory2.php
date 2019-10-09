@@ -25,8 +25,8 @@ $this->title = 'Журнал ' . $group->caption_current;
                 <td><?=$teacherCourse->person->getFullname()?> </td>
             </tr>
             <tr>
-            	<th>Общее кол-во занятий <br> Проведено <br> Осталось</th>
-            	<td><?=count($dates)?> <br> <?=count($journal)?> <br> <?=count($dates) - count($journal)?> </td>
+            	<th>Общее кол-во занятий <br> Проведено <br> Осталось <br> Отмена/замена</th>
+            	<td><?=count($dates)?> <br> <?=count($journal)?> <br> <?=count($dates) - count($journal)?> <br> <?=$replaced?> </td>
             </tr>
         </table>
         <ul class="nav nav-tabs">

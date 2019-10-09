@@ -59,7 +59,11 @@ class ReplacementJournal extends \yii\db\ActiveRecord
             'group_id' => Yii::t('app', 'Group'),
             'teacher_course_id' => Yii::t('app', 'Discipline'),
             'date_ts' => Yii::t('app', 'Date'),
-            'reason' => 'причина',
+            'reason' => 'Причина отмены',
+            'teacher_id' => Yii::t('app', 'Преподаватель'),
+            'new_teacher_id' => Yii::t('app', 'Преподаватель на замену'),
+            'new_teacher_course_id' => Yii::t('app', 'Дисциплина на замену'),
+            'new_date_ts' => Yii::t('app', 'Дата, на которую перенесено занятие'),
         ];
     }
 
@@ -83,5 +87,10 @@ class ReplacementJournal extends \yii\db\ActiveRecord
         if ($model !== null) {
             return true;
         } else return false;
+    }
+
+    public function countReplaced($group_id, $teacher_course_id) 
+    {
+        return count(ReplacementJournal::find()->andWhere(['group_id' => $group_id, 'teacher_course_id' => $teacher_course_id])->all());
     }
 }
