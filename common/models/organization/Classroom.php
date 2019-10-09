@@ -51,7 +51,7 @@ class Classroom extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'institution_id' => Yii::t('app', 'Institution ID'),
             'number' => Yii::t('app', 'Number'),
-            'name' => Yii::t('app', 'Name'),
+            'name' => Yii::t('app', 'Caption'),
         ];
     }
 
