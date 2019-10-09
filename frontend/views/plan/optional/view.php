@@ -1,6 +1,7 @@
 <?php
 
 use common\models\OptionalDisciplines;
+use common\models\organization\Group;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -33,6 +34,15 @@ $this->title = 'Дисциплина';
 	                    'value' => function (OptionalDisciplines $model) {
 	                        return $model->teacher->getFullname();
 	                    },
+	                ],
+	                [
+	                    'attribute' => 'groups',
+	                    'value' => function (OptionalDisciplines $model) {
+		                    return implode(', ', array_map(function (Group $group) {
+		                        return $group->caption_current;
+		                    }, $model->teacherCourse->groups));
+	                    },
+	                    'label' => 'Группы',
 	                ],
 	            ],
 	        ]) ?>

@@ -529,7 +529,8 @@ class PlanController extends Controller
             ->andWhere(['teacher_id' => $teacherCourse->teacher_id])
             ->one();
 
-        $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
+        //$groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
+        $groups = $teacherCourse->groups;
 
         $students_array = [];
         if (isset($model)) {
