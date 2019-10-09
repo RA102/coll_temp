@@ -59,10 +59,6 @@ class ClassroomController extends Controller
         ];
     }
 
-    /**
-     * Lists all Group models.
-     * @return mixed
-     */
     public function actionIndex()
     {
         $searchModel = new ClassroomSearch();
@@ -75,32 +71,6 @@ class ClassroomController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Group model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        $studentsSearch = new StudentSearch();
-        $studentsSearch->formName = 'withGroup';
-        $studentsSearch->institution_id = Yii::$app->user->identity->institution->id;
-        $studentsSearch->group_id = $id;
-        $studentsDataProvider = $studentsSearch->search(Yii::$app->request->queryParams);
-
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-            'studentsSearch' => $studentsSearch,
-            'studentsDataProvider' => $studentsDataProvider
-        ]);
-    }
-
-    /**
-     * Creates a new Group model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
     public function actionCreate()
     {
         $model = new Classroom();
@@ -115,13 +85,6 @@ class ClassroomController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing Group model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -130,37 +93,19 @@ class ClassroomController extends Controller
             return $this->redirect(['index']);
         }
 
-        $specialities = Yii::$app->user->identity->institution->specialities;
-
         return $this->render('update', [
             'model' => $model,
-            'specialities' => $specialities,
         ]);
     }
 
-    /**
-     * Deletes an existing Group model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $model->delete_ts = date('Y-m-d H:i:s');
-        $model->save();
+        $model->delete();
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Group model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Group the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Classroom::findOne($id)) !== null) {
