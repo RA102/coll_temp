@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Facultative;
 use common\models\RequiredDisciplines;
 use common\models\OptionalDisciplines;
+use common\models\Schedule;
 use common\models\Practice;
 use common\models\PracticeData;
 use common\models\ProfessionalPractice;
@@ -408,6 +409,10 @@ class PlanController extends Controller
         ]);
     }
 
+    public function sortFunction($a, $b) {
+        return strtotime($a) - strtotime($b);
+    }
+
     public function actionViewRequired($teacher_course_id, $group_id)
     {
         $model = RequiredDisciplines::find()->where(['teacher_course_id' => $teacher_course_id])->andWhere(['group_id' => $group_id])->one();
@@ -439,10 +444,34 @@ class PlanController extends Controller
                 //var_dump($weeks);die();
         } else $lessons = null;*/
 
+        $schedule = Schedule::find()
+            ->where(['group_id' => $group_id])
+            ->andWhere(['teacher_course_id' => $teacher_course_id])
+            ->all();
+
+        $new_schedule = [];
+
+        foreach ($schedule as $value) {
+            $new_schedule[$value['weekday']][] = $value;
+        }
+
+        $semester_date = Yii::$app->user->identity->institution->semester_date;
+        $weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $end = strtotime($semester_date[1]['end']);
+
+        $dates = [];
+        foreach ($new_schedule as $key => $value) {
+            for ($i = strtotime(date('d-m-Y', strtotime('first ' . $weekdays[$key - 1] . ' ' . $semester_date[1]['start']))); $i <= $end; $i = strtotime('+1 week', $i)) {
+                array_push($dates, date('d-m-Y', $i));
+            } 
+        }
+        usort($dates, array($this, "sortFunction"));
+
         return $this->render('required/view', [
             'model' => $model,
             'teacherCourse' => $teacherCourse,
             'group' => $group,
+            'dates' => $dates,
             //'teacher_course_id' => $teacher_course_id,
             //'lessons' => $lessons,
             //'weeks' => $weeks,
@@ -456,10 +485,14 @@ class PlanController extends Controller
         $formmodel = new \yii\base\DynamicModel(['week', 'lesson_number', 'lesson_topic', 'type']);
 
         if ($lesson_number !== null) {
-            $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
-            $formmodel['lesson_topic'] = $model->ktp[$lesson_number]['lesson_topic'];
-            $formmodel['week'] = $model->ktp[$lesson_number]['week'];
-            $formmodel['type'] = $model->ktp[$lesson_number]['type'];
+            if (array_key_exists($lesson_number, $model->ktp)) {
+                $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
+                $formmodel['lesson_topic'] = $model->ktp[$lesson_number]['lesson_topic'];
+                $formmodel['week'] = $model->ktp[$lesson_number]['week'];
+                $formmodel['type'] = $model->ktp[$lesson_number]['type'];
+            } else {
+                $formmodel['lesson_number'] = $lesson_number; 
+            }
         }
 
         if ($formmodel->load(Yii::$app->request->post())) {

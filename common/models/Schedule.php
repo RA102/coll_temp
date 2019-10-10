@@ -20,6 +20,7 @@ use yii\db\ArrayExpression;
  * @property int $teacher_course_id
  * @property int $lesson_number
  * @property int $classroom_id
+ * @property int $type
  *
  */
 class Schedule extends \yii\db\ActiveRecord
@@ -40,7 +41,7 @@ class Schedule extends \yii\db\ActiveRecord
     {
         return [
             [['group_id', 'weekday', 'teacher_course_id', 'lesson_number', 'classroom_id'], 'required'],
-            [['group_id', 'weekday', 'teacher_course_id', 'lesson_number', 'classroom_id'], 'integer'],
+            [['group_id', 'weekday', 'teacher_course_id', 'lesson_number', 'classroom_id', 'type'], 'integer'],
             [['double'], 'boolean'],
         ];
     }
@@ -58,6 +59,7 @@ class Schedule extends \yii\db\ActiveRecord
             'lesson_number' => Yii::t('app', 'Урок №'),
             'classroom_id' => Yii::t('app', 'Classroom ID'),
             'double' => Yii::t('app', 'Удвоенный'),
+            'type' => Yii::t('app', 'Тип'),
         ];
     }
 

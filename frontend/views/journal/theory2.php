@@ -31,13 +31,13 @@ $this->title = 'Журнал ' . $group->caption_current;
         </table>
         <ul class="nav nav-tabs">
             <li role="presentation" class="active">
-                <?= Html::a('Теоретическое обучение', ['view', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id, 'type' => 1], []) ?>
+                <?= Html::a('Теоретическое обучение', ['view', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], []) ?>
             </li>
             <li role="presentation">
-                <?= Html::a('Курсовые проекты, лабораторно-практические и графические работы', ['view', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id, 'type' => 2], []) ?>
+                <?= Html::a('Курсовые проекты, лабораторно-практические и графические работы', ['practical', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], []) ?>
             </li>
             <li role="presentation">
-                <?= Html::a('Контрольные работы', ['view', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id, 'type' => 3], []) ?>
+                <?= Html::a('Контрольные работы', ['exam', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], []) ?>
             </li>
         </ul>
     </div>

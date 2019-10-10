@@ -34,6 +34,19 @@ class TeacherCourse extends \yii\db\ActiveRecord
     const FACULTATIVE = 3; // факультатив
     const PRACTICAL = 4; // практика
 
+    const TYPE_LECTURE = 1;
+    const TYPE_SEMINAR = 2;
+    const TYPE_COURSE_WORK = 3;
+    const TYPE_CONSULTATION = 4;
+    const TYPE_PRACTICE = 5;
+    const TYPE_PROFESSIONAL_PRACTICE_TECH = 6;
+    const TYPE_PROFESSIONAL_PRACTICE_PROD = 7;
+    const TYPE_TEST = 8;
+    const TYPE_OFFSET = 9;
+    const TYPE_EXAM = 10;
+    const TYPE_DIPLOMA = 11;
+    const TYPE_FACULTATIVE = 12;
+
     /**
      * {@inheritdoc}
      */

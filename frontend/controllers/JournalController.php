@@ -10,6 +10,8 @@ use common\models\person\Person;
 use common\models\person\Student;
 use common\models\Lesson;
 use common\models\RequiredDisciplines;
+use common\models\OptionalDisciplines;
+use common\models\Facultative;
 use common\models\Schedule;
 use common\models\TeacherCourse;
 use common\services\organization\GroupService;
@@ -160,17 +162,38 @@ class JournalController extends Controller
         return strtotime($a) - strtotime($b);
     }
     
-    public function actionView($group_id, $teacher_course_id, $type)
+    public function actionView($group_id, $teacher_course_id)
     {
         $group = Group::findOne($group_id);
         /*$dataProvider = new ArrayDataProvider([
             'allModels' => $group->students,
         ]);*/
-        $journal = Journal::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id])->all();
+        $journal = Journal::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id, 'type' => 1])->all();
         $teacherCourse = TeacherCourse::findOne($teacher_course_id);
 
-        $schedule = Schedule::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id])->all();
+        if ($teacherCourse->status == TeacherCourse::REQUIRED) {
+            $model = RequiredDisciplines::find()->andWhere(['group_id' => $group_id, 'teacher_course_id' => $teacher_course_id])->one();
+        }
+        elseif ($teacherCourse->status == TeacherCourse::OPTIONAL) {
+            $model = OptionalDisciplines::find()->andWhere(['group_id' => $group_id, 'teacher_course_id' => $teacher_course_id])->one();
+        }
+        elseif ($teacherCourse->status == TeacherCourse::FACULTATIVE) {
+            $model = Facultative::find()->andWhere(['group_id' => $group_id, 'teacher_course_id' => $teacher_course_id])->one();
+        }
+
+        $schedule = Schedule::find()
+            ->where(['group_id' => $group_id])
+            ->andWhere(['teacher_course_id' => $teacher_course_id])
+            ->joinWith('teacherCourse')
+            ->andWhere(['in', TeacherCourse::tableName().'.status', [
+                TeacherCourse::TYPE_LECTURE, 
+                TeacherCourse::TYPE_SEMINAR, 
+                ]
+            ])
+            ->all();
+
         $replaced = ReplacementJournal::countReplaced($group_id, $teacher_course_id);
+
         $new_schedule = [];
 
         foreach ($schedule as $value) {
@@ -188,26 +211,92 @@ class JournalController extends Controller
             } 
         }
 
-        usort($dates, array($this, "sortFunction"));
-        
-        if ($type == 1) {
-            $page = 'theory2';
-        } 
-        elseif ($type == 2) {
-            $page = 'practical';
-        }
-        elseif ($type == 3) {
-            $page = 'exam';
+        $exams = [];
+        foreach ($model->ktp as $value) {
+            if ($value['type'] == TeacherCourse::TYPE_LECTURE || $value['type'] == TeacherCourse::TYPE_SEMINAR) {
+                array_push($exams, $value);
+            }
         }
 
-        return $this->render($page, [
+        usort($dates, array($this, "sortFunction"));
+
+        $ddates = [];
+        foreach ($exams as $value) {
+            array_push($ddates, $dates[$value['lesson_number'] - 1]); 
+        }
+        
+        return $this->render('theory2', [
             'group' => $group,
             'teacherCourse' => $teacherCourse,
-            'dates' => $dates,
+            'dates' => $ddates,
             'journal' => $journal,
             'replaced' => $replaced,
-            'type' => $type,
             //'dataProvider' => $dataProvider
+        ]);
+    }
+
+    public function actionExam($group_id, $teacher_course_id)
+    {
+        $group = Group::findOne($group_id);
+        $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+
+        if ($teacherCourse->status == TeacherCourse::REQUIRED) {
+            $model = RequiredDisciplines::find()->andWhere(['group_id' => $group_id, 'teacher_course_id' => $teacher_course_id])->one();
+        }
+        elseif ($teacherCourse->status == TeacherCourse::OPTIONAL) {
+            $model = OptionalDisciplines::find()->andWhere(['group_id' => $group_id, 'teacher_course_id' => $teacher_course_id])->one();
+        }
+        elseif ($teacherCourse->status == TeacherCourse::FACULTATIVE) {
+            $model = Facultative::find()->andWhere(['group_id' => $group_id, 'teacher_course_id' => $teacher_course_id])->one();
+        }
+
+        $journal = Journal::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id, 'type' => 3])->all();
+
+        $schedule = Schedule::find()
+            ->where(['group_id' => $group_id])
+            ->andWhere(['teacher_course_id' => $teacher_course_id])
+            ->all();
+
+        $new_schedule = [];
+
+        foreach ($schedule as $value) {
+            $new_schedule[$value['weekday']][] = $value;
+        }
+
+        $semester_date = Yii::$app->user->identity->institution->semester_date;
+        $weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $end = strtotime($semester_date[1]['end']);
+
+        $exams = [];
+        foreach ($model->ktp as $value) {
+            if ($value['type'] == 8) {
+                array_push($exams, $value);
+            }
+        }
+
+        $dates = [];
+        foreach ($new_schedule as $key => $value) {
+            for ($i = strtotime(date('d-m-Y', strtotime('first ' . $weekdays[$key - 1] . ' ' . $semester_date[1]['start']))); $i <= $end; $i = strtotime('+1 week', $i)) {
+                array_push($dates, date('d-m-Y', $i));
+            } 
+        }
+
+        usort($dates, array($this, "sortFunction"));
+
+        $ddates = [];
+        foreach ($exams as $value) {
+            array_push($ddates, $dates[$value['lesson_number'] - 1]); 
+        }
+
+
+        return $this->render('exam', [
+            'group' => $group,
+            'teacherCourse' => $teacherCourse,
+            'model' => $model,
+            'dates' => $ddates,
+            'exams' => $exams,
+            'journal' => $journal,
+            'type' => 3,
         ]);
     }
 

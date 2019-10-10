@@ -42,8 +42,10 @@ $this->title = 'Дисциплина';
 	<div class="row">
 		<div class="col-md-6">
 			<div class="card-body skin-white">
-				<h2>Планирумое кол-во часов</h2>
-	            <?= Html::a(Yii::t('app', 'Update'), ['edit-required', 'teacher_course_id' => $teacherCourse->id, 'group_id' => $group->id], ['class' => 'btn btn-primary']) ?>
+				<div style="position: relative;">
+					<h2>Планирумое кол-во часов</h2>
+		            <?= Html::a(Yii::t('app', 'Update'), ['edit-required', 'teacher_course_id' => $teacherCourse->id, 'group_id' => $group->id], ['class' => 'title-action btn btn-primary']) ?>
+		        </div>
 				<table class="table table-bordered">
 					<tr>
 						<th></th>
@@ -105,11 +107,14 @@ $this->title = 'Дисциплина';
 		</div>
 		<div class="col-md-6">
 		    <div class="card-body skin-white">
-		    	<h2>Календарно-тематический план</h2>
-		        <?= Html::a(Yii::t('app', 'Добавить'), ['required-ktp-create', 'id' => $model->id], ['class' => 'btn btn-alert']) ?>
+				<div style="position: relative;">
+					<h2>Календарно-тематический план</h2>
+			        <?= Html::a(Yii::t('app', 'Добавить'), ['required-ktp-create', 'id' => $model->id], ['class' => 'title-action btn btn-alert']) ?>
+			    </div>
 		    	<table class="table table-bordered">
 		    		<tr>
 		    			<th>№ занятия</th>
+		    			<th>Дата</th>
 		    			<th>Тема урока</th>
 		    			<th>Недельный период</th>
 		    			<th>Способ обучения</th>
@@ -118,16 +123,52 @@ $this->title = 'Дисциплина';
 			    		<?php foreach($model->ktp as $key => $value) :?>
 			    			<tr>
 			    				<td><?=$value['lesson_number']?></td>
+			    				<td><?=$dates[$value['lesson_number'] - 1]?></td>
 			    				<td><?=$value['lesson_topic']?></td>
 			    				<td><?=$value['week']?></td>
 			    				<td><?=$model->getType($value['type'])?></td>
-			    				<td><a href="ktp-create?id=<?=$model->id?>&lesson_number=<?=$value['lesson_number']?>"><i class="fa fa-edit"></i></td>
+			    				<td><a href="required-ktp-create?id=<?=$model->id?>&lesson_number=<?=$value['lesson_number']?>"><i class="fa fa-edit"></i></a></td>
 			    			</tr>
 			    		<?php endforeach;?>
 			    	<?php endif;?>
 		    	</table>
 		    </div>
 		</div>
+	</div>
+	<hr>
+	<div class="card-body skin-white">
+	    	<table class="table table-bordered">
+	    		<tr>
+	    			<th class="col-md-1">№ занятия</th>
+	    			<th class="col-md-2">Дата</th>
+	    			<th class="col-md-3">Тема урока</th>
+	    			<th class="col-md-2">Недельный период</th>
+	    			<th class="col-md-2">Способ обучения</th>
+	    			<th class="col-md-1"></th>
+	    		</tr>
+	    		<?php if($model->ktp !== null):?>
+		    		<?php foreach($dates as $key => $value) :?>
+		    			<?php if (array_key_exists($key+1, $model->ktp)):?>
+			    			<tr>
+			    				<td><?=$key + 1 ?></td>
+			    				<td><?=$value?></td>
+			    				<td><?=$model->ktp[$key+1]['lesson_topic']?></td>
+			    				<td><?=$model->ktp[$key+1]['week']?></td>
+			    				<td><?=$model->getType($model->ktp[$key+1]['type'])?></td>
+			    				<td><a href="required-ktp-create?id=<?=$model->id?>&lesson_number=<?=$model->ktp[$key+1]['lesson_number']?>"><i class="fa fa-edit"></i></a></td>
+			    			</tr>
+			    		<?php else:?>
+			    			<tr>
+			    				<td><?=$key + 1 ?></td>
+			    				<td><?=$value?></td>
+			    				<td></td>
+			    				<td></td>
+			    				<td></td>
+			    				<td><a href="required-ktp-create?id=<?=$model->id?>&lesson_number=<?=$key+1?>"><i class="fa fa-edit"></i></a></td>
+			    		<?php endif;?>
+		    		<?php endforeach;?>
+		    	<?php endif;?>
+	    	</table>
 	</div>
 	<?php else:?>
 		<div class="card-body skin-white">

@@ -1,5 +1,6 @@
 <?php
 
+use common\models\organization\ReplacementJournal;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
@@ -7,7 +8,10 @@ use yii\grid\GridView;
 $this->title = 'Журнал ' . $group->caption_current;
 ?>
 
-
+<div style="position: relative;">
+    <h1><?=$this->title?></h1>
+    <?= Html::a(Yii::t('app', 'Журнал замен'), ['replacement', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], ['class' => 'title-action btn btn-primary']) ?>
+</div>
 <div class="card">
     <div class="card-header">
         <table class="table table-bordered">
@@ -22,14 +26,6 @@ $this->title = 'Журнал ' . $group->caption_current;
             <tr>
                 <th>Преподаватель:</th> 
                 <td><?=$teacherCourse->person->getFullname()?> </td>
-            </tr>
-            <tr>
-                <th>Начало курса:</th> 
-                <td><?=date('d-m-Y', strtotime($teacherCourse->start_ts))?></td>
-            </tr>
-            <tr>
-                <th>Окончание курса:</th> 
-                <td><?=date('d-m-Y', strtotime($teacherCourse->end_ts))?></td>
             </tr>
         </table>
         <ul class="nav nav-tabs">
@@ -49,16 +45,25 @@ $this->title = 'Журнал ' . $group->caption_current;
             <tr>
                 <th>№</th>
                 <th>ФИО</th>
-                <?php foreach ($lessons as $lesson):?>
-                    <th><a href="create?group_id=<?=$group->id?>&date=<?=date('d.m.y', strtotime($lesson->date_ts))?>&teacher_course_id=<?=$lesson->teacher_course_id?>&type=3"><?=date('d.m.y', strtotime($lesson->date_ts))?></a></th>
+                <?php foreach ($dates as $key => $date):?>
+                    <th <?php if(ReplacementJournal::replaced($group->id, strtotime($date), $teacherCourse->id) == true):?>class="btn-danger"<?php endif;?>>
+                        <a href="create?group_id=<?=$group->id?>&date=<?=date('d-m-Y', strtotime($date))?>&teacher_course_id=<?=$teacherCourse->id?>&type=3">
+                            <?=date('d.m.y', strtotime($date))?> <br>
+                            <?php foreach ($exams as $key2 => $value) :?>
+                                <?php if($key==$key2):?>
+                                    <?=$value['lesson_topic']?>
+                                <?php endif;?>
+                            <?php endforeach;?>
+                        </a>
+                    </th>
                 <?php endforeach;?>
             </tr>
             <?php foreach ($group->students as $key=>$student):?>
                 <tr>
                     <td><?=$key+1?></td>
                     <td><?=$student->getFullname()?></td>
-                    <?php foreach ($lessons as $lesson):?>
-                        <?php $attendance = $student->checkAttendance(3, $group->id, $student->id, $teacherCourse->id, date('d.m.y', strtotime($lesson->date_ts)));?>
+                    <?php foreach ($dates as $date):?>
+                        <?php $attendance = $student->checkAttendance($type, $group->id, $student->id, $teacherCourse->id, date('d.m.y', strtotime($date)));?>
                         <?php if ($attendance[0] == 1):?>
                             <td class="btn-danger">н/б</td>
                         <?php elseif ($attendance[0] == 2):?>

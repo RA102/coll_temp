@@ -1,5 +1,6 @@
 <?php
 
+use common\models\TeacherCourse;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
@@ -36,6 +37,15 @@ $this->title = 'Расписание';
 	            'allowClear' => true,
 	        ],
 	    ])->label('Предмет') ?>
+
+	    <?= $form->field($model, 'type')->widget(Select2::class, [
+                'data' => TeacherCourse::getTypes(), 
+                'options' => ['placeholder' => 'Выберите способ', 'class' => 'active-form-refresh-control'],
+                'theme' => 'default',
+                'pluginOptions' => [
+                    'allowClear' => true,
+                ],
+            ])->label('Способ') ?>
 
 	    <?= $form->field($model, 'classroom_id')->widget(Select2::class, [
 	        'data' => ArrayHelper::map($classrooms, 'id', 'number'), /** @see Employee::getFullName() */ // TODO rework to ajax
