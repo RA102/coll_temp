@@ -104,6 +104,9 @@ class ScheduleController extends Controller
     {
     	$lessons = Schedule::find()->where(['group_id' => $group_id])->all();
 
+        $start_time = explode(':', $this->institution->shift_time[1]['start_time']);
+        $duration = $this->institution->shift_time[1]['lesson_duration'];
+
     	$model = Group::findOne($group_id);
     	$weekdays = Schedule::getWeekdays();
     	$number = 1;
@@ -113,6 +116,54 @@ class ScheduleController extends Controller
         	'model' => $model, 
         	'number' => $number,
         	'weekdays' => $weekdays,
+            'start_time' => $start_time,
+            'duration' => $duration,
+        ]);
+    }
+
+    public function actionTeacherCard($teacher_id)
+    {
+        $lessons = Schedule::find()
+            ->joinWith('teacherCourse')
+            ->where([TeacherCourse::tableName().'.teacher_id' => $teacher_id])->all();
+
+        $start_time = explode(':', $this->institution->shift_time[1]['start_time']);
+        $duration = $this->institution->shift_time[1]['lesson_duration'];
+
+        $model = Employee::findOne($teacher_id);
+        $weekdays = Schedule::getWeekdays();
+        $number = 1;
+
+        return $this->render('teacher-card', [
+            'lessons' => $lessons,
+            'model' => $model,
+            'number' => $number,
+            'weekdays' => $weekdays,
+            'start_time' => $start_time,
+            'duration' => $duration,
+        ]);
+    }
+
+    public function actionClassroomCard($classroom_id)
+    {
+        $lessons = Schedule::find()
+            ->where(['classroom_id' => $classroom_id])
+            ->all();
+
+        $start_time = explode(':', $this->institution->shift_time[1]['start_time']);
+        $duration = $this->institution->shift_time[1]['lesson_duration'];
+
+        $model = Classroom::findOne($classroom_id);
+        $weekdays = Schedule::getWeekdays();
+        $number = 1;
+
+        return $this->render('classroom-card', [
+            'lessons' => $lessons,
+            'model' => $model,
+            'number' => $number,
+            'weekdays' => $weekdays,
+            'start_time' => $start_time,
+            'duration' => $duration,
         ]);
     }
 
@@ -202,4 +253,5 @@ class ScheduleController extends Controller
 
     	return $this->redirect(['group', 'group_id' => $group_id]);
     }
+
 }

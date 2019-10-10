@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'number',
                     'value' => function (Classroom $model) {
                         return Html::a($model->number, [
-                            'lesson/classroom-card',
+                            '/schedule/classroom-card',
                             'classroom_id' => $model->id,
                         ]);
                     },

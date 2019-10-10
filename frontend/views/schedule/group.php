@@ -26,12 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
         	<table class="table table-condensed table-bordered table-striped">
         		<tr class="info">
         			<th>#</th>
+        			<th>Время</th>
         			<?php foreach ($weekdays as $key => $value):?>
         				<th class="col-md-2"><?=$value?></th>
         			<?php endforeach;?>
 	        		<?php while ($number <= 10):?>
 	        			<tr>
 	        				<th><?=$number?></th>
+	        				<th>
+	        					<?=$start_time[0] + $number - 1 . ':' . $start_time[1]?> <br>
+	        					<?=$start_time[0] + $number - 1 . ':' . ($start_time[1] + $duration)?>
+        					</th>
 		        			<?php foreach ($weekdays as $key => $value):?>
 		        				<?php if ($lessons):?>
 		        						<td>
