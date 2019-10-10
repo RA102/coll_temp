@@ -1,5 +1,6 @@
 <?php
 
+use common\models\organization\ReplacementJournal;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
@@ -45,20 +46,21 @@ $this->title = 'Журнал ' . $group->caption_current;
         </ul>
     </div>
     <div class="card-body" style="overflow-x: scroll;">
+        <?= Html::a(Yii::t('app', 'Журнал замен'), ['replacement', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], ['class' => 'btn btn-primary']) ?>
         <table class="table table-bordered table-striped table-responsive">
             <tr>
                 <th>№</th>
                 <th>ФИО</th>
-                <?php foreach ($lessons as $lesson):?>
-                    <th><a href="create?group_id=<?=$group->id?>&date=<?=date('d.m.y', strtotime($lesson->date_ts))?>&teacher_course_id=<?=$lesson->teacher_course_id?>&type=2"><?=date('d.m.y', strtotime($lesson->date_ts))?></a></th>
+                <?php foreach ($dates as $date):?>
+                    <th <?php if(ReplacementJournal::replaced($group->id, strtotime($date), $teacherCourse->id) == true):?>class="btn-danger"<?php endif;?>><a href="create?group_id=<?=$group->id?>&date=<?=date('d-m-Y', strtotime($date))?>&teacher_course_id=<?=$teacherCourse->id?>&type=1"><?=date('d.m.y', strtotime($date))?></a></th>
                 <?php endforeach;?>
             </tr>
             <?php foreach ($group->students as $key=>$student):?>
                 <tr>
                     <td><?=$key+1?></td>
                     <td><?=$student->getFullname()?></td>
-                    <?php foreach ($lessons as $lesson):?>
-                        <?php $attendance = $student->checkAttendance(2, $group->id, $student->id, $teacherCourse->id, date('d.m.y', strtotime($lesson->date_ts)));?>
+                    <?php foreach ($dates as $date):?>
+                        <?php $attendance = $student->checkAttendance($type, $group->id, $student->id, $teacherCourse->id, date('d.m.y', strtotime($date)));?>
                         <?php if ($attendance[0] == 1):?>
                             <td class="btn-danger">н/б</td>
                         <?php elseif ($attendance[0] == 2):?>

@@ -168,6 +168,7 @@ class JournalController extends Controller
         ]);*/
         $journal = Journal::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id])->all();
         $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+
         $schedule = Schedule::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id])->all();
         $replaced = ReplacementJournal::countReplaced($group_id, $teacher_course_id);
         $new_schedule = [];
@@ -205,6 +206,7 @@ class JournalController extends Controller
             'dates' => $dates,
             'journal' => $journal,
             'replaced' => $replaced,
+            'type' => $type,
             //'dataProvider' => $dataProvider
         ]);
     }

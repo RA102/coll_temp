@@ -27,7 +27,7 @@ $this->title = "Карта занятости " . $model->number;
 	        				<th><?=$number?></th>
 	        				<th>
 	        					<?=$start_time[0] + $number - 1 . ':' . $start_time[1]?> <br>
-	        					<?=$start_time[0] + $number - 1 . ':' . ($start_time[1] + $duration)?>	
+	        					<?=$start_time[0] + $number - 1 . ':' . ($start_time[1] + $duration)?>
         					</th>
 		        			<?php foreach ($weekdays as $key => $value):?>
 		        				<?php if ($lessons):?>
