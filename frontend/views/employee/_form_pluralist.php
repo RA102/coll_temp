@@ -61,7 +61,6 @@ $blockPersonalDataEditing = $block;
 
     <div class="row">
         <div class="col-md-4">
-            <?php var_dump($model->nationality_id);die();?>
             <?= $form->field($model, 'nationality_id')
                 ->dropDownList(ArrayHelper::map(Nationality::find()->orderBy('name')->all(), 'id', 'name'), ['disabled'  => $blockPersonalDataEditing]); ?>
         </div>
