@@ -96,6 +96,16 @@ class GroupService
         return ArrayHelper::map($groups, 'id', 'caption_current');
     }
 
+    public function getByClasses(array $classes, int $institution_id): array
+    {
+        $groups = Group::find()
+            ->where(['in', 'class', $classes])
+            ->andWhere(['institution_id' => $institution_id])
+            ->andWhere(['IS', 'delete_ts', new \yii\db\Expression('NULL')])
+            ->all();
+        return $groups;
+    }
+
     public function addStudent(int $id, int $group_id)
     {
         $link = StudentGroupLink::find()

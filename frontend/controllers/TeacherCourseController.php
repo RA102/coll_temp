@@ -116,6 +116,9 @@ class TeacherCourseController extends Controller
         $form = new TeacherCourseForm();
         $types = TeacherCourse::getTypes();
 
+        $teachers = $course->institutionDiscipline->getTeachers();
+        $groups = $this->groupService->getByClasses($course->classes, $this->institution->id);
+
         if ($form->load(Yii::$app->request->post())) {
             $teacherCourse->setAttributes($form->getAttributes());
             $teacherCourse->course_id = $course->id;
@@ -133,8 +136,9 @@ class TeacherCourseController extends Controller
         return $this->render('create', [
             'model' => $form,
             'course' => $course,
-            'teachers' => $this->employeeService->getTeachers($this->institution),
-            'groups' => $this->groupService->getGroups($this->institution),
+            //'teachers' => $this->employeeService->getTeachers($this->institution),
+            'teachers' => $teachers,
+            'groups' => $groups,
             'types' => $types,
             'statuses' => $statuses,
         ]);

@@ -125,7 +125,7 @@ class InstitutionDisciplineController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'teachers' => $this->employeeService->getTeachers($this->institution),
+            'teachers' => $this->employeeService->getTeachersActive($this->institution),
         ]);
     }
 
@@ -149,7 +149,7 @@ class InstitutionDisciplineController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'teachers' => $this->employeeService->getTeachers($this->institution),
+            'teachers' => $this->employeeService->getTeachersActive($this->institution),
         ]);
     }
 
