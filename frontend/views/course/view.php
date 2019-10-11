@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            //'id',
             [
                 'attribute' => 'institution_discipline_id',
                 'value' => function (Course $model) {
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'create_ts',
             'update_ts',
-            'delete_ts',
+            //'delete_ts',
         ],
     ]) ?>
 
@@ -82,12 +82,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->getStatus($model->status);
                 }
             ],
-            [
+            /*[
                 'attribute' => 'type',
                 'value' => function (TeacherCourse $model) {
                     return $model->getType($model->type);
                 }
-            ],
+            ],*/
             [
                 'attribute' => 'groups',
                 'value' => function (TeacherCourse $model) {
@@ -96,8 +96,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     }, $model->groups));
                 }
             ],
-            'start_ts',
-            'end_ts',
+            //'start_ts',
+            //'end_ts',
             //'create_ts',
             //'update_ts',
             //'delete_ts',

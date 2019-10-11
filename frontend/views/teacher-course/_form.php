@@ -46,26 +46,26 @@ use yii\widgets\ActiveForm;
         ],
     ]) ?>    
 
-    <?= $form->field($model, 'type')->widget(Select2::class, [
+    <!-- <?= $form->field($model, 'type')->widget(Select2::class, [
         'data' => $types,
         'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
         'theme' => 'default',
         'pluginOptions' => [
             'allowClear' => true,
         ],
-    ]) ?>
+    ]) ?> -->
 
-    <?= $form->field($model, 'start_ts')->widget(DatePicker::class, [
+    <!-- <?= $form->field($model, 'start_ts')->widget(DatePicker::class, [
         'pluginOptions' => [
             'autoclose' => true
         ]
     ]); ?>
-
+    
     <?= $form->field($model, 'end_ts')->widget(DatePicker::class, [
         'pluginOptions' => [
             'autoclose' => true
         ]
-    ]); ?>
+    ]); ?> -->
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

@@ -20,12 +20,11 @@ class TeacherCourseForm extends Model
     public function rules()
     {
         return [
-            [['teacher_id', 'start_ts', 'end_ts'], 'required'],
+            [['teacher_id', 'status'], 'required'],
             [['type'], 'string', 'max' => 255],
             [['status'], 'integer'],
             [['group_ids'], 'each', 'rule' => ['integer']],
             //[['group_ids'], 'required'],
-            [['start_ts', 'end_ts'], 'safe'],
         ];
     }
 

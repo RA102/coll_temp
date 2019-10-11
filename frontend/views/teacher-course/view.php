@@ -63,17 +63,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->getStatus($model->status);
                 }
             ],
-            [
+            /*[
                 'attribute' => 'type',
                 'value' => function (TeacherCourse $model) {
                     return $model->getType($model->type);
                 }
-            ],
-            'start_ts',
-            'end_ts',
+            ],*/
             'create_ts',
             'update_ts',
-            'delete_ts',
+            //'delete_ts',
         ],
     ]) ?>
 

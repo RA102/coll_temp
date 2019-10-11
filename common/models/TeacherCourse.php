@@ -15,8 +15,6 @@ use Yii;
  * @property int $course_id
  * @property int $teacher_id
  * @property string $type
- * @property string $start_ts
- * @property string $end_ts
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
@@ -61,10 +59,9 @@ class TeacherCourse extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['course_id', 'teacher_id', 'start_ts', 'end_ts'], 'required'],
+            [['course_id', 'teacher_id'], 'required'],
             [['course_id', 'teacher_id'], 'default', 'value' => null],
             [['course_id', 'teacher_id', 'status'], 'integer'],
-            [['start_ts', 'end_ts'], 'safe'],
             [['type'], 'string', 'max' => 255],
             [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['teacher_id' => 'id']],
             [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::class, 'targetAttribute' => ['course_id' => 'id']],

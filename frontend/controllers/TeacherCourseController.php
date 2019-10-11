@@ -165,8 +165,6 @@ class TeacherCourseController extends Controller
         if (array_key_exists($form->type, $types)) {
             $form->type = $types[$form->type];
         }*/
-        $form->start_ts = date('d.m.Y', strtotime($teacherCourse->start_ts));
-        $form->end_ts = date('d.m.Y', strtotime($teacherCourse->end_ts));
 
         if ($form->load(Yii::$app->request->post())) {
             $teacherCourse->setAttributes($form->getAttributes());
@@ -208,6 +206,10 @@ class TeacherCourseController extends Controller
     {
         $course = $this->findCourse($this->institution, $course_id);
         $teacherCourse = $this->findTeacherCourse($course, $id);
+        $teacher_course_group_links = $teacherCourse->teacherCourseGroupLinks;
+        foreach ($teacher_course_group_links as $value) {
+            $value->delete();
+        }
 
         $teacherCourse->delete();
 
