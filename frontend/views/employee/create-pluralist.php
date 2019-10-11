@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="employee-create">
         <?= $this->render('_form_pluralist', [
             'model' => $model,
+            'person' => $person,
             'block' => $block
         ]) ?>
     </div>

@@ -221,6 +221,7 @@ class EmployeeController extends Controller
     public function actionCreatePluralist($id = null)
     {
         $form = new StudentGeneralForm();
+        $session_person = \Yii::$app->user->identity;
 
         $person = Employee::findOne($id);
         $block = false;
@@ -277,6 +278,7 @@ class EmployeeController extends Controller
 
         return $this->render('create-pluralist', [
             'model' => $form,
+            'person' => $session_person,
             'block' => $block
         ]);
     }
