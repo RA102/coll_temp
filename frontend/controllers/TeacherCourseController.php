@@ -112,6 +112,7 @@ class TeacherCourseController extends Controller
         $course = $this->courseService->getCourse($this->institution, $course_id);
         $teacherCourse = new TeacherCourse();
 
+        $statuses = TeacherCourse::statusList();
         $form = new TeacherCourseForm();
         $types = TeacherCourse::getTypes();
 
@@ -135,6 +136,7 @@ class TeacherCourseController extends Controller
             'teachers' => $this->employeeService->getTeachers($this->institution),
             'groups' => $this->groupService->getGroups($this->institution),
             'types' => $types,
+            'statuses' => $statuses,
         ]);
     }
 
