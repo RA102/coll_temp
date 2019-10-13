@@ -249,6 +249,29 @@ class ScheduleController extends Controller
     {
     	$model = Schedule::findOne($id);
     	$group_id = $model->group_id;
+        
+        $semester_date = $this->institution->semester_date;
+        $start = $semester_date[1]['start'];
+        $end = $semester_date[1]['end'];
+        $shift_time = $this->institution->shift_time;
+        $weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+        $lesson_time = strtotime($shift_time[1]['start_time']) + 60*60*($model->lesson_number - 1);
+        $time = date('H:i:s', $lesson_time);
+
+        $lessons = Lesson::find()
+                ->where(['teacher_course_id' => $model->teacher_course_id])
+                ->andWhere(['teacher_id' => $model->teacherCourse->teacher_id])
+                ->andWhere(['group_id' => $model->group_id])
+                ->andWhere(['between', 'date_ts', $start, $end])
+                ->all();
+
+        foreach ($lessons as $lesson) {
+            if (date('H:i:s', strtotime($lesson->date_ts)) == $time && date('l', strtotime($lesson->date_ts)) == $weekdays[$model->weekday-1]) {
+                $lesson->delete();
+            }
+        }
+
     	$model->delete();
 
     	return $this->redirect(['group', 'group_id' => $group_id]);
