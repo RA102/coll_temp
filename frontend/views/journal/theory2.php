@@ -47,8 +47,21 @@ $this->title = 'Журнал ' . $group->caption_current;
             <tr>
                 <th>№</th>
                 <th>ФИО</th>
-                <?php foreach ($dates as $date):?>
-                    <th <?php if(ReplacementJournal::replaced($group->id, strtotime($date), $teacherCourse->id) == true):?>class="btn-danger"<?php endif;?>><a href="create?group_id=<?=$group->id?>&date=<?=date('d-m-Y', strtotime($date))?>&teacher_course_id=<?=$teacherCourse->id?>&type=1"><?=date('d.m.y', strtotime($date))?></a></th>
+                <?php foreach ($dates as $key => $date):?>
+                    <th <?php if(ReplacementJournal::replaced($group->id, strtotime($date), $teacherCourse->id) == true):?>class="btn-danger"<?php endif;?>>
+                        <a title="
+                            <?php if($model->ktp !== null):?>
+                                <?php if(array_key_exists($key+1 ,$model->ktp)):?>
+                                    <?=$model->ktp[$key+1]['lesson_topic']?>
+                                <?php endif;?>
+                            <?php else:?>
+                                тема не указана
+                            <?php endif;?>
+                                " 
+                            href="create?group_id=<?=$group->id?>&date=<?=date('d-m-Y', strtotime($date))?>&teacher_course_id=<?=$teacherCourse->id?>&type=1">
+                            <?=date('d.m.y', strtotime($date))?>
+                        </a>
+                    </th>
                 <?php endforeach;?>
             </tr>
             <?php foreach ($group->students as $key=>$student):?>

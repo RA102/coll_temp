@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($formmodel, 'lesson_topic')->textInput()->label('Тема урока') ?>
 
-            <?= $form->field($formmodel, 'week')->textInput()->label('Неделя') ?>
+            <!-- <?= $form->field($formmodel, 'week')->textInput()->label('Неделя') ?> -->
 
             <?= $form->field($formmodel, 'type')->widget(Select2::class, [
                 'data' => $model->teacherCourse->types, 

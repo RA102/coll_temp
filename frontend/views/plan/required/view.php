@@ -120,32 +120,30 @@ $this->title = 'Дисциплина';
 	    			<th class="col-md-1">№ занятия</th>
 	    			<th class="col-md-2">Дата</th>
 	    			<th class="col-md-3">Тема урока</th>
-	    			<th class="col-md-2">Недельный период</th>
+	    			<!-- <th class="col-md-2">Недельный период</th> -->
 	    			<th class="col-md-2">Способ обучения</th>
 	    			<th class="col-md-1"></th>
 	    		</tr>
-	    		<?php if($model->ktp !== null):?>
-		    		<?php foreach($dates as $key => $value) :?>
-		    			<?php if (array_key_exists($key+1, $model->ktp)):?>
-			    			<tr>
-			    				<td><?=$key + 1 ?></td>
-			    				<td><?=$value?></td>
-			    				<td><?=$model->ktp[$key+1]['lesson_topic']?></td>
-			    				<td><?=$model->ktp[$key+1]['week']?></td>
-			    				<td><?=$model->getType($model->ktp[$key+1]['type'])?></td>
-			    				<td><a href="required-ktp-create?id=<?=$model->id?>&lesson_number=<?=$model->ktp[$key+1]['lesson_number']?>"><i class="fa fa-edit"></i></a></td>
-			    			</tr>
-			    		<?php else:?>
-			    			<tr>
-			    				<td><?=$key + 1 ?></td>
-			    				<td><?=$value?></td>
-			    				<td></td>
-			    				<td></td>
-			    				<td></td>
-			    				<td><a href="required-ktp-create?id=<?=$model->id?>&lesson_number=<?=$key+1?>"><i class="fa fa-edit"></i></a></td>
-			    		<?php endif;?>
-		    		<?php endforeach;?>
-		    	<?php endif;?>
+	    		<?php foreach($dates as $key => $value) :?>
+	    			<?php if ($model->ktp !== null && array_key_exists($key+1, $model->ktp)):?>
+		    			<tr>
+		    				<td><?=$key + 1 ?></td>
+		    				<td><?=$value?></td>
+		    				<td><?=$model->ktp[$key+1]['lesson_topic']?></td>
+		    				<!-- <td><?//=$model->ktp[$key+1]['week']?></td> -->
+		    				<td><?=$model->getType($model->ktp[$key+1]['type'])?></td>
+		    				<td><a href="required-ktp-create?id=<?=$model->id?>&lesson_number=<?=$model->ktp[$key+1]['lesson_number']?>"><i class="fa fa-edit"></i></a></td>
+		    			</tr>
+		    		<?php else:?>
+		    			<tr>
+		    				<td><?=$key + 1 ?></td>
+		    				<td><?=$value?></td>
+		    				<td></td>
+		    				<!-- <td></td> -->
+		    				<td></td>
+		    				<td><a href="required-ktp-create?id=<?=$model->id?>&lesson_number=<?=$key+1?>"><i class="fa fa-edit"></i></a></td>
+		    		<?php endif;?>
+	    		<?php endforeach;?>
 		    	<?php if(count($dates) == 0):?>
 		    		<tr>
 		    			<td colspan="6">Расписание отсутствует <br><a href="/schedule/group?group_id=<?=$group->id?>" class="btn btn-primary">Перейти к расписанию</a></td>

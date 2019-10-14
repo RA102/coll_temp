@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Schedule;
 use common\models\TeacherCourse;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
@@ -39,7 +40,7 @@ $this->title = 'Расписание';
 	    ])->label('Предмет') ?>
 
 	    <?= $form->field($model, 'type')->widget(Select2::class, [
-                'data' => TeacherCourse::getTypes(), 
+                'data' => Schedule::getTypes(), 
                 'options' => ['placeholder' => 'Выберите способ', 'class' => 'active-form-refresh-control'],
                 'theme' => 'default',
                 'pluginOptions' => [

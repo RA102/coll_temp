@@ -485,11 +485,15 @@ class PlanController extends Controller
         $formmodel = new \yii\base\DynamicModel(['week', 'lesson_number', 'lesson_topic', 'type']);
 
         if ($lesson_number !== null) {
-            if (array_key_exists($lesson_number, $model->ktp)) {
-                $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
-                $formmodel['lesson_topic'] = $model->ktp[$lesson_number]['lesson_topic'];
-                $formmodel['week'] = $model->ktp[$lesson_number]['week'];
-                $formmodel['type'] = $model->ktp[$lesson_number]['type'];
+            if ($model->ktp !== null) {
+                if (array_key_exists($lesson_number, $model->ktp)) {
+                    $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
+                    $formmodel['lesson_topic'] = $model->ktp[$lesson_number]['lesson_topic'];
+                    $formmodel['week'] = $model->ktp[$lesson_number]['week'];
+                    $formmodel['type'] = $model->ktp[$lesson_number]['type'];
+                } else {
+                    $formmodel['lesson_number'] = $lesson_number; 
+                }
             } else {
                 $formmodel['lesson_number'] = $lesson_number; 
             }
@@ -500,7 +504,7 @@ class PlanController extends Controller
             $data[$number] = [];
 
             $data[$number]['lesson_number'] = $_POST['DynamicModel']['lesson_number'];
-            $data[$number]['week'] = $_POST['DynamicModel']['week'];
+            //$data[$number]['week'] = $_POST['DynamicModel']['week'];
             $data[$number]['lesson_topic'] = $_POST['DynamicModel']['lesson_topic'];
             $data[$number]['type'] =  $_POST['DynamicModel']['type'];
             

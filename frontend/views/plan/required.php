@@ -10,7 +10,7 @@ $this->title = 'Обязательные дисциплины';
 
 <div style="position: relative;">
     <h1><?=$this->title?></h1>
-    <?= Html::a('Добавить', ['create-required'], ['class' => 'title-action btn btn-primary']) ?>
+    <!-- <?= Html::a('Добавить', ['create-required'], ['class' => 'title-action btn btn-primary']) ?> -->
 </div>
 
 <div class="required-index skin-white">

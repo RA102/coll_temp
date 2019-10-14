@@ -201,6 +201,8 @@ class ScheduleController extends Controller
         		$model2->classroom_id = $model->classroom_id;
 
 	            if ($model->save() && $model2->save()) {
+                $this->deleteLessons($model->id);
+                $this->deleteLessons($model2->id);
 		        	$this->createLesson($model->id);
 	            	$this->createLesson($model2->id);
 	                return $this->redirect(['group', 'group_id' => $group_id]);
@@ -208,6 +210,7 @@ class ScheduleController extends Controller
 
             }
             elseif ($model->save()) {
+                $this->deleteLessons($model->id);
 	        	$this->createLesson($model->id);
             	return $this->redirect(['group', 'group_id' => $group_id]);
             }
@@ -248,7 +251,19 @@ class ScheduleController extends Controller
     public function actionDelete($id)
     {
     	$model = Schedule::findOne($id);
-    	$group_id = $model->group_id;
+        $group_id = $model->group_id;
+
+        $this->deleteLessons($id); // delete lessons from "Lesson" model
+
+    	$model->delete();
+
+    	return $this->redirect(['group', 'group_id' => $group_id]);
+    }
+
+    public function deleteLessons($id)
+    {
+        $model = Schedule::findOne($id);
+        $group_id = $model->group_id;
         
         $semester_date = $this->institution->semester_date;
         $start = $semester_date[1]['start'];
@@ -260,8 +275,8 @@ class ScheduleController extends Controller
         $time = date('H:i:s', $lesson_time);
 
         $lessons = Lesson::find()
-                ->where(['teacher_course_id' => $model->teacher_course_id])
-                ->andWhere(['teacher_id' => $model->teacherCourse->teacher_id])
+                /*->where(['teacher_course_id' => $model->teacher_course_id])
+                ->andWhere(['teacher_id' => $model->teacherCourse->teacher_id])*/
                 ->andWhere(['group_id' => $model->group_id])
                 ->andWhere(['between', 'date_ts', $start, $end])
                 ->all();
@@ -271,10 +286,6 @@ class ScheduleController extends Controller
                 $lesson->delete();
             }
         }
-
-    	$model->delete();
-
-    	return $this->redirect(['group', 'group_id' => $group_id]);
     }
 
 }

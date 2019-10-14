@@ -184,12 +184,12 @@ class JournalController extends Controller
         $schedule = Schedule::find()
             ->where(['group_id' => $group_id])
             ->andWhere(['teacher_course_id' => $teacher_course_id])
-            ->joinWith('teacherCourse')
+            /*->joinWith('teacherCourse')
             ->andWhere(['in', TeacherCourse::tableName().'.status', [
                 TeacherCourse::TYPE_LECTURE, 
                 TeacherCourse::TYPE_SEMINAR, 
                 ]
-            ])
+            ])*/
             ->all();
 
         $replaced = ReplacementJournal::countReplaced($group_id, $teacher_course_id);
@@ -212,27 +212,31 @@ class JournalController extends Controller
         }
 
         $exams = [];
-        foreach ($model->ktp as $value) {
-            if ($value['type'] == TeacherCourse::TYPE_LECTURE || $value['type'] == TeacherCourse::TYPE_SEMINAR) {
-                array_push($exams, $value);
+        if ($model->ktp !== null) {
+            foreach ($model->ktp as $value) {
+                if ($value['type'] == TeacherCourse::TYPE_LECTURE || $value['type'] == TeacherCourse::TYPE_SEMINAR) {
+                    array_push($exams, $value);
+                }
             }
         }
 
         usort($dates, array($this, "sortFunction"));
 
-        $ddates = [];
+        /*$ddates = [];
         if (count($dates) > 0) {
             foreach ($exams as $exam) {
                 array_push($ddates, $dates[$exam['lesson_number'] - 1]); 
             }
-        }
+        }*/
         
+
         return $this->render('theory2', [
             'group' => $group,
             'teacherCourse' => $teacherCourse,
-            'dates' => $ddates,
+            'dates' => $dates,
             'journal' => $journal,
             'replaced' => $replaced,
+            'model' => $model,
             //'dataProvider' => $dataProvider
         ]);
     }
