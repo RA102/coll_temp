@@ -182,9 +182,13 @@ class TeacherCourse extends \yii\db\ActiveRecord
             return $list[$status];
         }
     }
-    public function getStat()
+
+    public function getStatusName()
     {
-        return $this->statusName($this->status);
+        $list = $this->statusList();
+        if (array_key_exists($this->status, $list)) {
+            return $list[$this->status];
+        }
     }
 
 

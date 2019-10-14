@@ -221,8 +221,10 @@ class JournalController extends Controller
         usort($dates, array($this, "sortFunction"));
 
         $ddates = [];
-        foreach ($exams as $value) {
-            array_push($ddates, $dates[$value['lesson_number'] - 1]); 
+        if (count($dates) > 0) {
+            foreach ($exams as $exam) {
+                array_push($ddates, $dates[$exam['lesson_number'] - 1]); 
+            }
         }
         
         return $this->render('theory2', [

@@ -20,12 +20,14 @@ $this->params['breadcrumbs'][] = $this->title;
             <tr>
                 <th>Предмет</th>
                 <th>Преподаватель</th>
+                <th>Тип</th>
             </tr>
             <?php foreach ($teacherCourses as $teacherCourse):?>
                 <tr>
                     <td><?= Html::a($teacherCourse->disciplineName, ['view', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id, 'type' => 1], ['class' => '']) ?>                        
                     </td>
                     <td><?=$teacherCourse->person->getFullname()?></td>
+                    <td><?=$teacherCourse->statusName?></td>
                 </tr>
             <?php endforeach;?>
         </table>

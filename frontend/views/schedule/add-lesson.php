@@ -30,7 +30,7 @@ $this->title = 'Расписание';
 	    <?= $form->field($model, 'lesson_number')->textInput(['disabled' => true]) ?>
 
 	    <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
-	        'data' => ArrayHelper::map($teacherCourses, 'id', 'disciplineName', 'stat'), /** @see Employee::getFullName() */ // TODO rework to ajax
+	        'data' => ArrayHelper::map($teacherCourses, 'id', 'disciplineName', 'statusName'), /** @see Employee::getFullName() */ // TODO rework to ajax
 	        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
 	        'theme' => 'default',
 	        'pluginOptions' => [
