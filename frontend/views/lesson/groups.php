@@ -8,7 +8,8 @@ use yii\grid\GridView;
 /* @var $searchModel frontend\search\GroupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Lessons');
+$this->title = Yii::t('app', 'Groups');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Расписание'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div style="position: relative;">

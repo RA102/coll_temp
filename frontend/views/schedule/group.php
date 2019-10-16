@@ -12,12 +12,13 @@ use yii\web\View;
 /* @var $searchModel frontend\search\LessonSearch */
 
 $this->title = Yii::t('app', 'Group Lessons') . ': ' . $model->caption_current;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Lessons'), 'url' => ['groups']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Расписание'), 'url' => ['/lesson/index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Группы'), 'url' => ['/lesson/groups']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
     <div style="position: relative;">
         <h1><?= $this->title ?></h1>
-		<?= Html::a('Полное расписание', ['/lesson/schedule','group_id' => $model->id,], ['class' => 'btn btn-primary']) ?>
+		<?= Html::a('Полное расписание', ['/lesson/schedule','group_id' => $model->id,], ['class' => 'title-action btn btn-primary']) ?>
     </div>
 
 
