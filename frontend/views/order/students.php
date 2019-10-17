@@ -17,7 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div style="position: relative;">
     <h1><?=$this->title?> (<?=$dataProvider->totalCount?>)</h1>
-    <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 
 
@@ -98,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{generate}',
                     'buttons' => [
                         'generate' => function ($url, Student $model) use ($template) {
-                            return Html::a('<span class="glyphicon glyphicon-file"></span>',
+                            return Html::a('<span class="glyphicon glyphicon-share-alt"></span>',
                                 ['student-order', 'student_id' => $model->id, 'template' => $template]
                             );
                         },
