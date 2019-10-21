@@ -4,7 +4,6 @@ $this->title = 'Приказы';
 ?>
 
 <h1><?=$this->title?></h1>
-<a href="create-word">word</a>
 
 <div class="card-body skin-white">
     <h2>Для обучающихся</h2>

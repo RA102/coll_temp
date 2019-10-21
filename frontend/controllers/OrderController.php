@@ -266,6 +266,12 @@ class OrderController extends Controller
         $group = Group::findOne($group_id);
         $students = $group->students;
 
+        $students_array = [];
+        foreach ($students as $key => $value) {
+            $students_array[$key]['number'] = $key + 1;
+            $students_array[$key]['name'] = $value->fullName;
+        }
+
         $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $group->caption_current . '_' . $this->orderNames($template, 'student') . '.docx';
 
         if (file_exists($filename)) {
@@ -275,11 +281,7 @@ class OrderController extends Controller
         $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('templates/student/' . $template . '.docx');
         $templateProcessor->setValue('group', $group->caption_current);
         $templateProcessor->setValue('speciality', $group->speciality->caption_current);
-        $students_section = $templateProcessor->addSection(); 
-        foreach ($students as $student) {
-            //$templateProcessor->setValue('group_students', $student->fullName);
-            $students_section->addText($student->fullName . '<br>');
-        }
+        $templateProcessor->cloneBlock('students_block', 0, true, false, $students_array);
         $templateProcessor->saveAs($filename);
         
         return Yii::$app->response->sendFile($filename);
