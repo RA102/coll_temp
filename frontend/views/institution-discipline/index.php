@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'caption_current',
                 ],
 
-                [
+                /*[
                     'attribute' => 'types',
                     'value' => function(InstitutionDiscipline $model) {
                         if ($model->types) {
@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                         return null;
                     }
-                ],
+                ],*/
                 'create_ts',
                 //'update_ts',
                 //'delete_ts',
