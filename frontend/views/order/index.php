@@ -36,7 +36,7 @@ $this->title = 'Приказы';
                 <li><a href="employee?template=05">Приказ о повышении квалификации</a></li>
                 <li><a href="employee?template=06">Порицание</a></li>
                 <li><a href="employee?template=07">Поощрение</a></li>
-                <li><a href="employee?template=08">Список кафедр</a></li>
+                <li><a href="#">Список кафедр</a></li>
                 <li><a href="employee?template=09">Справка для сотрудников</a></li>
                 <li><a href="employee?template=10">Отпуск без содержания</a></li>
                 <li><a href="employee?template=11">Декретный отпукс</a></li>

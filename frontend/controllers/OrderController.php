@@ -338,6 +338,16 @@ class OrderController extends Controller
         elseif ($template == '06') {
             $model = new \yii\base\DynamicModel(['discipline']);
         }
+        elseif ($template == '09') {
+            $model = new \yii\base\DynamicModel(['date', 'salary']);
+        }
+        elseif ($template == '10') {
+            $model = new \yii\base\DynamicModel(['from', 'to', 'note']);
+        }
+        elseif ($template == '11') {
+            $model = new \yii\base\DynamicModel(['from', 'to', 'application_date']);
+        }
+
 
         if ($model->load(Yii::$app->request->post())) {
             $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $employee->firstname . ' ' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
@@ -350,6 +360,7 @@ class OrderController extends Controller
 
             $templateProcessor->setValue('name', $employee->fullName);
             $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
+            $templateProcessor->setValue('college', Yii::$app->user->identity->institution->name);
             if (array_key_exists('date', $_POST['DynamicModel'])) {
                 $templateProcessor->setValue('date', $_POST['DynamicModel']['date']);
             }
@@ -379,6 +390,12 @@ class OrderController extends Controller
             }
             if (array_key_exists('discipline', $_POST['DynamicModel'])) {
                 $templateProcessor->setValue('discipline', $_POST['DynamicModel']['discipline']);
+            }
+            if (array_key_exists('salary', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('salary', $_POST['DynamicModel']['salary']);
+            }
+            if (array_key_exists('note', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('note', $_POST['DynamicModel']['note']);
             }
             $templateProcessor->saveAs($filename);
             
@@ -418,7 +435,7 @@ class OrderController extends Controller
         //return $this->redirect(['index']);
     }
 
-    public function actionExportEmployee($employee_id, $template, $data=null)
+    public function actionExportEmployeeOrder($employee_id, $template, $data=null)
     {
         $employee = Employee::findOne($employee_id);
 

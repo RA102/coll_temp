@@ -101,8 +101,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{move}',
                     'buttons' => [
                         'move' => function ($url, Employee $model) use ($template) {
-                            return Html::a('<span class="glyphicon glyphicon-share-alt"></span>',
-                                ['employee-order', 'employee_id' => $model->id, 'template' => $template]);
+                        	if (in_array($template, ['07'])) {
+	                            return Html::a('<span class="glyphicon glyphicon-share-alt"></span>',
+                                	['export-employee-order', 'employee_id' => $model->id, 'template' => $template]
+                            	);
+	                        } else {
+	                            return Html::a('<span class="glyphicon glyphicon-share-alt"></span>',
+	                                ['employee-order', 'employee_id' => $model->id, 'template' => $template]);
+	                        }
                         }
                     ],
                 ],

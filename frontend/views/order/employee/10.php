@@ -10,7 +10,7 @@ use yii\jui\AutoComplete;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 
-$this->title = 'Приказ о повышении квалификации сотрудника ' . $employee->fullName;
+$this->title = 'Приказ об отпуске без содержания для ' . $employee->fullName;
 ?>
 
 <h1><?=$this->title?></h1>
@@ -24,7 +24,7 @@ $this->title = 'Приказ о повышении квалификации со
                         'autoclose' => true,
                         'format' => 'dd.mm.yyyy'
                     ],
-            ])->label('От'); ?>
+            ])->label('С'); ?>
 
     <?= $form->field($model, 'to')->widget(\kartik\date\DatePicker::class, [
                     'language' => 'ru',
@@ -34,9 +34,7 @@ $this->title = 'Приказ о повышении квалификации со
                     ],
             ])->label('До'); ?>
 
-    <?= $form->field($model, 'college')->textInput(['maxlength' => true])->label('Колледж') ?>
-
-    <?= $form->field($model, 'days')->textInput(['maxlength' => true])->label('Кол-во дней') ?>
+    <?= $form->field($model, 'note')->textInput(['maxlength' => true])->label('Основание') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-success']) ?>
