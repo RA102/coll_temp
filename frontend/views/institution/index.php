@@ -113,9 +113,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-md-12">
+            <?= $activeForm->field($form, 'director')->textInput()->label('Директор') ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
             <?= $activeForm->field($form, 'description')->textarea(['rows' => 3 ]) ?>
         </div>
-
     </div>
 
     <div class="row">

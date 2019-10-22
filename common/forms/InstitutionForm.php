@@ -35,6 +35,8 @@ class InstitutionForm extends Model
     public $semester_date;
     public $shift_time;
 
+    public $director;
+
     public $country_id;
     public $city_ids = [];
     public $type_ids = [];
@@ -67,6 +69,7 @@ class InstitutionForm extends Model
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
+            ['director', 'string'],
 
             [
                 [
@@ -121,6 +124,7 @@ class InstitutionForm extends Model
             'enable_fraction' => Yii::t('app', 'Enable Fraction'),
             'bin' => Yii::t('app', 'Bin'),
             'description' => Yii::t('app', 'Description'),
+            'director' => Yii::t('app', 'Director'),
         ];
     }
 

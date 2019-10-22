@@ -282,6 +282,8 @@ class OrderController extends Controller
         $templateProcessor->setValue('group', $group->caption_current);
         $templateProcessor->setValue('speciality', $group->speciality->caption_current);
         $templateProcessor->cloneBlock('students_block', 0, true, false, $students_array);
+        $templateProcessor->setValue('total_graduates', count($students));
+        $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
         $templateProcessor->saveAs($filename);
         
         return Yii::$app->response->sendFile($filename);
