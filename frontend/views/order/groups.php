@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => '{generate}',
                     'buttons' => [
                         'generate' => function ($url, \common\models\organization\Group $model) use ($template) {
-                        	if ($template == '04') {
+                        	if (in_array($template, ['04', '09'])) {
 	                            return Html::a('<span class="glyphicon glyphicon-share-alt"></span>',
                                 	['export-group-order', 'group_id' => $model->id, 'template' => $template]
                             	);

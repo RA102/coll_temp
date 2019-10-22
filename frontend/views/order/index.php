@@ -12,11 +12,11 @@ $this->title = 'Приказы';
         <li><a href="students?template=02">Приказ о переводе</a></li>
         <li><a href="students?template=03">Приказ об отчислении</a></li>
         <li><a href="groups?template=04">Приказ о вручении диплома</a></li>
-        <li><a href="students?template=05">Приказ о допуске к госэкзаменам</a></li>
-        <li><a href="students?template=06">Приказ о назначении стипендии</a></li>
-        <li><a href="students?template=07">Приказ о направлении на практику</a></li>
-        <li><a href="students?template=08">Приказ об условном переводе</a></li>
-        <li><a href="students?template=09">Приказ о дорожных расходах</a></li>
+        <li><a href="groups?template=05">Приказ о допуске к госэкзаменам</a></li>
+        <li><a href="groups?template=06">Приказ о назначении стипендии</a></li>
+        <li><a href="groups?template=07">Приказ о направлении на практику</a></li>
+        <li><a href="groups?template=08">Приказ об условном переводе</a></li>
+        <li><a href="groups?template=09">Приказ о дорожных расходах</a></li>
         <li><a href="students?template=10">Приказ о льготах</a></li>
         <li><a href="students?template=11">Приказ о питании</a></li>
         <li><a href="students?template=12">Приказ о переводе госзаказа</a></li>

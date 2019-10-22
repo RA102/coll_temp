@@ -137,19 +137,25 @@ class OrderController extends Controller
         elseif ($template == '03') {
             $model = new \yii\base\DynamicModel(['group', 'new_group', 'note', 'year']);
         }
+        elseif ($template == '10') {
+            $model = new \yii\base\DynamicModel(['season', 'discount']);
+        }
+        elseif ($template == '11') {
+            $model = new \yii\base\DynamicModel(['season', 'note', 'semester', 'amount']);
+        }
+        elseif ($template == '12') {
+            $model = new \yii\base\DynamicModel(['date']);
+        }
+        elseif ($template == '13') {
+            return $this->redirect(['export', 'student_id' => $student_id, 'template' => $template]);
+        }
+        elseif ($template == '14') {
+            return $this->redirect(['export', 'student_id' => $student_id, 'template' => $template]);
+        }
 
         if ($model->load(Yii::$app->request->post())) {
             $data = [];
             $data['group'] = $student->group->caption_current;
-            if (array_key_exists('new_group', $_POST['DynamicModel'])) {
-                $data['new_group'] = $_POST['DynamicModel']['new_group'];
-            }
-            if (array_key_exists('note', $_POST['DynamicModel'])) {
-                $data['note'] = $_POST['DynamicModel']['note'];
-            }
-            if (array_key_exists('year', $_POST['DynamicModel'])) {
-                $data['year'] = $_POST['DynamicModel']['year'];
-            }
 
             $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $student->firstname . '_' . $student->lastname . ':' . $this->orderNames($template, 'student') . '.docx';
 
@@ -161,15 +167,31 @@ class OrderController extends Controller
             $templateProcessor->setValue('name', $student->firstname . ' ' . $student->lastname);
             $templateProcessor->setValue('class', $student->group->class);
             $templateProcessor->setValue('group', $student->group->caption_current);
+            $templateProcessor->setValue('speciality', $student->group->speciality->caption_current);
             if (array_key_exists('new_group', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('new_group', $data['new_group']);
+                $templateProcessor->setValue('new_group', $_POST['DynamicModel']['new_group']);
             }
             if (array_key_exists('note', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('note', $data['note']);
+                $templateProcessor->setValue('note', $_POST['DynamicModel']['note']);
             }
             if (array_key_exists('year', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('year', $data['year']);
+                $templateProcessor->setValue('year', $_POST['DynamicModel']['year']);
             }
+            if (array_key_exists('season', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('season', $_POST['DynamicModel']['season']);
+            }
+            if (array_key_exists('discount', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('discount', $_POST['DynamicModel']['discount']);
+            }
+            if (array_key_exists('amount', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('amount', $_POST['DynamicModel']['amount']);
+            }
+            if (array_key_exists('semester', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('semester', $_POST['DynamicModel']['semester']);
+            }     
+            if (array_key_exists('date', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('date', $_POST['DynamicModel']['date']);
+            }          
             $templateProcessor->saveAs($filename);
             
             return Yii::$app->response->sendFile($filename);
@@ -187,42 +209,68 @@ class OrderController extends Controller
     {
         $group = Group::findOne($group_id);
         $groups = $this->groupService->getGroups(Yii::$app->user->identity->institution);
+        $students = $group->students;
 
-        if ($template == '04') {
-            $model = new \yii\base\DynamicModel(['new_group', 'note', 'year']);
+        $students_array = [];
+        foreach ($students as $key => $value) {
+            $students_array[$key]['number'] = $key + 1;
+            $students_array[$key]['name'] = $value->fullName;
+        }
+
+        if ($template == '05') {
+            $model = new \yii\base\DynamicModel(['season', 'date']);
+        }
+        elseif ($template == '06') {
+            $model = new \yii\base\DynamicModel(['season', 'date', 'semester']);
+        }
+        elseif ($template == '07') {
+            $model = new \yii\base\DynamicModel(['season', 'from', 'to', 'place']);
+        }
+        elseif ($template == '08') {
+            $model = new \yii\base\DynamicModel(['season', 'year', 'new_class']);
         }
 
         if ($model->load(Yii::$app->request->post())) {
             $data = [];
-            $data['group'] = $student->group->caption_current;
-            if (array_key_exists('new_group', $_POST['DynamicModel'])) {
-                $data['new_group'] = $_POST['DynamicModel']['new_group'];
-            }
-            if (array_key_exists('note', $_POST['DynamicModel'])) {
-                $data['note'] = $_POST['DynamicModel']['note'];
-            }
-            if (array_key_exists('year', $_POST['DynamicModel'])) {
-                $data['year'] = $_POST['DynamicModel']['year'];
-            }
+            $data['group'] = $group->caption_current;
 
-            $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $student->firstname . '_' . $student->lastname . ':' . $this->orderNames($template, 'student') . '.docx';
+            $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $group->caption_current . ':' . $this->orderNames($template, 'student') . '.docx';
 
             if (file_exists($filename)) {
                 unlink($filename);
             }
 
             $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('templates/student/' . $template . '.docx');
-            $templateProcessor->setValue('name', $student->firstname . ' ' . $student->lastname);
-            $templateProcessor->setValue('class', $student->group->class);
-            $templateProcessor->setValue('group', $student->group->caption_current);
-            if (array_key_exists('new_group', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('new_group', $data['new_group']);
+
+            $templateProcessor->setValue('group', $group->caption_current);
+            $templateProcessor->setValue('speciality', $group->speciality->caption_current);
+            $templateProcessor->cloneBlock('students_block', 0, true, false, $students_array);
+            $templateProcessor->setValue('class', $group->class);
+            $templateProcessor->setValue('total_graduates', count($students));
+            $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
+            if (array_key_exists('date', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('date', $_POST['DynamicModel']['date']);
             }
-            if (array_key_exists('note', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('note', $data['note']);
+            if (array_key_exists('season', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('season', $_POST['DynamicModel']['season']);
+            }
+            if (array_key_exists('semester', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('semester', $_POST['DynamicModel']['semester']);
+            }
+            if (array_key_exists('from', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('from', $_POST['DynamicModel']['from']);
+            }
+            if (array_key_exists('to', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('to', $_POST['DynamicModel']['to']);
+            }
+            if (array_key_exists('place', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('place', $_POST['DynamicModel']['place']);
             }
             if (array_key_exists('year', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('year', $data['year']);
+                $templateProcessor->setValue('year', $_POST['DynamicModel']['year']);
+            }
+            if (array_key_exists('new_class', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('new_class', $_POST['DynamicModel']['new_class']);
             }
             $templateProcessor->saveAs($filename);
             
@@ -231,13 +279,13 @@ class OrderController extends Controller
         }
 
         return $this->render('group/' . $template, [
-            'student' => $student,
             'model' => $model,
+            'group' => $group,
             'groups' => $groups,
         ]);
     }
 
-    public function actionExport($student_id, $template, $data)
+    public function actionExport($student_id, $template, $data=null)
     {
     	$student = Student::findOne($student_id);
 
@@ -249,7 +297,10 @@ class OrderController extends Controller
 
 		$templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('templates/student/' . $template . '.docx');
 		$templateProcessor->setValue('name', $student->firstname . ' ' . $student->lastname);
-		$templateProcessor->setValue('group', $student->group->caption_current);
+        $templateProcessor->setValue('class', $student->group->class);
+        $templateProcessor->setValue('group', $student->group->caption_current);
+        $templateProcessor->setValue('speciality', $student->group->speciality->caption_current);
+        $templateProcessor->setValue('education_form', $student->group->educationForm);
         $templateProcessor->setValue('new_group', $data['new_group']);
         $templateProcessor->setValue('note', $data['note']);
 		$templateProcessor->setValue('year', $data['year']);
@@ -282,6 +333,7 @@ class OrderController extends Controller
         $templateProcessor->setValue('group', $group->caption_current);
         $templateProcessor->setValue('speciality', $group->speciality->caption_current);
         $templateProcessor->cloneBlock('students_block', 0, true, false, $students_array);
+        $templateProcessor->setValue('class', $group->class);
         $templateProcessor->setValue('total_graduates', count($students));
         $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
         $templateProcessor->saveAs($filename);
