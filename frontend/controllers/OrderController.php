@@ -4,12 +4,14 @@ namespace frontend\controllers;
 
 use common\models\organization\Classroom;
 use frontend\search\ClassroomSearch;
+use common\models\person\Employee;
 use common\models\person\Person;
 use common\models\person\Student;
 use common\services\organization\GroupService;
 use common\services\person\PersonService;
 use frontend\models\forms\GroupAllocationForm;
 use frontend\search\GroupSearch;
+use frontend\search\EmployeeSearch;
 use frontend\search\StudentSearch;
 use Yii;
 use common\models\organization\Group;
@@ -99,6 +101,23 @@ class OrderController extends Controller
         ]);
     }
 
+    /**
+     * Lists all Employee models.
+     * @return mixed
+     */
+    public function actionEmployee($template)
+    {
+        $searchModel = new EmployeeSearch(Yii::$app->user->identity->institution);
+        $searchModel->status = Employee::STATUS_ACTIVE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('employee', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'template' => $template,
+        ]);
+    }
+
     public function orderNames($template, $person)
     {
         if ($person == 'student') {
@@ -117,6 +136,21 @@ class OrderController extends Controller
                 '12' => 'Приказ о переводе госзаказа',
                 '13' => 'Справка об обучении',
                 '14' => 'Справка о подтверждении диплома',
+            ];
+        }
+        else {
+            $orders = [
+                '01' => 'Приказ по личному составу',
+                '02' => 'Прием на работу',
+                '03' => 'Увольнение',
+                '04' => 'Приказ на командировку',
+                '05' => 'О повышении квалификации',
+                '06' => 'Порицание',
+                '07' => 'Поощрение',
+                '08' => 'Список кафедр',
+                '09' => 'Справка для сотрудников',
+                '10' => 'Без содержания',
+                '11' => 'Декретный отпукс',
             ];
         }
 
@@ -285,6 +319,78 @@ class OrderController extends Controller
         ]);
     }
 
+    public function actionEmployeeOrder($employee_id, $template)
+    {
+        $employee = Employee::findOne($employee_id);
+
+        if ($template == '02') {
+            $model = new \yii\base\DynamicModel(['date', 'position']);
+        }
+        elseif ($template == '03') {
+            $model = new \yii\base\DynamicModel(['date', 'position', 'unused_vacation_days', 'application_date']);
+        }
+        elseif ($template == '04') {
+            $model = new \yii\base\DynamicModel(['from', 'to', 'city']);
+        }
+        elseif ($template == '05') {
+            $model = new \yii\base\DynamicModel(['from', 'to', 'college', 'days']);
+        }
+        elseif ($template == '06') {
+            $model = new \yii\base\DynamicModel(['discipline']);
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $employee->firstname . ' ' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
+
+            if (file_exists($filename)) {
+                unlink($filename);
+            }
+
+            $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('templates/employee/' . $template . '.docx');
+
+            $templateProcessor->setValue('name', $employee->fullName);
+            $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
+            if (array_key_exists('date', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('date', $_POST['DynamicModel']['date']);
+            }
+            if (array_key_exists('position', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('position', $_POST['DynamicModel']['position']);
+            }
+            if (array_key_exists('unused_vacation_days', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('unused_vacation_days', $_POST['DynamicModel']['unused_vacation_days']);
+            }
+            if (array_key_exists('application_date', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('application_date', $_POST['DynamicModel']['application_date']);
+            }
+            if (array_key_exists('from', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('from', $_POST['DynamicModel']['from']);
+            }
+            if (array_key_exists('to', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('to', $_POST['DynamicModel']['to']);
+            }
+            if (array_key_exists('city', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('city', $_POST['DynamicModel']['city']);
+            }
+            if (array_key_exists('college', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('college', $_POST['DynamicModel']['college']);
+            }
+            if (array_key_exists('days', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('days', $_POST['DynamicModel']['days']);
+            }
+            if (array_key_exists('discipline', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('discipline', $_POST['DynamicModel']['discipline']);
+            }
+            $templateProcessor->saveAs($filename);
+            
+            return Yii::$app->response->sendFile($filename);
+        }
+
+        return $this->render('employee/' . $template, [
+            'employee' => $employee,
+            'model' => $model
+        ]);
+    }
+
     public function actionExport($student_id, $template, $data=null)
     {
     	$student = Student::findOne($student_id);
@@ -304,9 +410,30 @@ class OrderController extends Controller
         $templateProcessor->setValue('new_group', $data['new_group']);
         $templateProcessor->setValue('note', $data['note']);
 		$templateProcessor->setValue('year', $data['year']);
+        $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
 		$templateProcessor->saveAs($filename);
 		
 		return Yii::$app->response->sendFile($filename);
+
+        //return $this->redirect(['index']);
+    }
+
+    public function actionExportEmployee($employee_id, $template, $data=null)
+    {
+        $employee = Employee::findOne($employee_id);
+
+        $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $employee->firstname . '_' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
+
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
+
+        $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('templates/employee/' . $template . '.docx');
+        $templateProcessor->setValue('name', $employee->firstname . ' ' . $employee->lastname);
+        $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
+        $templateProcessor->saveAs($filename);
+        
+        return Yii::$app->response->sendFile($filename);
 
 
         //return $this->redirect(['index']);
