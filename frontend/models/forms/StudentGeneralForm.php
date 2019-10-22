@@ -41,7 +41,7 @@ class StudentGeneralForm extends Model
             ['indentity', 'email', 'skipOnEmpty' => true],
             ['is_pluralist', 'boolean'],
 
-            [['nationality_id', 'iin'], 'required'], // TODO foreign key check
+            [['nationality_id', 'iin', 'person_type'], 'required'], // TODO foreign key check
             ['nationality_id', 'integer'],
             ['language', 'required'],
             ['language', 'string', 'min' => 2, 'max' => 2],
