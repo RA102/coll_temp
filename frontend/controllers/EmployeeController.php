@@ -12,7 +12,7 @@ use common\services\person\PersonLocationService;
 use common\services\person\PersonService;
 use frontend\models\forms\PersonContactsForm;
 use frontend\models\forms\PersonDocumentsForm;
-use frontend\models\forms\StudentGeneralForm;
+use frontend\models\forms\EmployeeGeneralForm;
 use frontend\search\EmployeeSearch;
 use Yii;
 use yii\base\Module;
@@ -193,7 +193,7 @@ class EmployeeController extends Controller
      */
     public function actionCreate()
     {
-        $form = new StudentGeneralForm();
+        $form = new EmployeeGeneralForm();
         $person = \Yii::$app->user->identity;
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
@@ -220,7 +220,7 @@ class EmployeeController extends Controller
     /* создание совместителя, не зарегистрированного в системе*/
     public function actionCreatePluralist($id = null)
     {
-        $form = new StudentGeneralForm();
+        $form = new EmployeeGeneralForm();
         $session_person = \Yii::$app->user->identity;
 
         $person = Employee::findOne($id);
@@ -307,7 +307,7 @@ class EmployeeController extends Controller
     {
         $model = $this->findModel($id);
         $person = \Yii::$app->user->identity;
-        $form = new StudentGeneralForm();
+        $form = new EmployeeGeneralForm();
         $form->setAttributes($model->attributes);
         $form->birth_date = date('d-m-Y', strtotime($form->birth_date));
 
