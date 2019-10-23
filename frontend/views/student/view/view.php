@@ -49,6 +49,16 @@ use yii\widgets\DetailView;
                     return null;
                 }
             }
+        ],
+        [
+            'label' => 'Группа',
+            'value' => function (Student $model) {
+                try {
+                    return $model->group->id;
+                } catch (Exception $e) {
+                    return null;
+                }
+            }
         ]
     ],
 ]) ?>
