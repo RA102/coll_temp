@@ -191,7 +191,7 @@ class OrderController extends Controller
             $data = [];
             $data['group'] = $student->group->caption_current;
 
-            $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $student->firstname . '_' . $student->lastname . ':' . $this->orderNames($template, 'student') . '.docx';
+            $filename = \Yii::$app->basePath . '/web/' . '_' . $student->firstname . '_' . $student->lastname . ':' . $this->orderNames($template, 'student') . '.docx';
 
             if (file_exists($filename)) {
                 unlink($filename);
@@ -268,7 +268,7 @@ class OrderController extends Controller
             $data = [];
             $data['group'] = $group->caption_current;
 
-            $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $group->caption_current . ':' . $this->orderNames($template, 'student') . '.docx';
+            $filename = \Yii::$app->basePath . '/web/' . '_' . $group->caption_current . ':' . $this->orderNames($template, 'student') . '.docx';
 
             if (file_exists($filename)) {
                 unlink($filename);
@@ -350,7 +350,7 @@ class OrderController extends Controller
 
 
         if ($model->load(Yii::$app->request->post())) {
-            $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $employee->firstname . ' ' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
+            $filename = \Yii::$app->basePath . '/web/' . '_' . $employee->firstname . ' ' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
 
             if (file_exists($filename)) {
                 unlink($filename);
@@ -412,7 +412,7 @@ class OrderController extends Controller
     {
     	$student = Student::findOne($student_id);
 
-    	$filename = \Yii::$app->basePath . '/web/docs/' . '_' . $student->firstname . '_' . $student->lastname . ':' . $this->orderNames($template, 'student') . '.docx';
+    	$filename = \Yii::$app->basePath . '/web/' . '_' . $student->firstname . '_' . $student->lastname . ':' . $this->orderNames($template, 'student') . '.docx';
 
         if (file_exists($filename)) {
             unlink($filename);
@@ -439,7 +439,7 @@ class OrderController extends Controller
     {
         $employee = Employee::findOne($employee_id);
 
-        $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $employee->firstname . '_' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
+        $filename = \Yii::$app->basePath . '/web/' . '_' . $employee->firstname . '_' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
 
         if (file_exists($filename)) {
             unlink($filename);
@@ -467,7 +467,7 @@ class OrderController extends Controller
             $students_array[$key]['name'] = $value->fullName;
         }
 
-        $filename = \Yii::$app->basePath . '/web/docs/' . '_' . $group->caption_current . '_' . $this->orderNames($template, 'student') . '.docx';
+        $filename = \Yii::$app->basePath . '/web/' . '_' . $group->caption_current . '_' . $this->orderNames($template, 'student') . '.docx';
 
         if (file_exists($filename)) {
             unlink($filename);
