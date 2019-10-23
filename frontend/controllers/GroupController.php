@@ -66,7 +66,7 @@ class GroupController extends Controller
     public function actionIndex()
     {
         $searchModel = new GroupSearch();
-        $searchModel->institution_id = Yii::$app->user->identity->institution->id;
+        //$searchModel->institution_id = Yii::$app->user->identity->institution->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
