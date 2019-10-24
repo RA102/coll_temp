@@ -33,6 +33,8 @@ use yii\widgets\ActiveForm;
     ]);
     ?>
 
+    <?= $form->field($model, 'delete_ts')->textInput() ?>
+
     <?= $form->field($model, 'max_class')->textInput() ?>
 
     <?= $form->field($model, 'class')->textInput() ?>
