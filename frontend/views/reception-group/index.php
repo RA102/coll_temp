@@ -10,6 +10,7 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Groups');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div style="position: relative;">
     <h1><?=$this->title?></h1>
     <?= Html::a('Добавить', ['create', 'id' => $searchModel->commission_id], ['class' => 'title-action btn btn-primary']) ?>
@@ -19,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-body">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -31,28 +33,36 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
                 'attribute' => 'caption_current',
                 'value' => function (\common\models\ReceptionGroup $model) {
-                    return Html::a($model->caption_current, ['view', 'id' => $model->id]);
+                    if ($model->caption_current !== null) {
+                        return Html::a($model->caption_current, ['view', 'id' => $model->id]);
+                    }
                 }
             ],
             [
                 'format'    => 'html',
                 'attribute' => 'language',
                 'value'     => function (\common\models\ReceptionGroup $model) {
-                    return $model->getLanguage();
+                    if ($model->language !== null) {
+                        return $model->getLanguage();
+                    }
                 },
             ],
             [
                 'format'    => 'html',
                 'attribute' => 'speciality_id',
                 'value'     => function (\common\models\ReceptionGroup $model) {
-                    return $model->speciality->getCaptionWithCode() ?? null;
+                    if ($model->speciality !== null) {
+                        return $model->speciality->getCaptionWithCode() ?? null;
+                    }
                 },
             ],
             [
                 'format'    => 'html',
                 'attribute' => 'education_form',
                 'value'     => function (\common\models\ReceptionGroup $model) {
-                    return $model->getEducationPayForm() ?? null;
+                    if ($model->education_form !== null) {
+                        return $model->getEducationPayForm() ?? null;
+                    }
                 },
             ],
 //            'education_form',
