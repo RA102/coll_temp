@@ -38,6 +38,12 @@ use yii\widgets\DetailView;
                         return $model->nationality->name ?? null;
                     }
                 ],
+                [
+                    'attribute' => 'language',
+                    'value' => function(Employee $model) {
+                        return $model->getLanguage() ?? null;
+                    }
+                ],
             ],
         ]) ?>
 
