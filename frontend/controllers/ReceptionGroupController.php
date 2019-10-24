@@ -15,6 +15,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\base\ErrorException;
 
 /**
  * ReceptionGroupController implements the CRUD actions for ReceptionGroup model.
@@ -88,9 +89,8 @@ class ReceptionGroupController extends Controller
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
             ]);
-        }catch(\yii\db\Exception $e){
-            echo $e->getName(); 
-            //Get the user-friendly name of this exception
+        }catch (ErrorException $e) {
+            var_dump($e->getMessage());
         }
     }
 
