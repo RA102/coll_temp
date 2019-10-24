@@ -49,13 +49,15 @@ $this->title = 'График экзаменов';
 			<tr>
 				<th>Группа</th>
 				<th>Предмет</th>
-				<th>Номер недели</th>
+				<th>Номер урока</th>
+				<th>Дата</th>
 			</tr>
 			<?php foreach ($tests as $test):?>
 				<tr>
 					<td><?=Group::findOne($test['group_id'])->caption_current?></td>
 					<td><?=InstitutionDiscipline::findOne($test['discipline_id'])->caption_current?></td>
-					<td><?=$test['week']?></td>
+					<td><?=$test['lesson_number']?></td>
+					<td><?=$dates[$test['lesson_number'] + 1]?></td>
 				</tr>
 			<?php endforeach;?>
 		</table>

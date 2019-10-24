@@ -858,12 +858,35 @@ class PlanController extends Controller
         $exams = Exams::find()->all();
         $required = RequiredDisciplines::find()->all();
 
+        $schedule = Schedule::find()
+            ->where(['group_id' => $group_id])
+            ->andWhere(['teacher_course_id' => $teacher_course_id])
+            ->all();
+
+        $new_schedule = [];
+
+        foreach ($schedule as $value) {
+            $new_schedule[$value['weekday']][] = $value;
+        }
+
+        $semester_date = Yii::$app->user->identity->institution->semester_date;
+        $weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $end = strtotime($semester_date[1]['end']);
+
+        $dates = [];
+        foreach ($new_schedule as $key => $value) {
+            for ($i = strtotime(date('d-m-Y', strtotime('first ' . $weekdays[$key - 1] . ' ' . $semester_date[1]['start']))); $i <= $end; $i = strtotime('+1 week', $i)) {
+                array_push($dates, date('d-m-Y', $i));
+            } 
+        }
+        usort($dates, array($this, "sortFunction"));
+
         $tests = [];
         foreach ($required as $r) {
             if ($r->ktp !== null) {
                 foreach ($r->ktp as $key => $value) {
                     if ($value['type'] == 8) {
-                        array_push($tests, ['group_id' => $r->group_id, 'discipline_id' => $r->teacherCourse->discipline->id, 'week' => $value['week']]);
+                        array_push($tests, ['group_id' => $r->group_id, 'discipline_id' => $r->teacherCourse->discipline->id, 'lesson_number' => $value['lesson_number']]);
                     }
                 }
             }
@@ -884,6 +907,7 @@ class PlanController extends Controller
             'exams' => $exams,
             'tests' => $tests,
             'course_works' => $course_works,
+            'dates' => $dates,
         ]);
     }
 

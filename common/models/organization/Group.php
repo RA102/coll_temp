@@ -156,6 +156,11 @@ class Group extends \yii\db\ActiveRecord
         return $this->hasOne(Speciality::class, ['id' => 'speciality_id']);
     }
 
+    public function getInstitution()
+    {
+        return $this->hasOne(Institution::class, ['id' => 'institution_id']);
+    }
+
     public function getEducationForm()
     {
         return GroupHelper::getEducationFormList()[$this->education_form] ?? '';
