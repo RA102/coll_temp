@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //            ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
-            'comission_id',
+            'commission_id',
             [
                 'format' => 'html',
                 'attribute' => 'caption_current',
