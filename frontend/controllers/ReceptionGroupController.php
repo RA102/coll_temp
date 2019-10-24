@@ -71,27 +71,14 @@ class ReceptionGroupController extends Controller
      */
     public function actionIndex($commission_id)
     {
-        //$searchModel = new ReceptionGroupSearch();
+        $searchModel = new ReceptionGroupSearch();
         //$searchModel->commission_id = $commission_id;
-        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        //return $this->render('index', [
-        //    'searchModel' => $searchModel,
-        //    'dataProvider' => $dataProvider,
-        //]);
-    
-        try{
-            $searchModel = new ReceptionGroupSearch();
-            $searchModel->commission_id = $commission_id;
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
-        }catch (ErrorException $e) {
-            var_dump($e->getMessage());
-        }
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
