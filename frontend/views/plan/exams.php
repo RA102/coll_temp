@@ -16,66 +16,92 @@ $this->title = 'График экзаменов';
 ?>
 
 <h1>График экзаменов</h1>
-<?= Html::a(Yii::t('app', 'Add'), ['add-exam'], ['class' => 'btn btn-alert']) ?>
+<!-- <?= Html::a(Yii::t('app', 'Add'), ['add-exam'], ['class' => 'btn btn-alert']) ?> -->
 
 <div class="exams">
 	<div class="card-body skin-white">
-			<h2>График экзаменов</h2>
+		<h2>График экзаменов</h2>
 		<div class="row">
-			<div class="col-md-8">
+			<div class="col-md-12">
 				<table class="table table-bordered">
 					<tr>
-						<th>Группа</th>
+						<th>Группы</th>
 						<th>Дисциплина</th>
-						<th>Способ</th>
-						<th>Неделя</th>
+						<th>Номер урока</th>
+						<th>Дата</th>
 					</tr>
-					<?php foreach($exams as $exam):?>
+					<?php foreach ($exams as $exam):?>
 						<tr>
-							<td><?=$exam->group->caption_current?></td>
-							<td><?=$exam->institutionDiscipline->caption_current?></td>
-							<td><?=$exam->examType($exam->exam_type)?></td>
-							<td><?=$exam->week?></td>
+							<?php if (is_array($exam['group_id'])) :?>
+								<td>
+									<?php foreach ($exam['group_id'] as $group_id) :?>
+										<?=Group::findOne($group_id)->caption_current?> <br>
+									<?php endforeach;?>
+								</td>
+							<?php else :?>
+								<td><?=Group::findOne($exam['group_id'])->caption_current?></td>
+							<?php endif;?>
+							<td><?=InstitutionDiscipline::findOne($exam['discipline_id'])->caption_current?></td>
+							<td><?=$exam['lesson_number']?></td>
+							<td><?=$dates[$exam['lesson_number']-1]?></td>
 						</tr>
 					<?php endforeach;?>
 				</table>
 			</div>
 		</div>
 	</div>
-	<hr>
+	<br>
 	<div class="card-body skin-white">
 	<h2>График обязательных контрольных работ</h2>
-		<table class="table table-bordered">
+		<table class="table table-bordered table-striped">
 			<tr>
-				<th>Группа</th>
+				<th>Группы</th>
 				<th>Предмет</th>
 				<th>Номер урока</th>
 				<th>Дата</th>
 			</tr>
 			<?php foreach ($tests as $test):?>
 				<tr>
-					<td><?=Group::findOne($test['group_id'])->caption_current?></td>
+					<?php if (is_array($test['group_id'])) :?>
+						<td>
+							<?php foreach ($test['group_id'] as $group_id) :?>
+								<?=Group::findOne($group_id)->caption_current?> <br>
+							<?php endforeach;?>
+						</td>
+					<?php else :?>
+						<td><?=Group::findOne($test['group_id'])->caption_current?></td>
+					<?php endif;?>
 					<td><?=InstitutionDiscipline::findOne($test['discipline_id'])->caption_current?></td>
 					<td><?=$test['lesson_number']?></td>
-					<td><?=$dates[$test['lesson_number'] + 1]?></td>
+					<td><?=$dates[$test['lesson_number']-1]?></td>
 				</tr>
 			<?php endforeach;?>
 		</table>
 	</div>
-	<hr>
+	<br>
 	<div class="card-body skin-white">
 	<h2>График курсовых работ</h2>
-		<table class="table table-bordered">
+		<table class="table table-bordered table-striped">
 			<tr>
-				<th>Группа</th>
+				<th>Группы</th>
 				<th>Предмет</th>
-				<th>Номер недели</th>
+				<th>Номер урока</th>
+				<th>Дата</th>
 			</tr>
 			<?php foreach ($course_works as $course_work):?>
 				<tr>
-					<td><?=Group::findOne($course_work['group_id'])->caption_current?></td>
+					<?php if (is_array($course_work['group_id'])) :?>
+						<td>
+							<?php foreach ($course_work['group_id'] as $group_id) :?>
+								<?=Group::findOne($group_id)->caption_current?> <br>
+							<?php endforeach;?>
+						</td>
+					<?php else :?>
+						<td><?=Group::findOne($course_work['group_id'])->caption_current?></td>
+					<?php endif;?>
 					<td><?=InstitutionDiscipline::findOne($course_work['discipline_id'])->caption_current?></td>
-					<td><?=$course_work['week']?></td>
+					<td><?=$course_work['lesson_number']?></td>
+					<td><?=$dates[$course_work['lesson_number']-1]?></td>
 				</tr>
 			<?php endforeach;?>
 		</table>

@@ -300,7 +300,7 @@ class PlanController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $query = OptionalDisciplines::find()
                         ->where(['teacher_id' => $model->teacher_id]) 
-                        ->andWhere(['discipline_id' => $model->discipline_id])
+                        ->andWhere(['teacher_course_id' => $model->teacher_course_id])
                         ->one();
 
             if ($query !== null) {
@@ -534,10 +534,18 @@ class PlanController extends Controller
         $formmodel = new \yii\base\DynamicModel(['week', 'lesson_number', 'lesson_topic', 'type']);
 
         if ($lesson_number !== null) {
-            $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
-            $formmodel['lesson_topic'] = $model->ktp[$lesson_number]['lesson_topic'];
-            $formmodel['week'] = $model->ktp[$lesson_number]['week'];
-            $formmodel['type'] = $model->ktp[$lesson_number]['type'];
+            if ($model->ktp !== null) {
+                if (array_key_exists($lesson_number, $model->ktp)) {
+                    $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
+                    $formmodel['lesson_topic'] = $model->ktp[$lesson_number]['lesson_topic'];
+                    //$formmodel['week'] = $model->ktp[$lesson_number]['week'];
+                    $formmodel['type'] = $model->ktp[$lesson_number]['type'];
+                } else {
+                    $formmodel['lesson_number'] = $lesson_number; 
+                }
+            } else {
+                $formmodel['lesson_number'] = $lesson_number; 
+            }
         }
 
         if ($formmodel->load(Yii::$app->request->post())) {
@@ -545,7 +553,7 @@ class PlanController extends Controller
             $data[$number] = [];
 
             $data[$number]['lesson_number'] = $_POST['DynamicModel']['lesson_number'];
-            $data[$number]['week'] = $_POST['DynamicModel']['week'];
+            //$data[$number]['week'] = $_POST['DynamicModel']['week'];
             $data[$number]['lesson_topic'] = $_POST['DynamicModel']['lesson_topic'];
             $data[$number]['type'] =  $_POST['DynamicModel']['type'];
             
@@ -627,12 +635,36 @@ class PlanController extends Controller
         $formmodel = new \yii\base\DynamicModel(['group']);
         $formmodel->addRule(['group'], 'required');
 
+        $schedule = Schedule::find()
+            //->where(['group_id' => $group_id])
+            ->andWhere(['teacher_course_id' => $teacher_course_id])
+            ->all();
+
+        $new_schedule = [];
+
+        foreach ($schedule as $value) {
+            $new_schedule[$value['weekday']][] = $value;
+        }
+
+        $semester_date = Yii::$app->user->identity->institution->semester_date;
+        $weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        $end = strtotime($semester_date[1]['end']);
+
+        $dates = [];
+        foreach ($new_schedule as $key => $value) {
+            for ($i = strtotime(date('d-m-Y', strtotime('first ' . $weekdays[$key - 1] . ' ' . $semester_date[1]['start']))); $i <= $end; $i = strtotime('+1 week', $i)) {
+                array_push($dates, date('d-m-Y', $i));
+            } 
+        }
+        usort($dates, array($this, "sortFunction"));
+
         return $this->render('optional/view', [
             'model' => $model,
             'groups' => $groups,
             'formmodel' => $formmodel,
             'students' => $students_array,
             'teacherCourse' => $teacherCourse,
+            'dates' => $dates,
         ]);
     }
 
@@ -855,12 +887,11 @@ class PlanController extends Controller
 
     public function actionExams()
     {
-        $exams = Exams::find()->all();
+        //$exams = Exams::find()->all();
         $required = RequiredDisciplines::find()->all();
+        $optional = OptionalDisciplines::find()->all();
 
         $schedule = Schedule::find()
-            ->where(['group_id' => $group_id])
-            ->andWhere(['teacher_course_id' => $teacher_course_id])
             ->all();
 
         $new_schedule = [];
@@ -881,12 +912,41 @@ class PlanController extends Controller
         }
         usort($dates, array($this, "sortFunction"));
 
+        $exams = [];
+        foreach ($required as $r) {
+            if ($r->ktp !== null) {
+                foreach ($r->ktp as $key => $value) {
+                    if ($value['type'] == 10) {
+                        array_push($exams, ['group_id' => $r->group_id, 'discipline_id' => $r->teacherCourse->discipline->id, 'lesson_number' => $value['lesson_number']]);
+                    }
+                }
+            }
+        }
+        foreach ($optional as $r) {
+            if ($r->ktp !== null) {
+                foreach ($r->ktp as $key => $value) {
+                    if ($value['type'] == 10) {
+                        array_push($exams, ['group_id' => ArrayHelper::map($r->teacherCourse->groups, 'id', 'id'), 'discipline_id' => $r->teacherCourse->discipline->id, 'lesson_number' => $value['lesson_number']]);
+                    }
+                }
+            }
+        }
+
         $tests = [];
         foreach ($required as $r) {
             if ($r->ktp !== null) {
                 foreach ($r->ktp as $key => $value) {
                     if ($value['type'] == 8) {
                         array_push($tests, ['group_id' => $r->group_id, 'discipline_id' => $r->teacherCourse->discipline->id, 'lesson_number' => $value['lesson_number']]);
+                    }
+                }
+            }
+        }
+        foreach ($optional as $r) {
+            if ($r->ktp !== null) {
+                foreach ($r->ktp as $key => $value) {
+                    if ($value['type'] == 8) {
+                        array_push($tests, ['group_id' => ArrayHelper::map($r->teacherCourse->groups, 'id', 'id'), 'discipline_id' => $r->teacherCourse->discipline->id, 'lesson_number' => $value['lesson_number']]);
                     }
                 }
             }
@@ -898,6 +958,15 @@ class PlanController extends Controller
                 foreach ($r->ktp as $key => $value) {
                     if ($value['type'] == 3) {
                         array_push($course_works, ['group_id' => $r->group_id, 'discipline_id' => $r->discipline_id, 'week' => $value['week']]);
+                    }
+                }
+            }
+        }
+        foreach ($optional as $r) {
+            if ($r->ktp !== null) {
+                foreach ($r->ktp as $key => $value) {
+                    if ($value['type'] == 3) {
+                        array_push($course_works, ['group_id' => ArrayHelper::map($r->teacherCourse->groups, 'id', 'id'), 'discipline_id' => $r->teacherCourse->discipline->id, 'lesson_number' => $value['lesson_number']]);
                     }
                 }
             }
