@@ -8,7 +8,7 @@ use common\services\pds\PersonCredentialService;
 use Yii;
 use yii\base\Model;
 
-class StudentGeneralForm extends Model
+class EmployeeGeneralForm extends Model
 {
     public $firstname;
     public $lastname;
