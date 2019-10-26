@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns'      => [
                 [
                     'label' => Yii::t('app', 'Speciality ID'),
-                    'value' => 'speciality.caption_current',
+                    'value' => 'speciality.captionWithCode',
                 ],
                 [
                     'label' => Yii::t('app', 'Форма оплаты'),
