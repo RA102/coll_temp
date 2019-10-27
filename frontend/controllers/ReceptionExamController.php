@@ -108,9 +108,9 @@ class ReceptionExamController extends Controller
         $receptionExamsMap = [];
         /** @var ReceptionExam $receptionExam */
         foreach ($dataProvider->getModels() as $receptionExam) {
-            if(!isset($receptionExamsMap[$receptionExam->date])) {
+            /*if(!isset($receptionExamsMap[$receptionExam->date])) {
                 $receptionExamsMap[$receptionExam->date] = [];
-            }
+            }*/
             $receptionExamsMap[$receptionExam->date][] = $receptionExam;
         }
 
