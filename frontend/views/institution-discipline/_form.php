@@ -21,7 +21,7 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
 
     <?= $form->field($model, 'caption_kk')->textInput() ?>
 
-    <!-- <?= $form->field($model, 'types')->widget(Select2::class, [
+    <?= $form->field($model, 'types')->widget(Select2::class, [
         'data' => \common\helpers\InstitutionDisciplineHelper::getTypeList(),
         'options' => [
             'placeholder' => '...',
@@ -32,7 +32,7 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
         'pluginOptions' => [
             'allowClear' => true,
         ],
-    ]) ?> -->
+    ]) ?>
 
     <?= $form->field($model, 'teachers')->widget(Select2::class, [
         'data' => ArrayHelper::map($teachers, 'id', 'fullname'), // TODO rework to ajax

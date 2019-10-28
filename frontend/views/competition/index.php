@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = [
     'url'   => ['commission/index']
 ];
 $this->params['breadcrumbs'][] = [
-    'label' => Yii::t('app', 'Commission'),
+    'label' => Yii::t('app', 'Текущая комиссия'),
     'url'   => ['commission/view', 'id' => $commission_id]
 ];
 $this->params['breadcrumbs'][] = $this->title;
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns'      => [
                 [
                     'label' => Yii::t('app', 'Speciality ID'),
-                    'value' => 'speciality.caption_current',
+                    'value' => 'speciality.captionWithCode',
                 ],
                 [
                     'label' => Yii::t('app', 'Форма оплаты'),
@@ -81,5 +81,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ]
         ]); ?>
+ 
     </div>
 </div>
