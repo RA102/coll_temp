@@ -74,8 +74,22 @@ use yii\widgets\ActiveForm;
                 ?>
             </div>
             <div class="col-md-4">
-                <?= $activeForm->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
+                <?= $activeForm->field($form, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
             </div>
+            <div class="col-md-4">
+            <?= $activeForm->field($form, 'lang')->widget(Select2::class, [
+                'data' => \common\helpers\LanguageHelper::getLanguageList(),
+                'options' => [
+                    'placeholder' => '...',
+                    'class' => 'active-form-refresh-control',
+                    'multiple' => true,
+                ],
+                'theme' => 'default',
+                'pluginOptions' => [
+                    'allowClear' => true,
+                ],
+            ])->label('Языки обучения') ?>
+        </div>
         </div>
 
         <?php if ($person->isAdmin()):?>

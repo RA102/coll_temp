@@ -69,6 +69,20 @@ use kartik\select2\Select2;
         <div class="col-md-4">
             <?= $form->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
         </div>
+        <div class="col-md-4">
+            <?= $form->field($model, 'lang')->widget(Select2::class, [
+                'data' => \common\helpers\LanguageHelper::getLanguageList(),
+                'options' => [
+                    'placeholder' => '...',
+                    'class' => 'active-form-refresh-control',
+                    'multiple' => true,
+                ],
+                'theme' => 'default',
+                'pluginOptions' => [
+                    'allowClear' => true,
+                ],
+            ]) ?>
+        </div>
     </div>
 
     <div class="row">

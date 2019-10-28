@@ -21,6 +21,7 @@ class EmployeeGeneralForm extends Model
     public $language;
     public $person_type;
     public $is_pluralist;
+    public $lang;
 
     public $credential_type = PersonCredentialHelper::TYPE_EMAIL;
     public $indentity;
@@ -44,6 +45,7 @@ class EmployeeGeneralForm extends Model
             [['nationality_id', 'iin', 'person_type'], 'required'], // TODO foreign key check
             ['nationality_id', 'integer'],
             ['language', 'required'],
+            ['lang', 'safe'],
             ['language', 'string', 'min' => 2, 'max' => 2],
             ['person_type', 'default', 'value' => null],
             ['person_type', 'string', 'max' => 100],

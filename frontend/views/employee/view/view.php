@@ -44,6 +44,17 @@ use yii\widgets\DetailView;
                         return $model->getLanguage() ?? null;
                     }
                 ],
+                [
+                    'attribute' => 'lang',
+                    'value' => function(Employee $model) {
+                        if ($model->lang) {
+                            return implode(', ', array_map(function ($item) {
+                                return \common\helpers\LanguageHelper::getLanguageList()[$item];
+                            }, $model->lang));
+                        }
+                    },
+                    'label' => 'Языки обучения'
+                ],
             ],
         ]) ?>
 
