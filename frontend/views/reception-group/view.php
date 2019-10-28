@@ -79,6 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $model->institutionDiscipline->caption_current;
                     },
                 ],
+                'commission_id',
             ],
         ]); ?>
     </div>
