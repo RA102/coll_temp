@@ -24,6 +24,13 @@ use yii\widgets\DetailView;
                         return $model->getFullName();
                     }
                 ],
+                [
+                    'attribute' => 'person_type',
+                    'value' => function(Employee $model) {
+                        return $model->getPersonTypeCaption();
+                    },
+                    'label' => 'Роль пользователя'
+                ],
                 'iin',
                 'birth_date:date',
                 [

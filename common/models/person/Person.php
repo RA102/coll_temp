@@ -188,6 +188,20 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasOne(PersonType::class, ['name' => 'person_type']);
     }
 
+    public function getPersonTypeCaption()
+    {
+        $types = [
+            'teacher' => 'Преподаватель',
+            'hr' => 'HR',
+            'entrant' => 'Абитуриент',
+            'student' => 'Студент',
+            'admin' => 'Администратор',
+            'superadmin' => 'Супер администратор'
+        ];
+
+        return $types[$this->person_type];
+    }
+
     public function isActive()
     {
         return $this->status == self::STATUS_ACTIVE && !$this->isDeleted();
