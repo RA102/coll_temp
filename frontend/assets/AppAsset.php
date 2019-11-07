@@ -19,8 +19,8 @@ class AppAsset extends AssetBundle
         'css/_grid.css',
         'https://use.fontawesome.com/releases/v5.7.1/css/all.css',
         'css/_card.css',
-        'css/app.css',
         'css/_students.css',
+        'css/app.css',
     ];
     public $js = [
     ];

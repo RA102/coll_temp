@@ -12,6 +12,7 @@ use common\models\link\PersonInstitutionLink;
 use common\models\person\Person;
 use common\models\person\Employee;
 use common\models\person\Student;
+use common\models\person\Entrant;
 use common\models\Street;
 use Yii;
 use yii\db\ActiveQuery;
@@ -240,6 +241,15 @@ class Institution extends \yii\db\ActiveRecord
             });        
     }
 
+    public function getEntrants()
+    {
+        return $this->hasMany(Entrant::className(), ['id' => 'person_id'])
+            ->andOnCondition(['status' => 1])
+            ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+            });        
+    }
+
     public function getStudentsMale()
     {
         return $this->hasMany(Student::className(), ['id' => 'person_id'])
@@ -253,6 +263,16 @@ class Institution extends \yii\db\ActiveRecord
     public function getStudentsFemale()
     {
         return $this->hasMany(Student::className(), ['id' => 'person_id'])
+            ->andOnCondition(['status' => 1])
+            ->andOnCondition(['sex' => 2])
+            ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+            });        
+    }
+
+    public function getEntrantsFemale()
+    {
+        return $this->hasMany(Entrant::className(), ['id' => 'person_id'])
             ->andOnCondition(['status' => 1])
             ->andOnCondition(['sex' => 2])
             ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {

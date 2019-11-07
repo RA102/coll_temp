@@ -20,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= $this->title ?> (<?= $dataProvider->totalCount ?>)</h1>
     <?= Html::a('Создать', ['create-pluralist'], ['class' => ' btn btn-primary']) ?>
     <?= Html::a('Выбрать из системы', ['choose-pluralist'], ['class' => ' btn btn-primary']) ?>
-    <hr>
 </div>
 
 

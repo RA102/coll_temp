@@ -148,11 +148,11 @@
                                 'icon'  => 'dashboard',
                                 'url'   => ['/journal/index']
                             ],
-                            [
+                            /*[
                                 'label' => Yii::t('app', 'Электронный сессия'),
                                 'icon'  => 'dashboard',
                                 'url'   => ['/session/index']
-                            ],
+                            ],*/
                             ['label' => Yii::t('app', 'Группы'), 'icon' => 'file-code-o', 'url' => ['/group']],
                             [
                                 'label' => Yii::t('app', 'Распределение'),

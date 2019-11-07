@@ -64,11 +64,12 @@ class StatsController extends Controller
         ];
     }
 
-    /**
-     * Lists all Group models.
-     * @return mixed
-     */
     public function actionIndex()
+    {
+        return $this->render('index');
+    }
+
+    public function action01()
     {
         $institution = Yii::$app->user->identity->institution;
 
@@ -95,7 +96,7 @@ class StatsController extends Controller
         $entrants_female = $dataProvider->getCount();
 
 
-        return $this->render('index', [
+        return $this->render('01', [
             'institution' => $institution,
             'total' => $total,
             'total_male' => $total_male,
@@ -106,4 +107,513 @@ class StatsController extends Controller
         ]);
     }
 
+    /*public function action02()
+    {
+        $institution = Yii::$app->user->identity->institution;
+        $specialities = $institution->specialities;
+
+        $entrants = $institution->entrants;
+        $entrants_female = $institution->entrantsFemale;
+
+        return $this->render('02', [
+            'institution' => $institution,
+            'specialities' => $specialities,
+            'entrants' => $entrants,
+            'entrants_female' => $entrants_female,
+        ]);
+    }*/
+
+    public function action02()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action03()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action04()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action05()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action06()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action07()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action08()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action09()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action10()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action11()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action12()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action13()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
+
+    public function action14()
+    {
+        $institution = Yii::$app->user->identity->institution;
+
+        $total = $institution->students;
+        $total_male = $institution->studentsMale;
+        $total_female = $institution->studentsFemale;
+
+        // Entrants
+        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
+            Yii::$app->user->identity->institution
+        );
+        $searchModel = new EntrantSearch($activeCommission);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_MALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_male = $dataProvider->getCount();
+
+        $searchModel = new EntrantSearch($activeCommission);
+        $searchModel->sex = Person::SEX_FEMALE;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $entrants_female = $dataProvider->getCount();
+
+
+        return $this->render('01', [
+            'institution' => $institution,
+            'total' => $total,
+            'total_male' => $total_male,
+            'total_female' => $total_female,
+            'entrants' => $entrants,
+            'entrants_male' => $entrants_male,
+            'entrants_female' => $entrants_female,
+        ]);
+    }
 }
