@@ -15,6 +15,10 @@ $this->title = "Карта занятости " . $model->number;
 
     <div class="lesson-index skin-white">
         <div class="card-body">
+			<?php if(count($start_time) <= 1 || strlen($duration) == 0):?>
+				<p>Не указано время начала учебной смены или продолжительности занятий.</p>
+				<a href="/institution">Перейти в настройки</a>
+			<?php else:?>
         	<table class="table table-condensed table-bordered table-striped">
         		<tr class="info">
         			<th>#</th>
@@ -52,6 +56,8 @@ $this->title = "Карта занятости " . $model->number;
 	        			</tr>
 		    			<?php $number++;?>
 	        		<?php endwhile;?>
+	        	</tr>
         	</table>
+	        <?php endif;?>
         </div>
     </div>
