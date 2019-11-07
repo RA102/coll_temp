@@ -118,14 +118,7 @@ class AdmissionApplicationService
             if (!$reception_group_id) {
                 throw new \Exception('Group must be specified for accepted admission application');
             }
-            try{
-                return $this->accept($id, $user, $reception_group_id);
-            } catch(\yii\db\Exception $e){
-                echo $e->getName() . '<br>';
-                echo $e->getCode() . '<br>';
-                echo $e->getLine();
-            //Get the user-friendly name of this exception
-            }
+            return $this->accept($id, $user, $reception_group_id);
         }
         if ($status === ApplicationHelper::STATUS_DECLINED) {
             return $this->decline($id, $reason);
