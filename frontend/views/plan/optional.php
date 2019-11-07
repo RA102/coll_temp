@@ -23,6 +23,7 @@ $this->title = 'Дисциплины по выбору';
                     'value' => function (TeacherCourse $model) {
                         return $model->disciplineName;
                     },
+                    'label' => 'Дисциплина'
                 ],
                 [
                     'attribute' => 'teacher_id',

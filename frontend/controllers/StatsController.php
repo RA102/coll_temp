@@ -64,11 +64,6 @@ class StatsController extends Controller
         ];
     }
 
-    public function actionIndex()
-    {
-        return $this->render('index');
-    }
-
     public function action01()
     {
         $institution = Yii::$app->user->identity->institution;

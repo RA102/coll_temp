@@ -93,7 +93,7 @@
                             [
                                 'label' => Yii::t('app','Отчеты'),
                                 'icon' => 'far fa-building',
-                                'url' => '/stats/index',
+                                'url' => '/stats/01',
                             ],
                         ],
                     ],

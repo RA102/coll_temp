@@ -8,7 +8,8 @@ use yii\grid\GridView;
 /* @var $searchModel frontend\search\GroupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Карты учителей');
+$this->title = Yii::t('app', 'Карты занятости преподавателей');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Расписание'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -23,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'id',
+                //'id',
                 [
                     'attribute' => 'fullname',
                     'value' => function (Employee $model) {
@@ -33,8 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'format' => 'html',
+                    'label' => 'ФИО',
                 ],
-                 'person_type'
+                //'person_type',
             ],
         ]); ?>
 
