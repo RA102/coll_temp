@@ -267,7 +267,9 @@ class AdmissionApplicationController extends Controller
                         $changeStatusForm->reason
                     );
                 } catch(\yii\db\Exception $e){
-                    echo $e->getName(); 
+                    echo $e->getName() . '<br>';
+                    echo $e->getCode() . '<br>';
+                    echo $e->getLine();
                 //Get the user-friendly name of this exception
                 }
             //}
