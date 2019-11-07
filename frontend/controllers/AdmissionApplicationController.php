@@ -258,13 +258,18 @@ class AdmissionApplicationController extends Controller
 
         if ($changeStatusForm->load(Yii::$app->request->post()) && $changeStatusForm->validate()) {
             //if ($admissionApplication->status != $changeStatusForm->status) {
-                $this->admissionApplicationService->changeStatus(
-                    $id,
-                    $changeStatusForm->status,
-                    Yii::$app->user->identity,
-                    $changeStatusForm->reception_group_id,
-                    $changeStatusForm->reason
-                );
+                try{
+                    $this->admissionApplicationService->changeStatus(
+                        $id,
+                        $changeStatusForm->status,
+                        Yii::$app->user->identity,
+                        $changeStatusForm->reception_group_id,
+                        $changeStatusForm->reason
+                    );
+                } catch(\yii\db\Exception $e){
+                    echo $e->getName(); 
+                //Get the user-friendly name of this exception
+                }
             //}
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
         }
