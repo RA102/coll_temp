@@ -41,7 +41,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php ActiveForm::end(); ?>
 
-
 <div class="institution-form skin-white">
     <div class="card-body">
 
@@ -104,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php
                 $i = 1;
                 while ($i <= $form->max_shift) :?>
-                    <?= $activeForm->field($form, 'shift_time['.$i.'][start_time]')->textInput(['placeholder' => 'В формате: 10:00'])->label('Время начала смены № ' . $i) ?>
+                    <?= $activeForm->field($form, 'shift_time['.$i.'][start_time]')->textInput(['placeholder' => ''])->label('Время начала смены № ' . $i . '(например: 9:00)') ?>
                     <?= $activeForm->field($form, 'shift_time['.$i.'][lesson_duration]')->textInput(['placeholder' => ''])->label('Продолжительность занятия (мин.)') ?>
                     <?= $activeForm->field($form, 'shift_time['.$i.'][rest_duration]')->textInput(['placeholder' => ''])->label('Продолжительность перемены (мин.)') ?>
                 <?php $i++; endwhile;?>
