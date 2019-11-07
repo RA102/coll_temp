@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $model common\models\organization\Group */
 /* @var $specialities \common\models\handbook\Speciality[] */
 
-$this->title = Yii::t('app', 'Update Classroom');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Classroom'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Редактировать аудиторию');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Аудитории'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
