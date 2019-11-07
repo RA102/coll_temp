@@ -19,7 +19,7 @@ use yii\db\ArrayExpression;
  * @property array $hours
  *
  */
-class PracticeData extends \yii\db\ActiveRecord
+class PracticePlan extends \yii\db\ActiveRecord
 {
     public $caption_current;
 
@@ -31,7 +31,7 @@ class PracticeData extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return SchemeHelper::PUBLIC . 'practice_data';
+        return SchemeHelper::PUBLIC . 'practice_plan';
     }
 
     /**

@@ -6,7 +6,7 @@ use common\models\Facultative;
 use common\models\RequiredDisciplines;
 use common\models\OptionalDisciplines;
 use common\models\Practice;
-use common\models\PracticeData;
+use common\models\PracticePlan;
 use common\models\Exams;
 use common\models\Ktp;
 use common\models\TeacherCourse;
@@ -301,7 +301,7 @@ class PersonnelController extends Controller
 
     public function actionPracticeGroupView($group_id)
     {
-        $data = PracticeData::find()
+        $data = PracticePlan::find()
                 ->where(['group_id' => $group_id])
                 ->all();
 
@@ -313,7 +313,7 @@ class PersonnelController extends Controller
     public function actionPracticeDiscipline()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Practice::find()
+            'query' => PracticePlan::find()
                         ->where(['institution_id' => $this->institution->id])
         ]);
 
@@ -324,7 +324,7 @@ class PersonnelController extends Controller
 
     public function actionPracticeDisciplineView($id)
     {
-        $data = PracticeData::find()
+        $data = PracticePlan::find()
                 ->where(['practice_id' => $id])
                 ->all();
 
@@ -347,11 +347,11 @@ class PersonnelController extends Controller
 
     public function actionPracticeTeacherView($teacher_id)
     {
-        //$data = Practice::find()
-          //      ->where([Practice::tableName().'.teacher' => $teacher_id])
+        //$data = PracticePlan::find()
+          //      ->where([PracticePlan::tableName().'.teacher' => $teacher_id])
             //    ->all();
-        $sql = "SELECT * FROM ".PracticeData::tableName()." WHERE teacher ->> '1' = '".$teacher_id."' OR teacher ->> '2' = '".$teacher_id."'";
-        $data = PracticeData::findBySql($sql)->all();
+        $sql = "SELECT * FROM ".PracticePlan::tableName()." WHERE teacher ->> '1' = '".$teacher_id."' OR teacher ->> '2' = '".$teacher_id."'";
+        $data = PracticePlan::findBySql($sql)->all();
         $teacher = Employee::findOne($teacher_id);
 
         return $this->render('practice/teacher-view', [
@@ -393,8 +393,8 @@ class PersonnelController extends Controller
                 ->where([Facultative::tableName().'.teacher_id' => $teacher_id])
                 ->all();
 
-        $sql = "SELECT * FROM ".Practice::tableName()." WHERE teacher ->> '1' = '".$teacher_id."' OR teacher ->> '2' = '".$teacher_id."'";
-        $practices = Practice::findBySql($sql)->all();
+        $sql = "SELECT * FROM ".PracticePlan::tableName()." WHERE teacher ->> '1' = '".$teacher_id."' OR teacher ->> '2' = '".$teacher_id."'";
+        $practices = PracticePlan::findBySql($sql)->all();
 
         return $this->render('teacher-view', [
             'teacher' => $teacher,

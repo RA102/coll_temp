@@ -147,7 +147,7 @@ $this->title = 'Планируемый объем педагогической �
 			<?php foreach($practices as $model):?>
 				<tr>
 					<td><?=$model->group->caption_current?></td>
-					<td><?=$model->teacherCourse->disciplineName?></td>
+					<td><?=$model->practice->caption_current?></td>
 					<td>-</td>
 					<td>-</td>
 					<td>-</td>

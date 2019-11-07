@@ -1,6 +1,6 @@
 <?php
 
-use common\models\PracticeData;
+use common\models\PracticePlan;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -29,14 +29,14 @@ $this->title = 'Практика';
             'attributes' => [
                 [
                     'attribute' => 'caption',
-                    'value' => function (PracticeData $model) {
+                    'value' => function (PracticePlan $model) {
                         return $model->practice->caption_current;
                     },
                     'label' => 'Название'
                 ],
                 [
                     'attribute' => 'group_id',
-                    'value' => function (PracticeData $model) {
+                    'value' => function (PracticePlan $model) {
                         return $model->group->caption_current;
                     },
                 ],

@@ -7,7 +7,7 @@ use common\models\RequiredDisciplines;
 use common\models\OptionalDisciplines;
 use common\models\Schedule;
 use common\models\Practice;
-use common\models\PracticeData;
+use common\models\PracticePlan;
 use common\models\ProfessionalPractice;
 use common\models\ProfessionalPracticePlan;
 use common\models\Exams;
@@ -141,7 +141,7 @@ class PlanController extends Controller
 
     public function actionPractice()
     {
-        $query = PracticeData::find()
+        $query = PracticePlan::find()
             ->joinWith('practice')
             ->where([Practice::tableName().'.institution_id' => $this->institution->id]);
         $dataProvider = new ActiveDataProvider([
@@ -350,7 +350,7 @@ class PlanController extends Controller
         $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
         $teachers = $this->employeeService->getTeachersActive($this->institution);
 
-        $model = new PracticeData();
+        $model = new PracticePlan();
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
@@ -728,7 +728,7 @@ class PlanController extends Controller
 
     public function actionViewPractice($id)
     {
-        $model = PracticeData::findOne($id);
+        $model = PracticePlan::findOne($id);
 
         return $this->render('practice/view', [
             'model' => $model,
@@ -844,7 +844,7 @@ class PlanController extends Controller
 
     public function actionUpdatePractice($id)
     {
-        $model = PracticeData::findOne($id);
+        $model = PracticePlan::findOne($id);
         $practices = Practice::find()->where(['institution_id' => $this->institution->id])->all();
         $groups = Group::find()->where(['institution_id' => $this->institution->id])->all();
         $teachers = $this->employeeService->getTeachersActive($this->institution);
@@ -879,7 +879,7 @@ class PlanController extends Controller
 
     public function actionDeletePractice($id)
     {
-        $model = Practice::findOne($id);
+        $model = PracticePlan::findOne($id);
         $model->delete();
 
         return $this->redirect(['practice']);
