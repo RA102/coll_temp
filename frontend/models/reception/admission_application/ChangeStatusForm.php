@@ -22,7 +22,17 @@ class ChangeStatusForm extends Model
             [['reception_group_id', 'reason'], 'default', 'value' => null],
 
             ['status', 'required'],
-            ['status', 'integer', 'min' => $this->currentStatus],
+            
+            [
+                'status', 
+                'integer', 
+                'min' => $this->currentStatus,
+                'when'                   => function () {
+                    return !\Yii::$app->user->identity->isSuperadmin();
+                },
+                'enableClientValidation' => false,
+            ],
+
             ['status', 'in', 'range' => array_keys(ApplicationHelper::getAdmissionApplicationStatusLabels())],
 
             [

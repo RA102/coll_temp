@@ -129,6 +129,9 @@ class AdmissionApplicationService
         if ($status === ApplicationHelper::STATUS_DELETED) {
             return $this->delete($id);
         }
+        if ($status === ApplicationHelper::STATUS_CREATED) {
+            return $this->recreate($id);
+        }
 
         throw new \Exception('Not supported status');
     }
@@ -146,8 +149,10 @@ class AdmissionApplicationService
         if (!$admissionApplication) {
             throw new \Exception('Not Found');
         }
-        if ($admissionApplication->status !== ApplicationHelper::STATUS_CREATED && $admissionApplication->status !== ApplicationHelper::STATUS_ACCEPTED) {
-            throw new \Exception('Forbidden');
+        if (!\Yii::$app->user->identity->isSuperadmin()) {
+            if ($admissionApplication->status !== ApplicationHelper::STATUS_CREATED && $admissionApplication->status !== ApplicationHelper::STATUS_ACCEPTED) {
+                throw new \Exception('Forbidden');
+            }
         }
         $admissionApplication->status = ApplicationHelper::STATUS_ACCEPTED;
 
@@ -277,7 +282,43 @@ class AdmissionApplicationService
         $admissionApplication->status = ApplicationHelper::STATUS_DELETED;
         $admissionApplication->is_deleted = true;
         $admissionApplication->delete_ts = date("Y-m-d H:i:s");
-        $admissionApplication->person_id = null;
+        //$admissionApplication->person_id = null;
+   
+        if (!$admissionApplication->save()) {
+            throw new \Exception('Saving error');
+        }
+
+        //$entrant->delete();
+
+
+        return $admissionApplication;
+    }
+
+    public function recreate(int $id): AdmissionApplication
+    {
+        $admissionApplication = AdmissionApplication::findOne($id);
+        if (!$admissionApplication) {
+            throw new \Exception('Admission application not found');
+        }
+
+
+        /* TODO: переписать нормально + удалить из pds */
+        /*$entrant = Person::find()->where(['id' => $admissionApplication->person_id])->one();
+        if ($entrant !== null) {
+            $entrantReceptionGroupLink = EntrantReceptionGroupLink::find()->where(['entrant_id' => $admissionApplication->person_id])->one();
+            if (!empty($entrantReceptionGroupLink)) {
+                $entrantReceptionGroupLink->delete();
+            }
+            $personInstitutionLink = PersonInstitutionLink::find()->where(['person_id' => $admissionApplication->person_id])->one();
+            if (!empty($personInstitutionLink)) {
+                $personInstitutionLink->delete();
+            }
+        }*/
+
+        $admissionApplication->status = ApplicationHelper::STATUS_CREATED;
+        $admissionApplication->is_deleted = false;
+        $admissionApplication->delete_ts = null;
+        //$admissionApplication->person_id = null;
    
         if (!$admissionApplication->save()) {
             throw new \Exception('Saving error');

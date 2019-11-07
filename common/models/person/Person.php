@@ -374,8 +374,16 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function isAdmin()
     {
+        if ($this->personType->name == 'admin') {
+            return true;
+        } else return false;
+    }
+
+    public function isSuperadmin()
+    {
         if ($this->personType->name == 'superadmin') {
             return true;
         } else return false;
     }
+
 }

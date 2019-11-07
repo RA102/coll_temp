@@ -28,7 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'data'    => array_filter(
             ApplicationHelper::getAdmissionApplicationStatusLabels(),
             function (int $status) use ($admissionApplication) {
-                return $status >= $admissionApplication->status;
+                if (\Yii::$app->user->identity->isSuperadmin()) {
+                    if ($admissionApplication->status == 0){
+                        return $status >= $admissionApplication->status;
+                    } else {
+                        return $status = $admissionApplication->status;
+                    }
+                } else {
+                    return $status >= $admissionApplication->status;                    
+                }
             },
             ARRAY_FILTER_USE_KEY
         ),
