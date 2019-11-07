@@ -13,9 +13,9 @@ class m191029_044244_set_lang_column_with_language_value_in_person_table extends
      */
     public function safeUp()
     {
-        if(!isset($tableName->columns['lang'])) {
+        /*if(!isset($tableName->columns['lang'])) {
             $this->addColumn($this->tableName, 'lang', 'jsonb');
-        }
+        }*/
         Yii::$app->db->createCommand(
             "UPDATE ".$this->tableName." 
             SET lang = json_build_array(language)
