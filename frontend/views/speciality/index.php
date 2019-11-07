@@ -85,7 +85,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php ActiveForm::end(); ?>
 
-        <hr>
         <div>
             <strong>Привязанные квалификации</strong>
             <div class="row">

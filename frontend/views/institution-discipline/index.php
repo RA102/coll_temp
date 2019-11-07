@@ -22,11 +22,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-body">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
                 [
                     'attribute' => 'caption_current',
+                    'value' => function(InstitutionDiscipline $model) {
+                        return $model->caption_current;
+                    },
                 ],
 
                 [
@@ -40,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return null;
                     }
                 ],
-                'create_ts',
+                //'create_ts',
                 //'update_ts',
                 //'delete_ts',
 

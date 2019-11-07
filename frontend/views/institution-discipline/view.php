@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
 
-        <hr>
+        <br>
 
         <h4>Преподаватели</h4>
         <?= \yii\grid\GridView::widget([

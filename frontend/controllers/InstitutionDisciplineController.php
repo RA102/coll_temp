@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\services\organization\InstitutionDisciplineService;
 use common\models\organization\InstitutionDiscipline;
 use common\services\person\EmployeeService;
+use frontend\search\InstitutionDisciplineSearch;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -79,14 +80,18 @@ class InstitutionDisciplineController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => InstitutionDiscipline::find()->andWhere([
-                'institution_id' => $this->institution->id /** TODO @see InstitutionDisciplineService::getInstitutionDisciplines() */
-            ])
-        ]);
+        $searchModel = new InstitutionDisciplineSearch();
+        $searchModel->institution_id = $this->institution->id;
+        //$dataProvider = new ActiveDataProvider([
+          //  'query' => InstitutionDiscipline::find()->andWhere([
+            //    'institution_id' => $this->institution->id /** TODO @see InstitutionDisciplineService::getInstitutionDisciplines() */
+            //])
+        //]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
