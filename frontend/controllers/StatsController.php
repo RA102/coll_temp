@@ -102,7 +102,7 @@ class StatsController extends Controller
         ]);
     }
 
-    /*public function action02()
+    public function action02()
     {
         $institution = Yii::$app->user->identity->institution;
         $specialities = $institution->specialities;
@@ -116,45 +116,8 @@ class StatsController extends Controller
             'entrants' => $entrants,
             'entrants_female' => $entrants_female,
         ]);
-    }*/
-
-    public function action02()
-    {
-        $institution = Yii::$app->user->identity->institution;
-
-        $total = $institution->students;
-        $total_male = $institution->studentsMale;
-        $total_female = $institution->studentsFemale;
-
-        // Entrants
-        $activeCommission = $this->commissionService->getActiveInstitutionCommission(
-            Yii::$app->user->identity->institution
-        );
-        $searchModel = new EntrantSearch($activeCommission);
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $entrants = $dataProvider->getCount();
-
-        $searchModel = new EntrantSearch($activeCommission);
-        $searchModel->sex = Person::SEX_MALE;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $entrants_male = $dataProvider->getCount();
-
-        $searchModel = new EntrantSearch($activeCommission);
-        $searchModel->sex = Person::SEX_FEMALE;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $entrants_female = $dataProvider->getCount();
-
-
-        return $this->render('01', [
-            'institution' => $institution,
-            'total' => $total,
-            'total_male' => $total_male,
-            'total_female' => $total_female,
-            'entrants' => $entrants,
-            'entrants_male' => $entrants_male,
-            'entrants_female' => $entrants_female,
-        ]);
     }
+
 
     public function action03()
     {
