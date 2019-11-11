@@ -18,11 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 
-<div class="specialities-index" style="background-color: #FFF;">
     <div class="card-header" style="padding: 20px 20px">
         <div>Поиск специальности</div>
     </div>
-    <div class="card-body">
+    <div class="card-body skin-white">
         <?php $form = ActiveForm::begin([
             'id' => 'js-update',
             'enableClientValidation' => false,
@@ -87,11 +86,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php ActiveForm::end(); ?>
 
-        <br>
-
-        <div>
+        <!-- <div>
             <strong>Привязанные квалификации</strong>
-            <!-- <div class="row">
+            <div class="row">
                 <div class="col">
                     <?php foreach($specialityInfos as $specialityInfo):?>
                     <div class="row speciality align-items-center py-2">
@@ -114,8 +111,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php endforeach;?>
                 </div>
             </div>
-                    </div> -->
+        </div> -->
 
+    </div>
+
+    <br>
+
+    <div class="card-body skin-white">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
@@ -160,4 +162,3 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
     </div>
-</div>
