@@ -2,7 +2,9 @@
 
 use kartik\select2\Select2;
 use yii\helpers\Html;
+use yii\grid\GridView;
 use common\components\ActiveForm;
+use common\models\organization\InstitutionSpecialityInfo;
 
 $this->title = Yii::t('app', 'Specialities');
 $this->params['breadcrumbs'][] = $this->title;
@@ -85,9 +87,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?php ActiveForm::end(); ?>
 
+        <br>
+
         <div>
             <strong>Привязанные квалификации</strong>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col">
                     <?php foreach($specialityInfos as $specialityInfo):?>
                     <div class="row speciality align-items-center py-2">
@@ -110,6 +114,50 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php endforeach;?>
                 </div>
             </div>
-        </div>
+                    </div> -->
+
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+
+                //'id',
+                
+                [
+                    'attribute' => 'code',
+                    'value' => function (InstitutionSpecialityInfo $model) {
+                        return $model->speciality->code;
+                    },
+                    'label' => 'Код'
+                ],
+
+                [
+                    'attribute' => 'caption',
+                    'value' => function (InstitutionSpecialityInfo $model) {
+                        return $model->speciality->caption_current;
+                    },
+                ],
+
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{delete}',
+                    'buttons' => [
+                        'delete' => function($url, $model, $key) {
+                            return Html::a(Html::tag('i', '', ['class' => 'far fa-trash-alt']),
+                                ['/speciality/unlink', 'id' => $model->id], [
+                                    'data-method' => 'POST',
+                                    'data-confirm' => "Удалить?",
+                                    'data-params' => [
+                                        'id' => $model->id,
+                                    ],
+                                    'data-pjax' => '#list-pjax',
+                                    'class' => 'btn text-white btn-danger btn-sm'
+                                ]);
+                        }
+                    ]
+                ],
+            ],
+        ]); ?>
     </div>
 </div>

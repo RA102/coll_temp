@@ -25,6 +25,8 @@ use Yii;
  */
 class InstitutionSpecialityInfo extends \yii\db\ActiveRecord
 {
+    public $code;
+    
     /**
      * {@inheritdoc}
      */

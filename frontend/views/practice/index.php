@@ -31,19 +31,19 @@
                     	'class' => 'yii\grid\ActionColumn',
                     	'template' => '{update} {delete}',
                     	'urlCreator' => function ($action, $model, $key, $index) {
-    		            if ($action === 'view') {
-    		                $url ='view?id='.$model->id;
-    		                return $url;
-    		            }
-    		            if ($action === 'update') {
-    		                $url ='update?id='.$model->id;
-    		                return $url;
-    		            }
-    		            if ($action === 'delete') {
-    		                $url ='delete?id='.$model->id;
-    		                return $url;
-    		            }
-    		          }
+        		            if ($action === 'view') {
+        		                $url ='view?id='.$model->id;
+        		                return $url;
+        		            }
+        		            if ($action === 'update') {
+        		                $url ='update?id='.$model->id;
+        		                return $url;
+        		            }
+        		            if ($action === 'delete') {
+        		                $url ='delete?id='.$model->id;
+        		                return $url;
+        		            }
+        		        }
                     ],
                 ],
             ]); ?>
