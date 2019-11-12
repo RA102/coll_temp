@@ -9,6 +9,13 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\reception\AppealApplication */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $entrants \common\models\person\Entrant[] */
+
+$this->title = 'Редактировать дисциплину по выбору';
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Дисциплины по выбору'), 'url' => ['optional']];
+$this->params['breadcrumbs'][] = ['label' => $teacherCourse->disciplineName, 'url' => ['view-optional', 'teacher_course_id' => $teacherCourse->id]];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="appeal-application-form">
@@ -24,7 +31,7 @@ use yii\widgets\ActiveForm;
 			</tr>
 		</table>
 	</div>
-	<hr>
+	<br>
 	<div class="card-body skin-white">
 	    
 	    <?php $form = ActiveForm::begin(); ?>

@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'Редактировать';
 
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса')];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Обязательные дисциплины'), 'url' => ['/plan/required']];
 $this->params['breadcrumbs'][] = ['label' => $teacherCourse->disciplineName, 'url' => ['/plan/view-required-groups', 'teacher_course_id' => $model->teacher_course_id]];
 $this->params['breadcrumbs'][] = ['label' => $group->caption_current, 'url' => ['/plan/view-required', 'teacher_course_id' => $teacherCourse->id, 'group_id' => $group->id]];

@@ -6,6 +6,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Добавить студентов';
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Дисциплины по выбору'), 'url' => ['optional']];
+$this->params['breadcrumbs'][] = ['label' => $model->teacherCourse->disciplineName, 'url' => ['view-optional', 'teacher_course_id' => $model->teacherCourse->id]];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">

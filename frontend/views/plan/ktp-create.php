@@ -12,12 +12,19 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'Календарно-тематический план';
 
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса')];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Обязательные дисциплины'), 'url' => ['/plan/required']];
-$this->params['breadcrumbs'][] = ['label' => $model->teacherCourse->disciplineName, 'url' => ['/plan/view-required-groups', 'teacher_course_id' => $model->teacher_course_id]];
-$this->params['breadcrumbs'][] = ['label' => $model->group->caption_current, 'url' => ['/plan/view-required', 'teacher_course_id' => $model->teacherCourse->id, 'group_id' => $model->group->id]];
-$this->params['breadcrumbs'][] = $this->title;
-
+if (get_class($model) == 'common\models\RequiredDisciplines') {
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Обязательные дисциплины'), 'url' => ['/plan/required']];
+    $this->params['breadcrumbs'][] = ['label' => $model->teacherCourse->disciplineName, 'url' => ['/plan/view-required-groups', 'teacher_course_id' => $model->teacher_course_id]];
+    $this->params['breadcrumbs'][] = ['label' => $model->group->caption_current, 'url' => ['/plan/view-required', 'teacher_course_id' => $model->teacherCourse->id, 'group_id' => $model->group->id]];
+    $this->params['breadcrumbs'][] = $this->title;
+} 
+elseif (get_class($model) == 'common\models\OptionalDisciplines') {
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Дисциплины по выбору'), 'url' => ['/plan/optional']];
+    $this->params['breadcrumbs'][] = ['label' => $model->teacherCourse->disciplineName, 'url' => ['/plan/view-optional', 'teacher_course_id' => $model->teacherCourse->id]];
+    $this->params['breadcrumbs'][] = $this->title;    
+}
 ?>
 
 <div class="appeal-application-form">

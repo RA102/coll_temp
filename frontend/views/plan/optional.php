@@ -5,6 +5,9 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 $this->title = 'Дисциплины по выбору';
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
@@ -34,7 +37,7 @@ $this->title = 'Дисциплины по выбору';
 
                 [
                 	'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view} {update}',
+                    'template' => '{view}',
                 	'urlCreator' => function ($action, $model, $key, $index) {
     		            if ($action === 'view') {
     		                $url ='view-optional?teacher_course_id='.$model->id;

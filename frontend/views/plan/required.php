@@ -7,7 +7,7 @@ use yii\grid\GridView;
 
 $this->title = 'Обязательные дисциплины';
 
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса')];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

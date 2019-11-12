@@ -11,7 +11,11 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\organization\InstitutionDiscipline */
 
-$this->title = 'Дисциплина';
+$this->title = $model->institutionDiscipline->caption_current;
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Дисциплины по выбору'), 'url' => ['optional']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>
@@ -48,7 +52,7 @@ $this->title = 'Дисциплина';
 	        ]) ?>
 
 	    </div>
-	    <hr>
+	    <br>
 	    <div class="card-body skin-white">
 
 			<h2>Список студентов</h2>
@@ -84,7 +88,7 @@ $this->title = 'Дисциплина';
 		    <?php ActiveForm::end(); ?>
 
 	    </div>
-	    <hr>
+	    <br>
     	<div class="row">
     		<div class="col-md-6">
 			    <div class="card-body skin-white">
@@ -186,7 +190,7 @@ $this->title = 'Дисциплина';
 			</div>
 				    </div> -->
 		</div>
-	<hr>
+	<br>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card-body skin-white">
