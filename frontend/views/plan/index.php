@@ -21,16 +21,16 @@ $this->params['breadcrumbs'][] = $this->title;
 						<a href="optional">Дисциплины по выбору</a>
 					</li>
 					<li>
-						<a href="facultative">Дисциплины по выбору</a>
+						<a href="facultative">Факультативные курсы</a>
 					</li>
 					<li>
-						<a href="practice">Дисциплины по выбору</a>
+						<a href="practice">Практика</a>
 					</li>
 					<li>
-						<a href="exams">Дисциплины по выбору</a>
+						<a href="exams">Контроль знаний</a>
 					</li>
 					<li>
-						<a href="professional-practice">Дисциплины по выбору</a>
+						<a href="professional-practice">Профессиональная практика</a>
 					</li>
 				</ul>
 			</div>

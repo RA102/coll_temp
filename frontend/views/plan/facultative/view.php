@@ -7,7 +7,11 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\organization\InstitutionDiscipline */
 
-$this->title = 'Факультатив';
+$this->title = $model->teacherCourse->disciplineName;
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Факультативные занятия'), 'url' => ['/plan/facultative']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>
@@ -16,13 +20,6 @@ $this->title = 'Факультатив';
     <?php if ($model !== null):?>
 	<div class="card-head">
 		<p>
-            <?= Html::a(Yii::t('app', 'Delete'), ['delete-reuired', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                    'method' => 'post',
-                ],
-            ]) ?>
         </p>
 
         <?= DetailView::widget([
@@ -53,7 +50,7 @@ $this->title = 'Факультатив';
 		<div class="col-md-6">
 			<div class="card-body skin-white">
 				<h2>Планирумое кол-во часов</h2>
-	            <?= Html::a(Yii::t('app', 'Update'), ['update-facultative', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+	            <?= Html::a(Yii::t('app', 'Update'), ['edit-facultative', 'teacher_course_id' => $model->teacherCourse->id, 'group_id' => $model->group_id], ['class' => 'btn btn-primary']) ?>
 				<table class="table table-bordered">
 					<tr>
 						<th></th>

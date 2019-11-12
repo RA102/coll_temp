@@ -9,6 +9,13 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\reception\AppealApplication */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $entrants \common\models\person\Entrant[] */
+
+$this->title = 'Планирование';
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Факультативные занятия'), 'url' => ['/plan/facultative']];
+$this->params['breadcrumbs'][] = ['label' => $teacherCourse->disciplineName, 'url' => ['/plan/view-facultative', 'teacher_course_id' => $teacherCourse->id, 'group_id' => $group->id]];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="card-body skin-white">
@@ -27,7 +34,7 @@ use yii\widgets\ActiveForm;
 		</tr>
 	</table>	
 </div>
-<hr>
+<br>
 
 <div class="card-body skin-white">
 
