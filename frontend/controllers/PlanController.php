@@ -887,6 +887,14 @@ class PlanController extends Controller
         return $this->redirect(['practice']);
     }
 
+    public function actionDeleteProfessionalPractice($id)
+    {
+        $model = ProfessionalPracticePlan::findOne($id);
+        $model->delete();
+
+        return $this->redirect(['professional-practice']);
+    }
+
     public function actionExams()
     {
         //$exams = Exams::find()->all();
