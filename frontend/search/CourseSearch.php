@@ -2,24 +2,28 @@
 
 namespace frontend\search;
 
+use common\models\Course;
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\organization\Course;
+use yii\db\ActiveQuery;
 
 /**
  * CourseSearch represents the model behind the search form of `common\models\public\Course`.
  */
 class CourseSearch extends Course
 {
+    public $institution_id;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'speciality_id', 'max_class', 'class', 'education_form', 'education_pay_form', 'institution_id', 'parent_id', 'type', 'rating_system_id', 'based_classes'], 'integer'],
-            [['caption', 'language', 'class_change_history', 'properties', 'start_ts', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
-            [['is_deleted'], 'boolean'],
+            [['institution_id', 'institution_discipline_id', 'status'], 'integer'],
+            [['institution_id'], 'safe'],
+            [['classes'], 'each', 'rule' => ['integer']],
+            [['caption_ru', 'caption_kk'], 'string'],
         ];
     }
 
@@ -41,13 +45,19 @@ class CourseSearch extends Course
      */
     public function search($params)
     {
-        $query = Course::find()
-            ->andWhere([
-                'delete_ts' => null,
-                'is_deleted' => false,
-            ]);
+        $query = Course::find();
 
         // add conditions that should always apply here
+
+        if (isset($this->institution_id)) {
+            $query->joinWith([
+                'institutionDiscipline' => function (ActiveQuery $query) {
+                    return $query->andWhere([
+                        'institution_id' => Yii::$app->user->identity->institution->id,
+                    ]);
+                }
+            ]);
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -64,27 +74,19 @@ class CourseSearch extends Course
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'speciality_id' => $this->speciality_id,
-            'max_class' => $this->max_class,
-            'class' => $this->class,
-            'education_form' => $this->education_form,
-            'education_pay_form' => $this->education_pay_form,
-            'institution_id' => $this->institution_id,
-            'parent_id' => $this->parent_id,
-            'type' => $this->type,
-            'rating_system_id' => $this->rating_system_id,
-            'based_classes' => $this->based_classes,
-            'is_deleted' => $this->is_deleted,
-            'start_ts' => $this->start_ts,
+            'institution_discipline_id' => $this->institution_discipline_id,
+            'caption' => $this->caption,
+            'caption_ru' => $this->caption_ru,
+            'caption_kk' => $this->caption_kk,
+            'caption_current' => $this->caption_current,
+            'classes' => $this->classes,
+            'status' => $this->status,
             'create_ts' => $this->create_ts,
             'update_ts' => $this->update_ts,
             'delete_ts' => $this->delete_ts,
         ]);
 
-        $query->andFilterWhere(['ilike', 'caption', $this->caption])
-            ->andFilterWhere(['ilike', 'language', $this->language])
-            ->andFilterWhere(['ilike', 'class_change_history', $this->class_change_history])
-            ->andFilterWhere(['ilike', 'properties', $this->properties]);
+        $query->andFilterWhere(['ilike', 'caption', $this->caption]);
 
         return $dataProvider;
     }
