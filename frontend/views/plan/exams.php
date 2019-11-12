@@ -13,6 +13,9 @@ $this->title = 'График экзаменов';
 /* @var $model common\models\reception\AppealApplication */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $entrants \common\models\person\Entrant[] */
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1>График экзаменов</h1>

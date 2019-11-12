@@ -10,9 +10,15 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 /* @var $entrants \common\models\person\Entrant[] */
 $practices = ArrayHelper::map($practices, 'id', 'caption_current');
+
+$this->title = 'Назначить профессиональную практику';
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Профессиональная практика'), 'url' => ['professional-practice']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="appeal-application-form">
+<div class="card-body skin-white">
 
     <?php $form = ActiveForm::begin(); ?>
 
