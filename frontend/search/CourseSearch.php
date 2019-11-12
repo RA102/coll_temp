@@ -20,10 +20,9 @@ class CourseSearch extends Course
     public function rules()
     {
         return [
-            [['institution_id', 'institution_discipline_id', 'status'], 'integer'],
+            [['institution_id', 'status'], 'integer'],
             [['institution_id'], 'safe'],
-            [['classes'], 'each', 'rule' => ['integer']],
-            [['caption_ru', 'caption_kk'], 'string'],
+            //[['classes'], 'each', 'rule' => ['integer']],
         ];
     }
 
