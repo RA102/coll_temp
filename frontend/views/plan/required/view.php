@@ -7,7 +7,12 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\organization\InstitutionDiscipline */
 
-$this->title = 'Дисциплина';
+$this->title = $group->caption_current;
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса')];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Обязательные дисциплины'), 'url' => ['/plan/required']];
+$this->params['breadcrumbs'][] = ['label' => $teacherCourse->disciplineName, 'url' => ['/plan/view-required-groups', 'teacher_course_id' => $model->teacher_course_id]];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>
@@ -113,7 +118,7 @@ $this->title = 'Дисциплина';
 		    </div>
 		</div>
 	</div>
-	<hr>
+	<br>
 	<div class="card-body skin-white">
 	    	<table class="table table-bordered">
 	    		<tr>

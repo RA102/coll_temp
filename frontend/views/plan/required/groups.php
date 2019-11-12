@@ -5,16 +5,20 @@ use common\models\organization\Group;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Группы';
+$this->title = $model->disciplineName;
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса')];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Обязательные дисциплины'), 'url' => ['/plan/required']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<h1>Группы</h1>
+<h1><?=$this->title?></h1>
 
 <div class="card-body skin-white">
 	<table class="table table-bordered table-striped">
 		<tr>
 			<th>#</th>
-			<th class="col-md-12">Гуппа</th>
+			<th class="col-md-12">Группа</th>
 		</tr>
 		<?php foreach ($model->groups as $key => $group):?>
 			<tr>

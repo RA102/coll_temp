@@ -489,7 +489,9 @@ class PlanController extends Controller
                 if (array_key_exists($lesson_number, $model->ktp)) {
                     $formmodel['lesson_number'] = $model->ktp[$lesson_number]['lesson_number'];
                     $formmodel['lesson_topic'] = $model->ktp[$lesson_number]['lesson_topic'];
-                    $formmodel['week'] = $model->ktp[$lesson_number]['week'];
+                    if (array_key_exists('week', $model->ktp[$lesson_number])) {
+                        $formmodel['week'] = $model->ktp[$lesson_number]['week'];
+                    }
                     $formmodel['type'] = $model->ktp[$lesson_number]['type'];
                 } else {
                     $formmodel['lesson_number'] = $lesson_number; 

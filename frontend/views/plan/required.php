@@ -6,6 +6,9 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 $this->title = 'Обязательные дисциплины';
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса')];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
@@ -44,6 +47,7 @@ $this->title = 'Обязательные дисциплины';
 
                 [
                 	'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
                 	'urlCreator' => function ($action, $model, $key, $index) {
 		            if ($action === 'view') {
 		                $url ='view-required-groups?teacher_course_id='.$model->id;
