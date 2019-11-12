@@ -7,22 +7,26 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\organization\InstitutionDiscipline */
 
-$this->title = 'Практика';
+$this->title = $model->practice->caption_current;
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Практика'), 'url' => ['practice']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>
 
 <div class="view-required">
 	<div class="card-head">
-		<p>
-            <?= Html::a(Yii::t('app', 'Delete'), ['delete-practice', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                    'method' => 'post',
-                ],
-            ]) ?>
-        </p>
+		<!-- <p>
+		            <?= Html::a(Yii::t('app', 'Delete'), ['delete-practice', 'id' => $model->id], [
+		                'class' => 'btn btn-danger',
+		                'data' => [
+		                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+		                    'method' => 'post',
+		                ],
+		            ]) ?>
+		        </p> -->
 
         <?= DetailView::widget([
             'model' => $model,
