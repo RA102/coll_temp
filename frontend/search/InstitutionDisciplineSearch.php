@@ -19,7 +19,7 @@ class InstitutionDisciplineSearch extends InstitutionDiscipline
     {
         return [
             [['id', 'status', 'institution_id'], 'integer'],
-            [['caption', 'slug', 'create_ts', 'update_ts', 'delete_ts', 'institution_id'], 'safe'],
+            [['slug', 'create_ts', 'update_ts', 'delete_ts', 'institution_id'], 'safe'],
         ];
     }
 
@@ -61,6 +61,10 @@ class InstitutionDisciplineSearch extends InstitutionDiscipline
             $query->andWhere([self::tableName().'.institution_id' => $this->institution_id]);
         }
 
+        if (isset($this->types) && $this->types !== '') {
+            $query->andFilterWhere(['types' => '{'.$this->types.'}']);
+        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -68,18 +72,11 @@ class InstitutionDisciplineSearch extends InstitutionDiscipline
             'create_ts' => $this->create_ts,
             'update_ts' => $this->update_ts,
             'delete_ts' => $this->delete_ts,
-            'caption_current' => $this->caption_current,
         ]);
 
-        $query->andFilterWhere(['ilike', 'caption', $this->caption])
-            ->andFilterWhere(['ilike', 'caption_current', $this->caption_current])
+        $query->andFilterWhere(['ilike', json_encode('caption'), $this->caption])
             ->andFilterWhere(['ilike', 'slug', $this->slug]);
 
-        $query->andFilterWhere([
-		    'or',
-		    ['like', 'caption[\'ru\']', $this->caption_current],
-		    ['like', 'caption[\'kk\']', $this->caption_current],
-		]);
 
         return $dataProvider;
     }

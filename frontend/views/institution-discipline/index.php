@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Institution Disciplines');
+$this->title = Yii::t('app', 'Дисциплины');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 [
-                    'attribute' => 'caption_current',
+                    'attribute' => 'caption',
                     'value' => function(InstitutionDiscipline $model) {
                         return $model->caption_current;
                     },
@@ -38,11 +38,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value' => function(InstitutionDiscipline $model) {
                         if ($model->types) {
                             return implode(', ', array_map(function ($item) {
-                                return InstitutionDisciplineHelper::getTypeList()[$item];
+                                if (array_key_exists($item, InstitutionDisciplineHelper::getTypeList())) {
+                                    return InstitutionDisciplineHelper::getTypeList()[$item];
+                                }
                             }, $model->types));
                         }
                         return null;
-                    }
+                    },
+                    //'filter' => \common\helpers\InstitutionDisciplineHelper::getTypeList(),
                 ],
                 //'create_ts',
                 //'update_ts',

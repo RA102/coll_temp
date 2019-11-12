@@ -41,7 +41,7 @@ class CourseSearch extends Course
      */
     public function search($params)
     {
-        $query = Group::find()
+        $query = Course::find()
             ->andWhere([
                 'delete_ts' => null,
                 'is_deleted' => false,
