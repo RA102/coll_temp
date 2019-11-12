@@ -105,6 +105,7 @@ class PersonnelController extends Controller
 
     public function actionRequiredGroupView($group_id)
     {
+        $group = Group::findOne($group_id);
     	$required = RequiredDisciplines::find()
                 ->where(['group_id' => $group_id])
                 ->joinWith('institutionDiscipline')
@@ -112,6 +113,7 @@ class PersonnelController extends Controller
                 ->all();
 
         return $this->render('required/group-view', [
+            'group' => $group,
         	'required' => $required,
         ]);
     }
@@ -131,6 +133,7 @@ class PersonnelController extends Controller
 
     public function actionRequiredDisciplineView($discipline_id)
     {
+        $discipline = InstitutionDiscipline::findOne($discipline_id);
     	$required = RequiredDisciplines::find()
                 ->where([RequiredDisciplines::tableName().'.discipline_id' => $discipline_id])
                 ->joinWith('institutionDiscipline')
@@ -138,6 +141,7 @@ class PersonnelController extends Controller
                 ->all();
 
         return $this->render('required/discipline-view', [
+            'discipline' => $discipline,
         	'required' => $required,
         ]);
     }
@@ -155,6 +159,8 @@ class PersonnelController extends Controller
 
     public function actionRequiredTeacherView($teacher_id)
     {
+        $teacher = Employee::findOne($teacher_id);
+
     	$required = RequiredDisciplines::find()
                 ->joinWith('teacherCourse')
                 ->andWhere([TeacherCourse::tableName().'.teacher_id' => $teacher_id])
@@ -163,6 +169,7 @@ class PersonnelController extends Controller
                 ->all();
 
         return $this->render('required/teacher-view', [
+            'teacher' => $teacher,
         	'required' => $required,
         ]);
     }
@@ -183,6 +190,7 @@ class PersonnelController extends Controller
 
     public function actionOptionalDisciplineView($discipline_id)
     {
+        $discipline = InstitutionDiscipline::findOne($discipline_id);
         $data = OptionalDisciplines::find()
                 ->where([OptionalDisciplines::tableName().'.discipline_id' => $discipline_id])
                 ->joinWith('institutionDiscipline')
@@ -190,6 +198,7 @@ class PersonnelController extends Controller
                 ->all();
 
         return $this->render('optional/discipline-view', [
+            'discipline' => $discipline,
             'data' => $data,
         ]);
     }
@@ -207,6 +216,8 @@ class PersonnelController extends Controller
 
     public function actionOptionalTeacherView($teacher_id)
     {
+        $teacher = Employee::findOne($teacher_id);
+
         $data = OptionalDisciplines::find()
                 ->where(['teacher_id' => $teacher_id])
                 ->joinWith('institutionDiscipline')
@@ -214,6 +225,7 @@ class PersonnelController extends Controller
                 ->all();
 
         return $this->render('optional/teacher-view', [
+            'teacher' => $teacher,
             'data' => $data,
         ]);
     }
@@ -232,11 +244,14 @@ class PersonnelController extends Controller
 
     public function actionFacultativeGroupView($group_id)
     {
+        $group = Group::findOne($group_id);
+
         $facultative = Facultative::find()
                 ->where(['group_id' => $group_id])
                 ->all();
 
         return $this->render('facultative/group-view', [
+            'group' => $group,
             'facultative' => $facultative,
         ]);
     }
@@ -256,11 +271,14 @@ class PersonnelController extends Controller
 
     public function actionFacultativeDisciplineView($teacher_course_id)
     {
+        $teacherCourse = TeacherCourse::findOne($teacher_course_id);
+
         $facultatives = Facultative::find()
                 ->where([Facultative::tableName().'.teacher_course_id' => $teacher_course_id])
                 ->all();
 
         return $this->render('facultative/facultative-view', [
+            'teacherCourse' => $teacherCourse,
             'facultatives' => $facultatives,
         ]);
     }
@@ -278,11 +296,14 @@ class PersonnelController extends Controller
 
     public function actionFacultativeTeacherView($teacher_id)
     {
+        $teacher = Employee::findOne($teacher_id);
+
         $facultatives = Facultative::find()
                 ->where([Facultative::tableName().'.teacher_id' => $teacher_id])
                 ->all();
 
         return $this->render('facultative/teacher-view', [
+            'teacher' => $teacher,
             'facultatives' => $facultatives,
         ]);
     }

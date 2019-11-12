@@ -5,7 +5,10 @@ use common\models\organization\InstitutionDiscipline;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Планируемый объем нагрузки по дисциплинам ';
+$this->title = 'Планируемый объем нагрузки по факультативам';
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
@@ -19,7 +22,11 @@ $this->title = 'Планируемый объем нагрузки по дисц
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'disciplineName',
+                [
+                    'attribute' => 'disciplineName',
+                    'label' => 'Факультатив',
+                ],
+
                 [
                     'format'    => 'html',
                     'attribute' => 'teacher_id',

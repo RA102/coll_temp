@@ -4,7 +4,11 @@ use common\models\RequiredDisciplines;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Планируемый объем нагрузки по дисциплинам по выбору ';
+$this->title = $discipline->caption_current;
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планируемый объем нагрузки по дисциплинам (по выбору)'), 'url' => ['optional-discipline']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
@@ -15,7 +19,7 @@ $this->title = 'Планируемый объем нагрузки по дисц
 	<div class="card-body">
 		<table class="table table-bordered table-striped">
 			<tr>
-				<th>Дисциплина</th>
+				<!-- <th>Дисциплина</th> -->
 				<th>Кол-во обучающихся</th>
 				<th>Кол-во часов в 1 семестре</th>
 				<th>Переподаватель</th>
@@ -25,7 +29,7 @@ $this->title = 'Планируемый объем нагрузки по дисц
 			</tr>
 			<?php foreach ($data as $model):?>
 				<tr>
-					<td><?=$model->institutionDiscipline->caption_current?></td>
+					<!-- <td><?=$model->institutionDiscipline->caption_current?></td> -->
 					<td><?=$model->countStudents()?></td>
 					<td><?=$model->totalHours(1)?></td>
 					<td><?=$model->teacher->fullName?></td>

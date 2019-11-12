@@ -5,6 +5,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 $this->title = 'Планируемый объем нагрузки на преподавателя по дисциплинам (обязательным)';
+
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">

@@ -2,6 +2,7 @@
 
 $this->title = 'Работа с инженерно-педагогическими кадрами';
 
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1><?=$this->title?></h1>

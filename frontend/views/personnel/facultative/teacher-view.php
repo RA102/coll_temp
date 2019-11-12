@@ -4,7 +4,11 @@ use common\models\RequiredDisciplines;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Планируемый объем нагрузки на преподавателя по факультативам';
+$this->title = $teacher->fullName;
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планируемый объем нагрузки на преподавателя по факультативам'), 'url' => ['facultative-teacher']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">

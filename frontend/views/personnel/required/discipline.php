@@ -6,6 +6,9 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 $this->title = 'Планируемый объем нагрузки по дисциплинам ';
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
@@ -23,18 +26,7 @@ $this->title = 'Планируемый объем нагрузки по дисц
                     'attribute' => 'caption_current',
                 ],
 
-                [
-                    'attribute' => 'types',
-                    'value' => function(InstitutionDiscipline $model) {
-                        if ($model->types) {
-                            return implode(', ', array_map(function ($item) {
-                                return InstitutionDisciplineHelper::getTypeList()[$item];
-                            }, $model->types));
-                        }
-                        return null;
-                    }
-                ],
-                'create_ts',
+                //'create_ts',
                 //'update_ts',
                 //'delete_ts',
 
