@@ -1,6 +1,9 @@
 <?php
 
 $this->title = 'Редактировать практику';
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Практика'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">

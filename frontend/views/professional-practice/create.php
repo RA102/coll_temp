@@ -1,6 +1,9 @@
 <?php
 
 $this->title = 'Добавить профессиональную практику';
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Профессиональная практика'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
