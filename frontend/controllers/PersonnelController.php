@@ -322,11 +322,13 @@ class PersonnelController extends Controller
 
     public function actionPracticeGroupView($group_id)
     {
+        $group = Group::findOne($group_id);
         $data = PracticePlan::find()
                 ->where(['group_id' => $group_id])
                 ->all();
 
         return $this->render('practice/group-view', [
+            'group' => $group,
             'data' => $data,
         ]);
     }
@@ -334,8 +336,8 @@ class PersonnelController extends Controller
     public function actionPracticeDiscipline()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => PracticePlan::find()
-                        ->where(['institution_id' => $this->institution->id])
+            'query' => Practice::find()
+                        ->where([Practice::tableName().'.institution_id' => $this->institution->id])
         ]);
 
         return $this->render('practice/practice', [
@@ -345,11 +347,13 @@ class PersonnelController extends Controller
 
     public function actionPracticeDisciplineView($id)
     {
+        $practice = Practice::findOne($id);
         $data = PracticePlan::find()
                 ->where(['practice_id' => $id])
                 ->all();
 
         return $this->render('practice/practice-view', [
+            'practice' => $practice,
             'data' => $data,
         ]);
     }

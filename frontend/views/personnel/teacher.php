@@ -5,6 +5,9 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 $this->title = 'Планируемый объем педагогической нагрузки на преподавателя';
+
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div style="position: relative;">
