@@ -70,7 +70,7 @@ use kartik\select2\Select2;
                 <?= $activeForm->field($form, 'iin')->textInput(['maxlength' => true]) ?>
             </div>
             <div class="col-md-4">
-                <?= $activeForm->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
+                <?= $activeForm->field($form, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
             </div>
         </div>
 
