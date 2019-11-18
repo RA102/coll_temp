@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		    						<?php else:?>
 				        				<td>
 				        					<a href="add-lesson?group_id=<?=$model->id?>&weekday=<?=$key?>&number=<?=$number?>">
-				        						<i class="glyphicon glyphicon-pen"></i>
+				        						<i class="glyphicon glyphicon-pencil"></i>
 				        					</a>
 				        				</td>
 		        					<?php endif;?>
