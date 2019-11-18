@@ -33,12 +33,12 @@ $this->title = 'Журнал ' . $group->caption_current;
             <li role="presentation" class="active">
                 <?= Html::a('Теоретическое обучение', ['view', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], []) ?>
             </li>
-            <li role="presentation">
+            <!-- <li role="presentation">
                 <?= Html::a('Курсовые проекты, лабораторно-практические и графические работы', ['practical', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], []) ?>
             </li>
             <li role="presentation">
                 <?= Html::a('Контрольные работы', ['exam', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], []) ?>
-            </li>
+            </li> -->
         </ul>
     </div>
     <div class="card-body" style="overflow-x: scroll;">

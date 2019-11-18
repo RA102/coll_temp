@@ -45,31 +45,32 @@ $this->params['breadcrumbs'][] = $this->title;
 			        			<?php foreach ($weekdays as $key => $value):?>
 			        				<?php if ($lessons):?>
 			        						<td>
-					        					<a href="add-lesson?group_id=<?=$model->id?>&weekday=<?=$key?>&number=<?=$number?>" style="display:block; height: 80px;">
-								        				<?php foreach ($lessons as $lesson):?>
-								        					<?php if ($lesson->weekday == $key && $lesson->lesson_number == $number):?>
-								        							<?=$lesson->teacherCourse->disciplineName?> <br>
-								        							<?=$lesson->teacherCourse->person->fullName?> <br>
-								        							(<?=$lesson->classroom->number?>)
-								        							<?php if ($lesson->teacherCourse->status == 2):?>
-								        								<br><small>(по выбору)</small>
-								        							<?php endif;?>
-								        							<?= Html::a(Yii::t('app', ''), ['delete', 'id' => $lesson->id], [
-														                'class' => 'glyphicon glyphicon-trash',
-														                'data'  => [
-														                    'confirm' => 'Удалить занятие?',
-														                    'method'  => 'post',
-														                ],
-													                	'style' => 'float:right;'
-														            ]) ?>
-								        					<?php endif;?>
-									        			<?php endforeach;?>
+					        					<a href="add-lesson?group_id=<?=$model->id?>&weekday=<?=$key?>&number=<?=$number?>">
+					        						<i class="glyphicon glyphicon-pencil"></i>
+							        				<?php foreach ($lessons as $lesson):?>
+							        					<?php if ($lesson->weekday == $key && $lesson->lesson_number == $number):?>
+							        							<?=$lesson->teacherCourse->disciplineName?> <br>
+							        							<?=$lesson->teacherCourse->person->fullName?> <br>
+							        							(<?=$lesson->classroom->number?>)
+							        							<?php if ($lesson->teacherCourse->status == 2):?>
+							        								<br><small>(по выбору)</small>
+							        							<?php endif;?>
+							        							<?= Html::a(Yii::t('app', ''), ['delete', 'id' => $lesson->id], [
+													                'class' => 'glyphicon glyphicon-trash',
+													                'data'  => [
+													                    'confirm' => 'Удалить занятие?',
+													                    'method'  => 'post',
+													                ],
+												                	'style' => 'float:right;'
+													            ]) ?>
+							        					<?php endif;?>
+								        			<?php endforeach;?>
 									        	</a>
 			        						</td>
 		    						<?php else:?>
 				        				<td>
 				        					<a href="add-lesson?group_id=<?=$model->id?>&weekday=<?=$key?>&number=<?=$number?>">
-				        						<div style="height: 100%;width: 100%;">&nbsp</div>
+				        						<i class="glyphicon glyphicon-pen"></i>
 				        					</a>
 				        				</td>
 		        					<?php endif;?>

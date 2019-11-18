@@ -168,7 +168,8 @@ class JournalController extends Controller
         /*$dataProvider = new ArrayDataProvider([
             'allModels' => $group->students,
         ]);*/
-        $journal = Journal::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id, 'type' => 1])->all();
+        //$journal = Journal::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id, 'type' => 1])->all();
+        $journal = Journal::find()->where(['group_id' => $group_id])->andWhere(['teacher_course_id' => $teacher_course_id])->all();
         $teacherCourse = TeacherCourse::findOne($teacher_course_id);
 
         if ($teacherCourse->status == TeacherCourse::REQUIRED) {
