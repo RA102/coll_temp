@@ -171,7 +171,11 @@ class ScheduleController extends Controller
     {
     	$group = Group::findOne($group_id);
 
-    	$model = Schedule::find()->where(['weekday' => $weekday])->andWhere(['lesson_number' => $number])->one();
+    	$model = Schedule::find()
+            ->andWhere(['group_id' => $group_id])
+            ->andWhere(['weekday' => $weekday])
+            ->andWhere(['lesson_number' => $number])
+            ->one();
 
     	if ($model == null) {
 	    	$model = new Schedule();

@@ -21,10 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?= Html::a('Полное расписание', ['/lesson/schedule','group_id' => $model->id,], ['class' => 'title-action btn btn-primary']) ?>
     </div>
 
-	<?php foreach ($lessons as $lesson):?>
-		<?=$lesson->weekday . ' ' . $lesson->teacherCourse->disciplineName . ' ' . $lesson->lesson_number . '<br>'?>
-	<?php endforeach;?>
-
     <div class="lesson-index skin-white">
         <div class="card-body">
 			<?php if(count($start_time) <= 1 || strlen($duration) == 0):?>
