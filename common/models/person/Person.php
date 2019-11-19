@@ -339,7 +339,12 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getLanguage()
     {
-        return LanguageHelper::getLanguageList()[$this->language] ?? '';
+        $language = $this->language;
+        if ($this->language == 'kz') {
+            $language = 'kk';
+        }
+        
+        return LanguageHelper::getLanguageList()[$language] ?? '';
     }
 
     public function getRelatives()

@@ -66,9 +66,9 @@ use kartik\select2\Select2;
                 ->widget(\yii\widgets\MaskedInput::class, ['mask' => '999999999999'])
             ?>
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
             <?= $form->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
-        </div>
+        </div> -->
         <div class="col-md-4">
             <?= $form->field($model, 'lang')->widget(Select2::class, [
                 'data' => \common\helpers\LanguageHelper::getLanguageList(),
@@ -81,7 +81,7 @@ use kartik\select2\Select2;
                 'pluginOptions' => [
                     'allowClear' => true,
                 ],
-            ]) ?>
+            ])->label('Языки обучения') ?>
         </div>
     </div>
 

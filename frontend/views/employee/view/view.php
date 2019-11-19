@@ -45,17 +45,20 @@ use yii\widgets\DetailView;
                         return $model->nationality->name ?? null;
                     }
                 ],
-                [
+                /*[
                     'attribute' => 'language',
                     'value' => function(Employee $model) {
                         return $model->getLanguage() ?? null;
                     }
-                ],
+                ],*/
                 [
                     'attribute' => 'lang',
                     'value' => function(Employee $model) {
                         if ($model->lang) {
                             return implode(', ', array_map(function ($item) {
+                                if ($item == 'kz') {
+                                    $item = 'kk';
+                                }
                                 return \common\helpers\LanguageHelper::getLanguageList()[$item];
                             }, $model->lang));
                         }

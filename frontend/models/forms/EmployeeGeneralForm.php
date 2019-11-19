@@ -44,7 +44,7 @@ class EmployeeGeneralForm extends Model
 
             [['nationality_id', 'iin', 'person_type'], 'required'], // TODO foreign key check
             ['nationality_id', 'integer'],
-            ['language', 'required'],
+            //['language', 'required'],
             ['lang', 'safe'],
             ['language', 'string', 'min' => 2, 'max' => 2],
             ['person_type', 'default', 'value' => null],

@@ -73,9 +73,9 @@ use yii\widgets\ActiveForm;
                     ->widget(\yii\widgets\MaskedInput::class, ['mask' => '999999999999'])
                 ?>
             </div>
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
                 <?= $activeForm->field($form, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
-            </div>
+            </div> -->
             <div class="col-md-4">
             <?= $activeForm->field($form, 'lang')->widget(Select2::class, [
                 'data' => \common\helpers\LanguageHelper::getLanguageList(),
