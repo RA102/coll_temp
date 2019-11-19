@@ -5,6 +5,7 @@ namespace common\models\person;
 use common\helpers\LanguageHelper;
 use common\helpers\PersonHelper;
 use common\helpers\SchemeHelper;
+use common\helpers\PersonTypeHelper;
 use common\models\link\PersonInstitutionLink;
 use common\models\Nationality;
 use common\models\organization\Institution;
@@ -190,14 +191,17 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getPersonTypeCaption()
     {
-        $types = [
+        /*$types = [
+            'superadmin' => 'Супер администратор',
+            'admin' => 'Администратор',
             'teacher' => 'Преподаватель',
             'hr' => 'HR',
+            'director' =>
             'entrant' => 'Абитуриент',
-            'student' => 'Студент',
-            'admin' => 'Администратор',
-            'superadmin' => 'Супер администратор'
-        ];
+            'student' => 'Студент',            
+        ];*/
+
+        $types = PersonTypeHelper::getList();
 
         return $types[$this->person_type];
     }
@@ -374,7 +378,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function isAdmin()
     {
-        if ($this->personType->name == 'admin') {
+        if ($this->personType->name == 'admin' || $this->personType->name == 'superadmin') {
             return true;
         } else return false;
     }
