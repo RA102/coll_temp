@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
-                'id',
+                //'id',
                 'caption_current',
                 [
                     'format'    => 'html',
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}{update}{delete}',
+                    'template' => '{view}',
                     'buttons' => [
                         'view' => function ($url, $model) {
                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['group', 'group_id' => $model->id], [
@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]);
                         },
 
-                        'update' => function ($url, $model) {
+                        /*'update' => function ($url, $model) {
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
                                         'title' => Yii::t('app', 'lead-update'),
                             ]);
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
                                         'title' => Yii::t('app', 'lead-delete'),
                             ]);
-                        }
+                        }*/
                     ],
                 ],
             ],

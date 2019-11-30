@@ -42,6 +42,7 @@ class JournalController extends Controller
     private $personService;
     private $employeeService;
     private $institution;
+    private $person;
 
     public function __construct(
         string $id, 
@@ -64,6 +65,7 @@ class JournalController extends Controller
         }
 
         $this->institution = \Yii::$app->user->identity->institution;
+        $this->person = \Yii::$app->user->identity;
         return true;
     }
     /**

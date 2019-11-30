@@ -7,6 +7,7 @@ use common\helpers\LanguageHelper;
 use common\models\handbook\Speciality;
 use common\models\link\StudentGroupLink;
 use common\models\person\Student;
+use common\models\person\Employee;
 use common\models\OptionalDisciplines;
 use common\models\RequiredDisciplines;
 use common\models\TeacherCourse;
@@ -183,6 +184,12 @@ class Group extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TeacherCourse::class, ['id' => 'teacher_course_id'])
             ->viaTable('link.teacher_course_group_link', ['group_id' => 'id']);
+    }
+
+    public function getTeachers()
+    {
+        return $this->hasMany(Employee::class, ['id' => 'teacher_id'])
+            ->via('teacherCourses');
     }
 
     public function getRequiredDisciplines()

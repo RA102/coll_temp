@@ -43,11 +43,20 @@ class GroupSearch extends Group
     {
         $query = Group::find()
             ->andWhere([
-                'delete_ts' => null,
+                Group::tableName() . '.delete_ts' => null,
                 'is_deleted' => false,
             ]);
 
         // add conditions that should always apply here
+
+        $person = \Yii::$app->user->identity;
+
+        if ($person->isTeacher()) {
+            //$query->andWhere(['id' => '1037']);
+            $query->joinWith('teachers');
+            $query->andWhere(['person.person.id' => $person->id]);
+            //$query->andWhere(['public.teacher_course.teacher_id' => $person->id]);
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

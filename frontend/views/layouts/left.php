@@ -21,7 +21,7 @@
                         'label' => Yii::t('app', 'Selection committee'),
                         'icon'  => 'far fa-id-card',
                         'url'   => '#',
-                        'visible' => !$person->isStudent() && !$person->isHr(),
+                        'visible' => $person->isAdmin(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Текушая комиссия'),
@@ -52,6 +52,7 @@
                         'label' => Yii::t('app', 'Управление организацией'),
                         'icon'  => 'far fa-archway',
                         'url'   => '#',
+                        'visible' => $person->isAdmin(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Картотека'),
@@ -137,11 +138,13 @@
                             [
                                 'label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'),
                                 'icon'  => 'dashboard',
+                                'visible' => $person->isAdmin(),
                                 'url'   => ['/personnel/index']
                             ],
                             [
                                 'label' => Yii::t('app', 'Расписание'),
                                 'icon'  => 'dashboard',
+                                'visible' => $person->isAdmin(),
                                 'url'   => ['/lesson/index']
                             ],
                             [
@@ -154,11 +157,16 @@
                                 'icon'  => 'dashboard',
                                 'url'   => ['/session/index']
                             ],*/
-                            ['label' => Yii::t('app', 'Группы'), 'icon' => 'file-code-o', 'url' => ['/group']],
+                            [
+                                'label' => Yii::t('app', 'Группы'), 
+                                'icon' => 'file-code-o', 
+                                'url' => ['/group']],
+                                'visible' => $person->isAdmin(),
                             [
                                 'label' => Yii::t('app', 'Распределение'),
                                 'icon'  => 'dashboard',
-                                'url'   => ['/group/allocate']
+                                'url'   => ['/group/allocate'],
+                                'visible' => $person->isAdmin(),
                             ],
                         ],
                     ],
@@ -166,7 +174,7 @@
                         'label' => Yii::t('app', 'Настройки'),
                         'icon'  => 'cog',
                         'url'   => '#',
-                        'visible' => !$person->isStudent() && !$person->isHr(),
+                        'visible' => $person->isAdmin(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Специальности'),
