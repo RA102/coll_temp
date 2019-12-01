@@ -395,4 +395,38 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         } else return false;
     }
 
+    /*TODO make normal rbac control*/
+    public function isAble($action)
+    {
+        $admin = ['employee-index'];
+        $teacher = [];
+        $student = [];
+        $entrant = [];
+        $ht = [];
+        $director = [];
+        $chairman = [];
+        $director_deputy_academic = [];
+        $director_deputy_education = [];
+        $director_deputy_industrial = [];
+        $director_deputy_methodist = [];
+        $director_deputy_economic = [];
+        $admission_specialist = [];
+        $manager = [];
+        $psychologist = [];
+        $social_teacher = [];
+        $staff = [];
+
+        $personType = $this->personType->name;
+
+        if ($this->isSuperadmin()) {
+            return true;
+        }
+        elseif (!$this->isSuperadmin()) {
+            if (in_array($action, $$personType)) {
+                return true;
+            }
+        }
+        else return false;
+    }
+
 }

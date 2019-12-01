@@ -13,6 +13,7 @@ use common\services\person\PersonService;
 use frontend\models\forms\PersonContactsForm;
 use frontend\models\forms\PersonDocumentsForm;
 use frontend\models\forms\EmployeeGeneralForm;
+use frontend\models\forms\CurrentInstitutionForm;
 use frontend\search\EmployeeSearch;
 use Yii;
 use yii\base\Module;
@@ -101,6 +102,10 @@ class EmployeeController extends Controller
      */
     public function actionIndex()
     {
+        if (!\Yii::$app->user->identity->isAble('employee-index')) {
+            throw new NotFoundHttpException(Yii::t('app', 'Access denied'));
+        }
+
         $searchModel = new EmployeeSearch($this->institution);
         $searchModel->status = Employee::STATUS_ACTIVE;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -133,8 +138,27 @@ class EmployeeController extends Controller
      */
     public function actionView($id)
     {
+        $person = Employee::findOne(Yii::$app->user->id);
+        $institutions = Yii::$app->user->identity->institutions;
+        $form2 = new CurrentInstitutionForm();
+        $form2->setAttributes($person->attributes);
+
+        if ($form2->load(Yii::$app->request->post()) && $form2->validate()) {
+            $person->current_institution = $form2->current_institution;
+            if (!$person->save()) {
+                if (YII_DEBUG) {
+                    $errors = $person->errors;
+                    throw new \RuntimeException(reset($errors)[0]);
+                }
+                throw new \RuntimeException('Saving error.');
+            }
+        }
+
         return $this->render('view/view', [
             'model' => $this->findModel($id),
+            'form2' => $form2,
+            'institutions' => $institutions,
+            'person' => $person
         ]);
     }
 
