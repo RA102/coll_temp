@@ -25,21 +25,25 @@ $this->title = 'Журнал ' . $group->caption_current;
                 <td><?=$teacherCourse->person->getFullname()?> </td>
             </tr>
             <tr>
+                <th>Тип предмета</th>
+                <td><?=$teacherCourse->getType($teacherCourse->type)?></td>
+            </tr>
+            <tr>
             	<th>Общее кол-во занятий <br> Проведено <br> Осталось <br> Отмена/замена</th>
             	<td><?=count($dates)?> <br> <?=count($journal)?> <br> <?=count($dates) - count($journal)?> <br> <?=$replaced?> </td>
             </tr>
         </table>
-        <ul class="nav nav-tabs">
+        <!-- <ul class="nav nav-tabs">
             <li role="presentation" class="active">
                 <?= Html::a('Теоретическое обучение', ['view', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], []) ?>
             </li>
-            <!-- <li role="presentation">
+            <li role="presentation">
                 <?= Html::a('Курсовые проекты, лабораторно-практические и графические работы', ['practical', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], []) ?>
             </li>
             <li role="presentation">
                 <?= Html::a('Контрольные работы', ['exam', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], []) ?>
-            </li> -->
-        </ul>
+            </li>
+        </ul> -->
     </div>
     <div class="card-body" style="overflow-x: scroll;">
         <?= Html::a(Yii::t('app', 'Журнал замен'), ['replacement', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id], ['class' => 'btn btn-primary']) ?>

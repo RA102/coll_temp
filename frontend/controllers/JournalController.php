@@ -215,10 +215,13 @@ class JournalController extends Controller
         }
 
         $exams = [];
-        if ($model->ktp !== null) {
-            foreach ($model->ktp as $value) {
-                if ($value['type'] == TeacherCourse::TYPE_LECTURE || $value['type'] == TeacherCourse::TYPE_SEMINAR) {
-                    array_push($exams, $value);
+
+        if ($model !== null) {
+            if ($model->ktp !== null) {
+                foreach ($model->ktp as $value) {
+                    if ($value['type'] == TeacherCourse::TYPE_LECTURE || $value['type'] == TeacherCourse::TYPE_SEMINAR) {
+                        array_push($exams, $value);
+                    }
                 }
             }
         }

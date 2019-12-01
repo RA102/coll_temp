@@ -160,8 +160,9 @@
                             [
                                 'label' => Yii::t('app', 'Группы'), 
                                 'icon' => 'file-code-o', 
-                                'url' => ['/group']],
+                                'url' => ['/group'],
                                 'visible' => $person->isAdmin(),
+                            ],
                             [
                                 'label' => Yii::t('app', 'Распределение'),
                                 'icon'  => 'dashboard',
