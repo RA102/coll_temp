@@ -21,7 +21,7 @@
                         'label' => Yii::t('app', 'Selection committee'),
                         'icon'  => 'far fa-id-card',
                         'url'   => '#',
-                        'visible' => $person->isAdmin() || $person->isHr() || $person->isDirector(),
+                        'visible' => $person->isAdmin() || $person->isHr() || $person->isDirector() || $person->isAdmissionSpecialist(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Текушая комиссия'),
@@ -52,12 +52,13 @@
                         'label' => Yii::t('app', 'Управление организацией'),
                         'icon'  => 'far fa-archway',
                         'url'   => '#',
-                        'visible' => $person->isAdmin() || $person->isHr() || $person->isDirector(),
+                        'visible' => $person->isAdmin() || $person->isHr() || $person->isDirector() || $person->isChairman() || $person->isDirectorDeputyAcademic() || $person->isDirectorDeputyEducation() || $person->isDirectorDeputyIndustrial() || $person->isDirectorDeputyMethodist() || $person->isDirectorDeputyEconomic() || $person->isManager() || $person->isSocialTeacher() || $person->isPsychologist(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Картотека'),
                                 'icon'  => 'far fa-list-alt',
                                 'url'   => '#',
+                                'visible' => !$person->isChairman() && !$person->isDirectorDeputyEducation() && !$person->isDirectorDeputyIndustrial() && !$person->isDirectorDeputyEconomic() && !$person->isManager() && !$person->isSocialTeacher() && !$person->isSocialTeacher() && !$person->isPsychologist(),
                                 'items' => [
                                     [
                                         'label' => Yii::t('app', 'Employees'), 
@@ -76,7 +77,7 @@
                                 'label' => Yii::t('app','Хозяйственная часть'),
                                 'icon' => 'far fa-building',
                                 'url' => '#',
-                                'visible' => !$person->isHr(),
+                                'visible' => !$person->isHr() && !$person->isChairman() && !$person->isDirectorDeputyAcademic() && !$person->isDirectorDeputyEducation() && !$person->isDirectorDeputyIndustrial() && !$person->isDirectorDeputyMethodist() && !$person->isManager() && !$person->isSocialTeacher() && !$person->isPsychologist(),
                                 'items' => [
                                     [
                                         'label' => Yii::t('app', 'Аудитории'),
@@ -89,11 +90,13 @@
                                 'label' => Yii::t('app','Приказы'),
                                 'icon' => 'far fa-building',
                                 'url' => '/order/index',
+                                'visible' => !$person->isDirectorDeputyEconomic(),
                             ],
                             [
                                 'label' => Yii::t('app','Отчеты'),
                                 'icon' => 'far fa-building',
                                 'url' => '/stats/01',
+                                'visible' => !$person->isDirectorDeputyEconomic(),
                             ],
                         ],
                     ],
@@ -101,12 +104,13 @@
                         'label' => Yii::t('app', 'Учебный процесс'),
                         'icon'  => 'book',
                         'url'   => '#',
-                        'visible' => $person->isAdmin() || $person->isTeacher() || $person->isDirector(),
+                        'visible' => $person->isAdmin() || $person->isTeacher() || $person->isDirector() || $person->isDirectorDeputyAcademic() || $person->isDirectorDeputyEducation() || $person->isDirectorDeputyIndustrial() || $person->isManager() || $person->isSocialTeacher() || $person->isPsychologist(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Планирование учебного процесса'),
                                 'icon'  => 'dashboard',
                                 'url'   => ['/plan/index'],
+                                'visible' => !$person->isSocialTeacher() && !$person->isPsychologist(),
                                 'items' => [
                                     [
                                         'label' => 'Обязательные дисциплины',
@@ -137,19 +141,20 @@
                             [
                                 'label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'),
                                 'icon'  => 'dashboard',
-                                'visible' => $person->isAdmin(),
+                                'visible' => !$person->isSocialTeacher() && !$person->isPsychologist(),
                                 'url'   => ['/personnel/index']
                             ],
                             [
                                 'label' => Yii::t('app', 'Расписание'),
                                 'icon'  => 'dashboard',
+                                'url'   => ['/lesson/index'],
                                 'visible' => $person->isAdmin(),
-                                'url'   => ['/lesson/index']
                             ],
                             [
                                 'label' => Yii::t('app', 'Электронный журнал'),
                                 'icon'  => 'dashboard',
-                                'url'   => ['/journal/index']
+                                'url'   => ['/journal/index'],
+                                'visible' => $person->isAdmin(),
                             ],
                             /*[
                                 'label' => Yii::t('app', 'Электронный сессия'),
@@ -160,13 +165,11 @@
                                 'label' => Yii::t('app', 'Группы'), 
                                 'icon' => 'file-code-o', 
                                 'url' => ['/group'],
-                                'visible' => $person->isAdmin(),
                             ],
                             [
                                 'label' => Yii::t('app', 'Распределение'),
                                 'icon'  => 'dashboard',
                                 'url'   => ['/group/allocate'],
-                                'visible' => $person->isAdmin(),
                             ],
                         ],
                     ],

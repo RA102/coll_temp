@@ -402,6 +402,83 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         } else return false;
     }
 
+    public function isChairman()
+    {
+        if ($this->personType->name == 'chairman') {
+            return true;
+        } else return false;
+    }
+
+    public function isDirectorDeputyAcademic()
+    {        
+        if ($this->personType->name == 'director_deputy_academic') {
+            return true;
+        } else return false;
+    }
+
+    public function isDirectorDeputyEducation()
+    {        
+        if ($this->personType->name == 'director_deputy_education') {
+            return true;
+        } else return false;
+    }
+
+    public function isDirectorDeputyIndustrial()
+    {        
+        if ($this->personType->name == 'director_deputy_industrial') {
+            return true;
+        } else return false;
+    }
+
+    public function isDirectorDeputyMethodist()
+    {        
+        if ($this->personType->name == 'director_deputy_methodist') {
+            return true;
+        } else return false;
+    }
+
+    public function isDirectorDeputyEconomic()
+    {        
+        if ($this->personType->name == 'director_deputy_economic') {
+            return true;
+        } else return false;
+    }
+
+    public function isAdmissionSpecialist()
+    {        
+        if ($this->personType->name == 'admission_specialist') {
+            return true;
+        } else return false;
+    }
+
+    public function isManager()
+    {        
+        if ($this->personType->name == 'manager') {
+            return true;
+        } else return false;
+    }
+
+    public function isPsychologist()
+    {        
+        if ($this->personType->name == 'psychologist') {
+            return true;
+        } else return false;
+    }
+
+    public function isSocialTeacher()
+    {        
+        if ($this->personType->name == 'social_teacher') {
+            return true;
+        } else return false;
+    }
+
+    public function isStaff()
+    {        
+        if ($this->personType->name == 'staff') {
+            return true;
+        } else return false;
+    }
+
     /*TODO make normal rbac control*/
     public function isAble($action)
     {
