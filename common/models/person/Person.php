@@ -362,6 +362,20 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         $this->delete_ts = intval($this->status) === Person::STATUS_ACTIVE ? null : date('Y-m-d H:i:s');
     }
 
+    public function isSuperadmin()
+    {
+        if ($this->personType->name == 'superadmin') {
+            return true;
+        } else return false;
+    }
+
+    public function isAdmin()
+    {
+        if ($this->personType->name == 'admin' || $this->personType->name == 'superadmin') {
+            return true;
+        } else return false;
+    }
+
     public function isStudent()
     {
         return in_array($this->type, [Person::TYPE_STUDENT, Person::TYPE_ENTRANT]);
@@ -381,16 +395,9 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         } else return false;
     }
 
-    public function isAdmin()
+    public function isDirector()
     {
-        if ($this->personType->name == 'admin' || $this->personType->name == 'superadmin') {
-            return true;
-        } else return false;
-    }
-
-    public function isSuperadmin()
-    {
-        if ($this->personType->name == 'superadmin') {
+        if ($this->personType->name == 'director') {
             return true;
         } else return false;
     }
