@@ -11,7 +11,7 @@ use yii\widgets\DetailView;
 /* @var $model common\models\person\Employee */
 ?>
 
-<?php if ($person->isAdmin() || $model->id == $person->id):?>
+<?php if ($model->id == $person->id):?>
     <?php $activeForm = ActiveForm::begin([
         'enableClientValidation' => false,
         'options' => [
