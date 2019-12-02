@@ -101,7 +101,12 @@ class PlanController extends Controller
         /*$query = RequiredDisciplines::find()
                 ->joinWith('institutionDiscipline')
                 ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);*/
+        $person = \Yii::$app->user->identity;
+
         $query = TeacherCourse::find()->where(['status' => TeacherCourse::REQUIRED]);
+        if ($person->isTeacher()) {
+            $query->andWhere(['teacher_id' => $person->id]);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -116,7 +121,12 @@ class PlanController extends Controller
         /*$query = OptionalDisciplines::find()
                 ->joinWith('institutionDiscipline')
                 ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);*/
+        $person = \Yii::$app->user->identity;
+
         $query = TeacherCourse::find()->where(['status' => TeacherCourse::OPTIONAL]);
+        if ($person->isTeacher()) {
+            $query->andWhere(['teacher_id' => $person->id]);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -129,7 +139,12 @@ class PlanController extends Controller
     public function actionFacultative()
     {
         //$query = Facultative::find();
+        $person = \Yii::$app->user->identity;
+        
         $query = TeacherCourse::find()->where(['status' => TeacherCourse::FACULTATIVE]);
+        if ($person->isTeacher()) {
+            $query->andWhere(['teacher_id' => $person->id]);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -141,9 +156,14 @@ class PlanController extends Controller
 
     public function actionPractice()
     {
+        $person = \Yii::$app->user->identity;
+
         $query = PracticePlan::find()
             ->joinWith('practice')
             ->where([Practice::tableName().'.institution_id' => $this->institution->id]);
+        if ($person->isTeacher()) {
+            $query->andWhere(['OR', ['@>', 'teacher', '{"1":"'.$person->id.'"}'], ['@>', 'teacher', '{"2":"'.$person->id.'"}']]);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

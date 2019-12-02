@@ -23,12 +23,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th>Тип</th>
             </tr>
             <?php foreach ($teacherCourses as $teacherCourse):?>
+                <?php if ($teacherCourse->teacher_id == \Yii::$app->user->identity->id):?>
                 <tr>
                     <td><?= Html::a($teacherCourse->disciplineName, ['view', 'group_id' => $group->id, 'teacher_course_id' => $teacherCourse->id, 'type' => 1], ['class' => '']) ?>                        
                     </td>
                     <td><?=$teacherCourse->person->getFullname()?></td>
                     <td><?=$teacherCourse->statusName?></td>
                 </tr>
+                <?php endif;?>
             <?php endforeach;?>
         </table>
     </div>
