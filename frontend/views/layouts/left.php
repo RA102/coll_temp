@@ -21,7 +21,7 @@
                         'label' => Yii::t('app', 'Selection committee'),
                         'icon'  => 'far fa-id-card',
                         'url'   => '#',
-                        'visible' => $person->isAdmin() || $person->isHr(),
+                        'visible' => $person->isAdmin() || $person->isHr() || $person->isDirector(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Текушая комиссия'),
@@ -52,13 +52,12 @@
                         'label' => Yii::t('app', 'Управление организацией'),
                         'icon'  => 'far fa-archway',
                         'url'   => '#',
-                        'visible' => $person->isAdmin() || $person->isHr(),
+                        'visible' => $person->isAdmin() || $person->isHr() || $person->isDirector(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Картотека'),
                                 'icon'  => 'far fa-list-alt',
                                 'url'   => '#',
-                                'visible' => !$person->isStudent(),
                                 'items' => [
                                     [
                                         'label' => Yii::t('app', 'Employees'), 
@@ -70,7 +69,6 @@
                                         'label' => Yii::t('app', 'Students'), 
                                         'icon' => 'dashboard', 
                                         'url' => ['/student/index'],
-                                        'visible' => !$person->isHr(),
                                     ],
                                 ],
                             ],
@@ -103,7 +101,7 @@
                         'label' => Yii::t('app', 'Учебный процесс'),
                         'icon'  => 'book',
                         'url'   => '#',
-                        'visible' => !$person->isStudent() && !$person->isHr(),
+                        'visible' => $person->isAdmin() || $person->isTeacher() || $person->isDirector(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Планирование учебного процесса'),
@@ -176,7 +174,7 @@
                         'label' => Yii::t('app', 'Настройки'),
                         'icon'  => 'cog',
                         'url'   => '#',
-                        'visible' => $person->isAdmin(),
+                        'visible' => $person->isAdmin() || $person->isDirector(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Специальности'),
