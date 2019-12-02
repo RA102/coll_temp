@@ -21,7 +21,7 @@
                         'label' => Yii::t('app', 'Selection committee'),
                         'icon'  => 'far fa-id-card',
                         'url'   => '#',
-                        'visible' => $person->isAdmin(),
+                        'visible' => $person->isAdmin() || $person->isHr(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Текушая комиссия'),
@@ -52,7 +52,7 @@
                         'label' => Yii::t('app', 'Управление организацией'),
                         'icon'  => 'far fa-archway',
                         'url'   => '#',
-                        'visible' => $person->isAdmin(),
+                        'visible' => $person->isAdmin() || $person->isHr(),
                         'items' => [
                             [
                                 'label' => Yii::t('app', 'Картотека'),
@@ -78,6 +78,7 @@
                                 'label' => Yii::t('app','Хозяйственная часть'),
                                 'icon' => 'far fa-building',
                                 'url' => '#',
+                                'visible' => !$person->isHr(),
                                 'items' => [
                                     [
                                         'label' => Yii::t('app', 'Аудитории'),
