@@ -92,6 +92,7 @@ class InstitutionController extends Controller
             }
     
             return $this->render('index', [
+                'model' => $model,
                 'form' => $form,
                 'form2' => $form2,
                 'institutions' => $institutions
