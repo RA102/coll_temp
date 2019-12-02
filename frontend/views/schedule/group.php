@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
     <div style="position: relative;">
         <h1><?= $this->title ?></h1>
-		<?= Html::a('Полное расписание', ['/lesson/schedule','group_id' => $model->id,], ['class' => 'title-action btn btn-primary']) ?>
+		<!-- <?= Html::a('Полное расписание', ['/lesson/schedule','group_id' => $model->id,], ['class' => 'title-action btn btn-primary']) ?> -->
     </div>
 
     <div class="lesson-index skin-white">

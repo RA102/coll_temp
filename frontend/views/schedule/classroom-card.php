@@ -9,7 +9,7 @@ $this->title = "Карта занятости " . $model->number;
 
     <div style="position: relative;">
         <h1><?= $this->title ?></h1>
-		<?= Html::a('Полное расписание', ['/lesson/classroom-card','classroom_id' => $model->id,], ['class' => 'btn btn-primary']) ?>
+		<!-- <?= Html::a('Полное расписание', ['/lesson/classroom-card','classroom_id' => $model->id,], ['class' => 'btn btn-primary']) ?> -->
     </div>
 
 

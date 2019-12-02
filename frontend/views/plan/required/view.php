@@ -110,16 +110,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		    </div>
 		</div>
-		<div class="col-md-6">
-		    <div class="card-body skin-white">
-				<div style="position: relative;">
-					<h2></h2>
-			    </div>
-		    </div>
-		</div>
 	</div>
 	<br>
 	<div class="card-body skin-white">
+		<h2>Календарно-тематический план</h2>
 	    	<table class="table table-bordered">
 	    		<tr>
 	    			<th class="col-md-1">№ занятия</th>

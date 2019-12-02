@@ -273,6 +273,11 @@ class LessonController extends Controller
     public function actionTeachers()
     {
         $query = $this->employeeService->getTeachersQuery($this->institution);
+
+        $person = \Yii::$app->user->identity;
+        if ($person->isTeacher()) {
+            $query->filterWhere([Employee::tableName().'.id' => $person->id]);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
