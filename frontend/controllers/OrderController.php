@@ -202,6 +202,7 @@ class OrderController extends Controller
             $templateProcessor->setValue('class', $student->group->class);
             $templateProcessor->setValue('group', $student->group->caption_current);
             $templateProcessor->setValue('speciality', $student->group->speciality->caption_current);
+            $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
             if (array_key_exists('new_group', $_POST['DynamicModel'])) {
                 $templateProcessor->setValue('new_group', $_POST['DynamicModel']['new_group']);
             }
