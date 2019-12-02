@@ -11,7 +11,7 @@ $this->title = $group->caption_current;
 
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Планирование учебного процесса'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Обязательные дисциплины'), 'url' => ['required']];
-$this->params['breadcrumbs'][] = ['label' => $teacherCourse->disciplineName, 'url' => ['view-required-groups', 'teacher_course_id' => $model->teacher_course_id]];
+$this->params['breadcrumbs'][] = ['label' => $teacherCourse->disciplineName, 'url' => ['view-required-groups', 'teacher_course_id' => $teacherCourse->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
