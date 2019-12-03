@@ -15,7 +15,7 @@
                         'label' => Yii::t('app', 'Все колледжи'),
                         'icon'  => 'far fa-archway',
                         'url'   => '/institution/all',
-                        'visible' => $person->isAdmin(),
+                        'visible' => $person->isAdmin() && $person->institutionAdvanced(),
                     ],
                     [
                         'label' => Yii::t('app', 'Selection committee'),
@@ -90,13 +90,13 @@
                                 'label' => Yii::t('app','Приказы'),
                                 'icon' => 'far fa-building',
                                 'url' => '/order/index',
-                                'visible' => !$person->isDirectorDeputyEconomic(),
+                                'visible' => !$person->isDirectorDeputyEconomic() && $person->institutionAdvanced(),
                             ],
                             [
                                 'label' => Yii::t('app','Отчеты'),
                                 'icon' => 'far fa-building',
                                 'url' => '/stats/01',
-                                'visible' => !$person->isDirectorDeputyEconomic(),
+                                'visible' => !$person->isDirectorDeputyEconomic() && $person->institutionAdvanced(),
                             ],
                         ],
                     ],
@@ -110,7 +110,7 @@
                                 'label' => Yii::t('app', 'Планирование учебного процесса'),
                                 'icon'  => 'dashboard',
                                 'url'   => ['/plan/index'],
-                                'visible' => !$person->isSocialTeacher() && !$person->isPsychologist(),
+                                'visible' => !$person->isSocialTeacher() && !$person->isPsychologist() && $person->institutionAdvanced(),
                                 'items' => [
                                     [
                                         'label' => 'Обязательные дисциплины',
@@ -141,8 +141,8 @@
                             [
                                 'label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'),
                                 'icon'  => 'dashboard',
-                                'visible' => !$person->isSocialTeacher() && !$person->isPsychologist(),
-                                'url'   => ['/personnel/index']
+                                'visible' => !$person->isSocialTeacher() && !$person->isPsychologist() && $person->institutionAdvanced(),
+                                'url'   => ['/personnel/index'],
                             ],
                             [
                                 'label' => Yii::t('app', 'Расписание'),
@@ -197,12 +197,14 @@
                             [
                                 'label' => Yii::t('app', 'Учебная практика'), 
                                 'icon' => 'file-code-o', 
-                                'url' => ['/practice/index']
+                                'url' => ['/practice/index'],
+                                'visible' => $person->institutionAdvanced(),
                             ],
                             [
                                 'label' => Yii::t('app', 'Профессиональная практика'), 
                                 'icon' => 'file-code-o', 
-                                'url' => ['/professional-practice/index']
+                                'url' => ['/professional-practice/index'],
+                                'visible' => $person->institutionAdvanced(),
                             ],
 //                            ['label' => Yii::t('app','Учебный процесс'), 'icon' => 'file-code-o', 'url' => ['/']],
                             [

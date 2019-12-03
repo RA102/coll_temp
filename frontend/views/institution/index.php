@@ -62,6 +62,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-3">
             <?= $activeForm->field($form, 'enable_fraction')->checkbox() ?>
         </div>
+        <?php if (\Yii::$app->user->identity->isSuperadmin()):?>
+            <div class="col-md-3">
+                <?= $activeForm->field($form, 'advanced')->checkbox() ?>
+            </div>
+        <?php endif;?>
     </div>
 
     <br>

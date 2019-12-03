@@ -31,6 +31,7 @@ class InstitutionForm extends Model
     public $min_grade;
     public $max_shift;
     public $enable_fraction;
+    public $advanced;
 
     public $semester_date;
     public $shift_time;
@@ -82,7 +83,7 @@ class InstitutionForm extends Model
             [['country_id', 'city_ids', 'street_id', 'type_ids', 'semester_date', 'shift_time'], 'safe'],
             [[
                 'status', 'email', 'fax', 'website', 'max_grade', 'min_grade', 'max_shift', 'description',
-                'foundation_year', 'bin', 'enable_fraction', 'educational_form_id', 'organizational_legal_form_id'],
+                'foundation_year', 'bin', 'enable_fraction', 'educational_form_id', 'organizational_legal_form_id', 'advanced'],
                 'safe'],
         ];
     }

@@ -513,4 +513,9 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         else return false;
     }
 
+    public function institutionAdvanced()
+    {
+        return $this->institution->advanced;
+    }
+
 }
