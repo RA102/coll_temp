@@ -9,6 +9,7 @@ class LanguageHelper
         return [
             'ru' => \Yii::t('app', 'Russian'),
             'kk' => \Yii::t('app', 'Kazakh'),
+            //'kz' => \Yii::t('app', 'Kazakh'),
         ];
     }
 }

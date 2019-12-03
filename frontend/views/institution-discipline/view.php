@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'caption_current',
                 ],
-                [
+                /*[
                     'attribute' => 'types',
                     'value' => function(InstitutionDiscipline $model) {
                         if ($model->types) {
@@ -46,11 +46,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                         return null;
                     }
-                ],
-                'create_ts',
-                'update_ts',
-                'delete_ts',
+                ],*/
+                //'create_ts',
+                //'update_ts',
+                //'delete_ts',
             ],
+        ]) ?>
+
+        <br>
+
+        <h4>Преподаватели</h4>
+        <?= \yii\grid\GridView::widget([
+            'summary'      => false,
+            'showHeader'   => false,
+            'dataProvider' => new \yii\data\ArrayDataProvider([
+                'models' => $model->getTeachers()
+            ]),
+            'columns'      => [
+                'fullName'
+            ]
         ]) ?>
 
     </div>

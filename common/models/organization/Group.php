@@ -7,6 +7,9 @@ use common\helpers\LanguageHelper;
 use common\models\handbook\Speciality;
 use common\models\link\StudentGroupLink;
 use common\models\person\Student;
+use common\models\person\Employee;
+use common\models\OptionalDisciplines;
+use common\models\RequiredDisciplines;
 use common\models\TeacherCourse;
 use Yii;
 
@@ -154,6 +157,11 @@ class Group extends \yii\db\ActiveRecord
         return $this->hasOne(Speciality::class, ['id' => 'speciality_id']);
     }
 
+    public function getInstitution()
+    {
+        return $this->hasOne(Institution::class, ['id' => 'institution_id']);
+    }
+
     public function getEducationForm()
     {
         return GroupHelper::getEducationFormList()[$this->education_form] ?? '';
@@ -178,6 +186,23 @@ class Group extends \yii\db\ActiveRecord
             ->viaTable('link.teacher_course_group_link', ['group_id' => 'id']);
     }
 
+    public function getTeachers()
+    {
+        return $this->hasMany(Employee::class, ['id' => 'teacher_id'])
+            ->via('teacherCourses');
+    }
+
+    public function getRequiredDisciplines()
+    {
+        return $this->hasMany(RequiredDisciplines::class, ['group_id' => 'id']);
+    }
+
+    public function getOptionalDisciplines()
+    {
+        //$sql = "SELECT * FROM ".OptionalDisciplines::tableName()." WHERE groups IN [".$this->id."]";
+        return OptionalDisciplines::find()->where(['IN', 'groups', $this->id])->asArray()->all();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -191,6 +216,7 @@ class Group extends \yii\db\ActiveRecord
      */
     public function getStudents()
     {
-        return $this->hasMany(Student::class, ['id' => 'student_id'])->via('studentGroupLinks');
+        return $this->hasMany(Student::class, ['id' => 'student_id'])
+            ->via('studentGroupLinks')->orderBy(['lastname' => SORT_ASC]);
     }
 }

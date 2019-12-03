@@ -34,6 +34,16 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
         ],
     ]) ?>
 
+    <?= $form->field($model, 'teachers')->widget(Select2::class, [
+        'data' => ArrayHelper::map($teachers, 'id', 'fullname'), // TODO rework to ajax
+        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+        'theme' => 'default',
+        'pluginOptions' => [
+            'allowClear' => true,
+            'multiple' => true,
+        ],
+    ])->label('Преподаватели') ?>
+
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>

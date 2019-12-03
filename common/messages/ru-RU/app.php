@@ -116,6 +116,8 @@ return [
     'Organization'                         => 'Организация',
     'Country unit'                         => 'Населенный пункт',
     'Institutions'                         => 'Колледжи',
+    'Classroom ID'                         => 'Аудитория',
+    'Copy'                                 => 'Продублировать',
 
     // APPLICATIONS
     'Street'                               => 'Улица',
@@ -218,8 +220,8 @@ return [
     'Teacher Courses' => 'Курсы учителя',
     'Create Teacher Course' => 'Добавление курса учителя',
     'Update Teacher Course' => 'Редактирование курса учителя',
-    'Teacher' => 'Учитель',
-    'Teacher ID' => 'Учитель',
+    'Teacher' => 'Преподаватель',
+    'Teacher ID' => 'Преподаватель',
     'Teacher Course Start TS' => 'Начало курса учителя',
     'Teacher Course End TS' => 'Конец курса учителя',
     'Course ID' => 'Курс',
@@ -347,4 +349,6 @@ return [
     'Order of admission' => 'Приказ о зачислении',
 
     'Person is attached to institution' => 'Пользователь уже привязан к одному из заведении',
+
+    'Person exists' => 'Пользователь с данными ИИН и ролью уже зарегистрирован в системе',
 ];

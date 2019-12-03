@@ -4,7 +4,10 @@ namespace common\models;
 
 use common\helpers\SchemeHelper;
 use common\models\person\Person;
+use common\models\organization\Group;
+use common\models\organization\Classroom;
 use Yii;
+use yii\db\ArrayExpression;
 
 /**
  * This is the model class for table "lesson".
@@ -17,11 +20,16 @@ use Yii;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ * @property int $group_id
+ * @property int $classroom_id
+ * @property string $topic
  *
  * @property TeacherCourse $teacherCourse
+ * @property Group $group
  */
 class Lesson extends \yii\db\ActiveRecord
 {
+    public $dates;
     /**
      * {@inheritdoc}
      */
@@ -36,12 +44,15 @@ class Lesson extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['teacher_course_id', 'date_ts'], 'required'],
+            [['teacher_course_id', 'group_id', 'classroom_id'], 'required'],
             [['teacher_course_id', 'teacher_id', 'duration'], 'default', 'value' => null],
-            [['teacher_course_id', 'teacher_id', 'duration'], 'integer'],
+            [['teacher_course_id', 'teacher_id', 'duration', 'group_id', 'classroom_id'], 'integer'],
             [['date_ts'], 'safe'],
+            [['dates', 'topic'], 'string'],
             [['teacher_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['teacher_id' => 'id']],
             [['teacher_course_id'], 'exist', 'skipOnError' => true, 'targetClass' => TeacherCourse::class, 'targetAttribute' => ['teacher_course_id' => 'id']],
+            [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::class, 'targetAttribute' => ['group_id' => 'id']],
+            [['classroom_id'], 'exist', 'skipOnError' => true, 'targetClass' => Classroom::class, 'targetAttribute' => ['classroom_id' => 'id']],
         ];
     }
 
@@ -59,8 +70,16 @@ class Lesson extends \yii\db\ActiveRecord
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
+            'group_id' => Yii::t('app', 'Group ID'),
+            'classroom_id' => Yii::t('app', 'Classroom ID'),
+            'topic' => Yii::t('app', 'Тема'),
         ];
     }
+
+    /*public function afterFind()
+    {
+        parent::afterFind();
+    }*/
 
     /**
      * @return \yii\db\ActiveQuery
@@ -68,5 +87,29 @@ class Lesson extends \yii\db\ActiveRecord
     public function getTeacherCourse()
     {
         return $this->hasOne(TeacherCourse::class, ['id' => 'teacher_course_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGroup()
+    {
+        return $this->hasOne(Group::class, ['id' => 'group_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeacher()
+    {
+        return $this->hasOne(Person::class, ['id' => 'teacher_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getClassroom()
+    {
+        return $this->hasOne(Classroom::class, ['id' => 'classroom_id']);
     }
 }

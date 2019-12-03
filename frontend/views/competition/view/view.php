@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'speciality_id',
                         'value'     => function (CompetitionEntrantsForm $competitionEntrantsForm) {
                             $speciality = $competitionEntrantsForm->getSpeciality();
-                            return $speciality ? $speciality->caption_current : null;
+                            return $speciality ? $speciality->getCaptionWithCode() : null;
                         }
                     ],
                     [

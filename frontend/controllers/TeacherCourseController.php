@@ -112,7 +112,12 @@ class TeacherCourseController extends Controller
         $course = $this->courseService->getCourse($this->institution, $course_id);
         $teacherCourse = new TeacherCourse();
 
+        $statuses = TeacherCourse::statusList();
         $form = new TeacherCourseForm();
+        $types = TeacherCourse::getTypes();
+
+        $teachers = $course->institutionDiscipline->getTeachers();
+        $groups = $this->groupService->getByClasses($course->classes, $this->institution->id);
 
         if ($form->load(Yii::$app->request->post())) {
             $teacherCourse->setAttributes($form->getAttributes());
@@ -131,8 +136,11 @@ class TeacherCourseController extends Controller
         return $this->render('create', [
             'model' => $form,
             'course' => $course,
-            'teachers' => $this->employeeService->getTeachers($this->institution),
-            'groups' => $this->groupService->getGroups($this->institution),
+            //'teachers' => $this->employeeService->getTeachers($this->institution),
+            'teachers' => $teachers,
+            'groups' => $groups,
+            'types' => $types,
+            'statuses' => $statuses,
         ]);
     }
 
@@ -148,24 +156,33 @@ class TeacherCourseController extends Controller
         $course = $this->findCourse($this->institution, $course_id);
         $teacherCourse = $this->findTeacherCourse($course, $id);
 
+        $statuses = TeacherCourse::statusList();
+        $types = TeacherCourse::getTypes();
+
         $form = new TeacherCourseForm(); // dirtyAttribute trait needed
         $form->setAttributes($teacherCourse->getAttributes());
         $group_ids = ArrayHelper::getColumn($teacherCourse->getGroups()->all(), 'id');
         $form->group_ids = $group_ids;
+        /*if (array_key_exists($form->status, $statuses)) {
+            $form->status = $statuses[$form->status];
+        }
+        if (array_key_exists($form->type, $types)) {
+            $form->type = $types[$form->type];
+        }*/
 
         if ($form->load(Yii::$app->request->post())) {
             $teacherCourse->setAttributes($form->getAttributes());
             $teacherCourse->course_id = $course->id;
 
             if ($teacherCourse->save()) {
-                foreach (array_diff($group_ids, $form->group_ids) as $group_id) {
-                    $group = $this->groupService->getGroup($this->institution, $group_id);
-                    $this->teacherCourseService->deleteGroup($teacherCourse, $group);
-                }
-                foreach (array_diff($form->group_ids, $group_ids) as $group_id) {
-                    $group = $this->groupService->getGroup($this->institution, $group_id);
-                    $this->teacherCourseService->addGroup($teacherCourse, $group);
-                }
+                    foreach (array_diff($group_ids, $form->group_ids) as $group_id) {
+                        $group = $this->groupService->getGroup($this->institution, $group_id);
+                        $this->teacherCourseService->deleteGroup($teacherCourse, $group);
+                    }
+                    foreach (array_diff($form->group_ids, $group_ids) as $group_id) {
+                        $group = $this->groupService->getGroup($this->institution, $group_id);
+                        $this->teacherCourseService->addGroup($teacherCourse, $group);
+                    }
 
                 return $this->redirect(['view', 'id' => $teacherCourse->id, 'course_id' => $course_id]);
             }
@@ -177,6 +194,8 @@ class TeacherCourseController extends Controller
             'course' => $course,
             'teachers' => $this->employeeService->getTeachers($this->institution),
             'groups' => $this->groupService->getGroups($this->institution),
+            'types' => $types,
+            'statuses' => $statuses,
         ]);
     }
 
@@ -191,6 +210,10 @@ class TeacherCourseController extends Controller
     {
         $course = $this->findCourse($this->institution, $course_id);
         $teacherCourse = $this->findTeacherCourse($course, $id);
+        $teacher_course_group_links = $teacherCourse->teacherCourseGroupLinks;
+        foreach ($teacher_course_group_links as $value) {
+            $value->delete();
+        }
 
         $teacherCourse->delete();
 

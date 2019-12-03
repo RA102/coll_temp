@@ -12,6 +12,7 @@ class TeacherCourseForm extends Model
     public $type;
     public $start_ts;
     public $end_ts;
+    public $status;
 
     /**
      * {@inheritdoc}
@@ -19,11 +20,11 @@ class TeacherCourseForm extends Model
     public function rules()
     {
         return [
-            [['teacher_id', 'start_ts', 'end_ts'], 'required'],
+            [['teacher_id', 'status'], 'required'],
             [['type'], 'string', 'max' => 255],
+            [['status'], 'integer'],
             [['group_ids'], 'each', 'rule' => ['integer']],
-            [['group_ids'], 'required'],
-            [['start_ts', 'end_ts'], 'safe'],
+            //[['group_ids'], 'required'],
         ];
     }
 
@@ -35,9 +36,10 @@ class TeacherCourseForm extends Model
         return [
             'teacher_id' => Yii::t('app', 'Teacher ID'),
             'group_ids' => Yii::t('app', 'Groups'),
-            'type' => Yii::t('app', 'Type'),
+            'type' => 'Способ',
             'start_ts' => Yii::t('app', 'Teacher Course Start TS'),
             'end_ts' => Yii::t('app', 'Teacher Course End TS'),
+            'status' => Yii::t('app', 'Тип'),
         ];
     }
 }

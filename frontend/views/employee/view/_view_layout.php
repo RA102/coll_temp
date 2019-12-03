@@ -7,7 +7,9 @@ use yii\helpers\Url;
 /* @var $model common\models\person\Employee */
 
 $this->title = $model->id === Yii::$app->user->id ? Yii::t('app', 'Profile') : Yii::t('app', 'View employee');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Employees'), 'url' => ['index']];
+if (Yii::$app->user->identity->isAdmin()) {
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Employees'), 'url' => ['index']];
+}
 $this->params['breadcrumbs'][] = $model->getFullName();
 $action = $this->context->action->id;
 ?>

@@ -10,6 +10,7 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Groups');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div style="position: relative;">
     <h1><?=$this->title?></h1>
     <?= Html::a('Добавить', ['create', 'id' => $searchModel->commission_id], ['class' => 'title-action btn btn-primary']) ?>
@@ -19,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-body">
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

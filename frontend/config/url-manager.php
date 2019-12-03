@@ -11,6 +11,7 @@ return [
         'speciality'                                        => '/speciality/index',
         'group'                                             => '/group/index',
         'institution'                                       => '/institution/index',
+        'classroom'                                         => '/classroom/index',
         'commission'                                        => '/commission/index',
         'commission-member/<commission_id:\d+>'             => '/commission-member/index',
         'reception-group/<commission_id:\d+>'               => '/reception-group/index',

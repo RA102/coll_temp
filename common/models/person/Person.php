@@ -5,6 +5,7 @@ namespace common\models\person;
 use common\helpers\LanguageHelper;
 use common\helpers\PersonHelper;
 use common\helpers\SchemeHelper;
+use common\helpers\PersonTypeHelper;
 use common\models\link\PersonInstitutionLink;
 use common\models\Nationality;
 use common\models\organization\Institution;
@@ -45,6 +46,7 @@ use yii\web\IdentityInterface;
  * @property string $delete_ts
  * @property string $import_ts
  * @property string $person_type
+ * @property array $lang
  *
  * @property AccessToken[] $accessTokens
  * @property AccessToken $activeAccessToken
@@ -111,12 +113,12 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
                 'value' => null
             ],
             [['status', 'sex', 'nationality_id', 'is_pluralist', 'birth_country_id', 'birth_city_id', 'oid', 'alledu_id', 'alledu_server_id', 'pupil_id', 'owner_id', 'server_id', 'portal_uid', 'type'], 'integer'],
-            [['birth_date', 'create_ts', 'delete_ts', 'import_ts'], 'safe'],
+            [['birth_date', 'create_ts', 'delete_ts', 'import_ts', 'lang'], 'safe'],
             [['is_subscribed'], 'boolean'],
             [['nickname', 'firstname', 'lastname', 'middlename', 'iin', 'person_type'], 'string', 'max' => 100],
             [['birth_place', 'photo'], 'string', 'max' => 255],
             [['language'], 'string', 'max' => 2],
-            ['iin', 'unique'],
+            //['iin', 'unique'],
         ];
     }
 
@@ -185,6 +187,23 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function getPersonType()
     {
         return $this->hasOne(PersonType::class, ['name' => 'person_type']);
+    }
+
+    public function getPersonTypeCaption()
+    {
+        /*$types = [
+            'superadmin' => 'Супер администратор',
+            'admin' => 'Администратор',
+            'teacher' => 'Преподаватель',
+            'hr' => 'HR',
+            'director' =>
+            'entrant' => 'Абитуриент',
+            'student' => 'Студент',            
+        ];*/
+
+        $types = PersonTypeHelper::getList();
+
+        return $types[$this->person_type];
     }
 
     public function isActive()
@@ -320,7 +339,12 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getLanguage()
     {
-        return LanguageHelper::getLanguageList()[$this->language] ?? '';
+        $language = $this->language;
+        if ($this->language == 'kz') {
+            $language = 'kk';
+        }
+        
+        return LanguageHelper::getLanguageList()[$language] ?? '';
     }
 
     public function getRelatives()
@@ -336,6 +360,20 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     public function setDeleteStatus()
     {
         $this->delete_ts = intval($this->status) === Person::STATUS_ACTIVE ? null : date('Y-m-d H:i:s');
+    }
+
+    public function isSuperadmin()
+    {
+        if ($this->personType->name == 'superadmin') {
+            return true;
+        } else return false;
+    }
+
+    public function isAdmin()
+    {
+        if ($this->personType->name == 'admin' || $this->personType->name == 'superadmin') {
+            return true;
+        } else return false;
     }
 
     public function isStudent()
@@ -357,10 +395,127 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
         } else return false;
     }
 
-    public function isAdmin()
+    public function isDirector()
     {
-        if ($this->personType->name == 'superadmin') {
+        if ($this->personType->name == 'director') {
             return true;
         } else return false;
     }
+
+    public function isChairman()
+    {
+        if ($this->personType->name == 'chairman') {
+            return true;
+        } else return false;
+    }
+
+    public function isDirectorDeputyAcademic()
+    {        
+        if ($this->personType->name == 'director_deputy_academic') {
+            return true;
+        } else return false;
+    }
+
+    public function isDirectorDeputyEducation()
+    {        
+        if ($this->personType->name == 'director_deputy_education') {
+            return true;
+        } else return false;
+    }
+
+    public function isDirectorDeputyIndustrial()
+    {        
+        if ($this->personType->name == 'director_deputy_industrial') {
+            return true;
+        } else return false;
+    }
+
+    public function isDirectorDeputyMethodist()
+    {        
+        if ($this->personType->name == 'director_deputy_methodist') {
+            return true;
+        } else return false;
+    }
+
+    public function isDirectorDeputyEconomic()
+    {        
+        if ($this->personType->name == 'director_deputy_economic') {
+            return true;
+        } else return false;
+    }
+
+    public function isAdmissionSpecialist()
+    {        
+        if ($this->personType->name == 'admission_specialist') {
+            return true;
+        } else return false;
+    }
+
+    public function isManager()
+    {        
+        if ($this->personType->name == 'manager') {
+            return true;
+        } else return false;
+    }
+
+    public function isPsychologist()
+    {        
+        if ($this->personType->name == 'psychologist') {
+            return true;
+        } else return false;
+    }
+
+    public function isSocialTeacher()
+    {        
+        if ($this->personType->name == 'social_teacher') {
+            return true;
+        } else return false;
+    }
+
+    public function isStaff()
+    {        
+        if ($this->personType->name == 'staff') {
+            return true;
+        } else return false;
+    }
+
+    /*TODO make normal rbac control*/
+    public function isAble($action)
+    {
+        $admin = ['employee-index'];
+        $teacher = [];
+        $student = [];
+        $entrant = [];
+        $ht = [];
+        $director = [];
+        $chairman = [];
+        $director_deputy_academic = [];
+        $director_deputy_education = [];
+        $director_deputy_industrial = [];
+        $director_deputy_methodist = [];
+        $director_deputy_economic = [];
+        $admission_specialist = [];
+        $manager = [];
+        $psychologist = [];
+        $social_teacher = [];
+        $staff = [];
+
+        $personType = $this->personType->name;
+
+        if ($this->isSuperadmin()) {
+            return true;
+        }
+        elseif (!$this->isSuperadmin()) {
+            if (in_array($action, $$personType)) {
+                return true;
+            }
+        }
+        else return false;
+    }
+
+    public function institutionAdvanced()
+    {
+        return $this->institution->advanced;
+    }
+
 }

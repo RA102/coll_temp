@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?=$this->title?></h1>
 </div>
 
-<?php $activeForm = ActiveForm::begin([
+<!-- <?php $activeForm = ActiveForm::begin([
     'enableClientValidation' => false,
     'options' => [
         'validateOnSubmit' => true,
@@ -39,10 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
-<?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?> -->
 
-
-<div class="institution-form skin-white">
+<div class="institution-form">
     <div class="card-body">
 
     <?php $activeForm = ActiveForm::begin([
@@ -53,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-    <div class="row">
+    <div class="row skin-white">
         <div class="col-md-6">
             <?= $activeForm->field($form, 'name')->textInput(['maxlength' => true]) ?>
         </div>
@@ -63,16 +62,81 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-3">
             <?= $activeForm->field($form, 'enable_fraction')->checkbox() ?>
         </div>
+        <?php if (\Yii::$app->user->identity->isSuperadmin()):?>
+            <div class="col-md-3">
+                <?= $activeForm->field($form, 'advanced')->checkbox() ?>
+            </div>
+        <?php endif;?>
     </div>
 
-    <div class="row">
+    <br>
+
+    <div class="row skin-white">
+        <div class="col-md-6">
+            <?= $activeForm->field($form, 'semester_date[1][start]')->widget(\kartik\date\DatePicker::class, [
+                    'language' => 'ru',
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd-mm-yyyy'
+                    ],
+            ])->label('Дата начала 1-ого семестра'); ?>            
+
+            <?= $activeForm->field($form, 'semester_date[1][end]')->widget(\kartik\date\DatePicker::class, [
+                    'language' => 'ru',
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd-mm-yyyy'
+                    ],
+            ])->label('Дата окончания 1-ого семестра'); ?>
+        </div>
+        <div class="col-md-6">
+            <?= $activeForm->field($form, 'semester_date[2][start]')->widget(\kartik\date\DatePicker::class, [
+                    'language' => 'ru',
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd-mm-yyyy'
+                    ],
+            ])->label('Дата начала 2-ого семестра'); ?>
+
+            <?= $activeForm->field($form, 'semester_date[2][end]')->widget(\kartik\date\DatePicker::class, [
+                    'language' => 'ru',
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd-mm-yyyy'
+                    ],
+            ])->label('Дата окончания 2-ого семестра'); ?>
+        </div>
+    </div>
+    <br>
+    <div class="row skin-white">
+        <?php
+            $i = 1;
+            while ($i <= $form->max_shift) :?>
+                <div class="col-md-6">
+                    <?= $activeForm->field($form, 'shift_time['.$i.'][start_time]')->textInput(['placeholder' => ''])->label('Время начала смены № ' . $i . '(например: 9:00)') ?>
+                    <?= $activeForm->field($form, 'shift_time['.$i.'][lesson_duration]')->textInput(['placeholder' => ''])->label('Продолжительность занятия (мин.)') ?>
+                    <!-- <?= $activeForm->field($form, 'shift_time['.$i.'][rest_duration]')->textInput(['placeholder' => ''])->label('Продолжительность перемены (мин.)') ?> -->
+                </div>
+        <?php $i++; endwhile;?>
+    </div>
+
+    <br>
+
+    <div class="row skin-white">
+        <div class="col-md-12">
+            <?= $activeForm->field($form, 'director')->textInput()->label('Директор (ФИО)') ?>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row skin-white">
         <div class="col-md-12">
             <?= $activeForm->field($form, 'description')->textarea(['rows' => 3 ]) ?>
         </div>
-
     </div>
 
-    <div class="row">
+    <div class="row skin-white">
         <div class="col-md-3">
             <?= $activeForm->field($form, 'min_grade')->textInput() ?>
         </div>
@@ -87,7 +151,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-    <div class="row">
+    <div class="row skin-white">
             <?= Html::tag('div', $activeForm->field($form, 'country_id')->dropDownList(
                 ArrayHelper::map(Country::find()->all(), 'id', 'caption_current'), [
                 'class' => 'form-control active-form-refresh-control',
@@ -156,7 +220,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-    <div class="row">
+    <div class="row skin-white">
         <div class="col-md-3">
             <?= $activeForm->field($form, 'phone')->textInput(['maxlength' => true]) ?>
         </div>

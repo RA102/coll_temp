@@ -27,7 +27,7 @@
                             ['label' => Yii::t('app','Список'), 'icon' => 'dashboard', 'url' => ['/institution']],
                             ['label' => Yii::t('app','Типы'), 'icon' => 'dashboard', 'url' => ['/']],
                             ['label' => Yii::t('app','Типы помещений'), 'icon' => 'dashboard', 'url' => ['/']],
-                            ['label' => Yii::t('app','Группы'), 'icon' => 'dashboard', 'url' => ['/group']],
+                            ['label' => Yii::t('app','Группы'), 'icon' => 'dashboard', 'url' => ['/group/index']],
                         ],
                     ],
                     [

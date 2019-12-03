@@ -2,6 +2,10 @@
 
 namespace common\models\handbook;
 
+use common\models\organization\Group;
+use common\models\link\StudentGroupLink;
+use common\models\person\Student;
+use common\models\person\Entrant;
 use Yii;
 
 /**
@@ -138,4 +142,37 @@ class Speciality extends \yii\db\ActiveRecord
     public function getCaptionWithCode() {
         return "{$this->caption_current} ({$this->code})";
     }
+
+    public function getGroups()
+    {
+        return $this->hasMany(Group::class, ['speciality_id' => 'id'])->where(['institution_id' => Yii::$app->user->identity->institution->id]);
+    }
+
+    public function getStudentGroupLinks()
+    {
+        return $this->hasMany(StudentGroupLink::class, ['group_id' => 'id'])->via('groups');
+    }
+
+    public function getStudents()
+    {
+        return $this->hasMany(Student::class, ['id' => 'student_id'])
+        ->andOnCondition(['status' => 1])
+        ->via('studentGroupLinks');
+    }
+
+    public function getEntrants()
+    {
+        return $this->hasMany(Entrant::class, ['id' => 'student_id'])
+        ->andOnCondition(['status' => 1])
+        ->via('studentGroupLinks');
+    }
+
+    public function getEntrantsFemale()
+    {
+        return $this->hasMany(Entrant::class, ['id' => 'student_id'])
+        ->andOnCondition(['status' => 1])
+        ->andOnCondition(['sex' => 2])
+        ->via('studentGroupLinks');
+    }
+
 }

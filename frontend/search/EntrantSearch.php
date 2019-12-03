@@ -144,6 +144,10 @@ class EntrantSearch extends Entrant
             }
         }
 
+        if (isset($this->sex)) {
+                $query->andFilterWhere([self::tableName() . '.sex' => $this->sex]);
+        }
+
         if ($this->withoutGroup) {
             $query->joinWith('receptionGroups', false, 'LEFT OUTER JOIN');
             // search without link, or with soft deleted link

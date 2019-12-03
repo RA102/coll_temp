@@ -12,6 +12,7 @@ use common\models\link\PersonInstitutionLink;
 use common\models\person\Person;
 use common\models\person\Employee;
 use common\models\person\Student;
+use common\models\person\Entrant;
 use common\models\Street;
 use Yii;
 use yii\db\ActiveQuery;
@@ -54,6 +55,10 @@ use yii\db\ActiveQuery;
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
+ * @property array $semester_date
+ * @property array $shift_time
+ * @property string $director
+ * @property bool $advanced [boolean]
  *
  * @property Speciality[] $specialities
  * @property InstitutionSpecialityInfo[] $specialityInfos
@@ -84,11 +89,11 @@ class Institution extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['country_id', 'city_id', 'parent_id', 'type_id', 'educational_form_id', 'organizational_legal_form_id', 'oid', 'server_id', 'street_id', 'foundation_year', 'max_grade', 'status'], 'default', 'value' => null],
+            [['country_id', 'city_id', 'parent_id', 'type_id', 'educational_form_id', 'organizational_legal_form_id', 'oid', 'server_id', 'street_id', 'foundation_year', 'max_grade', 'status', 'semester_date', 'shift_time'], 'default', 'value' => null],
             [['country_id', 'city_id', 'parent_id', 'type_id', 'educational_form_id', 'organizational_legal_form_id', 'oid', 'server_id', 'street_id', 'foundation_year', 'max_grade', 'status'], 'integer'],
-            [['description', 'info'], 'string'],
+            [['description', 'info', 'director'], 'string'],
             [['initialization'], 'boolean'],
-            [['create_ts', 'update_ts', 'delete_ts', 'enable_fraction'], 'safe'],
+            [['create_ts', 'update_ts', 'delete_ts', 'enable_fraction', 'semester_date', 'shift_time', 'advanced'], 'safe'],
             [['name'], 'string', 'max' => 511],
             [['house_number', 'email', 'domain', 'db_name', 'db_user', 'db_password'], 'string', 'max' => 255],
             [['phone', 'fax'], 'string', 'max' => 20],
@@ -232,6 +237,45 @@ class Institution extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Student::className(), ['id' => 'person_id'])
             ->andOnCondition(['status' => 1])
+            ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+            });        
+    }
+
+    public function getEntrants()
+    {
+        return $this->hasMany(Entrant::className(), ['id' => 'person_id'])
+            ->andOnCondition(['status' => 1])
+            ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+            });        
+    }
+
+    public function getStudentsMale()
+    {
+        return $this->hasMany(Student::className(), ['id' => 'person_id'])
+            ->andOnCondition(['status' => 1])
+            ->andOnCondition(['sex' => 1])
+            ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+            });        
+    }
+
+    public function getStudentsFemale()
+    {
+        return $this->hasMany(Student::className(), ['id' => 'person_id'])
+            ->andOnCondition(['status' => 1])
+            ->andOnCondition(['sex' => 2])
+            ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {
+                $query->andWhere(['link.person_institution_link.is_deleted' => false]);
+            });        
+    }
+
+    public function getEntrantsFemale()
+    {
+        return $this->hasMany(Entrant::className(), ['id' => 'person_id'])
+            ->andOnCondition(['status' => 1])
+            ->andOnCondition(['sex' => 2])
             ->viaTable('link.person_institution_link', ['institution_id' => 'id'], function($query) {
                 $query->andWhere(['link.person_institution_link.is_deleted' => false]);
             });        

@@ -28,6 +28,12 @@ use yii\widgets\DetailView;
         'iin',
         'birth_date:date',
         [
+            'attribute' => 'language',
+            'value' => function (Student $model) {
+                return \common\helpers\LanguageHelper::getLanguageList()[$model->language];
+            }
+        ],
+        [
             'attribute' => 'sex',
             'value' => function (Student $model) {
                 return PersonHelper::getSexList()[$model->sex];

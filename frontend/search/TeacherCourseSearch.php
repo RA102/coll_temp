@@ -18,7 +18,7 @@ class TeacherCourseSearch extends TeacherCourse
     {
         return [
             [['id', 'course_id', 'teacher_id'], 'integer'],
-            [['type', 'start_ts', 'end_ts', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
+            [['type', 'create_ts', 'update_ts', 'delete_ts'], 'safe'],
         ];
     }
 
@@ -59,8 +59,6 @@ class TeacherCourseSearch extends TeacherCourse
             'id' => $this->id,
             'course_id' => $this->course_id,
             'teacher_id' => $this->teacher_id,
-            'start_ts' => $this->start_ts,
-            'end_ts' => $this->end_ts,
             'create_ts' => $this->create_ts,
             'update_ts' => $this->update_ts,
             'delete_ts' => $this->delete_ts,

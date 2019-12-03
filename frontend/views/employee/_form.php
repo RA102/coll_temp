@@ -1,6 +1,7 @@
 <?php
 
 use common\helpers\PersonHelper;
+use common\helpers\PersonTypeHelper;
 use common\models\Nationality;
 use kartik\date\DatePicker;
 use yii\helpers\ArrayHelper;
@@ -65,8 +66,22 @@ use kartik\select2\Select2;
                 ->widget(\yii\widgets\MaskedInput::class, ['mask' => '999999999999'])
             ?>
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
             <?= $form->field($model, 'language')->dropDownList(\common\helpers\LanguageHelper::getLanguageList()) ?>
+        </div> -->
+        <div class="col-md-4">
+            <?= $form->field($model, 'lang')->widget(Select2::class, [
+                'data' => \common\helpers\LanguageHelper::getLanguageList(),
+                'options' => [
+                    'placeholder' => '...',
+                    'class' => 'active-form-refresh-control',
+                    'multiple' => true,
+                ],
+                'theme' => 'default',
+                'pluginOptions' => [
+                    'allowClear' => true,
+                ],
+            ])->label('Языки обучения') ?>
         </div>
     </div>
 
@@ -76,6 +91,17 @@ use kartik\select2\Select2;
         </div>
     </div>
 
+    <?php if ($person->isAdmin()):?>
+        <div class="row">
+            <div class="col-md-4">
+                <?= $form->field($model, 'person_type')->widget(Select2::class, [
+                    'data' => PersonTypeHelper::getList(),
+                    'options' => ['placeholder' => ''],
+                    'theme' => 'default',
+                ]) ?>
+            </div>
+        </div>
+    <?php endif;?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

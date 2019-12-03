@@ -132,7 +132,7 @@ class GroupController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
-
+        
         $specialities = Yii::$app->user->identity->institution->specialities;
 
         return $this->render('update', [
@@ -152,6 +152,12 @@ class GroupController extends Controller
     {
         $model = $this->findModel($id);
         $model->delete_ts = date('Y-m-d H:i:s');
+
+        $student_group_links = StudentGroupLink::find()->where(['group_id' => $model->id])->all();
+        foreach ($student_group_links as $link) {
+            $link->delete();
+        }
+
         $model->save();
         
         $student_group_links = StudentGroupLink::find()->where(['group_id' => $model->id])->all();

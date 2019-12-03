@@ -62,11 +62,11 @@ class PersonService
         }
 
         // TODO: Remove. Probably deprecated, pass to transaction manager $model variable instead of $person
-        $person = Person::findOne(['iin' => $model->iin]);
+        $person = Person::find()->andWhere(['iin' => $model->iin, 'type' => $model->type])->one();
         if ($person) {
-            /*if ($person->institution) {
-                throw new \Exception(\Yii::t('app', 'Person is attached to institution'));
-            }*/
+            if ($person->institution) {
+                throw new \Exception(\Yii::t('app', 'Person exists'));
+            }
 
             $person->setAttributes(array_filter($model->getAttributes(), function ($value) {
                 return !is_null($value);

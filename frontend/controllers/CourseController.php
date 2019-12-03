@@ -2,11 +2,12 @@
 
 namespace frontend\controllers;
 
+use common\models\Course;
 use common\services\organization\InstitutionDisciplineService;
 use common\services\TeacherCourseService;
+use frontend\search\CourseSearch;
 use frontend\search\TeacherCourseSearch;
 use Yii;
-use common\models\Course;
 use yii\base\Module;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
@@ -81,20 +82,23 @@ class CourseController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
+        $searchModel = new CourseSearch();
+        $searchModel->institution_id = $this->institution->id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        /*$dataProvider = new ActiveDataProvider([
             'query' => Course::find()->joinWith([
-                /** @see Course::getInstitutionDiscipline() */
                 'institutionDiscipline' => function (ActiveQuery $query) {
                     return $query->andWhere([
                         'institution_id' => $this->institution->id,
                     ]);
                 }
             ]),
-        ]);
+        ]);*/
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-
         ]);
     }
 

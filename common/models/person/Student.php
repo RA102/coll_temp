@@ -5,6 +5,7 @@ namespace common\models\person;
 use common\helpers\PersonTypeHelper;
 use common\models\link\StudentGroupLink;
 use common\models\organization\Group;
+use common\models\organization\Journal;
 use common\models\ReceptionGroup;
 
 /**
@@ -80,4 +81,23 @@ class Student extends Person
         return $this->hasOne(ReceptionGroup::class, ['id' => 'reception_group_id'])
             ->viaTable('link.entrant_reception_group_link', ['entrant_id' => 'id']);
     }
+
+    public function checkAttendance($type, $group_id, $student_id, $teacher_course_id, $date)
+    {
+        $journal = Journal::find()
+                    ->where(['group_id' => $group_id])
+                    ->andWhere(['date_ts' => $date])
+                    ->andWhere(['teacher_course_id' => $teacher_course_id])
+                    ->andWhere(['type' => $type])
+                    ->one();
+
+        if($journal !== null) {
+            $data = $journal->data;
+            $attendance = $data[$student_id]['attendance'];
+            $mark = $data[$student_id]['mark'];
+            $values = [$attendance, $mark];
+            return $values;
+        }
+    }
+
 }

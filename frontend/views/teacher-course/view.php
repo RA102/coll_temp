@@ -57,12 +57,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     }, $model->groups));
                 }
             ],
-            'type',
-            'start_ts',
-            'end_ts',
+            [
+                'attribute' => 'status',
+                'value' => function (TeacherCourse $model) {
+                    return $model->getStatus($model->status);
+                }
+            ],
+            /*[
+                'attribute' => 'type',
+                'value' => function (TeacherCourse $model) {
+                    return $model->getType($model->type);
+                }
+            ],*/
             'create_ts',
             'update_ts',
-            'delete_ts',
+            //'delete_ts',
         ],
     ]) ?>
 

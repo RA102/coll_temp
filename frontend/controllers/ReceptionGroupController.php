@@ -92,15 +92,20 @@ class ReceptionGroupController extends Controller
         $model = $this->findModel($id);
 
         $examDataProvider = new ActiveDataProvider([
-            'query' => ReceptionExam::find()
-                ->joinWith([
-                    /** @see ReceptionExam::getReceptionGroups() */
-                    'receptionGroups' => function (ActiveQuery $query) use ($model) {
-                        return $query->andWhere([
-                            ReceptionGroup::tableName() . '.id' => $model->id,
-                        ]);
-                    },
-                ])
+            //'query' => ReceptionExam::find()
+            //    ->joinWith([
+            //        /** @see ReceptionExam::getReceptionGroups() */
+            //        'receptionGroups' => function (ActiveQuery $query) use ($model) {
+            //            return $query->andWhere([
+            //                ReceptionGroup::tableName() . '.id' => $model->id,
+            //            ]);
+            //        },
+            //    ])
+            //    ->with([
+                    /** @see ReceptionExam::getInstitutionDiscipline() */
+            //        'institutionDiscipline'
+            //    ]),
+            'query' => $model->getReceptionExams()
                 ->with([
                     /** @see ReceptionExam::getInstitutionDiscipline() */
                     'institutionDiscipline'

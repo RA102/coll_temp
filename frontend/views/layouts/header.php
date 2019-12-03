@@ -25,7 +25,7 @@ use yii\helpers\Html;
 
             <ul class="nav navbar-nav">
 
-                <li class="languages">
+                <!-- <li class="languages">
                     <ul class="languages__list">
                         <li class="languages__item">
                             <a href="#" target="_self" class="languages__link languages__link">Рус</a>
@@ -34,7 +34,7 @@ use yii\helpers\Html;
                             <a href="#" target="_self" class="languages__link languages__link--active">Каз</a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
 
                 <li>
                     <a title="Инструкция пользователя" rel="noopener"

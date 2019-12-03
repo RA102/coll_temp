@@ -1,8 +1,11 @@
 <?php
 
 use kartik\select2\Select2;
+use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use yii\web\View;
 
 /* @var $model frontend\models\forms\LessonForm */
 /* @var $teacherCourses common\models\TeacherCourse[] */
@@ -24,16 +27,25 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'id')->hiddenInput()->label(false) ?>
 
                 <?= $form->field($model, 'teacher_course_id')->widget(Select2::class, [
-                    'data' => ArrayHelper::map($teacherCourses, 'id', 'fullname'), /** @see \common\models\TeacherCourse::getFullname() */
+                    'data' => ArrayHelper::map($teacherCourses, 'id', 'disciplineName'), /** @see \common\models\TeacherCourse::getFullname() */
                     'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
                     'theme' => 'default',
                     'pluginOptions' => [
                         'allowClear' => true,
                     ],
-                ]) ?>
+                ])->label('Предмет') ?>
 
-                <?= $form->field($model, 'teacher_id')->widget(Select2::class, [
+                <!-- <?= $form->field($model, 'teacher_id')->widget(Select2::class, [
                     'data' => ArrayHelper::map($teachers, 'id', 'fullName'), // TODO rework to ajax
+                    'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+                    'theme' => 'default',
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                ]) ?> -->
+
+                <?= $form->field($model, 'classroom_id')->widget(Select2::class, [
+                    'data' => ArrayHelper::map($classrooms, 'id', 'number'), // TODO rework to ajax
                     'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
                     'theme' => 'default',
                     'pluginOptions' => [
@@ -49,10 +61,15 @@ use yii\widgets\ActiveForm;
                     'readonly' => true,
                 ]) ?>
 
+                <?= $form->field($model, 'group_id')->hiddenInput(['value' => $group_id])->label(false) ?>
+
                 <?php ActiveForm::end(); ?>
 
                 <button class="btn btn-success js-modal-save" type="button">
                     <?= Yii::t('app', 'Save') ?>
+                </button>
+                <button class="btn btn-primary js-modal-copy" type="button">
+                    <?= Yii::t('app', 'Copy') ?>
                 </button>
                 <button class="btn btn-default js-modal-cancel" data-dismiss="modal" type="button">
                     <?= Yii::t('app', 'Cancel') ?>
@@ -70,6 +87,14 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 </div>
+
+<?php
+$copyUrl = json_encode(Url::to(['lesson/ajax-copy', '$lesson_id' => $model->id]));
+
+$this->registerJs("
+var copyUrl = {$copyUrl};
+", View::POS_BEGIN);
+?>
 
 <style>
     .loader {

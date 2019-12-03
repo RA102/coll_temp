@@ -2,6 +2,7 @@
 
 use common\models\Course;
 use common\models\TeacherCourse;
+use common\models\organization\Group;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -37,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            //'id',
             [
                 'attribute' => 'institution_discipline_id',
                 'value' => function (Course $model) {
@@ -53,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'create_ts',
             'update_ts',
-            'delete_ts',
+            //'delete_ts',
         ],
     ]) ?>
 
@@ -75,9 +76,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->person->getFullName();
                 }
             ],
-            'type',
-            'start_ts',
-            'end_ts',
+            [
+                'attribute' => 'status',
+                'value' => function (TeacherCourse $model) {
+                    return $model->getStatus($model->status);
+                }
+            ],
+            /*[
+                'attribute' => 'type',
+                'value' => function (TeacherCourse $model) {
+                    return $model->getType($model->type);
+                }
+            ],*/
+            [
+                'attribute' => 'groups',
+                'value' => function (TeacherCourse $model) {
+                    return implode(', ', array_map(function (Group $group) {
+                        return $group->caption_current;
+                    }, $model->groups));
+                }
+            ],
+            //'start_ts',
+            //'end_ts',
             //'create_ts',
             //'update_ts',
             //'delete_ts',

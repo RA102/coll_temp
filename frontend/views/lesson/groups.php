@@ -8,7 +8,8 @@ use yii\grid\GridView;
 /* @var $searchModel frontend\search\GroupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Lessons');
+$this->title = Yii::t('app', 'Groups');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Расписание'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div style="position: relative;">
@@ -29,12 +30,27 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'caption_current',
                     'value' => function (Group $model) {
                         return Html::a($model->caption_current, [
-                            'lesson/index',
+                            '/schedule/group',
                             'group_id' => $model->id,
                         ]);
                     },
                     'format' => 'html',
                 ],
+                [
+                    'format'    => 'html',
+                    'attribute' => 'language',
+                    'value'     => function (\common\models\organization\Group $model) {
+                        return $model->getLanguage();
+                    },
+                ],
+                [
+                    'format'    => 'html',
+                    'attribute' => 'speciality_id',
+                    'value'     => function (\common\models\organization\Group $model) {
+                        return $model->speciality->getCaptionWithCode() ?? null;
+                    },
+                ],
+                'class',
             ],
         ]); ?>
     </div>
