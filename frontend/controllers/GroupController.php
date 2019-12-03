@@ -159,6 +159,11 @@ class GroupController extends Controller
         }
 
         $model->save();
+        
+        $student_group_links = StudentGroupLink::find()->where(['group_id' => $model->id])->all();
+        foreach ($student_group_links as $link) {
+            $link->delete();
+        }
 
         return $this->redirect(['index']);
     }

@@ -15,6 +15,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\base\ErrorException;
 
 /**
  * ReceptionGroupController implements the CRUD actions for ReceptionGroup model.

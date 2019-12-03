@@ -46,7 +46,7 @@ class GroupSearch extends Group
                 Group::tableName() . '.delete_ts' => null,
                 'is_deleted' => false,
             ]);
-
+            
         // add conditions that should always apply here
 
         $person = \Yii::$app->user->identity;
