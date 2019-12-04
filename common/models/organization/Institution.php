@@ -96,7 +96,7 @@ class Institution extends \yii\db\ActiveRecord
             [['create_ts', 'update_ts', 'delete_ts', 'enable_fraction', 'semester_date', 'shift_time', 'advanced'], 'safe'],
             [['name'], 'string', 'max' => 511],
             [['house_number', 'email', 'domain', 'db_name', 'db_user', 'db_password'], 'string', 'max' => 255],
-            [['phone', 'fax'], 'string', 'max' => 20],
+            [['phone', 'fax'], 'string', 'max' => 100],
             [['languages_iso'], 'string', 'max' => 2],
             [['bin', 'website'], 'string', 'max' => 50],
         ];

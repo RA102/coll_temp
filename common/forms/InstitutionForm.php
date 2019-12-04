@@ -68,7 +68,7 @@ class InstitutionForm extends Model
         return [
             ['email', 'trim'],
             ['email', 'required'],
-            ['email', 'email'],
+            //['email', 'email'],
             ['email', 'string', 'max' => 255],
             ['director', 'string'],
 
