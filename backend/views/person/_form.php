@@ -93,7 +93,7 @@ use yii\widgets\DetailView;
                     Person::TYPE_STUDENT => 'Обучающийся',
                     Person::TYPE_EMPLOYEE => 'Сотрудник',
                     Person::TYPE_ENTRANT => 'Абитуриент',
-                    Person::TYPE_HR => 'HR',
+                    //Person::TYPE_HR => 'HR',
                 ]) ?>
 
                 <?= $activeForm->field($form, 'person_type')->widget(Select2::class, [
