@@ -6,14 +6,14 @@ use common\models\person\PersonType;
 
 class PersonTypeHelper
 {
+    #Глобальный админ системы
+    const PERSON_TYPE_SUPER_ADMIN = 'college_superadmin';
+
     #Админ
-    const EMPLOYEE_TYPE_ADMIN = 'admin';
+    const EMPLOYEE_TYPE_ADMIN = 'college_admin';
 
     #Дефолтный тип для роли у работника
     const EMPLOYEE_TYPE_RANK_DEFAULT = 'teacher';
-
-    #Глобальный админ системы
-    const PERSON_TYPE_SUPER_ADMIN = 'superadmin';
 
     #Студент
     const PERSON_TYPE_STUDENT = 'student';
