@@ -13,6 +13,7 @@ use common\models\person\Person;
 use common\models\person\Employee;
 use common\models\person\Student;
 use common\models\person\Entrant;
+use common\models\organization\Group;
 use common\models\Street;
 use Yii;
 use yii\db\ActiveQuery;
@@ -345,5 +346,10 @@ class Institution extends \yii\db\ActiveRecord
     public function getStatusValue()
     {
         return InstitutionHelper::getStatusList()[$this->status] ?? null;
+    }
+
+    public function getGroups()
+    {
+        return $this->hasMany(Group::class, ['institution_id' => 'id']);
     }
 }

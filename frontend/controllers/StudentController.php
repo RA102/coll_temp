@@ -6,6 +6,7 @@ use common\components\Model;
 use common\models\person\Person;
 use common\models\person\Student;
 use common\models\PersonRelative;
+use common\models\link\StudentGroupLink;
 use common\services\person\PersonContactService;
 use common\services\person\PersonInfoService;
 use common\services\person\PersonLocationService;
@@ -232,10 +233,16 @@ class StudentController extends Controller
         $form = new StudentGeneralForm();
         $form->setAttributes($model->attributes);
         $form->birth_date = date('d-m-Y', strtotime($form->birth_date));
+        $form->group_id = $model->group->id;
+        $groups = Yii::$app->user->identity->institution->groups;
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $model->setAttributes($form->attributes);
             $this->personService->update($model, Yii::$app->user->identity->institution->id);
+
+            $student_group_link = StudentGroupLink::findOne(['student_id' => $model->id]);
+            $student_group_link->group_id = $form->group_id;
+            $student_group_link->save();
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -243,6 +250,7 @@ class StudentController extends Controller
         return $this->render('update/update', [
             'form'  => $form,
             'model' => $model,
+            'groups' => $groups,
         ]);
     }
 
