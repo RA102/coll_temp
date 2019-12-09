@@ -74,6 +74,20 @@ use kartik\select2\Select2;
             </div>
         </div>
 
+        <?php if (Yii::$app->user->identity->isAdmin()):?>
+        <div class="row">
+            <div class="col-md-4">
+                <?= $activeForm->field($form, 'group_id')->widget(Select2::classname(), [
+                    'data' => \yii\helpers\ArrayHelper::map($groups, 'id', 'caption_current'),
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ])->label('Группа');
+                ?>
+            </div>            
+        </div>
+        <?php endif;?>
+
         <div class="form-group">
             <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
         </div>

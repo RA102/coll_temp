@@ -21,6 +21,7 @@ class StudentGeneralForm extends Model
     public $language;
     public $person_type;
     public $is_pluralist;
+    public $group_id;
 
     public $credential_type = PersonCredentialHelper::TYPE_EMAIL;
     public $indentity;
@@ -40,6 +41,7 @@ class StudentGeneralForm extends Model
 
             ['indentity', 'email', 'skipOnEmpty' => true],
             ['is_pluralist', 'boolean'],
+            ['group_id', 'integer'],
 
             [['nationality_id', 'iin'], 'required'], // TODO foreign key check
             ['nationality_id', 'integer'],
@@ -67,6 +69,7 @@ class StudentGeneralForm extends Model
             'indentity'           => Yii::t('app', 'Email'),
             'is_pluralist'        => Yii::t('app', 'Is Pluralist'),
             'person_type'         => Yii::t('app', 'Роль в системе'),
+            'group_id'         => Yii::t('app', 'Группа'),
         ];
     }
 }
