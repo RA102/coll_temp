@@ -15,7 +15,7 @@
                         'label' => Yii::t('app', 'Все колледжи'),
                         'icon'  => 'far fa-archway',
                         'url'   => '/institution/all',
-                        'visible' => $person->isAdmin() && $person->institutionAdvanced(),
+                        'visible' => $person->isSuperadmin() && $person->institutionAdvanced(),
                     ],
                     [
                         'label' => Yii::t('app', 'Selection committee'),
