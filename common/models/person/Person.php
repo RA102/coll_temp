@@ -482,7 +482,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     /*TODO make normal rbac control*/
     public function isAble($action)
     {
-        $admin = ['employee-index'];
+        $college_admin = ['employee-index'];
         $teacher = [];
         $student = [];
         $entrant = [];
