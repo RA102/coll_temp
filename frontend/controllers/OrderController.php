@@ -339,6 +339,9 @@ class OrderController extends Controller
         elseif ($template == '06') {
             $model = new \yii\base\DynamicModel(['discipline']);
         }
+        elseif ($template == '07') {
+            $model = new \yii\base\DynamicModel(['from', 'reason', 'percent', 'note']);
+        }
         elseif ($template == '09') {
             $model = new \yii\base\DynamicModel(['date', 'salary']);
         }
@@ -397,6 +400,12 @@ class OrderController extends Controller
             }
             if (array_key_exists('note', $_POST['DynamicModel'])) {
                 $templateProcessor->setValue('note', $_POST['DynamicModel']['note']);
+            }
+            if (array_key_exists('reason', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('reason', $_POST['DynamicModel']['reason']);
+            }
+            if (array_key_exists('percent', $_POST['DynamicModel'])) {
+                $templateProcessor->setValue('percent', $_POST['DynamicModel']['percent']);
             }
             $templateProcessor->saveAs($filename);
             
