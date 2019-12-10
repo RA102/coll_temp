@@ -110,11 +110,13 @@ class OrderController extends Controller
         $searchModel = new EmployeeSearch(Yii::$app->user->identity->institution);
         $searchModel->status = Employee::STATUS_ACTIVE;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $title = $this->orderNames($template, 'employee');
 
         return $this->render('employee', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'template' => $template,
+            'title' => $title,
         ]);
     }
 
@@ -150,7 +152,7 @@ class OrderController extends Controller
                 '08' => 'Список кафедр',
                 '09' => 'Справка для сотрудников',
                 '10' => 'Без содержания',
-                '11' => 'Декретный отпукс',
+                '11' => 'Декретный отпуск',
             ];
         }
 
@@ -414,7 +416,7 @@ class OrderController extends Controller
 
         return $this->render('employee/' . $template, [
             'employee' => $employee,
-            'model' => $model
+            'model' => $model,
         ]);
     }
 

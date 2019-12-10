@@ -1,6 +1,7 @@
 <?php
 
 use common\helpers\PersonHelper;
+use common\helpers\PersonTypeHelper;
 use common\models\Nationality;
 use kartik\date\DatePicker;
 use yii\helpers\ArrayHelper;
@@ -24,9 +25,14 @@ $this->title = 'Приказ о приеме на работу для ' . $emplo
                         'autoclose' => true,
                         'format' => 'dd.mm.yyyy'
                     ],
-            ])->label('Дата'); ?>
+            ])->label('Дата'); ?>`
 
     <?= $form->field($model, 'position')->textInput(['maxlength' => true])->label('Позиция') ?>
+    <?php // echo $form->field($model, 'position')->widget(Select2::class, [
+                        //'data' => PersonTypeHelper::getList(),
+                        //'options' => ['placeholder' => ''],
+                        //'theme' => 'default',
+                    //]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-success']) ?>
