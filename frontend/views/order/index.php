@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <li><a href="#">Список кафедр</a></li>
                 <li><a href="employee?template=09">Справка для сотрудников</a></li>
                 <li><a href="employee?template=10">Отпуск без содержания</a></li>
-                <li><a href="employee?template=11">Декретный отпукс</a></li>
+                <li><a href="employee?template=11">Декретный отпуск</a></li>
             </ul>
         </div>
     </div>
