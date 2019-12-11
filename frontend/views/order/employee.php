@@ -11,12 +11,13 @@ use yii\helpers\Url;
 /* @var $searchModel frontend\search\EmployeeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Employees');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $title;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Приказы'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $title;
 ?>
 
 <div style="position: relative;">
-    <h1><?= $this->title ?> (<?= $dataProvider->totalCount ?>)</h1>
+    <h1><?= $title ?> (<?= $dataProvider->totalCount ?>)</h1>
 </div>
 
 
