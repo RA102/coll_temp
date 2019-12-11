@@ -457,12 +457,17 @@ class OrderController extends Controller
             unlink($filename);
         }
 
-        $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('templates/employee/' . $template . '.docx');
-        $templateProcessor->setValue('name', $employee->firstname . ' ' . $employee->lastname);
-        $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
-        $templateProcessor->saveAs($filename);
-        
-        return Yii::$app->response->sendFile($filename);
+        try {
+            $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('templates/employee/' . $template . '.docx');
+            $templateProcessor->setValue('name', $employee->firstname . ' ' . $employee->lastname);
+            $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
+            $templateProcessor->saveAs($filename);
+            
+            return Yii::$app->response->sendFile($filename);
+        } catch(\yii\db\Exception $e){
+            echo $e->getName(); 
+            //Get the user-friendly name of this exception
+        }
 
 
         //return $this->redirect(['index']);
