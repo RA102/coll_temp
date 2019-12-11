@@ -11,6 +11,8 @@ use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 
 $this->title = 'Приказ об отпуске без содержания для ' . $employee->fullName;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Приказы'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1><?=$this->title?></h1>
