@@ -466,6 +466,8 @@ class OrderController extends Controller
             return Yii::$app->response->sendFile($filename);
         } catch(\yii\db\Exception $e){
             echo $e->getName(); 
+            $e->getCode();
+            $e->getLine();
             //Get the user-friendly name of this exception
         }
 
