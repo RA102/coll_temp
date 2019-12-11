@@ -324,100 +324,107 @@ class OrderController extends Controller
 
     public function actionEmployeeOrder($employee_id, $template)
     {
-        $employee = Employee::findOne($employee_id);
+        try {
+            $employee = Employee::findOne($employee_id);
 
-        if ($template == '02') {
-            $model = new \yii\base\DynamicModel(['date', 'position']);
-        }
-        elseif ($template == '03') {
-            $model = new \yii\base\DynamicModel(['date', 'position', 'unused_vacation_days', 'application_date']);
-        }
-        elseif ($template == '04') {
-            $model = new \yii\base\DynamicModel(['from', 'to', 'city']);
-        }
-        elseif ($template == '05') {
-            $model = new \yii\base\DynamicModel(['from', 'to', 'college', 'days']);
-        }
-        elseif ($template == '06') {
-            $model = new \yii\base\DynamicModel(['discipline']);
-        }
-        elseif ($template == '07') {
-            $model = new \yii\base\DynamicModel(['from', 'reason', 'percent', 'note']);
-        }
-        elseif ($template == '09') {
-            $model = new \yii\base\DynamicModel(['date', 'salary']);
-        }
-        elseif ($template == '10') {
-            $model = new \yii\base\DynamicModel(['from', 'to', 'note']);
-        }
-        elseif ($template == '11') {
-            $model = new \yii\base\DynamicModel(['from', 'to', 'application_date']);
-        }
-
-
-        if ($model->load(Yii::$app->request->post())) {
-            $filename = \Yii::$app->basePath . '/web/' . '_' . $employee->firstname . ' ' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
-
-            if (file_exists($filename)) {
-                unlink($filename);
+            if ($template == '02') {
+                $model = new \yii\base\DynamicModel(['date', 'position']);
+            }
+            elseif ($template == '03') {
+                $model = new \yii\base\DynamicModel(['date', 'position', 'unused_vacation_days', 'application_date']);
+            }
+            elseif ($template == '04') {
+                $model = new \yii\base\DynamicModel(['from', 'to', 'city']);
+            }
+            elseif ($template == '05') {
+                $model = new \yii\base\DynamicModel(['from', 'to', 'college', 'days']);
+            }
+            elseif ($template == '06') {
+                $model = new \yii\base\DynamicModel(['discipline']);
+            }
+            elseif ($template == '07') {
+                $model = new \yii\base\DynamicModel(['from', 'reason', 'percent', 'note']);
+            }
+            elseif ($template == '09') {
+                $model = new \yii\base\DynamicModel(['date', 'salary']);
+            }
+            elseif ($template == '10') {
+                $model = new \yii\base\DynamicModel(['from', 'to', 'note']);
+            }
+            elseif ($template == '11') {
+                $model = new \yii\base\DynamicModel(['from', 'to', 'application_date']);
             }
 
-            $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('templates/employee/' . $template . '.docx');
 
-            $templateProcessor->setValue('name', $employee->fullName);
-            $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
-            $templateProcessor->setValue('college', Yii::$app->user->identity->institution->name);
-            if (array_key_exists('date', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('date', $_POST['DynamicModel']['date']);
+            if ($model->load(Yii::$app->request->post())) {
+                $filename = \Yii::$app->basePath . '/web/' . '_' . $employee->firstname . ' ' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
+
+                if (file_exists($filename)) {
+                    unlink($filename);
+                }
+
+                $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('templates/employee/' . $template . '.docx');
+
+                $templateProcessor->setValue('name', $employee->fullName);
+                $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
+                $templateProcessor->setValue('college', Yii::$app->user->identity->institution->name);
+                if (array_key_exists('date', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('date', $_POST['DynamicModel']['date']);
+                }
+                if (array_key_exists('position', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('position', $_POST['DynamicModel']['position']);
+                }
+                if (array_key_exists('unused_vacation_days', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('unused_vacation_days', $_POST['DynamicModel']['unused_vacation_days']);
+                }
+                if (array_key_exists('application_date', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('application_date', $_POST['DynamicModel']['application_date']);
+                }
+                if (array_key_exists('from', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('from', $_POST['DynamicModel']['from']);
+                }
+                if (array_key_exists('to', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('to', $_POST['DynamicModel']['to']);
+                }
+                if (array_key_exists('city', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('city', $_POST['DynamicModel']['city']);
+                }
+                if (array_key_exists('college', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('college', $_POST['DynamicModel']['college']);
+                }
+                if (array_key_exists('days', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('days', $_POST['DynamicModel']['days']);
+                }
+                if (array_key_exists('discipline', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('discipline', $_POST['DynamicModel']['discipline']);
+                }
+                if (array_key_exists('salary', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('salary', $_POST['DynamicModel']['salary']);
+                }
+                if (array_key_exists('note', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('note', $_POST['DynamicModel']['note']);
+                }
+                if (array_key_exists('reason', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('reason', $_POST['DynamicModel']['reason']);
+                }
+                if (array_key_exists('percent', $_POST['DynamicModel'])) {
+                    $templateProcessor->setValue('percent', $_POST['DynamicModel']['percent']);
+                }
+                $templateProcessor->saveAs($filename);
+                
+                return Yii::$app->response->sendFile($filename);
             }
-            if (array_key_exists('position', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('position', $_POST['DynamicModel']['position']);
-            }
-            if (array_key_exists('unused_vacation_days', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('unused_vacation_days', $_POST['DynamicModel']['unused_vacation_days']);
-            }
-            if (array_key_exists('application_date', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('application_date', $_POST['DynamicModel']['application_date']);
-            }
-            if (array_key_exists('from', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('from', $_POST['DynamicModel']['from']);
-            }
-            if (array_key_exists('to', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('to', $_POST['DynamicModel']['to']);
-            }
-            if (array_key_exists('city', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('city', $_POST['DynamicModel']['city']);
-            }
-            if (array_key_exists('college', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('college', $_POST['DynamicModel']['college']);
-            }
-            if (array_key_exists('days', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('days', $_POST['DynamicModel']['days']);
-            }
-            if (array_key_exists('discipline', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('discipline', $_POST['DynamicModel']['discipline']);
-            }
-            if (array_key_exists('salary', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('salary', $_POST['DynamicModel']['salary']);
-            }
-            if (array_key_exists('note', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('note', $_POST['DynamicModel']['note']);
-            }
-            if (array_key_exists('reason', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('reason', $_POST['DynamicModel']['reason']);
-            }
-            if (array_key_exists('percent', $_POST['DynamicModel'])) {
-                $templateProcessor->setValue('percent', $_POST['DynamicModel']['percent']);
-            }
-            $templateProcessor->saveAs($filename);
-            
-            return Yii::$app->response->sendFile($filename);
+
+            return $this->render('employee/' . $template, [
+                'employee' => $employee,
+                'model' => $model,
+            ]);
+        } catch(\yii\db\Exception $e){
+            echo $e->getName() . '<br>'; 
+            echo $e->getCode() . '<br>';
+            echo $e->getLine() . '<br>';
+            //Get the user-friendly name of this exception
         }
-
-        return $this->render('employee/' . $template, [
-            'employee' => $employee,
-            'model' => $model,
-        ]);
     }
 
     public function actionExport($student_id, $template, $data=null)
@@ -457,19 +464,12 @@ class OrderController extends Controller
             unlink($filename);
         }
 
-        try {
-            $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('templates/employee/' . $template . '.docx');
-            $templateProcessor->setValue('name', $employee->firstname . ' ' . $employee->lastname);
-            $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
-            $templateProcessor->saveAs($filename);
-            
-            return Yii::$app->response->sendFile($filename);
-        } catch(\yii\db\Exception $e){
-            echo $e->getName() . '<br>'; 
-            echo $e->getCode() . '<br>';
-            echo $e->getLine() . '<br>';
-            //Get the user-friendly name of this exception
-        }
+        $templateProcessor = new \PhpOffice\PhpWord\TemplateProcessor('templates/employee/' . $template . '.docx');
+        $templateProcessor->setValue('name', $employee->firstname . ' ' . $employee->lastname);
+        $templateProcessor->setValue('director', Yii::$app->user->identity->institution->director);
+        $templateProcessor->saveAs($filename);
+        
+        return Yii::$app->response->sendFile($filename);
 
 
         //return $this->redirect(['index']);
