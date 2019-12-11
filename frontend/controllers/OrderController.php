@@ -419,7 +419,8 @@ class OrderController extends Controller
                 'employee' => $employee,
                 'model' => $model,
             ]);
-        } catch(\yii\db\Exception $e){
+        } catch(\Exception $e){
+            echo $e->getMessage() . '<br>'; 
             echo $e->getName() . '<br>'; 
             echo $e->getCode() . '<br>';
             echo $e->getLine() . '<br>';
