@@ -412,7 +412,9 @@ class OrderController extends Controller
                 }
                 $templateProcessor->saveAs($filename);
                 
-                return Yii::$app->response->sendFile($filename);
+                Yii::$app->response->sendFile($filename);
+                unlink($filename);
+                
             }
 
             return $this->render('employee/' . $template, [
