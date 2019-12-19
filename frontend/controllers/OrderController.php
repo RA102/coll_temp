@@ -357,7 +357,8 @@ class OrderController extends Controller
 
 
             if ($model->load(Yii::$app->request->post())) {
-                $filename = \Yii::$app->basePath . '/web/' . '_' . $employee->firstname . ' ' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
+                //$filename = \Yii::$app->basePath . '/web/' . '_' . $employee->firstname . ' ' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
+                $filename = sys_get_temp_dir() . '/_' . $employee->firstname . ' ' . $employee->lastname . ':' . $this->orderNames($template, 'employee') . '.docx';
 
                 if (file_exists($filename)) {
                     unlink($filename);
@@ -412,7 +413,8 @@ class OrderController extends Controller
                 }
                 $templateProcessor->saveAs($filename);
                 
-                return Yii::$app->response->sendFile($filename);
+                Yii::$app->response->sendFile($filename);
+                //unlink($filename);                
             }
 
             return $this->render('employee/' . $template, [
