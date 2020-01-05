@@ -14,12 +14,12 @@ use yii\helpers\Url;
 $this->title = Yii::t('app', 'Students');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
+<!--
 <div style="position: relative;">
     <h1><?=$this->title?> (<?=$dataProvider->totalCount?>)</h1>
     <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
-
+-->
 
 <div class="student-index student-block">
 
@@ -46,7 +46,15 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 
-    <div class="card-body">
+        <?php if (intval($searchModel->status) == Student::STATUS_ACTIVE): ?>
+            <div class="card-body">
+                <div style="position: relative;">
+                    <h1><?=$this->title?> (<?=$dataProvider->totalCount?>)</h1>
+                    <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <?php if (intval($searchModel->status) !== Student::STATUS_ACTIVE): ?>
             <?= Html::submitButton(
                 'Восстановить',
