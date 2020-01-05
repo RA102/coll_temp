@@ -134,10 +134,12 @@ class GroupController extends Controller
         }
         
         $specialities = Yii::$app->user->identity->institution->specialities;
+        //$years = Yii::$app->user->identity->institution->getYearList();
 
         return $this->render('update', [
             'model' => $model,
-            'specialities' => $specialities,
+            'specialities' => $specialities
+            //'years' => $years
         ]);
     }
 
