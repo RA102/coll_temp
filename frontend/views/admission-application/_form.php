@@ -48,14 +48,15 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
                 'maxlength' => 12,
                 'disabled'  => $blockPersonalDataEditing
             ]) ?>
-            <?= $form->field($admissionApplicationForm, 'firstname')->textInput([
-                'maxlength' => 100,
-                'disabled'  => $blockPersonalDataEditing
-            ]) ?>
             <?= $form->field($admissionApplicationForm, 'lastname')->textInput([
                 'maxlength' => 100,
                 'disabled'  => $blockPersonalDataEditing
             ]) ?>
+            <?= $form->field($admissionApplicationForm, 'firstname')->textInput([
+                'maxlength' => 100,
+                'disabled'  => $blockPersonalDataEditing
+            ]) ?>
+
             <?= $form->field($admissionApplicationForm, 'middlename')->textInput([
                 'maxlength' => 100,
                 'disabled'  => $blockPersonalDataEditing
