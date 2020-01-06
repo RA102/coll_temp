@@ -202,7 +202,7 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
                             ? ''
                             : ' hidden')
                 ]
-            ])->textInput(['disabled' => $blockPersonalDataEditing]); ?>
+            ])->textInput(['disabled' => $blockPersonalDataEditing, 'placeholder' => Yii::t('app', 'Month or year')]); ?>
         <?= $form->field($admissionApplicationForm, 'based_classes')->dropDownList(
             \common\helpers\ApplicationHelper::getBasedClassesArray(),
             ['prompt' => Yii::t('app', 'Выбрать'), 'disabled' => $blockPersonalDataEditing]
