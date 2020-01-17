@@ -19,6 +19,9 @@ use common\models\organization\Institution;
 use common\models\organization\InstitutionDiscipline;
 use common\models\person\Employee;
 use common\models\person\Student;
+use common\models\rups\RupRoot;
+
+
 use common\services\organization\InstitutionDisciplineService;
 use common\services\person\EmployeeService;
 use frontend\search\EmployeeSearch;
@@ -93,6 +96,30 @@ class PlanController extends Controller
     public function actionIndex()
     {
         return $this->render('index', [
+        ]);
+    }
+
+    public function actionRups()
+    {
+        /*$query = RequiredDisciplines::find()
+                ->joinWith('institutionDiscipline')
+                ->where([InstitutionDiscipline::tableName().'.institution_id' => $this->institution->id]);*/
+        $person = \Yii::$app->user->identity;
+
+        $query = RupRoot::find()->where(['status' => 0]);
+        // if ($person->isTeacher()) {
+        //     $query->andWhere(['teacher_id' => $person->id]);
+        // }
+
+        //$searchModel = new GroupSearch();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('rups/ruplist',[
+           // 'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
