@@ -22,6 +22,7 @@ use yii\widgets\ActiveForm;
         ]
     ]]); ?>
     <?= $form->field($model, 'captionRu',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([0=>'2018',1=>'2019',2=>'2020',3=>'2021']) ?>
     <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная']) ?>
@@ -31,6 +32,7 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= $form->field($model, 'rup_id',['options' => ['class' => 'sem']])->hiddenInput()->label(false) ?>
     </div>
 
     <style>

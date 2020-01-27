@@ -67,7 +67,7 @@ class RupQualificationsController extends Controller
         $model = new RupQualifications();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return 'CREATED';
         }
 
         return $this->render('create', [

@@ -18,9 +18,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'time_months')->textInput() ?>
 
-    <?= $form->field($model, 'rup_id')->hiddenInput()->label(false) ?>
-
     <?= $form->field($model, 'qualification_code')->textInput() ?>
+
+    <?= $form->field($model, 'rup_id')->hiddenInput()->label(false) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Добавить', ['class' => 'btn btn-success','id'=>'submitQualification']) ?>

@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = 'Update';
         'position'=>TabsX::POS_ABOVE,
         'encodeLabels'=>false
     ]);
-    echo "<table border=\"1\" style='background-color: white; width: 70%;float: left; '>
+    echo "<table border=\"1\" style='background-color: white; width: 70%; '>
    <tr>
     <th>Квалификация</th>
     <th>Срок</th>
@@ -66,12 +66,11 @@ $this->params['breadcrumbs'][] = 'Update';
     }
 
 echo "  </table>";
-    echo "<input type='text' style='width:20%;float: right;'><br>";
 
 
     Modal::begin([
         'header' => '<h2>Добавить</h2>',
-        'toggleButton' => ['label' => 'Добавить','class'=>'btn btn-success','style'=>['float'=>'left']],
+        'toggleButton' => ['label' => 'Добавить','class'=>'btn btn-success'],
 
     ]);
 
@@ -94,6 +93,22 @@ echo "  </table>";
             });
 
             // alert(this.id);
+        });
+        $('#submitQualification').on('click',function (e) {
+            var rup_id=$('#ruproots-rup_id').val()
+            e.preventDefault();
+            $('#rupqualifications-rup_id').val(rup_id);
+            $.ajax({
+                type: 'POST',
+                url: '/rup/rup-qualifications/create',
+                data: $('#w3').serialize(),
+                success: function(data){
+                    location.reload();
+                }
+            });
+            $('#w2').fadeToggle();
+            $('#w2').css('display:none');
+            $('.modal-backdrop').remove();
         })
     </script>
 </div>
