@@ -2,19 +2,17 @@
 
 namespace frontend\controllers\rup;
 
-use frontend\models\rup\RupQualifications;
 use Yii;
-use app\models\rup\RupRoots;
-use app\models\rup\RupRootsSearch;
-use yii\helpers\Json;
+use frontend\models\rup\RupBlock;
+use frontend\models\rup\RupBlockSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * RupController implements the CRUD actions for RupRoots model.
+ * RupBlockController implements the CRUD actions for RupBlock model.
  */
-class RupController extends Controller
+class RupBlockController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -26,21 +24,18 @@ class RupController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
-                    'returnjson'=>['POST']
                 ],
             ],
         ];
     }
 
-    public $enableCsrfValidation = false;
-
     /**
-     * Lists all RupRoots models.
+     * Lists all RupBlock models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new RupRootsSearch();
+        $searchModel = new RupBlockSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -50,7 +45,7 @@ class RupController extends Controller
     }
 
     /**
-     * Displays a single RupRoots model.
+     * Displays a single RupBlock model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -63,16 +58,16 @@ class RupController extends Controller
     }
 
     /**
-     * Creates a new RupRoots model.
+     * Creates a new RupBlock model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new RupRoots();
+        $model = new RupBlock();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->rup_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -81,7 +76,7 @@ class RupController extends Controller
     }
 
     /**
-     * Updates an existing RupRoots model.
+     * Updates an existing RupBlock model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -92,18 +87,16 @@ class RupController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return 'UPDATED';
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])->asArray()->all();
         return $this->render('update', [
             'model' => $model,
-            'qualifications'=>$qualifications,
         ]);
     }
 
     /**
-     * Deletes an existing RupRoots model.
+     * Deletes an existing RupBlock model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -116,28 +109,16 @@ class RupController extends Controller
         return $this->redirect(['index']);
     }
 
-
-    public function actionReturnjson()
-    {
-        $this->enableCsrfValidation = false;
-        if (Yii::$app->request->isAjax){
-            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            $html = array(1=>2,2=>3,4=>5);
-            return Json::encode($html);
-        }
-
-    }
-
     /**
-     * Finds the RupRoots model based on its primary key value.
+     * Finds the RupBlock model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return RupRoots the loaded model
+     * @return RupBlock the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = RupRoots::findOne($id)) !== null) {
+        if (($model = RupBlock::findOne($id)) !== null) {
             return $model;
         }
 

@@ -21,6 +21,7 @@ use yii\widgets\ActiveForm;
                 'width'=>'70%'
         ]
     ]]); ?>
+    <?= $form->field($model, 'rup_id',['options' => ['class' => 'sem']])->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'captionRu',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([0=>'2018',1=>'2019',2=>'2020',3=>'2021']) ?>
@@ -31,8 +32,9 @@ use yii\widgets\ActiveForm;
 
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-        <?= $form->field($model, 'rup_id',['options' => ['class' => 'sem']])->hiddenInput()->label(false) ?>
+
+        <?= Html::submitButton('Изменить', ['class' => 'btn btn-success']) ?>
+
     </div>
 
     <style>

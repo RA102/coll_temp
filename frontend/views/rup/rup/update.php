@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Rup Roots', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->rup_id, 'url' => ['view', 'id' => $model->rup_id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
+<div class="card-body skin-white">
 <div class="rup-roots-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -27,24 +28,31 @@ $this->params['breadcrumbs'][] = 'Update';
     $content = $this->renderAjax('_formUpdate', [
         'model' => $model,
     ]);
+
     $items = [
         [
             'label'=>'<i class="fas fa-info"></i> Основные данные',
             'content'=> $content,
             'active'=>true,
-            'linkOptions'=>['data-url'=>Url::to(['/site/fetch-tab?tab=1'])]
+            'linkOptions'=>[]
         ],
         [
             'label'=>'<i class="fas fa-edit"></i> Детализация плана',
-            'content'=>$content2,
-            'linkOptions'=>['data-url'=>Url::to(['/site/fetch-tab?tab=2'])]
+            'content'=>'wait Please',
+            'linkOptions'=>['data-url'=>Url::to(['/rup/rup/returnjson/']),'data-loading-class'=>'calsssss'],
         ],
     ];
     // Ajax Tabs Above
     echo TabsX::widget([
         'items'=>$items,
         'position'=>TabsX::POS_ABOVE,
-        'encodeLabels'=>false
+        'encodeLabels'=>false,
+        'options' => [
+                 'ajaxSettings' => [
+                'type' => 'GET'
+        ]
+]
+
     ]);
     echo "<table border=\"1\" style='background-color: white; width: 70%; '>
    <tr>
@@ -109,6 +117,21 @@ echo "  </table>";
             $('#w2').fadeToggle();
             $('#w2').css('display:none');
             $('.modal-backdrop').remove();
+        });
+
+
+        $('#w0').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '/rup/rup/update'+'?id='+$('#ruproots-rup_id').val(),
+                data: $('#w0').serialize(),
+                success: function(data){
+                    alert('Успешно обновлено, сейчас страница обновиться');
+                    // location.reload();
+                }
+            });
         })
     </script>
+</div>
 </div>
