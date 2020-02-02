@@ -26,8 +26,15 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?php
     $content = $this->renderAjax('_formUpdate', [
+        'qualifications'=>$qualifications,
         'model' => $model,
     ]);
+
+    $content2 =$this->renderAjax('/rup/rup-sub-block/index',[
+//            'searchModel'=>$searchModel,
+            'dataProvider'=>$dataProvider
+    ]);
+
 
     $items = [
         [
@@ -38,8 +45,8 @@ $this->params['breadcrumbs'][] = 'Update';
         ],
         [
             'label'=>'<i class="fas fa-edit"></i> Детализация плана',
-            'content'=>'wait Please',
-            'linkOptions'=>['data-url'=>Url::to(['/rup/rup/returnjson/']),'data-loading-class'=>'calsssss'],
+            'content'=>$content2,
+//            'linkOptions'=>['data-url'=>Url::toRoute(['/rup/rup-subjects/index-tab/','rup_id'=>$model->rup_id,]),'data-loading-class'=>'calsssss'],
         ],
     ];
     // Ajax Tabs Above
@@ -54,84 +61,38 @@ $this->params['breadcrumbs'][] = 'Update';
 ]
 
     ]);
-    echo "<table border=\"1\" style='background-color: white; width: 70%; '>
-   <tr>
-    <th>Квалификация</th>
-    <th>Срок</th>
-    <th>Уровень</th>
-   </tr>";
+?>
 
 
-    foreach ($qualifications as $q){
-        $id = $q['id'];
-        $name = $q['qualification_name'];
-        $time = $q['time_years']." года ".$q['time_months']." Месяцев";
-        echo "
-
-   <tr><td>{$name}</td><td>{$time}</td><td></td><td><button class='btn btn-danger delete_qual' id='{$id}'><h6>X</h6></button></td></tr>
-
-        ";
-    }
-
-echo "  </table>";
-
-
-    Modal::begin([
-        'header' => '<h2>Добавить</h2>',
-        'toggleButton' => ['label' => 'Добавить','class'=>'btn btn-success'],
-
-    ]);
-
-    echo $this->renderAjax('/rup/rup-qualifications/_form',['model'=> $qModel=new RupQualifications()]);
-
-    Modal::end();
-    ?>
-
+    <div id="editModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Изменить</h4>
+                </div>
+                <div id='editModalBody' class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-primary">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        $('.delete_qual').on('click',function () {
-
+        $( document ).ready(function() {
             $.ajax({
-                type: 'GET',
-                url: '/rup/rup-qualifications/delete-from-rup',
-                data: {'id':this.id},
-                success: function(data){
-                    location.reload();
+                url: '/rup/rup-subjects/get-info',
+                data:{'id':this.id},
+                success: function() {
+                    // alert(data);
                 }
             });
-
-            // alert(this.id);
-        });
-        $('#submitQualification').on('click',function (e) {
-            var rup_id=$('#ruproots-rup_id').val()
-            e.preventDefault();
-            $('#rupqualifications-rup_id').val(rup_id);
-            $.ajax({
-                type: 'POST',
-                url: '/rup/rup-qualifications/create',
-                data: $('#w3').serialize(),
-                success: function(data){
-                    location.reload();
-                }
-            });
-            $('#w2').fadeToggle();
-            $('#w2').css('display:none');
-            $('.modal-backdrop').remove();
         });
 
-
-        $('#w0').submit(function (e) {
-            e.preventDefault();
-            $.ajax({
-                type: 'POST',
-                url: '/rup/rup/update'+'?id='+$('#ruproots-rup_id').val(),
-                data: $('#w0').serialize(),
-                success: function(data){
-                    alert('Успешно обновлено, сейчас страница обновиться');
-                    // location.reload();
-                }
-            });
-        })
     </script>
 </div>
 </div>

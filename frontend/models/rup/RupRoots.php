@@ -69,9 +69,9 @@ class RupRoots extends \yii\db\ActiveRecord
             'captionRu' => 'Уровень',
             'captionKz' => 'Caption Kz',
             'lang' => 'Lang',
-            'profile_code' => 'Profile Code',
-            'spec_code' => 'Spec Code',
-            'edu_form' => 'Edu Form',
+            'profile_code' => 'Профиль',
+            'spec_code' => 'Специальность',
+            'edu_form' => 'Форма обучения',
         ];
     }
 }

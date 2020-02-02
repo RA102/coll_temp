@@ -42,9 +42,9 @@ return [
 //                ],
             ],
         ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
+//        'errorHandler' => [
+//            'errorAction' => 'site/error',
+//        ],
         'urlManager' => require __DIR__ . '/url-manager.php',
     ],
     'params' => $params,

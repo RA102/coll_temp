@@ -10,6 +10,7 @@ use yii\widgets\Pjax;
 $this->title = 'РУПы';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="card-body skin-white">
 <div class="rup-roots-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -18,10 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Добавить РУП', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Открыть', ['create'], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('Открыть', ['create'], ['class' => 'btn btn-info']) ?>
         <?= Html::a('Сохранить в файл', ['create'], ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Экспорт в Excel', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Сделать копию', ['create'], ['class' => 'btn btn-danger']) ?>
+        <?= Html::a('Экспорт в Excel', ['create'], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Сделать копию', ['create'], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= GridView::widget([
@@ -52,4 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     <?php Pjax::end(); ?>
+    <?php
+    ?>
+</div>
 </div>

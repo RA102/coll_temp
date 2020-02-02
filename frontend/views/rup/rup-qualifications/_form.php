@@ -12,13 +12,13 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'qualification_name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'qualification_name')->textInput(['maxlength' => true])->label('Квалификация') ?>
 
-    <?= $form->field($model, 'time_years')->textInput() ?>
+    <?= $form->field($model, 'qualification_code')->textInput()->label('Код специальности') ?>
 
-    <?= $form->field($model, 'time_months')->textInput() ?>
+    <?= $form->field($model, 'time_years')->textInput()->label('Количество лет') ?>
 
-    <?= $form->field($model, 'qualification_code')->textInput() ?>
+    <?= $form->field($model, 'time_months')->textInput()->label('Количество месяцев') ?>
 
     <?= $form->field($model, 'rup_id')->hiddenInput()->label(false) ?>
 

@@ -2,24 +2,22 @@
 
 namespace frontend\controllers\rup;
 
-use frontend\models\rup\RupQualifications;
+use frontend\models\rup\RupSubjects;
+use Yii;
 use frontend\models\rup\RupSubBlock;
 use frontend\models\rup\RupSubBlockSearch;
-use frontend\models\rup\RupSubjects;
-use frontend\models\rup\RupSubjectsSearch;
-use Yii;
-use app\models\rup\RupRoots;
-use app\models\rup\RupRootsSearch;
-use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * RupController implements the CRUD actions for RupRoots model.
+ * RupSubBlockController implements the CRUD actions for RupSubBlock model.
  */
-class RupController extends Controller
+class RupSubBlockController extends Controller
 {
+
+
+
     /**
      * {@inheritdoc}
      */
@@ -30,32 +28,28 @@ class RupController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
-                    'returnjson'=>['POST']
                 ],
             ],
         ];
     }
-
     public $enableCsrfValidation = false;
-
     /**
-     * Lists all RupRoots models.
+     * Lists all RupSubBlock models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new RupRootsSearch();
+        $searchModel = new RupSubBlockSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $subjects = RupSubjects::find()->joinWith('subBlock')->joinWith('block')->orderBy('rup_block.id')->all();
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'subjects'=>$subjects
         ]);
     }
 
     /**
-     * Displays a single RupRoots model.
+     * Displays a single RupSubBlock model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -68,16 +62,16 @@ class RupController extends Controller
     }
 
     /**
-     * Creates a new RupRoots model.
+     * Creates a new RupSubBlock model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new RupRoots();
+        $model = new RupSubBlock();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->rup_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -86,7 +80,7 @@ class RupController extends Controller
     }
 
     /**
-     * Updates an existing RupRoots model.
+     * Updates an existing RupSubBlock model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -97,24 +91,16 @@ class RupController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return 'UPDATED';
+            return $this->redirect(['view', 'id' => $model->id]);
         }
-
-        $searchModel = new RupSubBlockSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$id);
-
-        $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])->asArray()->all();
 
         return $this->render('update', [
             'model' => $model,
-            'qualifications'=>$qualifications,
-            'searchModel'=>$searchModel,
-            'dataProvider'=>$dataProvider
         ]);
     }
 
     /**
-     * Deletes an existing RupRoots model.
+     * Deletes an existing RupSubBlock model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -127,28 +113,32 @@ class RupController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionSubjectsDetail() {
+        if (isset($_POST['expandRowKey'])) {
+//            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-    public function actionReturnjson()
-    {
-        $this->enableCsrfValidation = false;
-        if (Yii::$app->request->isAjax){
-            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            $html = array(1=>2,2=>3,4=>5);
-            return Json::encode($html);
+            $subject = $this->findModel($_POST['expandRowKey']);
+            $subjects = RupSubjects::find()->Where(['rup_subjects.id_sub_block'=>$_POST['expandRowKey']])->asArray()->joinWith('subBlock')->joinWith('block')->orderBy(['rup_block.id'=>SORT_ASC,'rup_sub_block.id'=>SORT_ASC])->all();
+            return $this->renderPartial('/rup/rup-subjects/indexSubjects',['all'=>$subjects]);
+//            return $subject->rup_id;
         }
 
+        else {
+            return '<div class="alert alert-danger">No data found</div>';
+        }
     }
 
+
     /**
-     * Finds the RupRoots model based on its primary key value.
+     * Finds the RupSubBlock model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return RupRoots the loaded model
+     * @return RupSubBlock the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = RupRoots::findOne($id)) !== null) {
+        if (($model = RupSubBlock::findOne($id)) !== null) {
             return $model;
         }
 

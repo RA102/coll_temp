@@ -11,6 +11,8 @@ use Yii;
  * @property string $code
  * @property string $name
  * @property int $time
+ *
+ * @property RupSubBlock $rupSubBlock
  */
 class RupBlock extends \yii\db\ActiveRecord
 {
@@ -47,5 +49,13 @@ class RupBlock extends \yii\db\ActiveRecord
             'name' => 'Name',
             'time' => 'Time',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRupSubBlock()
+    {
+        return $this->hasOne(RupSubBlock::className(), ['id' => 'id']);
     }
 }
