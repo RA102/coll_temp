@@ -132,6 +132,17 @@ class RupSubjectsController extends Controller
 
         return $info;
     }
+    public function actionDeleteModule($id)
+    {
+        $info = RupSubjects::findOne($id);
+        $info->id_sub_block=0;
+        if($info->save()){
+            return true;
+    }
+        else{
+            return false;
+        }
+    }
 
     /**
      * Finds the RupSubjects model based on its primary key value.

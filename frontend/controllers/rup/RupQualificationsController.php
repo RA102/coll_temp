@@ -95,6 +95,23 @@ class RupQualificationsController extends Controller
         ]);
     }
 
+    public function actionUpdateQual($id){
+        $model = $this->findModel($id);
+        $model->qualification_name=Yii::$app->request->post('name');
+        $model->time_years=Yii::$app->request->post('year');
+        $model->time_months=Yii::$app->request->post('month');
+        $model->qualification_code=Yii::$app->request->post('code');
+        $model->q_level=Yii::$app->request->post('level');
+        if(Yii::$app->user->id==null){
+            throwException('Not user');
+        }
+        else{
+            $model->save();
+            return true;
+        }
+
+    }
+
     /**
      * Deletes an existing RupQualifications model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -108,6 +125,7 @@ class RupQualificationsController extends Controller
 
         return $this->redirect(['index']);
     }
+
     public function actionDeleteFromRup($id)
     {
         $model = $this->findModel($id);

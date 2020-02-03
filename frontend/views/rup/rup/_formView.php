@@ -11,10 +11,10 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="rup-roots-form">
-    <?= Html::a('Открыть', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
-    <?= Html::a('Сохранить в файл', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
-    <?= Html::a('Экспорт в Excel', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
-    <?= Html::a('Сделать копию', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
+    <?= Html::a('Открыть', ['create'], ['class' => 'btn btn-light']) ?>
+    <?= Html::a('Сохранить в файл', ['create'], ['class' => 'btn btn-light']) ?>
+    <?= Html::a('Экспорт в Excel', ['create'], ['class' => 'btn btn-light']) ?>
+    <?= Html::a('Сделать копию', ['create'], ['class' => 'btn btn-light']) ?>
     <?php $form = ActiveForm::begin(['action' => ['/rup/rup/update'],
     'options' => [
         'class' => 'comment-form',
@@ -23,17 +23,17 @@ use yii\widgets\ActiveForm;
         ]
     ]]); ?>
     <?= $form->field($model, 'rup_id',['options' => ['class' => 'sem']])->hiddenInput()->label(false) ?>
-    <?= $form->field($model, 'status',['options' => ['class' => 'sem']])->hiddenInput()->label(false) ?>
-    <?= $form->field($model, 'captionRu',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([0=>'2018',1=>'2019',2=>'2020',3=>'2021']) ?>
-    <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная']) ?>
-    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'captionRu',['options' => ['class' => 'sem']])->textInput(['maxlength' => true, 'disabled' => true]) ?>
+    <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([0=>'2018',1=>'2019',2=>'2020',3=>'2021'], ['disabled' => 'disabled']) ?>
+    <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->textInput(['maxlength' => true, 'disabled' => true]) ?>
+    <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная'],['disabled' => 'disabled']) ?>
+    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->textInput(['maxlength' => true, 'disabled' => trues]) ?>
     <?php
+    echo  Html::button('Удалить', ['class' => 'btn btn-light btn-margin','style'=>['float'=>'left','margin'=>'10px;']]);
     echo  Html::button('Открыть для редактирования', ['id'=>'rupEditOpen','class' => 'btn btn-light btn-margin','style'=>['float'=>'left','margin'=>'10px;']]);
-    echo  Html::button('Закрыть для редактирования', ['id'=>'rupEditClose','class' => 'btn btn-light btn-margin','style'=>['float'=>'left','margin'=>'10px;']]);
+    echo  Html::button('Закрыть для редактирования', ['id'=>'rupEditClose','class' => 'btn btn-light btn-margin hidden','style'=>['float'=>'left','margin'=>'10px;']]);
     ?>
-    <?=Html::submitButton('Сохранить план', ['class' => 'btn btn-success btn-margin','id'=>'rup_save','style'=>['float'=>'right','margin'=>'10px']]);?>
+    <?=Html::submitButton('Сохранить план', ['class' => 'btn btn-success btn-margin hidden','id'=>'rup_save','style'=>['float'=>'right','margin'=>'10px']]);?>
     <?php ActiveForm::end(); ?>
 
     <div class="form-group">
@@ -60,7 +60,6 @@ use yii\widgets\ActiveForm;
     <th>Квалификация</th>
     <th>Срок</th>
     <th>Уровень</th>
-    <th></th>
    </tr>";
 
 
@@ -72,24 +71,12 @@ use yii\widgets\ActiveForm;
         $code = $q['qualification_code'];
         echo "
 
-   <tr qualId='{$id}'><td>{$code}-{$name}</td><td>{$time}</td><td>{$level}</td><td><button style='margin-left:5%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_qual' id='{$id}'><span class='glyphicon glyphicon-trash'></button><button data-target='#editModal' data-toggle='modal' style='margin-left:3%;' class='btn btn-success edit_qual' qualEditButtonId='{$id}'><h7><i class=\"fas fa-edit\"></i></h7></button></td></tr>
+   <tr qualId='{$id}'><td>{$code}-{$name}</td><td>{$time}</td><td>{$level}</td></tr>
 
         ";
     }
 
     echo "  </table>";
-
-
-    Modal::begin([
-        'header' => '<h2>Добавить</h2>',
-        'toggleButton' => ['label' => 'Добавить','class'=>'btn btn-success','style'=>['margin-top'=>'5px;','margin-left'=>'60%']],
-
-
-    ]);
-
-    echo $this->renderAjax('/rup/rup-qualifications/_form',['model'=> $Model=new RupQualifications()]);
-
-    Modal::end();
 
 
     echo "<br>";
@@ -104,18 +91,15 @@ use yii\widgets\ActiveForm;
 </style>
 <script>
     $('.delete_qual').on('click',function () {
-        if (confirm('Вы действительно хотите удалить?')) {
-            $.ajax({
-                type: 'GET',
-                url: '/rup/rup-qualifications/delete-from-rup',
-                data: {'id':this.id},
-                success: function(data){
-                    location.reload();
-                }
-            });
-        } else {
-        }
 
+        $.ajax({
+            type: 'GET',
+            url: '/rup/rup-qualifications/delete-from-rup',
+            data: {'id':this.id},
+            success: function(data){
+                location.reload();
+            }
+        });
     });
 
 
@@ -155,26 +139,15 @@ use yii\widgets\ActiveForm;
 
     $('#rupEditClose').on('click',function (e) {
         e.preventDefault();
-        if (confirm('Вы действительно хотите закрыть план для редактирования??')) {
-            $('#ruproots-status').val('0');
-            $('#w0 input[type="text"]').prop("disabled", true);
-            $('#w0 select').prop("disabled", true);
-            $('#rup_save').hide();
-            $('#rup_save').click();
-        } else {
-        }
+        $('#w0 input[type="text"]').prop("disabled", true);
+        $('#w0 select').prop("disabled", true);
+        $('#rup_save').hide();
     })
     $('#rupEditOpen').on('click',function (e) {
         e.preventDefault();
-        if (confirm('Вы действительно хотите открыть план для редактирования??')) {
-            $('#ruproots-status').val('1');
-            $('#w0 input[type="text"]').prop("disabled", false);
-            $('#w0 select').prop("disabled", false);
-            $('#rup_save').show();
-            $('#rup_save').click();
-        } else {
-        }
-
+        $('#w0 input[type="text"]').prop("disabled", false);
+        $('#w0 select').prop("disabled", false);
+        $('#rup_save').show();
     })
 
 
@@ -212,10 +185,6 @@ use yii\widgets\ActiveForm;
         $('#editModalBody').append("</form>");
     });
 
-    $('.nextVersion').on('click',function (e) {
-        e.preventDefault();
-        alert('Это планируется в следующей версии');
-    })
 
 
 </script>

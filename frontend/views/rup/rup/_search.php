@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'rup_id') ?>
 
-    <?= $form->field($model, 'rup_year') ?>
+    <?= $form->field($model, 'rup_year')->dropDownList([0=>'2018',1=>'2019',2=>'2020',3=>'2021'], ['disabled' => 'disabled']) ?>
 
     <?= $form->field($model, 'status') ?>
 

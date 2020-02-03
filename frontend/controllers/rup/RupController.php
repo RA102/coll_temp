@@ -62,8 +62,18 @@ class RupController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+        $model = $this->findModel($id);
+
+        $searchModel = new RupSubBlockSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$id);
+
+        $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])->asArray()->all();
+
+        return $this->render('viewrup', [
+            'model' => $model,
+            'qualifications'=>$qualifications,
+            'searchModel'=>$searchModel,
+            'dataProvider'=>$dataProvider
         ]);
     }
 
@@ -92,7 +102,7 @@ class RupController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$active=1)
     {
         $model = $this->findModel($id);
 
@@ -106,6 +116,7 @@ class RupController extends Controller
         $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])->asArray()->all();
 
         return $this->render('update', [
+            'active'=>$active,
             'model' => $model,
             'qualifications'=>$qualifications,
             'searchModel'=>$searchModel,

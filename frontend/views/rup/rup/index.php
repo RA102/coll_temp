@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
+            'captionRu',
 //            'rup_id',
             'rup_year',
             'status',
@@ -42,14 +42,42 @@ $this->params['breadcrumbs'][] = $this->title;
             //'delete_userid',
             //'lastopen_userid',
             //'lastclose_userid',
-            'captionRu',
+
             //'captionKz',
             //'lang',
             //'profile_code',
             //'spec_code',
             //'edu_form',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                'buttons'=>[
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
+                                'title' => Yii::t('app', 'lead-view'),
+                            ]);
+                        },
+
+                        'update' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                    'title' => Yii::t('app', 'lead-update'),
+                                ]);
+
+                        },
+                        'delete' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                                'title' => Yii::t('app', 'lead-delete'),
+                            ]);
+                        }
+
+                    ],
+                ],
+                'visibleButtons'=>[
+                     'update'=>function ($model, $key, $index) { if($model->status==0){return false;}else{return true;}},
+                     'view'=>function ($model, $key, $index) { if($model->status==1){return false;}else{return true;}},
+
+                ]
+                ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

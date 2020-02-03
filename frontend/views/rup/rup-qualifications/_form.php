@@ -14,6 +14,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'qualification_name')->textInput(['maxlength' => true])->label('Квалификация') ?>
 
+    <?= $form->field($model, 'q_level')->textInput(['maxlength' => true])->label('Уровень') ?>
+
     <?= $form->field($model, 'qualification_code')->textInput()->label('Код специальности') ?>
 
     <?= $form->field($model, 'time_years')->textInput()->label('Количество лет') ?>

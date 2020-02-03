@@ -11,9 +11,17 @@ use yii\widgets\DetailView;
 /* @var $model app\models\rup\RupRoots */
 
 $this->title = 'Обновить РУП: ' . $model->captionRu;
-$this->params['breadcrumbs'][] = ['label' => 'Rup Roots', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->rup_id, 'url' => ['view', 'id' => $model->rup_id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => 'РУПы', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->captionRu, 'url' => ['view', 'id' => $model->rup_id]];
+$this->params['breadcrumbs'][] = 'Изменить';
+if($active==1){
+    $isActive1=true;
+    $isActive2=false;
+}
+else{
+    $isActive1=false;
+    $isActive2=true;
+}
 ?>
 <div class="card-body skin-white">
 <div class="rup-roots-update">
@@ -32,7 +40,8 @@ $this->params['breadcrumbs'][] = 'Update';
 
     $content2 =$this->renderAjax('/rup/rup-sub-block/index',[
 //            'searchModel'=>$searchModel,
-            'dataProvider'=>$dataProvider
+            'dataProvider'=>$dataProvider,
+        'rup_id'=>$model->rup_id,
     ]);
 
 
@@ -40,12 +49,13 @@ $this->params['breadcrumbs'][] = 'Update';
         [
             'label'=>'<i class="fas fa-info"></i> Основные данные',
             'content'=> $content,
-            'active'=>true,
+            'active'=>$isActive1,
             'linkOptions'=>[]
         ],
         [
             'label'=>'<i class="fas fa-edit"></i> Детализация плана',
             'content'=>$content2,
+            'active'=>$isActive2,
 //            'linkOptions'=>['data-url'=>Url::toRoute(['/rup/rup-subjects/index-tab/','rup_id'=>$model->rup_id,]),'data-loading-class'=>'calsssss'],
         ],
     ];
@@ -63,7 +73,7 @@ $this->params['breadcrumbs'][] = 'Update';
     ]);
 ?>
 
-
+<!--Mini edit window        -->
     <div id="editModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -76,7 +86,91 @@ $this->params['breadcrumbs'][] = 'Update';
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary">Сохранить изменения</button>
+                    <input type="submit" class="btn btn-primary" id="sendQual" value="Сохранить изменения"></input>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--    <button data-toggle="modal" data-target="#editModalModule"></button>-->
+<!---Big edit window-->
+    <div id="editModalModule" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Изменить</h4>
+                </div>
+                <div id='editModalBody' class="modal-body">
+                    <form action="\rup\rup-subjects\update">
+                        <div class="row">
+                            <b style="padding-top:1%">Модуль/Дисциплина:</b>
+                            <input class="form-control col-2" id="editModalModuleModuleIndex" type="text" placeholder="индекс">
+                            <input class="form-control col-6" id="editModalModuleModule" type="text">
+                        </div>
+                        <b>Входит в модуль:</b>
+                        <div class="row">
+                            <div class="col-6"><input class="form-control" id="editModalModuleInModule" type="text"></div>
+
+                        </div>
+                        <b class="col-12">Форма контроля:<br></b>
+                        <div class="row">
+                            Экзамен:
+                            <input class="form-control col-2" id="editModalModuleFormControl1" type="text">Зачет:
+                            <input class="form-control col-2"  id="editModalModuleFormControl2" type="text">Контрольная:
+                            <input class="form-control col-2" id="editModalModuleFormControl3" type="text">
+                        </div>
+                        <div >
+                            <b>Время:<br></b>
+                            Всего часов:
+                            <input class="form-control" id="editModalModuleAllTime" type="text">
+                            Не распределено:
+                            <input class="form-control" id="editModalModuleAllTimeNeraspred" type="text" disabled="true">
+                            Теоретическое:
+                            <input class="form-control" id="editModalModuleAllTimeTheory" type="text">
+                            Лаб.-практические:
+                            <input  class="form-control" id="editModalModuleAllTimeLab" type="text">
+                            Производственное
+                            <input class="form-control" id="editModalModuleAllTimeProd" type="text">
+                        </div>
+                        <b>Время по семестрам:<br></b>
+                        <div class="row">
+
+                            <div class="col-6">
+                                1 сем:
+                                <input class="form-control"  id="editModalModuleTime1" type="text">
+                                3 сем:
+                                <input class="form-control"  id="editModalModuleTime3" type="text">
+                                5 сем:
+                                <input class="form-control"  id="editModalModuleTime5" type="text">
+                                7 сем:
+                                <input class="form-control"  id="editModalModuleTime7" type="text">
+                            </div>
+                            <div class="col-6">
+                                2 сем:
+                                <input class="form-control"  id="editModalModuleTime2" type="text">
+
+                                4 сем:
+                                <input class="form-control"  id="editModalModuleTime4" type="text">
+
+                                6 сем:
+                                <input class="form-control"  id="editModalModuleTime6" type="text">
+                                8 сем:
+                                <input class="form-control"  id="editModalModuleTime8" type="text">
+                                <br>
+                            </div>
+
+                        </div>
+
+
+
+
+
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                        <input type="submit" class="btn btn-primary" id="sendModule" value="Сохранить изменения"></input>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
                 </div>
             </div>
         </div>
@@ -93,6 +187,45 @@ $this->params['breadcrumbs'][] = 'Update';
             });
         });
 
+        $('#sendQual').on('click',function () {
+            var id = $('#editQualID').val();
+            var code = $('#editQualQualCode').val();
+            var name = $('#editQualQual').val();
+            var year = $('#editQualYear').val();
+            var month = $('#editQualMonth').val();
+            var level = $('#editQualLevel').val();
+            $.ajax({
+                type: 'POST',
+                url: '/rup/rup-qualifications/update-qual?id='+id,
+                data: {'name':name,'code':code,'year':year,'month':month,'level':level},
+                success: function(data){
+                    location.reload();
+                }
+            });
+        });
+
+
+        //ИЗМЕНИТЬ ИЛИ ДОБАВИТЬ МОДУЛЬ
+        $('#sendModule').on('click',function () {
+            alert('123');
+            $.ajax({
+                type: 'POST',
+                url: '/rup/rup-subjects/update-qual?id='+id,
+                data: {'name':name,'code':code,'year':year,'month':month,'level':level},
+                success: function(data){
+                    location.reload();
+                }
+            });
+        });
+
     </script>
 </div>
+    <style>
+        body {
+            padding-right: 0 !important;
+        }
+        b{
+            padding: 10px;
+        }
+    </style>
 </div>
