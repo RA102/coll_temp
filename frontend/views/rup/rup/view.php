@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\rup\RupRoots */
 
-$this->title = $model->rup_id;
-$this->params['breadcrumbs'][] = ['label' => 'Rup Roots', 'url' => ['index']];
+$this->title = $model->rup_name;
+$this->params['breadcrumbs'][] = ['label' => 'РУПы', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

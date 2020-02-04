@@ -47,6 +47,16 @@ class RupSubBlockController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    public function actionIndexView($rup_id)
+    {
+        $searchModel = new RupSubBlockSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$rup_id);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
     /**
      * Displays a single RupSubBlock model.
@@ -120,6 +130,20 @@ class RupSubBlockController extends Controller
             $subject = $this->findModel($_POST['expandRowKey']);
             $subjects = RupSubjects::find()->Where(['rup_subjects.id_sub_block'=>$_POST['expandRowKey']])->asArray()->joinWith('subBlock')->joinWith('block')->orderBy(['rup_block.id'=>SORT_ASC,'rup_sub_block.id'=>SORT_ASC])->all();
             return $this->renderPartial('/rup/rup-subjects/indexSubjects',['all'=>$subjects]);
+//            return $subject->rup_id;
+        }
+
+        else {
+            return '<div class="alert alert-danger">No data found</div>';
+        }
+    }
+    public function actionSubjectsDetailView() {
+        if (isset($_POST['expandRowKey'])) {
+//            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+            $subject = $this->findModel($_POST['expandRowKey']);
+            $subjects = RupSubjects::find()->Where(['rup_subjects.id_sub_block'=>$_POST['expandRowKey']])->asArray()->joinWith('subBlock')->joinWith('block')->orderBy(['rup_block.id'=>SORT_ASC,'rup_sub_block.id'=>SORT_ASC])->all();
+            return $this->renderPartial('/rup/rup-subjects/indexSubjectsView',['all'=>$subjects]);
 //            return $subject->rup_id;
         }
 

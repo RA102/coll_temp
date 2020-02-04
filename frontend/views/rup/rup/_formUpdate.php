@@ -165,6 +165,8 @@ use yii\widgets\ActiveForm;
             $('#w0 select').prop("disabled", true);
             $('#rup_save').hide();
             $('#rup_save').click();
+            var url= "/rup/rup/view?id="+$('#ruproots-rup_id').val()+"&active=1";
+            window.location = url;
         } else {
         }
     })

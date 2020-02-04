@@ -11,9 +11,9 @@ use yii\widgets\DetailView;
 /* @var $model app\models\rup\RupRoots */
 
 $this->title = 'РУП: ' . $model->captionRu;
-$this->params['breadcrumbs'][] = ['label' => 'Rup Roots', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->rup_id, 'url' => ['view', 'id' => $model->rup_id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => 'РУПы', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->captionRu, 'url' => ['view', 'id' => $model->rup_id]];
+$this->params['breadcrumbs'][] = 'Просмотр';
 ?>
 <div class="card-body skin-white">
 <div class="rup-roots-update">
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = 'Update';
         'model' => $model,
     ]);
 
-    $content2 =$this->renderAjax('/rup/rup-sub-block/index',[
+    $content2 =$this->renderAjax('/rup/rup-sub-block/index-view',[
 //            'searchModel'=>$searchModel,
             'dataProvider'=>$dataProvider
     ]);
@@ -109,6 +109,35 @@ $this->params['breadcrumbs'][] = 'Update';
                     location.reload();
                 }
             });
+        });
+
+    </script>
+    <script>
+        $('#rup_save').on('click',function (e) {
+            e.preventDefault();
+            $('#modal').modal();
+            $.ajax({
+                type: 'POST',
+                url: '/rup/rup/update'+'?id='+$('#ruproots-rup_id').val(),
+                data: $('#w0').serialize(),
+                success: function(data){
+                    alert('Успешно обновлено, сейчас страница обновиться');
+                    var url= "/rup/rup/update?id="+$('#ruproots-rup_id').val()+"&active=1";
+                    window.location = url;
+                }
+            });
+        });
+        $('#rupEditOpen').on('click',function (e) {
+            e.preventDefault();
+            if (confirm('Вы действительно хотите открыть план для редактирования??')) {
+                $('#ruproots-status').val('1');
+                $('#w0 input[type="text"]').prop("disabled", false);
+                $('#w0 select').prop("disabled", false);
+                $('#rup_save').show();
+                $('#rup_save').click();
+            } else {
+            }
+
         });
 
     </script>

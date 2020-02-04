@@ -38,7 +38,7 @@ use Yii;
                 url: '/rup/rup-sub-block/create',
                 data: $('#w4').serialize(),
                 success: function(data){
-                    alert('Всё заебись');
+                    alert('Всё хорошо');
                 }
             });
         })
