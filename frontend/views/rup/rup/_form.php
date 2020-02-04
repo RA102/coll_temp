@@ -1,5 +1,7 @@
 <?php
 
+use common\models\organization\InstitutionSpecialityInfo;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -18,13 +20,12 @@ use yii\widgets\ActiveForm;
             ]
         ]]); ?>
     <?= $form->field($model, 'rup_id',['options' => ['class' => 'sem']])->hiddenInput()->label(false) ?>
-<!--    --><?//= $form->field($model, 'create_ts',['options' => ['class' => 'sem']])->hiddenInput(['value'=>time('U')])->label(false) ?>
     <?= $form->field($model, 'status',['options' => ['class' => 'sem']])->hiddenInput(['value'=>1])->label(false) ?>
     <?= $form->field($model, 'captionRu',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([2018=>'2018',2019=>'2019',2020=>'2020',2021=>'2021']) ?>
     <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная']) ?>
-    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList([ArrayHelper::map(InstitutionSpecialityInfo::find()->all(), 'speciality.code', 'speciality.caption.ru')])->label("Специальность") ?>
     <?=Html::submitButton('Добавить план', ['class' => 'btn btn-success btn-margin','id'=>'rup_save','style'=>[]]);?>
     <?php ActiveForm::end(); ?>
 
