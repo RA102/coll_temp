@@ -32,7 +32,7 @@ class RupSubBlock extends \yii\db\ActiveRecord
         return [
             [['code', 'name'], 'required'],
             [['code', 'name'], 'string'],
-            [['block'],'safe'],
+            [['block','rup_id'],'safe'],
             [['id'], 'exist', 'skipOnError' => true, 'targetClass' => RupBlock::className(), 'targetAttribute' => ['id' => 'id']],
         ];
     }
@@ -46,6 +46,7 @@ class RupSubBlock extends \yii\db\ActiveRecord
             'id' => 'ID',
             'code' => 'Индекс',
             'name' => 'Наименование',
+            'rup_id'=>'id RUP'
         ];
     }
 

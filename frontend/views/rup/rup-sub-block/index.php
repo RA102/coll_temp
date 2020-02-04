@@ -1,5 +1,8 @@
 <?php
 
+use frontend\models\rup\RupQualifications;
+use frontend\models\rup\RupSubBlock;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\helpers\Url;
@@ -18,20 +21,31 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Добавить Модуль', ['create'], ['class' => 'btn btn-success addModuleButton']) ?>
+        <?php
+        Modal::begin([
+            'header' => '<h2>Добавить модуль</h2>',
+            'toggleButton' => ['label' => 'Добавить модуль','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
+
+
+        ]);
+
+        echo $this->renderAjax('/rup/rup-sub-block/_form',['model'=> $Model=new RupSubBlock()]);
+
+        Modal::end();
+        ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
 //            'id',
             'code',
-            'name',
+            ['attribute'=>'name'],
 //            'block_id',
-            'block.name',
+            ['attribute'=>'block.name','header' => 'Профиль'],
             [
                 'class' => 'kartik\grid\ExpandRowColumn',
                 'width' => '50px',
@@ -47,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'expandOneOnly' => true,
             ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+//            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

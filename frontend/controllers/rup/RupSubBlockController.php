@@ -71,7 +71,7 @@ class RupSubBlockController extends Controller
         $model = new RupSubBlock();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/rup/rup/update', 'id' => $model->rup_id,'active'=>2]);
         }
 
         return $this->render('create', [

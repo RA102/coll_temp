@@ -33,7 +33,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'captionRu',
 //            'rup_id',
             'rup_year',
-            'status',
+            ['attribute'=>'status',
+            'value'=>function($model){
+                if($model->status==1){
+                    return "Открыт для редактирования";
+                }
+                elseif ($model->status==0){
+                    return "Закрыт для редактирования";
+                }
+                            }],
 //            'create_ts',
 //            'delete_ts',
             //'lastopen_ts',
@@ -75,6 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visibleButtons'=>[
                      'update'=>function ($model, $key, $index) { if($model->status==0){return false;}else{return true;}},
                      'view'=>function ($model, $key, $index) { if($model->status==1){return false;}else{return true;}},
+                     'delete'=>function ($model, $key, $index) { if($model->status==0){return false;}else{return true;}},
 
                 ]
                 ],
