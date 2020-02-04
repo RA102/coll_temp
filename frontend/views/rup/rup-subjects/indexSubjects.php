@@ -2,7 +2,7 @@
 <table  class="table table-striped  table-bordered " >
     <tr>
         <th>№</th>
-        <th>Квалификация</th>
+        <th>Дисциплина</th>
         <th>Часы всего</th>
         <th>Часы нераспред.</th>
     </tr>

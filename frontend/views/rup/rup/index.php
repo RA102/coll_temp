@@ -19,10 +19,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Добавить РУП', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Открыть', ['create'], ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Сохранить в файл', ['create'], ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Экспорт в Excel', ['create'], ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Сделать копию', ['create'], ['class' => 'btn btn-info']) ?>
+        <!-- <?= Html::a('Открыть', ['create'], ['class' => 'btn btn-info']) ?>  -->
+        <!-- <?= Html::a('Сохранить в файл', ['create'], ['class' => 'btn btn-info', 'disabled' => true]) ?> -->
+        
+        <!-- <?= Html::a('Экспорт в Excel', ['create'], ['class' => 'btn btn-info', 'disabled' => true]) ?> -->
+        <!-- <?= Html::a('Сделать копию', ['create'], ['class' => 'btn btn-info', 'disabled' => true]) ?> -->
+
     </p>
 
     <?= GridView::widget([
