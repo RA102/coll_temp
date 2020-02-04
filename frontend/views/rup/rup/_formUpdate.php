@@ -1,6 +1,7 @@
 <?php
 
 use common\models\organization\InstitutionSpecialityInfo;
+use frontend\models\rup\Profile;
 use frontend\models\rup\RupQualifications;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
@@ -32,9 +33,9 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'status',['options' => ['class' => 'sem']])->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'captionRu',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([2018=>'2018',2019=>'2019',2020=>'2020',2021=>'2021']) ?>
-    <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->dropDownList(ArrayHelper::map(Profile::find()->all(), 'code', 'codecaption'))->label('Профиль')  ?>
     <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная']) ?>
-    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList([ArrayHelper::map(InstitutionSpecialityInfo::find()->all(), 'speciality.code', 'speciality.caption.ru')])->label(false) ?>
+    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList(ArrayHelper::map(InstitutionSpecialityInfo::find()->all(), 'speciality.code', 'fullcaption'))->label('Специальность') ?>
 
     <?=Html::submitButton('Сохранить план', ['class' => 'btn btn-success btn-margin','id'=>'rup_save','style'=>['float'=>'right','margin'=>'10px']]);?>
     <?php ActiveForm::end(); ?>
