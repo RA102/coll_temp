@@ -17,10 +17,10 @@
 <td  ><?=$al['time']?></td>
 <td  ><?=$time?></td>
 <td>
-<button style='margin-left:15%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_Module' idd="<?= $al['id'] ?>">
+<button title='Удалить' style='margin-left:15%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_Module' idd="<?= $al['id'] ?>">
     <span class='glyphicon glyphicon-trash'>
 </button>
-    <button style='margin-left:10%;' data-target="#editModalModule" data-toggle="modal" class='btn btn-success edit_qual updateModuleButton' idd="<?= $al['id'] ?>">
+    <button title='Изменить' style='margin-left:10%;' data-target="#editModalModule" data-toggle="modal" class='btn btn-success edit_qual updateModuleButton' idd="<?= $al['id'] ?>">
         <h7><i class='fas fa-edit'></i></h7>
     </button>
 </td></tr><?php
@@ -43,7 +43,7 @@
                 $('#editModalModuleFormControl2').val(data.offset);
                 $('#editModalModuleFormControl3').val(data.control_work);
                 $('#editModalModuleAllTime').val(data.time);
-                $('#editModalModuleAllTimeNeraspred').val('СДЕЛАЙ ВРЕМЯ');
+                $('#editModalModuleAllTimeNeraspred').val(data.time);
                 $('#editModalModuleAllTimeTheory').val(data.teory_time);
                 $('#editModalModuleAllTimeLab').val(data.lab_time);
                 $('#editModalModuleAllTimeProd').val(data.production_practice_time);

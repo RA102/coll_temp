@@ -14,13 +14,15 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="rup-roots-form">
-    <?= Html::a('Открыть', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
+    <!-- <?= Html::a('Открыть', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
     <?= Html::a('Сохранить в файл', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
     <?= Html::a('Экспорт в Excel', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
-    <?= Html::a('Сделать копию', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
+    <?= Html::a('Сделать копию', ['create'], ['class' => 'btn btn-light nextVersion']) ?> -->
+    <?=Html::submitButton('Сохранить план', ['class' => 'btn btn-success btn-margin','id'=>'rup_save','style'=>[]]);?>
+
     <?php
-    echo  Html::button('Открыть для редактирования', ['id'=>'rupEditOpen','class' => 'btn btn-light btn-margin','style'=>[]]);
-    echo  Html::button('Закрыть для редактирования', ['id'=>'rupEditClose','class' => 'btn btn-light btn-margin','style'=>[]]);
+        echo  Html::button('Открыть для редактирования', ['id'=>'rupEditOpen','class' => 'btn btn-light btn-margin','style'=>[]]);
+        echo  Html::button('Закрыть для редактирования', ['id'=>'rupEditClose','class' => 'btn btn-light btn-margin','style'=>[]]);
     ?>
     <?php $form = ActiveForm::begin(['action' => ['/rup/rup/update'],
     'options' => [
@@ -37,7 +39,6 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная']) ?>
     <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList(ArrayHelper::map(InstitutionSpecialityInfo::find()->all(), 'speciality.code', 'fullcaption'))->label('Специальность') ?>
 
-    <?=Html::submitButton('Сохранить план', ['class' => 'btn btn-success btn-margin','id'=>'rup_save','style'=>['float'=>'right','margin'=>'10px']]);?>
     <?php ActiveForm::end(); ?>
 
     <div class="form-group">
@@ -59,13 +60,20 @@ use yii\widgets\ActiveForm;
 
 
     <?php
-    echo "<table style='background-color: white; width: 80%; ' class='table table-striped  table-bordered '>
-   <tr style='background-color: darkgray'>
-    <th>Квалификация</th>
-    <th>Срок</th>
-    <th>Уровень</th>
-    <th></th>
-   </tr>";
+    Modal::begin([
+        'header' => '<h2>Добавить квалификации</h2>',
+        'toggleButton' => ['label' => 'Добавить квалификации','class'=>'btn btn-success','style'=>['margin'=>'5px;']],
+    ]);
+    echo $this->renderAjax('/rup/rup-qualifications/_form',['model'=> $Model=new RupQualifications()]);
+    Modal::end();
+    
+    echo "<br><table style='background-color: white; width: 80%; ' class='table table-striped  table-bordered '>
+            <tr style='background-color: darkgray'>
+                <th>Квалификации</th>
+                <th>Срок</th>
+                <th>Уровень</th>
+                <th></th>
+            </tr>";
 
 
     foreach ($qualifications as $q){
@@ -74,29 +82,15 @@ use yii\widgets\ActiveForm;
         $time = $q['time_years']." года ".$q['time_months']." Месяцев";
         $level = $q['q_level'];
         $code = $q['qualification_code'];
-        echo "
-
-   <tr qualId='{$id}'><td>{$code}-{$name}</td><td>{$time}</td><td>{$level}</td><td><button style='margin-left:5%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_qual' id='{$id}'><span class='glyphicon glyphicon-trash'></button><button data-target='#editModal' data-toggle='modal' style='margin-left:3%;' class='btn btn-success edit_qual' qualEditButtonId='{$id}'><h7><i class=\"fas fa-edit\"></i></h7></button></td></tr>
-
+        echo " <tr qualId='{$id}'><td>{$code}-{$name}</td><td>{$time}</td><td>{$level}</td><td>
+                <button title='Удалить' style='margin-left:5%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_qual' id='{$id}'><span class='glyphicon glyphicon-trash'></button><button title='Изменить' data-target='#editModal' data-toggle='modal' style='margin-left:3%;' class='btn btn-success edit_qual' qualEditButtonId='{$id}'><h7><i class=\"fas fa-edit\"></i></h7></button></td></tr>
         ";
     }
 
     echo "  </table>";
 
 
-    Modal::begin([
-        'header' => '<h2>Добавить</h2>',
-        'toggleButton' => ['label' => 'Добавить','class'=>'btn btn-success','style'=>['margin-top'=>'5px;','margin-left'=>'60%']],
 
-
-    ]);
-
-    echo $this->renderAjax('/rup/rup-qualifications/_form',['model'=> $Model=new RupQualifications()]);
-
-    Modal::end();
-
-
-    echo "<br>";
     ?>
 
 
