@@ -45,7 +45,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'code',
             ['attribute'=>'name'],
 //            'block_id',
-            ['attribute'=>'block.name','header' => 'Профиль'],
+            //['attribute'=>'block.name','header' => 'Профиль'],
+            ['attribute'=>'block.time','header' => 'Часы всего'],
+            ['attribute'=>'block.time','header' => 'Не распределено'],
             [
                 'class' => 'kartik\grid\ExpandRowColumn',
                 'width' => '50px',
