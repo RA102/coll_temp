@@ -2,9 +2,10 @@
 
 namespace frontend\controllers\rup;
 
+use frontend\models\rup\RupBlockSearch;
 use frontend\models\rup\RupQualifications;
-use frontend\models\rup\RupSubBlock;
-use frontend\models\rup\RupSubBlockSearch;
+use frontend\models\rup\RupModule;
+use frontend\models\rup\RupModuleSearch;
 use frontend\models\rup\RupSubjects;
 use frontend\models\rup\RupSubjectsSearch;
 use Yii;
@@ -64,7 +65,7 @@ class RupController extends Controller
     {
         $model = $this->findModel($id);
 
-        $searchModel = new RupSubBlockSearch();
+        $searchModel = new RupModuleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$id);
 
         $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])->asArray()->all();
@@ -102,7 +103,7 @@ class RupController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id,$active=1)
+    public function actionUpdate($id,$active=1,$block_id=null)
     {
         $model = $this->findModel($id);
 
@@ -110,8 +111,11 @@ class RupController extends Controller
             return 'UPDATED';
         }
 
-        $searchModel = new RupSubBlockSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$id);
+        $searchModel = new RupModuleSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$id,$block_id);
+
+        $searchModelBlock = new RupBlockSearch();
+        $dataProviderBlock = $searchModelBlock->search(Yii::$app->request->queryParams,$id);
 
         $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])->asArray()->all();
 
@@ -120,7 +124,9 @@ class RupController extends Controller
             'model' => $model,
             'qualifications'=>$qualifications,
             'searchModel'=>$searchModel,
-            'dataProvider'=>$dataProvider
+            'dataProvider'=>$dataProvider,
+            'searchModelBlock'=>$searchModelBlock,
+            'dataProviderBlock'=>$dataProviderBlock
         ]);
     }
 

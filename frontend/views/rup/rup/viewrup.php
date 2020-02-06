@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = 'Просмотр';
         'model' => $model,
     ]);
 
-    $content2 =$this->renderAjax('/rup/rup-sub-block/index-view',[
+    $content2 =$this->renderAjax('/rup/rup-module/index-view',[
 //            'searchModel'=>$searchModel,
             'dataProvider'=>$dataProvider
     ]);

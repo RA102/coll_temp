@@ -1,7 +1,7 @@
 <?php
 
 use frontend\models\rup\RupBlock;
-use frontend\models\rup\RupSubBlock;
+use frontend\models\rup\RupModule;
 use frontend\models\rup\RupSubjects;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->subBlock->name;
                 },
                 'filterType' => GridView::FILTER_CHECKBOX,
-                'filter' => ArrayHelper::map(RupSubBlock::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
+                'filter' => ArrayHelper::map(RupModule::find()->orderBy('name')->asArray()->all(), 'id', 'name'),
                 'filterWidgetOptions' => [
                     'pluginOptions' => ['allowClear' => true],
                 ],

@@ -1,46 +1,68 @@
 <?php
 
+use frontend\models\rup\RupQualifications;
+use frontend\models\rup\RupModule;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
+use yii\helpers\Url;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\rup\RupModuleSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Rup Modules';
+$this->title = 'Модули';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="rup-module-index">
+<div class="rup-sub-block-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Rup Module', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php
+        Modal::begin([
+            'header' => '<h2>Добавить модуль</h2>',
+            'toggleButton' => ['label' => 'Добавить модуль','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
+
+
+        ]);
+
+        echo $this->renderAjax('/rup/rup-module/_form',['model'=> $Model=new RupModule()]);
+
+        Modal::end();
+        ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+//            ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'year',
-            'status',
-            'create',
-            'update_ts',
-            //'caption_ru',
-            //'caption_kz',
-            //'profession_code',
-            //'study_form',
-            //'profile_id',
-            //'spec_id',
-            //'level_id',
-            //'study_time:datetime',
+//            'id',
+            'code',
+            ['attribute'=>'name'],
+            'time',
+            //['attribute'=>'block.name','header' => 'Профиль'],
+            ['attribute'=>'timemodulededucted','header' => 'Не распределено'],
+            [
+                'class' => 'kartik\grid\ExpandRowColumn',
+                'width' => '50px',
+                'value' => function ($model, $key, $index, $column) {
+                    return GridView::ROW_COLLAPSED;
+                },
+                // uncomment below and comment detail if you need to render via ajax
+                'detailUrl'=>Url::to(['/rup/rup-module/subjects-detail']),
+//                'detail' => function ($model, $key, $index, $column) {
+//                    return Yii::$app->controller->renderPartial('/rup/rup-subjects/view', ['model' => $model]);
+//                },
+                'headerOptions' => ['class' => 'kartik-sheet-style'] ,
+                'expandOneOnly' => true,
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+//            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

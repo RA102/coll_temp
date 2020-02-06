@@ -127,7 +127,12 @@ class RupSubjectsController extends Controller
     }
     public function actionGetInfo($id)
     {
-        $info = $this->findModel($id);
+        $info = RupSubjects::find()
+            ->joinWith(['block','subBlock'])
+            ->where(['rup_subjects.id'=>$id])
+            ->asArray()
+            ->one();
+//        $info = $this->findModel($id);
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         return $info;

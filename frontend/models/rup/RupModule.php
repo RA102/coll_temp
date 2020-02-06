@@ -5,21 +5,14 @@ namespace frontend\models\rup;
 use Yii;
 
 /**
- * This is the model class for table "rup_module".
+ * This is the model class for table "rup_sub_block".
  *
  * @property int $id
- * @property int $year
- * @property int $status
- * @property string $create
- * @property string $update_ts
- * @property string $caption_ru
- * @property string $caption_kz
- * @property string $profession_code
- * @property int $study_form
- * @property int $profile_id
- * @property int $spec_id
- * @property int $level_id
- * @property int $study_time
+ * @property string $code
+ * @property string $name
+ *
+ * @property RupBlock $id0
+ * @property RupSubjects[] $rupSubjects
  */
 class RupModule extends \yii\db\ActiveRecord
 {
@@ -37,12 +30,11 @@ class RupModule extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['year', 'status', 'create', 'update_ts', 'caption_ru', 'caption_kz', 'profession_code', 'study_form', 'profile_id', 'spec_id', 'level_id', 'study_time'], 'required'],
-            [['year', 'status', 'study_form', 'profile_id', 'spec_id', 'level_id', 'study_time'], 'default', 'value' => null],
-            [['year', 'status', 'study_form', 'profile_id', 'spec_id', 'level_id', 'study_time'], 'integer'],
-            [['create', 'update_ts'], 'safe'],
-            [['caption_ru', 'caption_kz'], 'string', 'max' => 300],
-            [['profession_code'], 'string', 'max' => 100],
+            [['code', 'name'], 'required'],
+            [['time'], 'integer'],
+            [['code', 'name'], 'string'],
+            [['block','rup_id'],'safe'],
+            [['id'], 'exist', 'skipOnError' => true, 'targetClass' => RupBlock::className(), 'targetAttribute' => ['id' => 'id']],
         ];
     }
 
@@ -53,18 +45,35 @@ class RupModule extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'year' => 'Year',
-            'status' => 'Status',
-            'create' => 'Create',
-            'update_ts' => 'Update Ts',
-            'caption_ru' => 'Caption Ru',
-            'caption_kz' => 'Caption Kz',
-            'profession_code' => 'Profession Code',
-            'study_form' => 'Study Form',
-            'profile_id' => 'Profile ID',
-            'spec_id' => 'Spec ID',
-            'level_id' => 'Level ID',
-            'study_time' => 'Study Time',
+            'code' => 'Индекс',
+            'name' => 'Наименование',
+            'rup_id'=>'id RUP',
+            'time'=>'Всего часов'
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBlock()
+    {
+        return $this->hasOne(RupBlock::className(), ['id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRupSubjects()
+    {
+        return $this->hasMany(RupSubjects::className(), ['id_sub_block' => 'id']);
+    }
+
+//    public function getTimemodule(){
+//        $sum = RupSubjects::find()->select(['time'])->where(['id_sub_block'=>$this->block_id])->andWhere(['rup_id'=>$this->rup_id])->sum('time');
+//        return $sum;
+//    }
+    public function getTimemodulededucted(){
+        $sum = RupSubjects::find()->select(['time'])->where(['id_sub_block'=>$this->block_id])->andWhere(['rup_id'=>$this->rup_id])->sum('time');
+        return $this->time-$sum;
     }
 }

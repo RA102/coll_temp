@@ -7,6 +7,11 @@
         <th>Часы нераспред.</th>
     </tr>
     <?php
+
+    use frontend\models\rup\RupBlock;
+    use frontend\models\rup\RupSubjects;
+    use yii\bootstrap\Modal;
+
     $i=1;
     foreach ($all as $al){
         $time=$al['time']-($al['teory_time']+$al['lab_time']+$al['production_practice_time']);
@@ -16,6 +21,21 @@
 <td  ><?= $al['name'] ?></td>
 <td  ><?=$al['time']?></td>
 <td  ><?=$time?></td>
+<td  ><?php
+//    Modal::begin([
+//        'header' => '<h2>Добавить модуль</h2>',
+//        'toggleButton' => [
+//            'label' => 'Добавить блок',
+//            'class' => 'btn btn-success',
+//            'style' => ['margin-top' => '5px;']
+//        ],
+//
+//
+//    ]);
+//
+//    echo $this->renderAjax('/rup/rup-subject/_form', ['model' => $Model = new RupSubjects()]);
+//
+//    Modal::end(); ?><!--</td>-->
 <td>
 <button title='Удалить' style='margin-left:15%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_Module' idd="<?= $al['id'] ?>">
     <span class='glyphicon glyphicon-trash'>

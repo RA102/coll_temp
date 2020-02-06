@@ -7,7 +7,7 @@ use yii\data\ActiveDataProvider;
 use frontend\models\rup\RupModule;
 
 /**
- * RupModuleSearch represents the model behind the search form of `frontend\models\rup\RupModule`.
+ * RupSubBlockSearch represents the model behind the search form of `frontend\models\rup\RupSubBlock`.
  */
 class RupModuleSearch extends RupModule
 {
@@ -17,8 +17,8 @@ class RupModuleSearch extends RupModule
     public function rules()
     {
         return [
-            [['id', 'year', 'status', 'study_form', 'profile_id', 'spec_id', 'level_id', 'study_time'], 'integer'],
-            [['create', 'update_ts', 'caption_ru', 'caption_kz', 'profession_code'], 'safe'],
+            [['id', 'block_id'], 'integer'],
+            [['code', 'name','block'], 'safe'],
         ];
     }
 
@@ -38,7 +38,7 @@ class RupModuleSearch extends RupModule
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$rup_id,$block_id)
     {
         $query = RupModule::find();
 
@@ -55,24 +55,19 @@ class RupModuleSearch extends RupModule
             // $query->where('0=1');
             return $dataProvider;
         }
+        $query->joinWith('block');
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'year' => $this->year,
-            'status' => $this->status,
-            'create' => $this->create,
-            'update_ts' => $this->update_ts,
-            'study_form' => $this->study_form,
-            'profile_id' => $this->profile_id,
-            'spec_id' => $this->spec_id,
-            'level_id' => $this->level_id,
-            'study_time' => $this->study_time,
+            'block_id' => $this->block_id,
         ]);
 
-        $query->andFilterWhere(['ilike', 'caption_ru', $this->caption_ru])
-            ->andFilterWhere(['ilike', 'caption_kz', $this->caption_kz])
-            ->andFilterWhere(['ilike', 'profession_code', $this->profession_code]);
+        $query->andFilterWhere(['ilike', 'code', $this->code])
+            ->andFilterWhere(['ilike', 'name', $this->name])
+            ->andFilterWhere(['rup_module.rup_id'=> $rup_id])
+            ->andFilterWhere(['rup_module.block_id'=> $block_id]);
+//            ->andFilterWhere(['>', 'rup_sub_block.rup_id', 0]);
 
         return $dataProvider;
     }

@@ -6,12 +6,12 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model frontend\models\rup\RupModule */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Rup Modules', 'url' => ['index']];
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Rup Sub Blocks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="rup-module-view">
+<div class="rup-sub-block-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,18 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'year',
-            'status',
-            'create',
-            'update_ts',
-            'caption_ru',
-            'caption_kz',
-            'profession_code',
-            'study_form',
-            'profile_id',
-            'spec_id',
-            'level_id',
-            'study_time:datetime',
+            'code',
+            'name',
+            'block_id',
         ],
     ]) ?>
 

@@ -63,7 +63,8 @@ class RupBlockSearch extends RupBlock
         ]);
 
         $query->andFilterWhere(['ilike', 'code', $this->code])
-            ->andFilterWhere(['ilike', 'name', $this->name]);
+            ->andFilterWhere(['ilike', 'name', $this->name])
+            ->andFilterWhere(['>', 'id', 0]);
 
         return $dataProvider;
     }

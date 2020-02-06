@@ -1,14 +1,14 @@
 <?php
 
 use frontend\models\rup\RupQualifications;
-use frontend\models\rup\RupSubBlock;
+use frontend\models\rup\RupModule;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel frontend\models\rup\RupSubBlockSearch */
+/* @var $searchModel frontend\models\rup\RupModuleSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Модули';
@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return GridView::ROW_COLLAPSED;
                 },
                 // uncomment below and comment detail if you need to render via ajax
-                'detailUrl'=>Url::to(['/rup/rup-sub-block/subjects-detail-view']),
+                'detailUrl'=>Url::to(['/rup/rup-module/subjects-detail-view']),
 //                'detail' => function ($model, $key, $index, $column) {
 //                    return Yii::$app->controller->renderPartial('/rup/rup-subjects/view', ['model' => $model]);
 //                },

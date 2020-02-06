@@ -1,7 +1,7 @@
 <?php
 
 use frontend\models\rup\RupBlock;
-use frontend\models\rup\RupSubBlock;
+use frontend\models\rup\RupModule;
 use frontend\models\rup\RupSubjects;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;

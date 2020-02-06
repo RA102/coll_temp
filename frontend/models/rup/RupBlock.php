@@ -2,6 +2,7 @@
 
 namespace frontend\models\rup;
 
+use api\modules\v1\Module;
 use Yii;
 
 /**
@@ -12,7 +13,7 @@ use Yii;
  * @property string $name
  * @property int $time
  *
- * @property RupSubBlock $rupSubBlock
+ * @property RupModule $rupSubBlock
  */
 class RupBlock extends \yii\db\ActiveRecord
 {
@@ -44,10 +45,10 @@ class RupBlock extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'code' => 'Code',
-            'name' => 'Name',
-            'time' => 'Time',
+            'id' => 'id',
+            'code' => 'Индекс',
+            'name' => 'Квалификация',
+            'time' => 'Часов всего',
         ];
     }
 
@@ -56,6 +57,10 @@ class RupBlock extends \yii\db\ActiveRecord
      */
     public function getRupSubBlock()
     {
-        return $this->hasOne(RupSubBlock::className(), ['id' => 'id']);
+        return $this->hasOne(RupModule::className(), ['id' => 'id']);
+    }
+    public function getTimemodulededucted(){
+        $sum = RupModule::find()->select(['time'])->where(['block_id'=>$this->id])->andWhere(['rup_id'=>$this->rup_id])->sum('time');
+        return $this->time-$sum;
     }
 }

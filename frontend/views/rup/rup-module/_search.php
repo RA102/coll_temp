@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="rup-module-search">
+<div class="rup-sub-block-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -20,29 +20,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'year') ?>
+    <?= $form->field($model, 'code') ?>
 
-    <?= $form->field($model, 'status') ?>
+    <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'create') ?>
-
-    <?= $form->field($model, 'update_ts') ?>
-
-    <?php // echo $form->field($model, 'caption_ru') ?>
-
-    <?php // echo $form->field($model, 'caption_kz') ?>
-
-    <?php // echo $form->field($model, 'profession_code') ?>
-
-    <?php // echo $form->field($model, 'study_form') ?>
-
-    <?php // echo $form->field($model, 'profile_id') ?>
-
-    <?php // echo $form->field($model, 'spec_id') ?>
-
-    <?php // echo $form->field($model, 'level_id') ?>
-
-    <?php // echo $form->field($model, 'study_time') ?>
+    <?= $form->field($model, 'block_id') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

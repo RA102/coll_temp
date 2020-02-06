@@ -1,14 +1,15 @@
 <?php
 
+use frontend\models\rup\RupBlock;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\widgets\Pjax;
+use kartik\grid\GridView;
+use yii\helpers\Url;use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\rup\RupBlockSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Rup Blocks';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Блоки РУПа';
 ?>
 <div class="rup-block-index">
 
@@ -17,22 +18,51 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Rup Block', ['create'], ['class' => 'btn btn-success']) ?>
+<?php         Modal::begin([
+    'header' => '<h2>Добавить модуль</h2>',
+    'toggleButton' => ['label' => 'Добавить блок','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
+
+
+]);
+
+echo $this->renderAjax('/rup/rup-block/_form',['model'=> $Model=new RupBlock()]);
+
+Modal::end(); ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
+        'rowOptions'   => function ($model, $key, $index, $grid) {
+            return ['data-id' => $model->id,'data-rup_id' => $model->rup_id];
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+//            'id',
             'code',
             'name',
-            'time:datetime',
+            'time',
+            ['attribute'=>'timemodulededucted',
+            'pageSummary' => true,
+                'label'=>'Не распределено'],
 
-            ['class' => 'yii\grid\ActionColumn'],
         ],
+        'showPageSummary' => true
     ]); ?>
     <?php Pjax::end(); ?>
+    <div class="moduleDetail">
+
+    </div>
+    <?php
+$this->registerJs("
+
+    $('td').click(function (e) {
+        var id = $(this).closest('tr').data('rup_id');
+        var block_Id = $(this).closest('tr').data('id');
+        if(e.target == this)
+            location.href = '" . Url::to(['/rup/rup/update']) . "?id=' + id+'&active=2&block_id='+block_Id;
+    });
+
+");?>
 </div>

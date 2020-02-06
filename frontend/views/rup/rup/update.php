@@ -37,12 +37,17 @@ else{
         'qualifications'=>$qualifications,
         'model' => $model,
     ]);
-
-    $content2 =$this->renderAjax('/rup/rup-sub-block/index',[
-//            'searchModel'=>$searchModel,
+    $content2 =$this->renderAjax('/rup/rup-block/index',[
+            'searchModel'=>$searchModelBlock,
+            'dataProvider'=>$dataProviderBlock,
+            'rup_id'=>$model->rup_id,
+        ]);
+    $content2 =$content2.$this->renderAjax('/rup/rup-module/index',[
+            'searchModel'=>$searchModel,
             'dataProvider'=>$dataProvider,
         'rup_id'=>$model->rup_id,
     ]);
+
 
 
     $items = [
@@ -186,6 +191,16 @@ else{
     </div>
 
     <script>
+        //getParams in GET param;
+        var queryDict = {}
+        location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]});
+        console.log(queryDict);
+        if(queryDict.block_id==null){
+            $('.rup-sub-block-index').hide();
+        }
+        else{
+            $('.rup-sub-block-index').show();
+        }
         $( document ).ready(function() {
             $.ajax({
                 url: '/rup/rup-subjects/get-info',

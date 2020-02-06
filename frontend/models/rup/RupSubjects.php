@@ -27,7 +27,7 @@ use yii\widgets\Block;
  * @property int $seven_sem_time
  * @property int $eight_sem_time
  *
- * @property RupSubBlock $subBlock
+ * @property RupModule $subBlock
  */
 class RupSubjects extends \yii\db\ActiveRecord
 {
@@ -47,10 +47,10 @@ class RupSubjects extends \yii\db\ActiveRecord
     {
         return [
             [['id_sub_block', 'id_block', 'exam', 'control_work', 'offset', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time'], 'required'],
-            [['notTime'],'safe'],
+            [['notTime','block','subBlock'],'safe'],
             [['id_sub_block', 'id_block', 'exam', 'control_work', 'offset', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time'], 'default', 'value' => null],
             [['id_sub_block', 'id_block', 'exam', 'control_work', 'offset', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time'], 'integer'],
-            [['id_sub_block'], 'exist', 'skipOnError' => true, 'targetClass' => RupSubBlock::className(), 'targetAttribute' => ['id_sub_block' => 'id']],
+            [['id_sub_block'], 'exist', 'skipOnError' => true, 'targetClass' => RupModule::className(), 'targetAttribute' => ['id_sub_block' => 'id']],
             [['id_block'], 'exist', 'skipOnError' => true, 'targetClass' => RupBlock::className(), 'targetAttribute' => ['id_block' => 'id']],
         ];
     }
@@ -89,7 +89,7 @@ class RupSubjects extends \yii\db\ActiveRecord
      */
     public function getSubBlock()
     {
-        return $this->hasOne(RupSubBlock::className(), ['id' => 'id_sub_block']);
+        return $this->hasOne(RupModule::className(), ['id' => 'id_sub_block']);
     }
     public function getBlock()
     {
