@@ -47,7 +47,7 @@ class RupBlock extends \yii\db\ActiveRecord
         return [
             'id' => 'id',
             'code' => 'Индекс',
-            'name' => 'Квалификация',
+            'name' => 'Наименование',
             'time' => 'Часов всего',
             'rup_id' => 'Айди рупа',
         ];
