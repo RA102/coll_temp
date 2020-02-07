@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `rups_list`.
  */
-class m200119_084405_create_rups_subjects_table extends Migration
+class m200119_084408_create_handbook_profiles_table extends Migration
 {
     /**
      * {@inheritdoc}
