@@ -61,8 +61,10 @@ use yii\widgets\ActiveForm;
 
     <?php
     Modal::begin([
+
         'header' => '<h2>Добавить квалификации</h2>',
         'toggleButton' => ['label' => 'Добавить квалификации','class'=>'btn btn-success','style'=>['margin'=>'5px;']],
+        'size'=>'modal-sm',
     ]);
     echo $this->renderAjax('/rup/rup-qualifications/_form',['model'=> $Model=new RupQualifications()]);
     Modal::end();

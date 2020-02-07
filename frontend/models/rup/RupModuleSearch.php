@@ -71,4 +71,37 @@ class RupModuleSearch extends RupModule
 
         return $dataProvider;
     }
+
+    public function searchwithoutblock($params,$rup_id)
+    {
+        $query = RupModule::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        $query->joinWith('block');
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'block_id' => $this->block_id,
+        ]);
+
+        $query->andFilterWhere(['ilike', 'code', $this->code])
+            ->andFilterWhere(['ilike', 'name', $this->name])
+            ->andFilterWhere(['rup_module.rup_id'=> $rup_id]);
+//            ->andFilterWhere(['>', 'rup_sub_block.rup_id', 0]);
+
+        return $dataProvider;
+    }
 }

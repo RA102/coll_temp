@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'rup_id')->hiddenInput()->label(false) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Добавить', ['class' => 'btn btn-success','id'=>'submitQualification']) ?>
+        <?= Html::submitButton('Добавить', ['class' => 'btn btn-primary','id'=>'submitQualification']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -66,7 +66,7 @@ class RupController extends Controller
         $model = $this->findModel($id);
 
         $searchModel = new RupModuleSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$id);
+        $dataProvider = $searchModel->searchwithoutblock(Yii::$app->request->queryParams,$id);
 
         $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])->asArray()->all();
 
