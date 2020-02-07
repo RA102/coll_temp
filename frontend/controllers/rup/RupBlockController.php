@@ -67,7 +67,7 @@ class RupBlockController extends Controller
         $model = new RupBlock();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return 'allIsOK';
         }
 
         return $this->render('create', [

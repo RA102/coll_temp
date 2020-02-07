@@ -39,7 +39,7 @@ Modal::end(); ?>
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-//            'id',
+//            'rup_id',
             'code',
             'name',
             'time',
@@ -62,6 +62,7 @@ $this->registerJs("
         var block_Id = $(this).closest('tr').data('id');
         if(e.target == this)
             location.href = '" . Url::to(['/rup/rup/update']) . "?id=' + id+'&active=2&block_id='+block_Id;
+console.log(id);console.log(block_Id);
     });
 
 ");?>

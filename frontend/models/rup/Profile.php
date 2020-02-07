@@ -55,6 +55,7 @@ class Profile extends \yii\db\ActiveRecord
             'subjects' => 'Subjects',
         ];
     }
+
     public function getCodecaption(){
     return $this->code.'-'.$this->caption_ru;
     }

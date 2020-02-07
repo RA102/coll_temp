@@ -5,6 +5,9 @@
         <th>Дисциплина</th>
         <th>Часы всего</th>
         <th>Часы нераспред.</th>
+        <th> <button title='Изменить' style='margin-left:10%;' data-target="#editModalModule" data-toggle="modal" class='btn btn-success edit_qual updateModuleButton' idd="<?= $al['id'] ?>">
+                <h7>Добавить<i class='fas fa-edit'></i></h7>
+            </button></th>
     </tr>
     <?php
 

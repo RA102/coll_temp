@@ -31,9 +31,9 @@ class RupBlock extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'name', 'time'], 'required'],
+            [['code', 'name', 'time','rup_id'], 'required'],
             [['time'], 'default', 'value' => null],
-            [['time'], 'integer'],
+            [['time','rup_id'], 'integer'],
             [['code'], 'string', 'max' => 20],
             [['name'], 'string', 'max' => 300],
         ];
@@ -49,6 +49,7 @@ class RupBlock extends \yii\db\ActiveRecord
             'code' => 'Индекс',
             'name' => 'Квалификация',
             'time' => 'Часов всего',
+            'rup_id' => 'Айди рупа',
         ];
     }
 

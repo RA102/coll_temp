@@ -30,10 +30,10 @@ class RupModule extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'name'], 'required'],
-            [['time'], 'integer'],
+            [['code', 'name','block_id'], 'required'],
+            [['time','rup_id','block_id'], 'integer'],
             [['code', 'name'], 'string'],
-            [['block','rup_id'],'safe'],
+            [['block'],'safe'],
             [['id'], 'exist', 'skipOnError' => true, 'targetClass' => RupBlock::className(), 'targetAttribute' => ['id' => 'id']],
         ];
     }
@@ -48,7 +48,8 @@ class RupModule extends \yii\db\ActiveRecord
             'code' => 'Индекс',
             'name' => 'Наименование',
             'rup_id'=>'id RUP',
-            'time'=>'Всего часов'
+            'time'=>'Всего часов',
+            'block_id'=>'Всего часов'
         ];
     }
 

@@ -13,15 +13,17 @@ use Yii;
 
 <div class="rup-sub-block-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options'=>['id'=>'addModuleFormAjaxSerialazi']]); ?>
 
     <?= $form->field($model, 'code')->textInput() ?>
 
     <?= $form->field($model, 'rup_id')->hiddenInput(['value'=>$_GET['id']])->label(false) ?>
 
-    <?= $form->field($model, 'block_id')->dropDownList(ArrayHelper::map(RupBlock::find()->where(['>','id',0])->all(), 'id', 'name'))->label(false) ?>
+    <?= $form->field($model, 'block_id')->hiddenInput(['value'=>Yii::$app->request->get('block_id')])->label(false) ?>
 
     <?= $form->field($model, 'name')->textInput() ?>
+
+    <?= $form->field($model, 'time')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Добавить', ['class' => 'btn btn-success','id'=>'subModuleAdd']) ?>
@@ -36,9 +38,9 @@ use Yii;
             $.ajax({
                 type: 'POST',
                 url: '/rup/rup-module/create',
-                data: $('#w4').serialize(),
+                data: $('#addModuleFormAjaxSerialazi').serialize(),
                 success: function(data){
-                    alert('Всё хорошо');
+                    // alert('Всё хорошо');
                 }
             });
         })
