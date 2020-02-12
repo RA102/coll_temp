@@ -217,7 +217,9 @@ use yii\widgets\ActiveForm;
     $('.nextVersion').on('click',function (e) {
         e.preventDefault();
         alert('Это планируется в следующей версии');
-    })
+    });
+
+
 
 
 </script>

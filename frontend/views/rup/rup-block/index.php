@@ -20,6 +20,7 @@ $this->title = 'Блоки РУПа';
     <p>
 <?php         Modal::begin([
     'header' => '<h2>Добавить модуль</h2>',
+    'size'=>'modal-sm',
     'toggleButton' => ['label' => 'Добавить блок','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
 
 
@@ -46,24 +47,52 @@ Modal::end(); ?>
             ['attribute'=>'timemodulededucted',
             'pageSummary' => true,
                 'label'=>'Не распределено'],
+            [
+                'attribute' => 'Редактирование',
+                'format' => 'raw',
+                'contentOptions' => ['class' => 'abracadabra'],
+                'value' => function ($model) {
+                    return '<div>'.'<button title="Изменить" data-target="#editModal" data-toggle="modal" style="margin-left:3%;" 
+                            class="btn btn-success edit_qual" qualeditbuttonid="2"><h7><i class="fas fa-edit"></i></h7></button>'
+                            .'<button title="Удалить" style="margin-left:3%;" 
+                            class="btn btn-danger deleteModelButton" modelId="'.$model->id.'"><h7><i class="fas fa-trash"></i></h7></button>'.'</div>';
+                },
+            ],
 
         ],
+
         'showPageSummary' => true
     ]); ?>
     <?php Pjax::end(); ?>
     <div class="moduleDetail">
+        <script>
+            $('.deleteModelButton').on('click',function () {
+                $.ajax({url: "/rup/rup-block/delete-ajax",data:{'id':$(this).attr('modelid')}, success: function(result){
+                        location.reload();
+                    }});
+            });
+        </script>
 
     </div>
     <?php
 $this->registerJs("
-
-    $('td').click(function (e) {
+    $('td[class=w5][class!=kv-page-summary]').click(function (e) {
         var id = $(this).closest('tr').data('rup_id');
         var block_Id = $(this).closest('tr').data('id');
-        if(e.target == this)
-            location.href = '" . Url::to(['/rup/rup/update']) . "?id=' + id+'&active=2&block_id='+block_Id;
-console.log(id);console.log(block_Id);
+        if($(this).attr('class')=='w5 abracadabra'){
+        
+        }
+        else if($(this).attr('class')!='w5 abracadabra')
+        {
+         location.href = '" . Url::to(['/rup/rup/update']) . "?id=' + id+'&active=2&block_id='+block_Id;
+         
+        }
+
+
     });
+    
+
+
 
 ");?>
 </div>

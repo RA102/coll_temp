@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'time')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Добавить', ['class' => 'btn btn-success', 'id'=>'addBlockAjaxSubmit']) ?>
+        <?= Html::submitButton('Добавить', ['class' => 'btn btn-primary', 'id'=>'addBlockAjaxSubmit']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

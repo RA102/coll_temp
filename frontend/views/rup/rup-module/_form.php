@@ -26,7 +26,7 @@ use Yii;
     <?= $form->field($model, 'time')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Добавить', ['class' => 'btn btn-success','id'=>'subModuleAdd']) ?>
+        <?= Html::submitButton('Добавить', ['class' => 'btn btn-primary','id'=>'subModuleAdd']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

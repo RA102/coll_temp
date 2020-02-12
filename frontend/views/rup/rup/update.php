@@ -106,7 +106,7 @@ else{
                     <h4 class="modal-title">Изменить</h4>
                 </div>
                 <div id='editModalBody' class="modal-body">
-                    <form action="\rup\rup-subjects\update">
+                    <form id="addQualification" action="\rup\rup-subjects\update">
                         <div class="row">
                             <div class="col-3" style="font-weight:bold">Модуль/Дисциплина:</div>
                             <div class="col-2"><input class="form-control" id="editModalModuleModuleIndex" type="text" placeholder="индекс"></div>
@@ -189,6 +189,108 @@ else{
             </div>
         </div>
     </div>
+<!--END OF BIG EDIT WINDOW-->
+
+
+
+<!--    START OF BIG ADD QUALIFICATION WINDOW-->
+
+    <!--    <button data-toggle="modal" data-target="#editModalModule"></button>-->
+    <!---Big edit window-->
+    <div id="addModalModule" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Добавить</h4>
+                </div>
+                <div id='addQualModalBody' class="modal-body">
+                    <form id="addQualification" >
+                        <div class="row">
+                            <div class="col-3" style="font-weight:bold">Модуль/Дисциплина:</div>
+                            <div class="col-2"><input class="form-control" id="addQualModalModuleModuleIndex" type="text" placeholder="индекс"></div>
+                            <div class="col-7"><input class="form-control" id="addQualModalModuleModule" type="text"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-3">Входит в модуль:</div>
+                            <div class="col-9"><input class="form-control" id="addQualModalModuleInModule" type="text" disabled></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3" style="font-weight:bold">Форма контроля:</div>
+                            <div class="col-3" >Экзамен: <input class="form-control" id="addQualModalModuleFormControl1" type="number"></div>
+                            <div class="col-3" >Зачет: <input class="form-control"  id="addQualModalModuleFormControl2" type="number"></div>
+                            <div class="col-3" >Контрольная: <input class="form-control" id="addQualModalModuleFormControl3" type="number"></div>
+                        </div>
+                        <br><br>
+                        <div class="row">
+                            <div class="col-3" style="font-weight:bold">Часов для распределения:</div>
+                            <div class="col-3" style="font-weight:bold">Всего: <input class="form-control" id="addQualModalModuleAllTime" type="number"></div>
+                            <div class="col-3"> </div>
+                            <div class="col-3" style="font-weight:bold">Не распределено: <input class="form-control" id="addQualModalModuleAllTimeNeraspred" type="text" disabled="true"></div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-3" style="font-weight:bold">Объем учебного времени:</div>
+                            <div class="col-3" >Теоретическое: <input class="form-control" id="addQualModalModuleAllTimeTheory" type="number"></div>
+                            <div class="col-3" >Лаб.-практическое: <input  class="form-control" id="addQualModalModuleAllTimeLab" type="number"></div>
+                            <div class="col-3" >Производственное: <input class="form-control" id="addQualModalModuleAllTimeProd" type="number"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12" style="font-weight:bold">Время по семестрам:</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-3"> </div>
+                            <div class="col-1">1 сем:</div>
+                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime1" type="number"></div>
+
+                            <div class="col-1">2 сем:</div>
+                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime2" type="number"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3"> </div>
+                            <div class="col-1">3 сем:</div>
+                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime3" type="number"></div>
+
+                            <div class="col-1">4 сем:</div>
+                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime4" type="number"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3"> </div>
+                            <div class="col-1">5 сем:</div>
+                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime5" type="number"></div>
+
+                            <div class="col-1">6 сем:</div>
+                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime6" type="number"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3"> </div>
+                            <div class="col-1">7 сем:</div>
+                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime7" type="number"></div>
+
+                            <div class="col-1">8 сем:</div>
+                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime8" type="number"></div>
+                        </div>
+
+                        <br>
+
+
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                        <input type="submit" class="btn btn-primary" id="addQualModule" value="Добавить"></input>
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    END OF BIG UPDATE WINDOW-->
+
 
     <script>
         //getParams in GET param;
@@ -242,6 +344,19 @@ else{
             });
         });
 
+        $('#addQualModule').on('click',function (e) {
+            e.preventDefault();
+            alert('123');
+            console.log($('#addQualModalModuleModuleIndex').val())
+                // $.ajax({
+                //     type: 'POST',
+                //     url: '/rup/rup-subjects/update-qual?id='+id,
+                //     data: {$('#addQualification').serialize()},
+                // success: function(data){
+                //     alert('321');
+                // },
+        //     })
+        });
     </script>
 </div>
     <style>

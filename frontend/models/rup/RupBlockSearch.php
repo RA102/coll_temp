@@ -38,7 +38,7 @@ class RupBlockSearch extends RupBlock
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$rup_id)
     {
         $query = RupBlock::find();
 
@@ -64,6 +64,7 @@ class RupBlockSearch extends RupBlock
 
         $query->andFilterWhere(['ilike', 'code', $this->code])
             ->andFilterWhere(['ilike', 'name', $this->name])
+            ->andFilterWhere(['=', 'rup_id', $rup_id])
             ->andFilterWhere(['>', 'id', 0]);
 
         return $dataProvider;

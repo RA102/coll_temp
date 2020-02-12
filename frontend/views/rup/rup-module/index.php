@@ -24,6 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         Modal::begin([
             'header' => '<h2>Добавить модуль</h2>',
+            'size'=>'modal-sm',
+
+
             'toggleButton' => ['label' => 'Добавить модуль','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
 
 

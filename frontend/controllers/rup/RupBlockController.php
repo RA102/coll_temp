@@ -108,6 +108,14 @@ class RupBlockController extends Controller
 
         return $this->redirect(['index']);
     }
+    public function actionDeleteAjax($id)
+    {
+        $model = $this->findModel($id);
+        $model->rup_id=0;
+        if($model->save()){
+            return "ok";
+        };
+    }
 
     /**
      * Finds the RupBlock model based on its primary key value.

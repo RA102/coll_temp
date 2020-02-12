@@ -146,7 +146,7 @@ class RupModuleController extends Controller
 
             $subject = $this->findModel($_POST['expandRowKey']);
             $subjects = RupSubjects::find()->Where(['rup_subjects.id_sub_block'=>$_POST['expandRowKey']])->asArray()->joinWith('subBlock')->joinWith('block')->orderBy(['rup_block.id'=>SORT_ASC,'rup_module.id'=>SORT_ASC])->all();
-            return $this->renderPartial('/rup/rup-subjects/indexSubjects',['all'=>$subjects]);
+            return $this->renderPartial('/rup/rup-subjects/indexSubjects',['all'=>$subjects,'module_ID'=>$_POST['expandRowKey']]);
 //            return $subject->rup_id;
         }
 
