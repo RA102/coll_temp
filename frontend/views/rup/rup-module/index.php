@@ -35,7 +35,12 @@ $this->params['breadcrumbs'][] = $this->title;
         echo $this->renderAjax('/rup/rup-module/_form',['model'=> $Model=new RupModule()]);
 
         Modal::end();
+
+
         ?>
+        <button moduleId="<?php echo $module_ID?>" title='Добавить' style='' data-target="#addModalModule" data-toggle="modal" class='btn btn-success edit_qual addQualModuleButton' idd="<?= $al['id'] ?>">
+            <h7>Добавить дисциплину без модуля<i class='fas fa-edit'></i></h7>
+        </button>
     </p>
 
     <?= GridView::widget([
