@@ -1,8 +1,10 @@
 <?php
 
+use common\models\handbook\Speciality;
 use common\models\organization\InstitutionSpecialityInfo;
 use frontend\models\rup\Profile;
 use frontend\models\rup\RupQualifications;
+use kartik\depdrop\DepDrop;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;

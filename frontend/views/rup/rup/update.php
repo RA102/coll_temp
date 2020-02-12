@@ -233,9 +233,9 @@ else{
                         <br>
                         <div class="row">
                             <div class="col-3" style="font-weight:bold">Объем учебного времени:</div>
-                            <div class="col-3" >Теоретическое: <input class="form-control" id="addQualModalModuleAllTimeTheory" type="number"></div>
-                            <div class="col-3" >Лаб.-практическое: <input  class="form-control" id="addQualModalModuleAllTimeLab" type="number"></div>
-                            <div class="col-3" >Производственное: <input class="form-control" id="addQualModalModuleAllTimeProd" type="number"></div>
+                            <div class="col-3" >Теоретическое: <input class="form-control allTimePart" id="addQualModalModuleAllTimeTheory" type="number" value="0"></div>
+                            <div class="col-3" >Лаб.-практическое: <input  class="form-control allTimePart" id="addQualModalModuleAllTimeLab" type="number" value="0"></div>
+                            <div class="col-3" >Производственное: <input class="form-control allTimePart" id="addQualModalModuleAllTimeProd" type="number" value="0"></div>
                         </div>
 
                         <div class="row">
@@ -245,34 +245,34 @@ else{
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">1 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime1" type="number"></div>
+                            <div class="col-2"><input class="form-control semEdit"  id="addQualModalModuleTime1" type="number" value="0"></div>
 
                             <div class="col-1">2 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime2" type="number"></div>
+                            <div class="col-2"><input class="form-control semEdit"  id="addQualModalModuleTime2" type="number" value="0"></div>
                         </div>
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">3 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime3" type="number"></div>
+                            <div class="col-2"><input class="form-control semEdit"  id="addQualModalModuleTime3" type="number" value="0"></div>
 
                             <div class="col-1">4 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime4" type="number"></div>
+                            <div class="col-2"><input class="form-control semEdit"  id="addQualModalModuleTime4" type="number" value="0"></div>
                         </div>
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">5 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime5" type="number"></div>
+                            <div class="col-2"><input class="form-control semEdit"  id="addQualModalModuleTime5" type="number" value="0"></div>
 
                             <div class="col-1">6 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime6" type="number"></div>
+                            <div class="col-2"><input class="form-control semEdit"  id="addQualModalModuleTime6" type="number" value="0"></div>
                         </div>
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">7 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime7" type="number"></div>
+                            <div class="col-2"><input class="form-control semEdit"  id="addQualModalModuleTime7" type="number" value="0"></div>
 
                             <div class="col-1">8 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="addQualModalModuleTime8" type="number"></div>
+                            <div class="col-2"><input class="form-control semEdit"  id="addQualModalModuleTime8" type="number" value="0"></div>
                         </div>
 
                         <br>
@@ -356,6 +356,50 @@ else{
                 //     alert('321');
                 // },
         //     })
+        });
+        $('.addQualModuleButton').on('click',function () {
+            console.log('123');
+        });
+
+
+
+        $( '#addModalModule' ).on('shown.bs.modal', function(event){
+
+
+            var button = $(event.relatedTarget);
+            var ModalModuleId=button.attr('moduleid');
+
+            $.ajax({
+                url: "/rup/rup-module/getmoduleinfo?id="+ModalModuleId,
+                context: document.body,
+                success: function(data){
+                    $( ".semEdit" ).prop( "disabled", true );
+                    $( ".allTimePart" ).prop( "disabled", true );
+                    $('#addQualModalModuleInModule').val(data.name);
+                    $('#addQualModalModuleModuleIndex').val(data.code)
+                }
+            });
+
+        });
+
+
+        $('#addQualModalModuleAllTimeTheory').on('change',function () {
+            var addQualModalModuleAllTimeTheory = parseInt($('#addQualModalModuleAllTimeTheory').val());
+            var addQualModalModuleAllTimeLab=parseInt($('#addQualModalModuleAllTimeLab').val());
+            var addQualModalModuleAllTimeProd=parseInt($('#addQualModalModuleAllTimeProd').val());
+            var AllTime=$('#addQualModalModuleAllTime').val();
+            var AllTimeMinusSumm=parseInt(AllTime-(addQualModalModuleAllTimeTheory+addQualModalModuleAllTimeLab+addQualModalModuleAllTimeProd));
+            if(AllTimeMinusSumm!=0){
+                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( ".semEdit" ).prop( "disabled", true );
+            }
+            else{
+                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( ".semEdit" ).prop( "disabled", false );
+            }
+        });
+        $('#addQualModalModuleAllTime').on('keyup',function () {
+            $( ".allTimePart" ).prop( "disabled", false );
         });
     </script>
 </div>

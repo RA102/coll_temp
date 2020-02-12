@@ -140,6 +140,13 @@ class RupModuleController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionGetmoduleinfo($id)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = $this->findModel($id);
+        return $model;
+    }
+
     public function actionSubjectsDetail() {
         if (isset($_POST['expandRowKey'])) {
 //            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
