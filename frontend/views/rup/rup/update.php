@@ -96,6 +96,24 @@ else{
             </div>
         </div>
     </div>
+    <!--Mini edit window  BLOCK       -->
+    <div id="editModalBlock" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Изменить</h4>
+                </div>
+                <div id='editModalBodyBlock' class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <input type="submit" class="btn btn-primary" id="sendQualBlock" value="Сохранить изменения"></input>
+                </div>
+            </div>
+        </div>
+    </div>
 <!--    <button data-toggle="modal" data-target="#editModalModule"></button>-->
 <!---Big edit window-->
     <div id="editModalModule" class="modal fade" tabindex="-1" role="dialog">
@@ -180,6 +198,7 @@ else{
 
 
                         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                        <input type="text" class="hidden" id="editModalID">
                         <input type="submit" class="btn btn-primary" id="sendModule" value="Сохранить изменения"></input>
                     </form>
                 </div>
@@ -279,7 +298,8 @@ else{
 
 
                         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                        <input type="submit" class="btn btn-primary" id="addQualModule" value="Добавить"></input>
+                        <input type="text" class="hidden" id="moduleAppendId">
+                        <input type="submit" class="btn btn-primary" id="addQualModule" value="Добавить" disabled="true"></input>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -296,7 +316,7 @@ else{
         //getParams in GET param;
         var queryDict = {}
         location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]});
-        console.log(queryDict);
+        // console.log(queryDict);
         if(queryDict.block_id==null){
             $('.rup-sub-block-index').hide();
         }
@@ -332,51 +352,124 @@ else{
 
 
         //ИЗМЕНИТЬ ИЛИ ДОБАВИТЬ МОДУЛЬ
-        $('#sendModule').on('click',function () {
-            alert('123');
-            $.ajax({
-                type: 'POST',
-                url: '/rup/rup-subjects/update-qual?id='+id,
-                data: {'name':name,'code':code,'year':year,'month':month,'level':level},
-                success: function(data){
-                    location.reload();
-                }
-            });
+        $('#sendModule').on('click',function (e) {
+            e.preventDefault();
+            var id =$('#editModalID').val();
+            var code = $('#editModalModuleModuleIndex').val();
+            var name = $('#editModalModuleModule').val();
+            var rup_id = $('#ruproots-rup_id').val();
+            var one_sem_time = $('#editModalModuleTime1').val();
+            var two_sem_time = $('#editModalModuleTime2').val();
+            var three_sem_time = $('#editModalModuleTime3').val();
+            var four_sem_time = $('#editModalModuleTime4').val();
+            var five_sem_time = $('#editModalModuleTime5').val();
+            var six_sem_time = $('#editModalModuleTime6').val();
+            var seven_sem_time = $('#editModalModuleTime7').val();
+            var eight_sem_time = $('#editModalModuleTime8').val();
+            var production_practice_time = $('#editModalModuleAllTimeProd').val();
+            var lab_time = $('#editModalModuleAllTimeLab').val();
+            var teory_time=$('#editModalModuleAllTimeTheory').val();
+            var time=$('#editModalModuleAllTime').val();
+            var offset=$('#editModalModuleFormControl2').val();
+            var control_work=$('#editModalModuleFormControl3').val();
+            var exam=$('#editModalModuleFormControl1').val();
+            var id_block=queryDict.block_id;
+            var id_sub_block=$('#moduleAppendId').val();
+            if(checkFormForEdit()){
+                $.ajax({
+                    type: 'POST',
+                    url: '/rup/rup-subjects/update-subject?id='+id,
+                    data: {'code':code,'name':name,'rup_id':rup_id,'one_sem_time':one_sem_time,
+                        'two_sem_time':two_sem_time,'three_sem_time':three_sem_time,'four_sem_time':four_sem_time,
+                        'five_sem_time':five_sem_time,'six_sem_time':six_sem_time,'seven_sem_time':seven_sem_time,
+                        'eight_sem_time':eight_sem_time,'production_practice_time':production_practice_time,
+                        'lab_time':lab_time,'teory_time':teory_time,'time':time,'offset':offset,'control_work':control_work,
+                        'exam':exam,'id_block':id_block,'id_sub_block':id_sub_block},
+                    success: function(data){
+                        location.reload();
+                    }
+                });
+            };
         });
 
         $('#addQualModule').on('click',function (e) {
             e.preventDefault();
-            alert('123');
-            console.log($('#addQualModalModuleModuleIndex').val())
-                // $.ajax({
-                //     type: 'POST',
-                //     url: '/rup/rup-subjects/update-qual?id='+id,
-                //     data: {$('#addQualification').serialize()},
-                // success: function(data){
-                //     alert('321');
-                // },
-        //     })
-        });
-        $('.addQualModuleButton').on('click',function () {
-            console.log('123');
+            var code = $('#addQualModalModuleModuleIndex').val();
+            var name = $('#addQualModalModuleModule').val();
+            var rup_id = $('#ruproots-rup_id').val();
+            var one_sem_time = $('#addQualModalModuleTime1').val();
+            var two_sem_time = $('#addQualModalModuleTime2').val();
+            var three_sem_time = $('#addQualModalModuleTime3').val();
+            var four_sem_time = $('#addQualModalModuleTime4').val();
+            var five_sem_time = $('#addQualModalModuleTime5').val();
+            var six_sem_time = $('#addQualModalModuleTime6').val();
+            var seven_sem_time = $('#addQualModalModuleTime7').val();
+            var eight_sem_time = $('#addQualModalModuleTime8').val();
+            var production_practice_time = $('#addQualModalModuleAllTimeProd').val();
+            var lab_time = $('#addQualModalModuleAllTimeLab').val();
+            var teory_time=$('#addQualModalModuleAllTimeTheory').val();
+            var time=$('#addQualModalModuleAllTime').val();
+            var offset=$('#addQualModalModuleFormControl2').val();
+            var control_work=$('#addQualModalModuleFormControl3').val();
+            var exam=$('#addQualModalModuleFormControl1').val();
+            var id_block=queryDict.block_id;
+            var id_sub_block=$('#moduleAppendId').val();
+           if(checkFormForAdd()){
+               $.ajax({
+                   type: 'POST',
+                   url: '/rup/rup-subjects/create-ajax',
+                   data: {'code':code,'name':name,'rup_id':rup_id,'one_sem_time':one_sem_time,
+                   'two_sem_time':two_sem_time,'three_sem_time':three_sem_time,'four_sem_time':four_sem_time,
+                   'five_sem_time':five_sem_time,'six_sem_time':six_sem_time,'seven_sem_time':seven_sem_time,
+                   'eight_sem_time':eight_sem_time,'production_practice_time':production_practice_time,
+                   'lab_time':lab_time,'teory_time':teory_time,'time':time,'offset':offset,'control_work':control_work,
+                   'exam':exam,'id_block':id_block,'id_sub_block':id_sub_block},
+                   success: function(data){
+                       location.reload();
+                   }
+               });
+           };
         });
 
+        $('.updateModuleButton').on('click',function () {
+            // console.log($(this).attr('idd'));
+            alert('123');
+           // $('#editModalBody').data('subject_id',$(this).attr('idd'));
+        });
 
 
         $( '#addModalModule' ).on('shown.bs.modal', function(event){
-
-
+            document.getElementById("addQualification").reset();
             var button = $(event.relatedTarget);
             var ModalModuleId=button.attr('moduleid');
+
 
             $.ajax({
                 url: "/rup/rup-module/getmoduleinfo?id="+ModalModuleId,
                 context: document.body,
                 success: function(data){
+                    // console.log(ModalModuleId);
+                    $('#moduleAppendId').val(parseInt(ModalModuleId));
                     $( ".semEdit" ).prop( "disabled", true );
                     $( ".allTimePart" ).prop( "disabled", true );
                     $('#addQualModalModuleInModule').val(data.name);
-                    $('#addQualModalModuleModuleIndex').val(data.code)
+                    $('#addQualModalModuleTime1').val(0);
+                    $('#addQualModalModuleTime2').val(0);
+                    $('#addQualModalModuleTime3').val(0);
+                    $('#addQualModalModuleTime4').val(0);
+                    $('#addQualModalModuleTime5').val(0);
+                    $('#addQualModalModuleTime6').val(0);
+                    $('#addQualModalModuleTime7').val(0);
+                    $('#addQualModalModuleTime8').val(0);
+                    $('#addQualModalModuleAllTime').val(0);
+                    $('#addQualModalModuleAllTimeTheory').val(0);
+                    $('#addQualModalModuleAllTimeLab').val(0);
+                    $('#addQualModalModuleAllTimeProd').val(0);
+                    $('#addQualModalModuleFormControl1').val(0);
+                    $('#addQualModalModuleFormControl2').val(0);
+                    $('#addQualModalModuleFormControl3').val(0);
+                    $('#addQualModalModuleModule').val('');
+                    $('#addQualModalModuleModuleIndex').val('');
                 }
             });
 
@@ -398,8 +491,151 @@ else{
                 $( ".semEdit" ).prop( "disabled", false );
             }
         });
+        $('#addQualModalModuleAllTimeLab').on('change',function () {
+            var addQualModalModuleAllTimeTheory = parseInt($('#addQualModalModuleAllTimeTheory').val());
+            var addQualModalModuleAllTimeLab=parseInt($('#addQualModalModuleAllTimeLab').val());
+            var addQualModalModuleAllTimeProd=parseInt($('#addQualModalModuleAllTimeProd').val());
+            var AllTime=$('#addQualModalModuleAllTime').val();
+            var AllTimeMinusSumm=parseInt(AllTime-(addQualModalModuleAllTimeTheory+addQualModalModuleAllTimeLab+addQualModalModuleAllTimeProd));
+            if(AllTimeMinusSumm!=0){
+                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( ".semEdit" ).prop( "disabled", true );
+            }
+            else{
+                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( ".semEdit" ).prop( "disabled", false );
+            }
+        });
+        $('#addQualModalModuleAllTimeProd').on('change',function () {
+            var addQualModalModuleAllTimeTheory = parseInt($('#addQualModalModuleAllTimeTheory').val());
+            var addQualModalModuleAllTimeLab=parseInt($('#addQualModalModuleAllTimeLab').val());
+            var addQualModalModuleAllTimeProd=parseInt($('#addQualModalModuleAllTimeProd').val());
+            var AllTime=$('#addQualModalModuleAllTime').val();
+            var AllTimeMinusSumm=parseInt(AllTime-(addQualModalModuleAllTimeTheory+addQualModalModuleAllTimeLab+addQualModalModuleAllTimeProd));
+            if(AllTimeMinusSumm!=0){
+                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( ".semEdit" ).prop( "disabled", true );
+            }
+            else{
+                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( ".semEdit" ).prop( "disabled", false );
+                var one=parseInt($('#addQualModalModuleTime1').val(0));
+                var two=parseInt($('#addQualModalModuleTime2').val(0));
+                var three=parseInt($('#addQualModalModuleTime3').val(0));
+                var four=parseInt($('#addQualModalModuleTime4').val(0));
+                var five=parseInt($('#addQualModalModuleTime5').val(0));
+                var six=parseInt($('#addQualModalModuleTime6').val(0));
+                var seven=parseInt($('#addQualModalModuleTime7').val(0));
+                var eight=parseInt($('#addQualModalModuleTime8').val(0));
+            }
+        });
+        $('.semEdit').on('keyup',function () {
+           var one=parseInt($('#addQualModalModuleTime1').val());
+           var two=parseInt($('#addQualModalModuleTime2').val());
+           var three=parseInt($('#addQualModalModuleTime3').val());
+           var four=parseInt($('#addQualModalModuleTime4').val());
+           var five=parseInt($('#addQualModalModuleTime5').val());
+           var six=parseInt($('#addQualModalModuleTime6').val());
+           var seven=parseInt($('#addQualModalModuleTime7').val());
+           var eight=parseInt($('#addQualModalModuleTime8').val());
+           var allSemEditTimeSumm=parseInt(one+two+three+four+five+six+seven+eight);
+            var AllTime=$('#addQualModalModuleAllTime').val();
+            var AllTimeMinusSumm=parseInt(AllTime-(allSemEditTimeSumm));
+            if(AllTimeMinusSumm!=0){
+                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+
+
+            }
+            else{
+                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( "#addQualModule" ).prop( "disabled", false );
+            }
+
+        });
         $('#addQualModalModuleAllTime').on('keyup',function () {
             $( ".allTimePart" ).prop( "disabled", false );
+        });
+        
+        function checkFormForAdd() {
+            var checkInteger=0;
+            var checkBool;
+          if($('#addQualModalModuleModuleIndex').val()!=''){
+              checkInteger++;
+          };
+          if ($('#addQualModalModuleModule').val()!=''){
+              checkInteger++;
+          };
+          if($('#addQualModalModuleAllTime').val()!=0){
+              checkInteger++;
+          };
+          if($('#addQualModalModuleAllTimeNeraspred').val()==0){
+              checkInteger++;
+          };
+          if(checkInteger==4){
+                checkBool=true;
+          }else{checkBool=false};
+          return checkBool;
+        };
+
+        function checkFormForEdit() {
+            var checkInteger=0;
+            var checkBool;
+          if($('#editModalModuleModuleIndex').val()!=''){
+              checkInteger++;
+          };
+          if ($('#editModalModuleModule').val()!=''){
+              checkInteger++;
+          };
+          if($('#editModalModuleAllTime').val()!=0){
+              checkInteger++;
+          };
+          // if($('#editModalModuleAllTimeNeraspred').val()==0){
+          //     checkInteger++;
+          // };
+          if(checkInteger==3){
+                checkBool=true;
+          }else{checkBool=false};
+          return checkBool;
+        };
+
+        $('.edit_qualBlock').on('click',function (e) {
+            e.preventDefault();
+            var blockIdEdit=$(this).attr('qualeditbuttonid');
+            console.log(blockIdEdit);
+            $('#sendQual').addClass('sendBlockButton');
+           $('#editModalBodyBlock').html('<div class="form-group field-rupblock-code required"><label class="control-label">Индекс блока:</label>');
+           $('#editModalBodyBlock').append('<input type="text" class="form-control" id="editQualCodeModalWindow"></div>');
+           $('#editModalBodyBlock').append('<div class="form-group field-rupblock-code required"><label class="control-label">Наименование блока:</label></div>');
+           $('#editModalBodyBlock').append('<input type="text" class="form-control" id="editQualNameModalWindow">');
+           $('#editModalBodyBlock').append('<div class="form-group field-rupblock-code required"><label class="control-label">Всего часов:</label></div>');
+           $('#editModalBodyBlock').append('<input type="text" class="form-control" id="editQualTimeModalWindow">');
+           $('#editModalBodyBlock').append('<div class="form-group field-rupblock-code required" disabled="true"><label class="control-label">Не распределено:</label></div>');
+           $('#editModalBodyBlock').append('<input type="text" class="form-control" id="editQualTimemoduledeductedModalWindow">');
+           $('#editQualCodeModalWindow').val($("tr[data-key="+blockIdEdit+"]").attr('data-code'));
+           $('#editQualNameModalWindow').val($("tr[data-key="+blockIdEdit+"]").attr('data-name'));
+           $('#editQualTimeModalWindow').val($("tr[data-key="+blockIdEdit+"]").attr('data-time'));
+           $('#editQualTimemoduledeductedModalWindow').val($("tr[data-key="+blockIdEdit+"]").attr('data-timemodulededucted'));
+            $('#editModalBodyBlock').append('<input type="text" class="hidden" id="editQualTimemoduledeductedModalWindowID" value="'+blockIdEdit+'">');
+        });
+
+
+        $('#sendQualBlock').on('click',function (e) {
+            e.preventDefault();
+            var blockButtonId=$('#editQualTimemoduledeductedModalWindowID').val();
+            var code = $('#editQualCodeModalWindow').val();
+            var namePlan = $('#editQualNameModalWindow').val();
+            var time = $('#editQualTimeModalWindow').val();
+            $.ajax({
+                type: 'POST',
+                url: "/rup/rup-block/update-info?id="+blockButtonId,
+                context: document.body,
+                data:{'code':code,'name':namePlan,'time':time},
+                success: function(data){
+                    // console.log(ModalModuleId);
+                location.reload();
+                }
+            });
+            $('#sendQual').removeClass('sendBlockButton');
         });
     </script>
 </div>

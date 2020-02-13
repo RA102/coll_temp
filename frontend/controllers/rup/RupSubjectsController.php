@@ -88,6 +88,65 @@ class RupSubjectsController extends Controller
             'model' => $model,
         ]);
     }
+    public function actionCreateAjax()
+    {
+        $model = new RupSubjects();
+        $model->code=Yii::$app->request->post('code');
+        $model->rup_id=Yii::$app->request->post('rup_id');
+        $model->name=Yii::$app->request->post('name');
+        $model->eight_sem_time=Yii::$app->request->post('eight_sem_time');
+        $model->seven_sem_time=Yii::$app->request->post('seven_sem_time');
+        $model->six_sem_time=Yii::$app->request->post('six_sem_time');
+        $model->five_sem_time=Yii::$app->request->post('five_sem_time');
+        $model->four_sem_time=Yii::$app->request->post('four_sem_time');
+        $model->three_sem_time=Yii::$app->request->post('three_sem_time');
+        $model->two_sem_time=Yii::$app->request->post('two_sem_time');
+        $model->one_sem_time=Yii::$app->request->post('one_sem_time');
+        $model->production_practice_time=Yii::$app->request->post('production_practice_time');
+        $model->lab_time=Yii::$app->request->post('lab_time');
+        $model->teory_time=Yii::$app->request->post('teory_time');
+        $model->time=Yii::$app->request->post('time');
+        $model->offset=Yii::$app->request->post('offset');
+        $model->control_work=Yii::$app->request->post('control_work');
+        $model->exam=Yii::$app->request->post('exam');
+        $model->id_block=Yii::$app->request->post('id_block');
+        $model->id_sub_block=Yii::$app->request->post('id_sub_block');
+        if($model->save()){
+            return "all good saved";
+        }
+
+    }
+    public function actionUpdateSubject($id)
+    {
+        $model = $this->findModel($id);
+        $model->code=Yii::$app->request->post('code');
+        $model->rup_id=Yii::$app->request->post('rup_id');
+        $model->name=Yii::$app->request->post('name');
+        $model->eight_sem_time=Yii::$app->request->post('eight_sem_time');
+        $model->seven_sem_time=Yii::$app->request->post('seven_sem_time');
+        $model->six_sem_time=Yii::$app->request->post('six_sem_time');
+        $model->five_sem_time=Yii::$app->request->post('five_sem_time');
+        $model->four_sem_time=Yii::$app->request->post('four_sem_time');
+        $model->three_sem_time=Yii::$app->request->post('three_sem_time');
+        $model->two_sem_time=Yii::$app->request->post('two_sem_time');
+        $model->one_sem_time=Yii::$app->request->post('one_sem_time');
+        $model->production_practice_time=Yii::$app->request->post('production_practice_time');
+        $model->lab_time=Yii::$app->request->post('lab_time');
+        $model->teory_time=Yii::$app->request->post('teory_time');
+        $model->time=Yii::$app->request->post('time');
+        $model->offset=Yii::$app->request->post('offset');
+        $model->control_work=Yii::$app->request->post('control_work');
+        $model->exam=Yii::$app->request->post('exam');
+        $model->id_block=Yii::$app->request->post('id_block');
+        $model->id_sub_block=Yii::$app->request->post('id_sub_block');
+        if($model->save()){
+            return "all good saved";
+        }
+        elseif (!$model->save){
+            return var_dump($model->errors);
+        }
+
+    }
 
     /**
      * Updates an existing RupSubjects model.
@@ -139,8 +198,10 @@ class RupSubjectsController extends Controller
     }
     public function actionDeleteModule($id)
     {
-        $info = RupSubjects::findOne($id);
+//        $info = RupSubjects::findOne($id);
+        $info = $this->findModel($id);
         $info->id_sub_block=0;
+        $info->rup_id=0;
         if($info->save()){
             return true;
     }

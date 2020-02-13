@@ -56,6 +56,20 @@ class RupBlockController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
+    public function actionUpdateInfo($id)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+       $model = $this->findModel($id);
+        $model->code=Yii::$app->request->post('code');
+        $model->name=Yii::$app->request->post('name');
+        $model->time=Yii::$app->request->post('time');
+        if($model->save()){
+            return "all good saved";
+        }
+        elseif (!$model->save){
+            return var_dump($model->errors);
+        }
+    }
 
     /**
      * Creates a new RupBlock model.

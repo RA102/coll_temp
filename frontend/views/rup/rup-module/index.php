@@ -38,9 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
         ?>
-        <button moduleId="<?php echo $module_ID?>" title='Добавить' style='' data-target="#addModalModule" data-toggle="modal" class='btn btn-success edit_qual addQualModuleButton' idd="<?= $al['id'] ?>">
-            <h7>Добавить дисциплину без модуля<i class='fas fa-edit'></i></h7>
-        </button>
+<!--        <button moduleId="--><?php //echo $module_ID?><!--" title='Добавить' style='' data-target="#addModalModule" data-toggle="modal" class='btn btn-success edit_qual addQualModuleButton' idd="--><?//= $al['id'] ?><!--">-->
+<!--            <h7>Добавить дисциплину без модуля<i class='fas fa-edit'></i></h7>-->
+<!--        </button>-->
     </p>
 
     <?= GridView::widget([

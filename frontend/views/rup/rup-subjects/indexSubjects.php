@@ -40,12 +40,13 @@
 //
 //    Modal::end(); ?><!--</td>-->
 <td>
-<button title='Удалить' style='margin-left:15%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_Module' idd="<?= $al['id'] ?>">
-    <span class='glyphicon glyphicon-trash'>
-</button>
     <button title='Изменить' style='margin-left:10%;' data-target="#editModalModule" data-toggle="modal" class='btn btn-success edit_qual updateModuleButton' idd="<?= $al['id'] ?>">
         <h7><i class='fas fa-edit'></i></h7>
     </button>
+            <button title='Удалить' style='margin-left:15%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_Module' idd="<?= $al['id'] ?>">
+    <span class='glyphicon glyphicon-trash'>
+            </button>
+
 </td></tr><?php
     $i++;}
 
@@ -78,8 +79,7 @@
                 $('#editModalModuleTime6').val(data.six_sem_time);
                 $('#editModalModuleTime7').val(data.seven_sem_time);
                 $('#editModalModuleTime8').val(data.eight_sem_time);
-
-                console.log(data.lab_time);
+                $('#editModalID').val(a);
             }
         });
 
@@ -90,8 +90,7 @@
         $.ajax({
             url: '/rup/rup-subjects/delete-module?id='+a,
             success: function(data){
-                var url= "/rup/rup/update?id="+$('#ruproots-rup_id').val()+"&active=2";
-                window.location = url;
+                location.reload();
                 // console.log(data.lab_time);
             }
         });

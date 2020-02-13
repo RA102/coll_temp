@@ -35,7 +35,8 @@ Modal::end(); ?>
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
         'rowOptions'   => function ($model, $key, $index, $grid) {
-            return ['data-id' => $model->id,'data-rup_id' => $model->rup_id];
+            return ['data-id' => $model->id,'data-rup_id' => $model->rup_id,'data-timemodulededucted'=>$model->timemodulededucted,
+                    'data-code'=>$model->code,'data-name'=>$model->name,'data-time'=>$model->time,];
         },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -52,8 +53,8 @@ Modal::end(); ?>
                 'format' => 'raw',
                 'contentOptions' => ['class' => 'abracadabra'],
                 'value' => function ($model) {
-                    return '<div>'.'<button title="Изменить" data-target="#editModal" data-toggle="modal" style="margin-left:3%;" 
-                            class="btn btn-success edit_qual" qualeditbuttonid="2"><h7><i class="fas fa-edit"></i></h7></button>'
+                    return '<div>'.'<button title="Изменить" data-target="#editModalBlock" data-toggle="modal" style="margin-left:3%;" 
+                            class="btn btn-success edit_qualBlock" qualeditbuttonid="'.$model->id.'"><h7><i class="fas fa-edit"></i></h7></button>'
                             .'<button title="Удалить" style="margin-left:3%;" 
                             class="btn btn-danger deleteModelButton" modelId="'.$model->id.'"><h7><i class="fas fa-trash"></i></h7></button>'.'</div>';
                 },
