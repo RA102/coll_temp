@@ -116,9 +116,10 @@ class RupSubjectsController extends Controller
         }
 
     }
-    public function actionUpdateSubject($id)
+    public function actionUpdateSubject($id=null)
     {
-        $model = $this->findModel($id);
+        $modelId=Yii::$app->request->post('id');
+        $model = RupSubjects::find()->where(['=','id',$modelId])->limit(1)->all();
         $model->code=Yii::$app->request->post('code');
         $model->rup_id=Yii::$app->request->post('rup_id');
         $model->name=Yii::$app->request->post('name');
@@ -143,7 +144,8 @@ class RupSubjectsController extends Controller
             return "all good saved";
         }
         elseif (!$model->save){
-            return var_dump($model->errors);
+//            return var_dump($model->errors);
+            return $model;
         }
 
     }

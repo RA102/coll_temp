@@ -9,6 +9,8 @@ use yii\widgets\Block;
  * This is the model class for table "rup_subjects".
  *
  * @property int $id
+ * @property string $code
+ * @property string $name
  * @property int $id_sub_block
  * @property int $id_block
  * @property int $exam
@@ -47,7 +49,7 @@ class RupSubjects extends \yii\db\ActiveRecord
     {
         return [
             [['id_sub_block', 'id_block', 'exam', 'control_work', 'offset', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time'], 'required'],
-            [['notTime','block','subBlock'],'safe'],
+            [['notTime','block','subBlock','code','name'],'safe'],
             [['id_sub_block', 'id_block', 'exam', 'control_work', 'offset', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time'], 'default', 'value' => null],
             [['id_sub_block', 'id_block', 'exam', 'control_work', 'offset', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time'], 'integer'],
             [['id_sub_block'], 'exist', 'skipOnError' => true, 'targetClass' => RupModule::className(), 'targetAttribute' => ['id_sub_block' => 'id']],

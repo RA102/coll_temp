@@ -25,11 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         Modal::begin([
             'header' => '<h2>Добавить модуль</h2>',
             'size'=>'modal-sm',
-
-
             'toggleButton' => ['label' => 'Добавить модуль','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
-
-
         ]);
 
         echo $this->renderAjax('/rup/rup-module/_form',['model'=> $Model=new RupModule()]);

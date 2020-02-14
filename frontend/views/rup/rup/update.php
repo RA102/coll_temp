@@ -164,34 +164,34 @@ else{
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">1 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="editModalModuleTime1" type="number"></div>
+                            <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime1" type="number"></div>
                             
                             <div class="col-1">2 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="editModalModuleTime2" type="number"></div>
+                            <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime2" type="number"></div>
                         </div>               
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">3 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="editModalModuleTime3" type="number"></div>
+                            <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime3" type="number"></div>
                             
                             <div class="col-1">4 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="editModalModuleTime4" type="number"></div>
+                            <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime4" type="number"></div>
                         </div>               
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">5 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="editModalModuleTime5" type="number"></div>
+                            <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime5" type="number"></div>
                             
                             <div class="col-1">6 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="editModalModuleTime6" type="number"></div>
+                            <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime6" type="number"></div>
                         </div>               
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">7 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="editModalModuleTime7" type="number"></div>
+                            <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime7" type="number"></div>
                             
                             <div class="col-1">8 сем:</div>
-                            <div class="col-2"><input class="form-control"  id="editModalModuleTime8" type="number"></div>
+                            <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime8" type="number"></div>
                         </div>               
                         
                         <br>
@@ -199,7 +199,7 @@ else{
 
                         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                         <input type="text" class="hidden" id="editModalID">
-                        <input type="submit" class="btn btn-primary" id="sendModule" value="Сохранить изменения"></input>
+                        <input type="submit" class="btn btn-primary" id="sendModule" value="Сохранить изменения" disabled="true"></input>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -475,6 +475,183 @@ else{
 
         });
 
+        //EDIT BLOCK'////////////////////////////////////////////////////////////
+        $('#editModalModuleAllTimeTheory').on('change',function () {
+            var editModalModuleAllTimeTheory = parseInt($('#editModalModuleAllTimeTheory').val());
+            var editModalModuleAllTimeLab=parseInt($('#editModalModuleAllTimeLab').val());
+            var editModalModuleAllTimeProd=parseInt($('#editModalModuleAllTimeProd').val());
+            var AllTime=$('#editModalModuleAllTime').val();
+            var AllTimeMinusSumm=parseInt(AllTime-(editModalModuleAllTimeTheory+editModalModuleAllTimeLab+editModalModuleAllTimeProd));
+            if(AllTimeMinusSumm!=0){
+                $('#editModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( "#editModalModuleTime1" ).prop( "disabled", true );
+                $( "#editModalModuleTime2" ).prop( "disabled", true );
+                $( "#editModalModuleTime3" ).prop( "disabled", true );
+                $( "#editModalModuleTime4" ).prop( "disabled", true );
+                $( "#editModalModuleTime5" ).prop( "disabled", true );
+                $( "#editModalModuleTime6" ).prop( "disabled", true );
+                $( "#editModalModuleTime7" ).prop( "disabled", true );
+                $( "#editModalModuleTime8" ).prop( "disabled", true );
+                $( "#sendModule").prop( "disabled", true );
+            }
+            else{
+                $('#editModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( "#editModalModuleTime1" ).prop( "disabled", false );
+                $( "#editModalModuleTime2" ).prop( "disabled", false );
+                $( "#editModalModuleTime3" ).prop( "disabled", false );
+                $( "#editModalModuleTime4" ).prop( "disabled", false );
+                $( "#editModalModuleTime5" ).prop( "disabled", false );
+                $( "#editModalModuleTime6" ).prop( "disabled", false );
+                $( "#editModalModuleTime7" ).prop( "disabled", false );
+                $( "#editModalModuleTime8" ).prop( "disabled", false );
+            }
+        });
+
+        $('#editModalModuleAllTimeLab').on('change',function () {
+            var editModalModuleAllTimeTheory = parseInt($('#editModalModuleAllTimeTheory').val());
+            var editModalModuleAllTimeLab=parseInt($('#editModalModuleAllTimeLab').val());
+            var editModalModuleAllTimeProd=parseInt($('#editModalModuleAllTimeProd').val());
+            var AllTime=$('#editModalModuleAllTime').val();
+            var AllTimeMinusSumm=parseInt(AllTime-(editModalModuleAllTimeTheory+editModalModuleAllTimeLab+editModalModuleAllTimeProd));
+            if(AllTimeMinusSumm!=0){
+                $('#editModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( "#editModalModuleTime1" ).prop( "disabled", true );
+                $( "#editModalModuleTime2" ).prop( "disabled", true );
+                $( "#editModalModuleTime3" ).prop( "disabled", true );
+                $( "#editModalModuleTime4" ).prop( "disabled", true );
+                $( "#editModalModuleTime5" ).prop( "disabled", true );
+                $( "#editModalModuleTime6" ).prop( "disabled", true );
+                $( "#editModalModuleTime7" ).prop( "disabled", true );
+                $( "#editModalModuleTime8" ).prop( "disabled", true );
+                $( "#sendModule").prop( "disabled", true );
+            }
+            else{
+                $('#editModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( "#editModalModuleTime1" ).prop( "disabled", false );
+                $( "#editModalModuleTime2" ).prop( "disabled", false );
+                $( "#editModalModuleTime3" ).prop( "disabled", false );
+                $( "#editModalModuleTime4" ).prop( "disabled", false );
+                $( "#editModalModuleTime5" ).prop( "disabled", false );
+                $( "#editModalModuleTime6" ).prop( "disabled", false );
+                $( "#editModalModuleTime7" ).prop( "disabled", false );
+                $( "#editModalModuleTime8" ).prop( "disabled", false );
+            }
+        });
+
+
+        $('#editModalModuleAllTimeProd').on('change',function () {
+            var editModalModuleAllTimeTheory = parseInt($('#editModalModuleAllTimeTheory').val());
+            var editModalModuleAllTimeLab=parseInt($('#editModalModuleAllTimeLab').val());
+            var editModalModuleAllTimeProd=parseInt($('#editModalModuleAllTimeProd').val());
+            var AllTime=$('#editModalModuleAllTime').val();
+            var AllTimeMinusSumm=parseInt(AllTime-(editModalModuleAllTimeTheory+editModalModuleAllTimeLab+editModalModuleAllTimeProd));
+            if(AllTimeMinusSumm!=0){
+                $('#editModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( "#editModalModuleTime1" ).prop( "disabled", true );
+                $( "#editModalModuleTime2" ).prop( "disabled", true );
+                $( "#editModalModuleTime3" ).prop( "disabled", true );
+                $( "#editModalModuleTime4" ).prop( "disabled", true );
+                $( "#editModalModuleTime5" ).prop( "disabled", true );
+                $( "#editModalModuleTime6" ).prop( "disabled", true );
+                $( "#editModalModuleTime7" ).prop( "disabled", true );
+                $( "#editModalModuleTime8" ).prop( "disabled", true );
+                $( "#sendModule").prop( "disabled", true );
+            }
+            else{
+                $('#editModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( "#editModalModuleTime1" ).prop( "disabled", false );
+                $( "#editModalModuleTime2" ).prop( "disabled", false );
+                $( "#editModalModuleTime3" ).prop( "disabled", false );
+                $( "#editModalModuleTime4" ).prop( "disabled", false );
+                $( "#editModalModuleTime5" ).prop( "disabled", false );
+                $( "#editModalModuleTime6" ).prop( "disabled", false );
+                $( "#editModalModuleTime7" ).prop( "disabled", false );
+                $( "#editModalModuleTime8" ).prop( "disabled", false );
+            }
+        });
+
+        $('#editModalModuleAllTimeNeraspred').on('change',function () {
+            if($('#editModalModuleAllTimeNeraspred').val()!=0){
+                $('.semEditEdit').prop("disabled", true );
+
+            }
+            else{
+                $('.semEditEdit').prop("disabled", false );
+                $('#sendModule').prop("disabled",false);
+            }
+        });
+
+        $('#editModalModuleAllTime').on('keyup',function () {
+            var addQualModalModuleAllTimeTheory = parseInt($('#addQualModalModuleAllTimeTheory').val());
+            var addQualModalModuleAllTimeLab=parseInt($('#addQualModalModuleAllTimeLab').val());
+            var addQualModalModuleAllTimeProd=parseInt($('#addQualModalModuleAllTimeProd').val());
+            var AllTime=$('#addQualModalModuleAllTime').val();
+            var AllTimeMinusSumm=parseInt(AllTime-(addQualModalModuleAllTimeTheory+addQualModalModuleAllTimeLab+addQualModalModuleAllTimeProd));
+            if(AllTimeMinusSumm!=0){
+                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( ".semEdit" ).prop( "disabled", true );
+                $( "#sendModule").prop( "disabled", true );
+            }
+            else{
+                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( "#sendModule").prop( "disabled", false );
+
+            }
+        });
+        $('#editModalModuleAllTime').on('change',function () {
+            var addQualModalModuleAllTimeTheory = parseInt($('#addQualModalModuleAllTimeTheory').val());
+            var addQualModalModuleAllTimeLab=parseInt($('#addQualModalModuleAllTimeLab').val());
+            var addQualModalModuleAllTimeProd=parseInt($('#addQualModalModuleAllTimeProd').val());
+            var AllTime=$('#addQualModalModuleAllTime').val();
+            var AllTimeMinusSumm=parseInt(AllTime-(addQualModalModuleAllTimeTheory+addQualModalModuleAllTimeLab+addQualModalModuleAllTimeProd));
+            if(AllTimeMinusSumm!=0){
+
+                $('#editModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( ".semEdit" ).prop( "disabled", true );
+                $( "#sendModule").prop( "disabled", true );
+            }
+            else{
+                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( "#sendModule").prop( "disabled", false );
+
+            }
+        });
+
+        $('#editModalModuleAllTimeNeraspred').on('change',function () {
+            if($('#editModalModuleAllTimeNeraspred').val()==0){
+                $( "#sendModule").prop( "disabled", false );
+            }
+            else{
+                $( "#sendModule").prop( "disabled", true );
+            }
+        });
+        $('.semEditEdit').on('keyup',function () {
+            var one=parseInt($('#editModalModuleTime1').val());
+            var two=parseInt($('#editModalModuleTime2').val());
+            var three=parseInt($('#editModalModuleTime3').val());
+            var four=parseInt($('#editModalModuleTime4').val());
+            var five=parseInt($('#editModalModuleTime5').val());
+            var six=parseInt($('#editModalModuleTime6').val());
+            var seven=parseInt($('#editModalModuleTime7').val());
+            var eight=parseInt($('#editModalModuleTime8').val());
+            var allSemEditTimeSumm=parseInt(one+two+three+four+five+six+seven+eight);
+            var AllTime=$('#editModalModuleAllTime').val();
+            var AllTimeMinusSumm=parseInt(AllTime-(allSemEditTimeSumm));
+            if(AllTimeMinusSumm!=0){
+                $('#editModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+
+
+            }
+            else{
+                $('#editModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $( "#sendModule" ).prop( "disabled", false );
+            }
+
+        });
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+
 
         $('#addQualModalModuleAllTimeTheory').on('change',function () {
             var addQualModalModuleAllTimeTheory = parseInt($('#addQualModalModuleAllTimeTheory').val());
@@ -491,6 +668,7 @@ else{
                 $( ".semEdit" ).prop( "disabled", false );
             }
         });
+
         $('#addQualModalModuleAllTimeLab').on('change',function () {
             var addQualModalModuleAllTimeTheory = parseInt($('#addQualModalModuleAllTimeTheory').val());
             var addQualModalModuleAllTimeLab=parseInt($('#addQualModalModuleAllTimeLab').val());
