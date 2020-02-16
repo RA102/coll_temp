@@ -149,6 +149,40 @@ class RupSubjectsController extends Controller
         }
 
     }
+    public function actionUpdateSubjectt($id)
+    {
+//        $modelId=$id;
+//        $model = RupSubjects::find()->where(['=','id',$modelId])->limit(1)->all();
+        $model = $this->findModel($id);
+        $model->code=Yii::$app->request->get('code');
+        $model->rup_id=Yii::$app->request->get('rup_id');
+        $model->name=Yii::$app->request->get('name');
+        $model->eight_sem_time=Yii::$app->request->get('eight_sem_time');
+        $model->seven_sem_time=Yii::$app->request->get('seven_sem_time');
+        $model->six_sem_time=Yii::$app->request->get('six_sem_time');
+        $model->five_sem_time=Yii::$app->request->get('five_sem_time');
+        $model->four_sem_time=Yii::$app->request->get('four_sem_time');
+        $model->three_sem_time=Yii::$app->request->get('three_sem_time');
+        $model->two_sem_time=Yii::$app->request->get('two_sem_time');
+        $model->one_sem_time=Yii::$app->request->get('one_sem_time');
+        $model->production_practice_time=Yii::$app->request->get('production_practice_time');
+        $model->lab_time=Yii::$app->request->get('lab_time');
+        $model->teory_time=Yii::$app->request->get('teory_time');
+        $model->time=Yii::$app->request->get('time');
+        $model->offset=Yii::$app->request->get('offset');
+        $model->control_work=Yii::$app->request->get('control_work');
+        $model->exam=Yii::$app->request->get('exam');
+        $model->id_block=Yii::$app->request->get('id_block');
+//        $model->id_sub_block=Yii::$app->request->get('id_sub_block');
+        if($model->save()){
+            return "all good saved";
+        }
+        elseif (!$model->save){
+//            return var_dump($model->errors);
+            return var_dump($model);
+        }
+
+    }
 
     /**
      * Updates an existing RupSubjects model.

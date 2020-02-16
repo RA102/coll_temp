@@ -377,8 +377,8 @@ else{
             var id_sub_block=$('#moduleAppendId').val();
             if(checkFormForEdit()){
                 $.ajax({
-                    type: 'POST',
-                    url: '/rup/rup-subjects/update-subject?id='+id,
+                    type: 'GET',
+                    url: '/rup/rup-subjects/update-subjectt?id='+id,
                     data: {'code':code,'name':name,'rup_id':rup_id,'one_sem_time':one_sem_time,
                         'two_sem_time':two_sem_time,'three_sem_time':three_sem_time,'four_sem_time':four_sem_time,
                         'five_sem_time':five_sem_time,'six_sem_time':six_sem_time,'seven_sem_time':seven_sem_time,
@@ -581,29 +581,30 @@ else{
             }
         });
 
-        $('#editModalModuleAllTime').on('keyup',function () {
-            var addQualModalModuleAllTimeTheory = parseInt($('#addQualModalModuleAllTimeTheory').val());
-            var addQualModalModuleAllTimeLab=parseInt($('#addQualModalModuleAllTimeLab').val());
-            var addQualModalModuleAllTimeProd=parseInt($('#addQualModalModuleAllTimeProd').val());
-            var AllTime=$('#addQualModalModuleAllTime').val();
-            var AllTimeMinusSumm=parseInt(AllTime-(addQualModalModuleAllTimeTheory+addQualModalModuleAllTimeLab+addQualModalModuleAllTimeProd));
-            if(AllTimeMinusSumm!=0){
-                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
-                $( ".semEdit" ).prop( "disabled", true );
-                $( "#sendModule").prop( "disabled", true );
-            }
-            else{
-                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
-                $( "#sendModule").prop( "disabled", false );
 
-            }
-        });
+        // $('#editModalModuleAllTime').on('keyup',function () {
+        //     var addQualModalModuleAllTimeTheory = parseInt($('#addQualModalModuleAllTimeTheory').val());
+        //     var addQualModalModuleAllTimeLab=parseInt($('#addQualModalModuleAllTimeLab').val());
+        //     var addQualModalModuleAllTimeProd=parseInt($('#addQualModalModuleAllTimeProd').val());
+        //     var AllTime=$('#addQualModalModuleAllTime').val();
+        //     var AllTimeMinusSumm=parseInt(AllTime-(addQualModalModuleAllTimeTheory+addQualModalModuleAllTimeLab+addQualModalModuleAllTimeProd));
+        //     if(AllTimeMinusSumm!=0){
+        //         $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+        //         $( ".semEdit" ).prop( "disabled", true );
+        //         $( "#sendModule").prop( "disabled", true );
+        //     }
+        //     else{
+        //         $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+        //         $( "#sendModule").prop( "disabled", false );
+        //
+        //     }
+        // });
         $('#editModalModuleAllTime').on('change',function () {
-            var addQualModalModuleAllTimeTheory = parseInt($('#addQualModalModuleAllTimeTheory').val());
-            var addQualModalModuleAllTimeLab=parseInt($('#addQualModalModuleAllTimeLab').val());
-            var addQualModalModuleAllTimeProd=parseInt($('#addQualModalModuleAllTimeProd').val());
-            var AllTime=$('#addQualModalModuleAllTime').val();
-            var AllTimeMinusSumm=parseInt(AllTime-(addQualModalModuleAllTimeTheory+addQualModalModuleAllTimeLab+addQualModalModuleAllTimeProd));
+            var editModalModuleAllTimeTheory = parseInt($('#editModalModuleAllTimeTheory').val());
+            var editModalModuleAllTimeLab=parseInt($('#editModalModuleAllTimeLab').val());
+            var editModalModuleAllTimeProd=parseInt($('#editModalModuleAllTimeProd').val());
+            var AllTime=$('#editModalModuleAllTime').val();
+            var AllTimeMinusSumm=parseInt(AllTime-(editModalModuleAllTimeTheory+editModalModuleAllTimeLab+editModalModuleAllTimeProd));
             if(AllTimeMinusSumm!=0){
 
                 $('#editModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
@@ -611,7 +612,7 @@ else{
                 $( "#sendModule").prop( "disabled", true );
             }
             else{
-                $('#addQualModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
+                $('#editModalModuleAllTimeNeraspred').val(AllTimeMinusSumm);
                 $( "#sendModule").prop( "disabled", false );
 
             }
@@ -815,6 +816,32 @@ else{
             });
             $('#sendQual').removeClass('sendBlockButton');
         });
+        //////////Theory zapret na string only integer
+        $('#editModalModuleFormControl1').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#editModalModuleFormControl2').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#editModalModuleFormControl3').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('.semEditEdit').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#editModalModuleAllTimeTheory').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#editModalModuleAllTimeProd').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#editModalModuleAllTimeLab').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#editModalModuleAllTime').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        ////////////////////////////////////////////////////
     </script>
 </div>
     <style>
