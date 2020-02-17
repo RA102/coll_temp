@@ -45,7 +45,7 @@ else{
     $content2 =$content2.$this->renderAjax('/rup/rup-module/index',[
             'searchModel'=>$searchModel,
             'dataProvider'=>$dataProvider,
-        'rup_id'=>$model->rup_id,
+            'rup_id'=>$model->rup_id,
     ]);
 
 

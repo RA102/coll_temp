@@ -2,6 +2,7 @@
 
 namespace frontend\controllers\rup;
 
+use frontend\models\rup\RupBlock;
 use frontend\models\rup\RupBlockSearch;
 use frontend\models\rup\RupQualifications;
 use frontend\models\rup\RupModule;
@@ -106,10 +107,11 @@ class RupController extends Controller
     public function actionUpdate($id,$active=1,$block_id=null)
     {
         $model = $this->findModel($id);
-
+        $query=null;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return 'UPDATED';
         }
+
 
         $searchModel = new RupModuleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$id,$block_id);
@@ -126,7 +128,7 @@ class RupController extends Controller
             'searchModel'=>$searchModel,
             'dataProvider'=>$dataProvider,
             'searchModelBlock'=>$searchModelBlock,
-            'dataProviderBlock'=>$dataProviderBlock
+            'dataProviderBlock'=>$dataProviderBlock,
         ]);
     }
 

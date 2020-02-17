@@ -2,6 +2,7 @@
 
 namespace frontend\controllers\rup;
 
+use frontend\models\rup\RupBlock;
 use frontend\models\rup\RupSubjects;
 use Yii;
 use frontend\models\rup\RupModule;
@@ -41,7 +42,6 @@ class RupModuleController extends Controller
     {
         $searchModel = new RupModuleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$rup_id);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

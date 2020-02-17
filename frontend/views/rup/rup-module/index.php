@@ -1,5 +1,6 @@
 <?php
 
+use frontend\models\rup\RupBlock;
 use frontend\models\rup\RupQualifications;
 use frontend\models\rup\RupModule;
 use yii\bootstrap\Modal;
@@ -15,8 +16,8 @@ $this->title = 'Модули';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="rup-sub-block-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<?php $blockname=RupBlock::findOne($_GET['block_id']); ?>
+    <h1><?= Html::encode($this->title) ?> блока <?php echo "\"".$blockname->name."\"";  ?></h1>
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
