@@ -74,7 +74,7 @@ class RupModule extends \yii\db\ActiveRecord
 //        return $sum;
 //    }
     public function getTimemodulededucted(){
-        $sum = RupSubjects::find()->select(['time'])->where(['id_block'=>$this->block_id])->andWhere(['rup_id'=>$this->rup_id])->sum('time');
+        $sum = RupSubjects::find()->select(['time'])->where(['id_block'=>$this->block_id])->andWhere(['rup_id'=>$this->rup_id])->andWhere(['id_sub_block'=>$this->id])->sum('time');
         return $this->time-$sum;
     }
 }

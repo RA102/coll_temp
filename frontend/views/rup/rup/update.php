@@ -842,6 +842,32 @@ else{
         {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
             return false;});
         ////////////////////////////////////////////////////
+        // ////////Theory zapret na string only integer
+        $('#addQualModalModuleFormControl1').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#addQualModalModuleFormControl2').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#addQualModalModuleFormControl3').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('.semEdit').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#addQualModalModuleAllTimeTheory').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#addQualModalModuleAllTimeProd').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#addQualModalModuleAllTimeLab').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        $('#addQualModalModuleAllTime').keypress(function(e)
+        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+            return false;});
+        ////////////////////////////////////////////////////
     </script>
 </div>
     <style>

@@ -16,8 +16,10 @@ $this->title = 'Модули';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="rup-sub-block-index">
-<?php $blockname=RupBlock::findOne($_GET['block_id']); ?>
-    <h1><?= Html::encode($this->title) ?> блока <?php echo "\"".$blockname->name."\"";  ?></h1>
+<?php //TODO Исправлю это говно чуть попопзже(Так делать неправильно)
+$blockname=RupBlock::findOne($_GET['block_id']); ?>
+
+    <h1><?= Html::encode($this->title) ?> блока <?php echo "\"".$blockname->code."-".$blockname->name."\"";  ?></h1>
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
