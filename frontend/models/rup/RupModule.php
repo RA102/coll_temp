@@ -19,6 +19,7 @@ class RupModule extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
     public static function tableName()
     {
         return 'rup_module';
@@ -33,7 +34,7 @@ class RupModule extends \yii\db\ActiveRecord
             [['code', 'name','block_id'], 'required'],
             [['time','rup_id','block_id'], 'integer'],
             [['code', 'name'], 'string'],
-            [['block'],'safe'],
+            [['block', 'timemodulededucted'],'safe'],
             [['id'], 'exist', 'skipOnError' => true, 'targetClass' => RupBlock::className(), 'targetAttribute' => ['id' => 'id']],
         ];
     }
@@ -74,6 +75,7 @@ class RupModule extends \yii\db\ActiveRecord
 //        return $sum;
 //    }
     public function getTimemodulededucted(){
+
         $sum = RupSubjects::find()->select(['time'])->where(['id_block'=>$this->block_id])->andWhere(['rup_id'=>$this->rup_id])->andWhere(['id_sub_block'=>$this->id])->sum('time');
         return $this->time-$sum;
     }

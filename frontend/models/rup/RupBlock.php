@@ -61,7 +61,12 @@ class RupBlock extends \yii\db\ActiveRecord
         return $this->hasOne(RupModule::className(), ['id' => 'id']);
     }
     public function getTimemodulededucted(){
+        $sum2=RupModule::find()->where(['block_id'=>$this->id])->andWhere(['rup_id'=>$this->rup_id])->all();
+        $sum3=0;
+        foreach ($sum2 as $s){
+            $sum3=$s->timemodulededucted+$sum3;
+        }
         $sum = RupModule::find()->select(['time'])->where(['block_id'=>$this->id])->andWhere(['rup_id'=>$this->rup_id])->sum('time');
-        return $this->time-$sum;
+        return $this->time-($sum+$sum3);
     }
 }
