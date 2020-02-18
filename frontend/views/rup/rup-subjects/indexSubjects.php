@@ -2,12 +2,13 @@
 <table  class="table table-striped  table-bordered " >
     <tr>
         <th>№</th>
+        <th>Индекс</th>
         <th>Дисциплина</th>
         <th>Часы всего</th>
         <th>Часы нераспред.</th>
-        <th><button moduleId="<?php echo $module_ID?>" title='Добавить' style='margin-left:10%;' data-target="#addModalModule" data-toggle="modal" class='btn btn-success edit_qual addQualModuleButton' idd="<?= $al['id'] ?>">
-                <h7>Добавить</h7>
-            </button></th>
+<!--        <th><button moduleId="--><?php //echo $module_ID?><!--" title='Добавить' style='margin-left:10%;' data-target="#addModalModule" data-toggle="modal" class='btn btn-success edit_qual addQualModuleButton' idd="--><?//= $al['id'] ?><!--">-->
+<!--                <h7>Добавить</h7>-->
+<!--            </button></th>-->
     </tr>
     <?php
 
@@ -21,6 +22,7 @@
         ?>
         <tr id="<?= $al['id'] ?>" class='' >
             <td><?= $i;?></td>
+<td  ><?= $al['code'] ?></td>
 <td  ><?= $al['name'] ?></td>
 <td  ><?=$al['time']?></td>
 <td  ><?=$time?></td>
@@ -55,7 +57,14 @@
 <script>
     $('.updateModuleButton').on('click',function () {
         var a = $(this).attr('idd');
-
+        $('#editModalModuleFormControl1').prop('disabled',true);
+        $('#editModalModuleFormControl2').prop('disabled',true);
+        $('#editModalModuleFormControl3').prop('disabled',true);
+        $('#editModalModuleAllTimeTheory').prop('disabled',true);
+        $('#editModalModuleAllTimeLab').prop('disabled',true);
+        $('#editModalModuleAllTimeProd').prop('disabled',true);
+        $('#editModalModuleAllTime').prop('disabled',true);
+        $('.semEditEdit').prop('disabled',true);
         $.ajax({
             url: '/rup/rup-subjects/get-info?id='+a,
             success: function(data){
@@ -80,6 +89,14 @@
                 $('#editModalModuleTime7').val(data.seven_sem_time);
                 $('#editModalModuleTime8').val(data.eight_sem_time);
                 $('#editModalID').val(a);
+                $('#editModalModuleFormControl1').prop('disabled',false);
+                $('#editModalModuleFormControl2').prop('disabled',false);
+                $('#editModalModuleFormControl3').prop('disabled',false);
+                $('#editModalModuleAllTimeTheory').prop('disabled',false);
+                $('#editModalModuleAllTimeLab').prop('disabled',false);
+                $('#editModalModuleAllTimeProd').prop('disabled',false);
+                $('#editModalModuleAllTime').prop('disabled',false);
+                $('.semEditEdit').prop('disabled',false);
             }
         });
 

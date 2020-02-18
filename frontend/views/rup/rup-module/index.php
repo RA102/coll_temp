@@ -44,6 +44,7 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
 //        'filterModel' => $searchModel,
         'columns' => [
 //            ['class' => 'yii\grid\SerialColumn'],
@@ -68,6 +69,25 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
                 'headerOptions' => ['class' => 'kartik-sheet-style'] ,
                 'expandOneOnly' => true,
             ],
+//            ['attribute'=>'123','value'=>function(){
+//
+//                return '<button moduleId='.$model->id."' title='Добавить' style='margin-left:10%;'
+//                data-target='#addModalModule' data-toggle='modal'
+//                class='btn btn-success edit_qual addQualModuleButton' idd=".$model->id.">
+//                <h7>Добавить</h7>
+//            </button>";
+//            }],
+            [
+                    'attribute'=>'123',
+                'label' => 'Добавить',
+                'format' => 'raw',
+                'value' => function($model){return Html::button('Добавить',[
+                        'class' => 'btn btn-success btn-xs edit_qual addQualModuleButton',
+                        'moduleId'=>$model->id,
+                        'idd'=>$model->id,
+                        'data-target'=>'#addModalModule',
+                        'data-toggle'=>'modal']);},
+            ]
 
 //            ['class' => 'yii\grid\ActionColumn'],
         ],
