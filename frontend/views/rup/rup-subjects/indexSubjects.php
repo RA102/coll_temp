@@ -42,7 +42,7 @@
 //
 //    Modal::end(); ?><!--</td>-->
 <td>
-    <button title='Изменить' style='margin-left:10%;' data-target="#editModalModule" data-toggle="modal" class='btn btn-success edit_qual updateModuleButton' idd="<?= $al['id'] ?>">
+    <button title='Изменить' style='margin-left:10%;' data-target="#editModalModule" data-toggle="modal" class='btn btn-success edit_qual updateModuleButton' idd="<?= $al['id'] ?>" nameCode="<?= $al['code'] ?>-<?= $al['name'] ?>">
         <h7><i class='fas fa-edit'></i></h7>
     </button>
             <button title='Удалить' style='margin-left:15%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_Module' idd="<?= $al['id'] ?>">
@@ -57,6 +57,7 @@
 <script>
     $('.updateModuleButton').on('click',function () {
         var a = $(this).attr('idd');
+        var name = $(this).attr('nameCode');
         $('#editModalModuleFormControl1').prop('disabled',true);
         $('#editModalModuleFormControl2').prop('disabled',true);
         $('#editModalModuleFormControl3').prop('disabled',true);
