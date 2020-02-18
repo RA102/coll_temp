@@ -67,6 +67,6 @@ class RupBlock extends \yii\db\ActiveRecord
             $sum3=$s->timemodulededucted+$sum3;
         }
         $sum = RupModule::find()->select(['time'])->where(['block_id'=>$this->id])->andWhere(['rup_id'=>$this->rup_id])->sum('time');
-        return $this->time-($sum+$sum3);
+        return ($this->time-$sum)+$sum3;
     }
 }
