@@ -12,8 +12,10 @@ use Yii;
  * @property string $code
  * @property string $name
  * @property int $time
+ * @property bool $isTemplate
  *
  * @property RupModule $rupSubBlock
+ * @property RupModule[] $rupModules
  */
 class RupBlock extends \yii\db\ActiveRecord
 {
@@ -31,9 +33,10 @@ class RupBlock extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'name', 'time','rup_id'], 'required'],
+            [['code', 'name', 'time','rup_id','isTemplate'], 'required'],
             [['time'], 'default', 'value' => null],
             [['time','rup_id'], 'integer'],
+            [['isTemplate'], 'boolean'],
             [['code'], 'string', 'max' => 20],
             [['name'], 'string', 'max' => 300],
         ];
@@ -50,6 +53,7 @@ class RupBlock extends \yii\db\ActiveRecord
             'name' => 'Наименование',
             'time' => 'Часов всего',
             'rup_id' => 'Айди рупа',
+            'isTemplate' => 'Добавить в шаблоны',
         ];
     }
 

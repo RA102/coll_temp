@@ -19,14 +19,24 @@ $this->title = 'Блоки РУПа';
 
     <p>
 <?php         Modal::begin([
-    'header' => '<h2>Добавить модуль</h2>',
+    'header' => '<h2>Добавить блок</h2>',
     'size'=>'modal-sm',
     'toggleButton' => ['label' => 'Добавить блок','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
-
 
 ]);
 
 echo $this->renderAjax('/rup/rup-block/_form',['model'=> $Model=new RupBlock()]);
+
+Modal::end(); ?>
+    <?php
+    Modal::begin([
+    'header' => '<h2>Добавить блок из шаблона</h2>',
+    'size'=>'modal-sm',
+    'toggleButton' => ['label' => 'Добавить блок из шаблона','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
+
+]);
+
+echo $this->renderAjax('/rup/rup-block/_formTemplate',['model'=> $Model=new RupBlock()]);
 
 Modal::end(); ?>
     </p>

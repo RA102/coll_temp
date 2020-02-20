@@ -18,6 +18,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'time')->textInput() ?>
+    <?= $form->field($model, 'isTemplate')->checkbox([
+    ])?>
 
     <div class="form-group">
         <?= Html::submitButton('Добавить', ['class' => 'btn btn-primary', 'id'=>'addBlockAjaxSubmit']) ?>
