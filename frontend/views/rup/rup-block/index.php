@@ -87,7 +87,7 @@ Modal::end(); ?>
     </div>
     <?php
 $this->registerJs("
-    $('td[class=w5][class!=kv-page-summary]').click(function (e) {
+    $('td[class=w6][class!=kv-page-summary]').click(function (e) {
         var id = $(this).closest('tr').data('rup_id');
         var block_Id = $(this).closest('tr').data('id');
         if($(this).attr('class')=='w5 abracadabra'){
