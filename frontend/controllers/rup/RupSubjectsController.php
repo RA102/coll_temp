@@ -173,7 +173,6 @@ class RupSubjectsController extends Controller
         $model->control_work=Yii::$app->request->get('control_work');
         $model->exam=Yii::$app->request->get('exam');
         $model->id_block=Yii::$app->request->get('id_block');
-//        $model->id_sub_block=Yii::$app->request->get('id_sub_block');
         if($model->save()){
             return "all good saved";
         }

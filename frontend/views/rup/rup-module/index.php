@@ -44,6 +44,9 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'tableOptions' => [
+            'class' => 'table table-bordered table-striped table-hover',
+        ],
         'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
 //        'filterModel' => $searchModel,
         'columns' => [

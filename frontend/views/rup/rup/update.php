@@ -788,8 +788,8 @@ else{
            $('#editModalBodyBlock').append('<input type="text" class="form-control" id="editQualNameModalWindow">');
            $('#editModalBodyBlock').append('<div class="form-group field-rupblock-code required"><label class="control-label">Всего часов:</label></div>');
            $('#editModalBodyBlock').append('<input type="text" class="form-control" id="editQualTimeModalWindow">');
-           $('#editModalBodyBlock').append('<div class="form-group field-rupblock-code required" disabled="true"><label class="control-label">Не распределено:</label></div>');
-           $('#editModalBodyBlock').append('<input type="text" class="form-control" id="editQualTimemoduledeductedModalWindow">');
+           // $('#editModalBodyBlock').append('<div class="form-group field-rupblock-code required" disabled="true"><label class="control-label">Не распределено:</label></div>');
+           // $('#editModalBodyBlock').append('<input type="text" class="form-control" id="editQualTimemoduledeductedModalWindow" disabled=true>');
            $('#editQualCodeModalWindow').val($("tr[data-key="+blockIdEdit+"]").attr('data-code'));
            $('#editQualNameModalWindow').val($("tr[data-key="+blockIdEdit+"]").attr('data-name'));
            $('#editQualTimeModalWindow').val($("tr[data-key="+blockIdEdit+"]").attr('data-time'));
@@ -878,5 +878,13 @@ else{
         b{
             padding: 10px;
         }
+        tbody tr:hover{
+            !important;
+            background-color: lightgoldenrodyellow;
+        }
+        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+            background-color: lightgoldenrodyellow;
+        }
+
     </style>
 </div>

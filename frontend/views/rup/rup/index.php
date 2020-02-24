@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visibleButtons'=>[
                      'update'=>function ($model, $key, $index) { if($model->status==0){return false;}else{return true;}},
                      'view'=>function ($model, $key, $index) { if($model->status==1){return false;}else{return true;}},
-                     'delete'=>function ($model, $key, $index) { if($model->status==0){return false;}else{return true;}},
+                     'delete'=>false,
 
                 ]
                 ],
