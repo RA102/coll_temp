@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $code
  * @property string $name
+ * @property boolean $isTemplate
  *
  * @property RupBlock $id0
  * @property RupSubjects[] $rupSubjects
@@ -34,7 +35,8 @@ class RupModule extends \yii\db\ActiveRecord
             [['code', 'name','block_id'], 'required'],
             [['time','rup_id','block_id'], 'integer'],
             [['code', 'name'], 'string'],
-            [['block', 'timemodulededucted'],'safe'],
+            [['isTemplate'], 'boolean'],
+            [['block', 'timemodulededucted','isTemplate'],'safe'],
             [['id'], 'exist', 'skipOnError' => true, 'targetClass' => RupBlock::className(), 'targetAttribute' => ['id' => 'id']],
         ];
     }
@@ -50,7 +52,8 @@ class RupModule extends \yii\db\ActiveRecord
             'name' => 'Наименование',
             'rup_id'=>'id RUP',
             'time'=>'Всего часов',
-            'block_id'=>'Всего часов'
+            'block_id'=>'Всего часов',
+            'isTemplate'=>'Добавить в шаблон'
         ];
     }
 

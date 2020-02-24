@@ -24,6 +24,7 @@ use Yii;
     <?= $form->field($model, 'name')->textInput() ?>
 
     <?= $form->field($model, 'time')->textInput() ?>
+    <?= $form->field($model, 'isTemplate')->checkbox()?>
 
     <div class="form-group">
         <?= Html::submitButton('Добавить', ['class' => 'btn btn-primary','id'=>'subModuleAdd']) ?>

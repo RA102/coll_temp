@@ -18,7 +18,8 @@ class m200119_084405_create_rups_module_table extends Migration
             'code' => $this->string(20)->null(),
             'name' => $this->string(300)->null(),
             'time' => $this->smallInteger(),
-            'block_id'=>$this->integer()
+            'block_id'=>$this->integer(),
+            'isTemplate'=>$this->boolean()
         ]);
 
         $this->addForeignKey('fk_module_block_2_info', 'rup_module', 'block_id', 'rup_block', 'id');

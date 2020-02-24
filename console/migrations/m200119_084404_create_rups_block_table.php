@@ -18,6 +18,7 @@ class m200119_084404_create_rups_block_table extends Migration
             'code' => $this->string(20)->null(),
             'name' => $this->string(300)->null(),
             'time' => $this->smallInteger(),
+            'isTemplate'=>$this->boolean()
         ]);
     }
 

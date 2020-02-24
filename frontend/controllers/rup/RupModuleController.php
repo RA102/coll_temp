@@ -106,6 +106,64 @@ class RupModuleController extends Controller
         ]);
     }
 
+
+    public function actionCreatetemplate(){
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $id=Yii::$app->request->post('isTemplate');
+
+
+        if (Yii::$app->request->isPost) {
+            $block_id=Yii::$app->request->post('block_id');
+            $code=Yii::$app->request->post('code');
+            $rup_id=Yii::$app->request->post('rup_id');
+            $name=Yii::$app->request->post('name');
+            $modelTemplate = RupModule::find()->where(['id'=>$id])->asArray()->limit(1)->all();
+            $model = new RupModule();
+            $model->time=$modelTemplate[0]['time'];
+            $model->code=$code;
+            $model->rup_id=$rup_id;
+            $model->block_id=$block_id;
+            $model->name=$name;
+            $model->isTemplate=false;
+            $model->save(false);
+            $sbb=$model->id;
+
+
+            $rupSubjects = RupSubjects::find()->
+            where(['id_sub_block'=>$id])->asArray()
+                ->all();
+            foreach ($rupSubjects as $rup_subject){
+                $rupSubjects = New RupSubjects();
+                $rupSubjects->rup_id=Yii::$app->request->post('rup_id');
+                $rupSubjects->id_sub_block=$sbb;
+                $rupSubjects->id_block=$block_id;
+                $rupSubjects->exam=$rup_subject['exam'];
+                $rupSubjects->control_work=$rup_subject['control_work'];
+                $rupSubjects->offset=$rup_subject['offset'];
+                $rupSubjects->time=$rup_subject['time'];
+                $rupSubjects->teory_time=$rup_subject['teory_time'];
+                $rupSubjects->lab_time=$rup_subject['lab_time'];
+                $rupSubjects->production_practice_time=$rup_subject['production_practice_time'];
+                $rupSubjects->one_sem_time=$rup_subject['one_sem_time'];
+                $rupSubjects->two_sem_time=$rup_subject['two_sem_time'];
+                $rupSubjects->three_sem_time=$rup_subject['three_sem_time'];
+                $rupSubjects->four_sem_time=$rup_subject['four_sem_time'];
+                $rupSubjects->five_sem_time=$rup_subject['five_sem_time'];
+                $rupSubjects->six_sem_time=$rup_subject['six_sem_time'];
+                $rupSubjects->seven_sem_time=$rup_subject['seven_sem_time'];
+                $rupSubjects->eight_sem_time=$rup_subject['eight_sem_time'];
+                $rupSubjects->name=$rup_subject['name'];
+                $rupSubjects->code=$rup_subject['code'];
+                $rupSubjects->save(false);
+            }
+
+        }
+        return $rupSubjects;
+    }
+
+
+
+
     /**
      * Updates an existing RupSubBlock model.
      * If update is successful, the browser will be redirected to the 'view' page.

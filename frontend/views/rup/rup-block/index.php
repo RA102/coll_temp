@@ -121,8 +121,18 @@ $this->registerJs("
 
     });
     
-
+    
 
 
 ");?>
+
+
+    <script>
+        $( document ).ready(function() {
+            var Summary = $('.kv-page-summary').find("td:eq(4)").text();
+            $('.kv-page-summary').find("td:eq(4)").html("Итого:"+Summary);
+        });
+
+
+    </script>
 </div>

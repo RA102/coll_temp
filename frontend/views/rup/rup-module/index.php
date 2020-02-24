@@ -23,7 +23,6 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
         <?php
         Modal::begin([
             'header' => '<h2>Добавить модуль</h2>',
@@ -37,10 +36,22 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
 
 
         ?>
+        <?php
+        Modal::begin([
+            'header' => '<h2>Добавить модуль из шаблона</h2>',
+            'size'=>'modal-sm',
+            'toggleButton' => ['label' => 'Добавить модуль из шаблона','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
+        ]);
+
+        echo $this->renderAjax('/rup/rup-module/_formTemplate',['model'=> $Model=new RupModule()]);
+
+        Modal::end();
+
+
+        ?>
 <!--        <button moduleId="--><?php //echo $module_ID?><!--" title='Добавить' style='' data-target="#addModalModule" data-toggle="modal" class='btn btn-success edit_qual addQualModuleButton' idd="--><?//= $al['id'] ?><!--">-->
 <!--            <h7>Добавить дисциплину без модуля<i class='fas fa-edit'></i></h7>-->
 <!--        </button>-->
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
