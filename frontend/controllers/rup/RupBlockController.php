@@ -2,8 +2,19 @@
 
 namespace frontend\controllers\rup;
 
+use DateTime;
 use frontend\models\rup\RupModule;
 use frontend\models\rup\RupSubjects;
+use alhimik1986\PhpExcelTemplator\PhpExcelTemplator;
+use alhimik1986\PhpExcelTemplator\params\ExcelParam;
+use alhimik1986\PhpExcelTemplator\setters\CellSetterStringValue;
+use alhimik1986\PhpExcelTemplator\setters\CellSetterArrayValue;
+use alhimik1986\PhpExcelTemplator\setters\CellSetterArray2DValue;
+use PHPExcel_IOFactory;
+use PHPExcel_Style_Alignment;
+use PHPExcel_Style_Fill;
+use PHPExcel_Writer_Excel2007;
+use PHPExcel_Writer_Excel5;
 use Yii;
 use frontend\models\rup\RupBlock;
 use frontend\models\rup\RupBlockSearch;
@@ -102,6 +113,72 @@ class RupBlockController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+    public function actionOnetest(){
+//        $templateFile = './template.xlsx';
+        $fileName = './exported_file.xlsx';
+//        $params = [
+//            '{ruproots-captionru}'=>'RUP RU NAME',
+//            '{ruproots-profile_code}'=>'CODE',
+//            '[qualifications]'=>[1,2],
+//            '{study_form}'=>'StudyForm',
+//            '{study_years}'=>'StudySrok',
+//            '{base}'=>'On base of education'
+//        ];
+////        return PhpExcelTemplator::saveToFile($templateFile, $fileName, $params);
+//         PhpExcelTemplator::saveToFile($templateFile, $fileName, $params); // to download the file from web page
+//        return $fileName;
+
+        $xls  = new \PHPExcel();
+        $xls->getProperties()->setTitle("Название");
+        $xls->getProperties()->setSubject("Тема");
+        $xls->getProperties()->setCreator("Автор");
+        $xls->getProperties()->setManager("Руководитель");
+        $xls->getProperties()->setCompany("Организация");
+        $xls->getProperties()->setCategory("Группа");
+        $xls->getProperties()->setKeywords("Ключевые слова");
+        $xls->getProperties()->setDescription("Примечания");
+        $xls->getProperties()->setLastModifiedBy("Автор изменений");
+        $xls->getProperties()->setCreated("25.03.2019");
+
+        $xls->setActiveSheetIndex(0);
+
+        $sheet = $xls->getActiveSheet();
+
+        $sheet->setTitle('Название листа');
+        $sheet->setCellValue("A1", "Значение");
+        $sheet->insertNewColumnBefore("A0",5);
+        $sheet->insertNewRowBefore(1,2);
+
+        $objWriter = new PHPExcel_Writer_Excel2007($xls);
+
+        $objWriter->save($fileName);
+
+
+        $objReader = PHPExcel_IOFactory::createReader('Excel2007');
+        $objReader->setReadDataOnly(true); //optional
+
+        $objPHPExcel = $objReader->load('exported_file.xlsx');
+        $objWorksheet = $objPHPExcel->getActiveSheet();
+
+        $i=1;
+        foreach ($objWorksheet->getRowIterator() as $row) {
+            if($column_A_Value = $objPHPExcel->getActiveSheet()->getCell("F$i")->getValue()!=null)
+            {
+                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("F$i")->getValue()."\r";
+                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("Fл$i")->getCoordinate();//column A
+            }
+
+            //you can add your own columns B, C, D etc.
+
+            //inset $column_A_Value value in DB query here
+
+            $i++;
+        }
+//        return var_dump($objPHPExcel);
+
+
+
     }
 
     public function actionCreatetemplate(){
