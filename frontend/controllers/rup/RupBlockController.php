@@ -12,6 +12,7 @@ use alhimik1986\PhpExcelTemplator\setters\CellSetterArrayValue;
 use alhimik1986\PhpExcelTemplator\setters\CellSetterArray2DValue;
 use PHPExcel_IOFactory;
 use PHPExcel_Style_Alignment;
+use PHPExcel_Style_Border;
 use PHPExcel_Style_Fill;
 use PHPExcel_Writer_Excel2007;
 use PHPExcel_Writer_Excel5;
@@ -128,6 +129,33 @@ class RupBlockController extends Controller
 ////        return PhpExcelTemplator::saveToFile($templateFile, $fileName, $params);
 //         PhpExcelTemplator::saveToFile($templateFile, $fileName, $params); // to download the file from web page
 //        return $fileName;
+        $bg = array(
+
+            'fill' => array(
+
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+
+                'color' => array('rgb' => '01B050')
+
+            )
+
+        );
+        $border = array(
+
+            'borders'=>array(
+
+                'outline' => array(
+
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+
+                    'color' => array('rgb' => '000000')
+
+                ),
+
+            )
+
+        );
+
 
         $xls  = new \PHPExcel();
         $xls->getProperties()->setTitle("Название");
@@ -142,14 +170,35 @@ class RupBlockController extends Controller
         $xls->getProperties()->setCreated("25.03.2019");
 
         $xls->setActiveSheetIndex(0);
-
         $sheet = $xls->getActiveSheet();
+        $sheet->setTitle('РУП');
 
-        $sheet->setTitle('Название листа');
-        $sheet->setCellValue("A1", "Значение");
-        $sheet->insertNewColumnBefore("A0",5);
-        $sheet->insertNewRowBefore(1,2);
-
+        $sheet->setCellValue("G1", "ПЛАН УЧЕБНОГО ПРОЦЕССА");
+        $sheet->setCellValue("A3", "Код и профиль образования:");
+        $sheet->setCellValue("D3", "{ruproots-captionru}");
+        $sheet->setCellValue("A4", "Специальность:");
+        $sheet->setCellValue("D4", "{ruproots-profile_code}");
+        $sheet->setCellValue("A5", "Квалификация:");
+        $sheet->setCellValue("D5", "[qualifications]");
+        $sheet->setCellValue("K7", "{study_form}");
+        $sheet->setCellValue("K8", "{study_years}");
+        $sheet->setCellValue("K9", "на базе основного среднего образования");
+        $sheet->getStyle("B11")->applyFromArray($border);
+        $sheet->getStyle("A11")->applyFromArray($border);
+        $sheet->getStyle("B11")->applyFromArray($border);
+        $sheet->getStyle("C11")->applyFromArray($border);
+        $sheet->getStyle("F11")->applyFromArray($border);
+        $sheet->getStyle("G11")->applyFromArray($bg);
+        $sheet->getStyle("A11")->applyFromArray($bg);
+        $sheet->setCellValue("A11","индекс");
+        $sheet->mergeCells("A11:A13");
+        $sheet->mergeCells("B11:B13");
+        $sheet->mergeCells("C11:E11");
+        $sheet->mergeCells("F11:I11");
+        $sheet->mergeCells("G11:U11");
+        $sheet->getRowDimension("12")->setRowHeight(50);
+        $sheet->getRowDimension("13")->setRowHeight(50);
+        $sheet->getColumnDimension("B")->setWidth(30);
         $objWriter = new PHPExcel_Writer_Excel2007($xls);
 
         $objWriter->save($fileName);
@@ -163,10 +212,17 @@ class RupBlockController extends Controller
 
         $i=1;
         foreach ($objWorksheet->getRowIterator() as $row) {
-            if($column_A_Value = $objPHPExcel->getActiveSheet()->getCell("F$i")->getValue()!=null)
+            if($column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getValue()=="Значение")
             {
-                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("F$i")->getValue()."\r";
-                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("Fл$i")->getCoordinate();//column A
+//                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getValue()."\r";
+
+                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getCoordinate();//column A
+            }
+            if($column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getValue()=="[coll]")
+            {
+//                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getValue()."\r";
+
+                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getCoordinate();//column A
             }
 
             //you can add your own columns B, C, D etc.
@@ -178,6 +234,23 @@ class RupBlockController extends Controller
 //        return var_dump($objPHPExcel);
 
 
+
+    }
+    public function actionTwotest(){
+
+        $templateFile = './mplate.xlsx';
+        $fileName = './exported_file.xlsx';
+
+        $params = [
+            '{ruproots-captionru}'=>'RUP RU NAME',
+            '{ruproots-profile_code}'=>'CODE',
+//            '[qualifications]'=>[1,2],
+            '{study_form}'=>'StudyForm',
+            '{study_years}'=>'StudySrok',
+            '{base}'=>'On base of education'
+        ];
+        PhpExcelTemplator::saveToFile($templateFile, $fileName, $params);
+// PhpExcelTemplator::outputToFile($templateFile, $fileName, $params); // to download the file from web page
 
     }
 
