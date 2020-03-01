@@ -34,7 +34,10 @@
         "kartik-v/yii2-mpdf": "v1.0.5",
         "phpoffice/phpword": "v0.17.*",
         "kartik-v/yii2-grid": "dev-master",
-        "kartik-v/yii2-tabs-x": "dev-master"
+        "kartik-v/yii2-tabs-x": "dev-master",
+        "phpoffice/phpexcel": "^1.8",
+        "phpoffice/phpspreadsheet": "^1.10",
+        "alhimik1986/php-excel-templator": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
