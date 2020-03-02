@@ -145,12 +145,13 @@ class AdmissionApplicationForm extends Model
 
             ['social_statuses', 'validateSocialStatuses', 'skipOnEmpty' => true],
 
-            [
-                'iin',
-                'unique',
-                'targetClass' => Person::class,
-                'on'          => self::SCENARIO_DEFAULT
-            ],
+            // [
+            //     'iin',
+            //     //'unique',
+            //     'targetClass' => Person::class,
+            //     'on'          => self::SCENARIO_DEFAULT
+            // ],
+
             ['email', 'safe'],
             [
                 'email',
