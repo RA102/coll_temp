@@ -25,6 +25,7 @@ use yii\widgets\ActiveForm;
     <?php
         echo  Html::button('Открыть для редактирования', ['id'=>'rupEditOpen','class' => 'btn btn-light btn-margin','style'=>[]]);
         echo  Html::button('Закрыть для редактирования', ['id'=>'rupEditClose','class' => 'btn btn-light btn-margin','style'=>[]]);
+        echo Html::a('Экспорт в Excel', ['/rup/rup-block/test'."?rup_id=".$model->rup_id], ['class' => 'btn btn-success']);
         echo  Html::button('Удалить', ['id'=>'rupEditClose','class' => 'btn btn-danger btn-margin','style'=>[]]);
     ?>
     <?php $form = ActiveForm::begin(['action' => ['/rup/rup/update'],

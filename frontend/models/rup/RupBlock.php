@@ -62,8 +62,15 @@ class RupBlock extends \yii\db\ActiveRecord
      */
     public function getRupSubBlock()
     {
-        return $this->hasOne(RupModule::className(), ['id' => 'id']);
+        return $this->hasMany(RupModule::className(), ['block_id' => 'id']);
     }
+
+    public function getSubjects()
+    {
+        return $this->hasMany(RupSubjects::className(), ['id_block' => 'id']);
+    }
+
+
     public function getTimemodulededucted(){
         $sum2=RupModule::find()->where(['block_id'=>$this->id])->andWhere(['rup_id'=>$this->rup_id])->all();
         $sum3=0;

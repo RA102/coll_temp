@@ -51,4 +51,5 @@ class RupQualifications extends \yii\db\ActiveRecord
             'qualification_code' => 'Qualification Code',
         ];
     }
+
 }
