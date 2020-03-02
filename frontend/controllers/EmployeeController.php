@@ -248,6 +248,10 @@ class EmployeeController extends Controller
         $session_person = \Yii::$app->user->identity;
 
         $person = Employee::findOne($id);
+
+
+
+        
         $block = false;
         if ($person !== null) {
             $form->setAttributes($person->getAttributes());
@@ -255,6 +259,10 @@ class EmployeeController extends Controller
         }
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
+            if ($person == null && $form->iin != null) {
+                $person = Employee::find()->Where(['iin' => $form->iin])->One();
+            }
+
             if ($person == null) {
                 $model = Employee::add(null, $form->firstname, $form->lastname, $form->middlename, $form->iin);
                 $model->setAttributes($form->attributes);
