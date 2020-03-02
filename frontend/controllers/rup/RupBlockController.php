@@ -133,7 +133,7 @@ class RupBlockController extends Controller
 
 
 
-        $templateFile = './rup_test.xlsx';
+        $templateFile = 'templates/rup_test.xlsx';
         $fileName = './RUP_file.xlsx';
         $params = [
             '{codeProfile}' => $codeProfile,
