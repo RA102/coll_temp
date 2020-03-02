@@ -111,217 +111,6 @@ class RupBlockController extends Controller
         ]);
     }
 
-    public function actionOnetest()
-    {
-//        $templateFile = './template.xlsx';
-        $fileName = './exported_file.xlsx';
-//        $params = [
-//            '{ruproots-captionru}'=>'RUP RU NAME',
-//            '{ruproots-profile_code}'=>'CODE',
-//            '[qualifications]'=>[1,2],
-//            '{study_form}'=>'StudyForm',
-//            '{study_years}'=>'StudySrok',
-//            '{base}'=>'On base of education'
-//        ];
-////        return PhpExcelTemplator::saveToFile($templateFile, $fileName, $params);
-//         PhpExcelTemplator::saveToFile($templateFile, $fileName, $params); // to download the file from web page
-//        return $fileName;
-        $bg = array(
-
-            'fill' => array(
-
-                'type' => PHPExcel_Style_Fill::FILL_SOLID,
-
-                'color' => array('rgb' => '01B050')
-
-            )
-
-        );
-        $border = array(
-
-            'borders' => array(
-
-                'outline' => array(
-
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,
-
-                    'color' => array('rgb' => '000000')
-
-                ),
-
-            )
-
-        );
-
-
-        $xls = new \PHPExcel();
-        $xls->getProperties()->setTitle("Название");
-        $xls->getProperties()->setSubject("Тема");
-        $xls->getProperties()->setCreator("Автор");
-        $xls->getProperties()->setManager("Руководитель");
-        $xls->getProperties()->setCompany("Организация");
-        $xls->getProperties()->setCategory("Группа");
-        $xls->getProperties()->setKeywords("Ключевые слова");
-        $xls->getProperties()->setDescription("Примечания");
-        $xls->getProperties()->setLastModifiedBy("Автор изменений");
-        $xls->getProperties()->setCreated("25.03.2019");
-
-        $xls->setActiveSheetIndex(0);
-        $sheet = $xls->getActiveSheet();
-        $sheet->setTitle('РУП');
-
-        $sheet->setCellValue("G1", "ПЛАН УЧЕБНОГО ПРОЦЕССА");
-        $sheet->setCellValue("A3", "Код и профиль образования:");
-        $sheet->setCellValue("D3", "{ruproots-captionru}");
-        $sheet->setCellValue("A4", "Специальность:");
-        $sheet->setCellValue("D4", "{ruproots-profile_code}");
-        $sheet->setCellValue("A5", "Квалификация:");
-        $sheet->setCellValue("D5", "[qualifications]");
-        $sheet->setCellValue("K7", "{study_form}");
-        $sheet->setCellValue("K8", "{study_years}");
-        $sheet->setCellValue("K9", "на базе основного среднего образования");
-        $sheet->getStyle("B11")->applyFromArray($border);
-        $sheet->getStyle("A11")->applyFromArray($border);
-        $sheet->getStyle("B11")->applyFromArray($border);
-        $sheet->getStyle("C11")->applyFromArray($border);
-        $sheet->getStyle("F11")->applyFromArray($border);
-        $sheet->getStyle("G11")->applyFromArray($bg);
-        $sheet->getStyle("A11")->applyFromArray($bg);
-        $sheet->setCellValue("A11", "индекс");
-        $sheet->mergeCells("A11:A13");
-        $sheet->mergeCells("B11:B13");
-        $sheet->mergeCells("C11:E11");
-        $sheet->mergeCells("F11:I11");
-        $sheet->mergeCells("G11:U11");
-        $sheet->getRowDimension("12")->setRowHeight(50);
-        $sheet->getRowDimension("13")->setRowHeight(50);
-        $sheet->getColumnDimension("B")->setWidth(30);
-        $objWriter = new PHPExcel_Writer_Excel2007($xls);
-
-        $objWriter->save($fileName);
-
-
-        $objReader = PHPExcel_IOFactory::createReader('Excel2007');
-        $objReader->setReadDataOnly(true); //optional
-
-        $objPHPExcel = $objReader->load('exported_file.xlsx');
-        $objWorksheet = $objPHPExcel->getActiveSheet();
-
-        $i = 1;
-        foreach ($objWorksheet->getRowIterator() as $row) {
-            if ($column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getValue() == "Значение") {
-//                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getValue()."\r";
-
-                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getCoordinate();//column A
-            }
-            if ($column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getValue() == "[coll]") {
-//                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getValue()."\r";
-
-                echo $column_A_Value = $objPHPExcel->getActiveSheet()->getCell("E$i")->getCoordinate();//column A
-            }
-
-            //you can add your own columns B, C, D etc.
-
-            //inset $column_A_Value value in DB query here
-
-            $i++;
-        }
-//        return var_dump($objPHPExcel);
-
-
-    }
-
-    public function actionTwotest()
-    {
-        function makeHeader(){
-            $catList = [
-                ['name' => 'Tom', 'color' => 'red'],
-                ['name' => 'Bars', 'color' => 'white'],
-                ['name' => 'Jane', 'color' => 'Yellow'],
-            ];
-
-            $document = new \PHPExcel();
-
-            $sheet = $document->setActiveSheetIndex(0); // Выбираем первый лист в документе
-
-            $columnPosition = 0; // Начальная координата x
-            $startLine = 2; // Начальная координата y
-
-// Вставляем заголовок в "A2"
-            $sheet->setCellValueByColumnAndRow($columnPosition, $startLine, 'Our cats');
-
-// Выравниваем по центру
-            $sheet->getStyleByColumnAndRow($columnPosition, $startLine)->getAlignment()->setHorizontal(
-                PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $sheet->getStyleByColumnAndRow($columnPosition,$startLine)->getAlignment()->setTextRotation(90);
-
-// Объединяем ячейки "A2:C2"
-            $document->getActiveSheet()->mergeCellsByColumnAndRow($columnPosition, $startLine, $columnPosition+2, $startLine);
-//        $document->getActiveSheet()->mergeCellsByColumnAndRow($columnPosition, $startLine-1, $columnPosition+2, $startLine);
-
-// Перекидываем указатель на следующую строку
-            $startLine++;
-
-// Массив с названиями столбцов
-            $columns = ['№', 'Name', 'Color'];
-
-// Указатель на первый столбец
-            $currentColumn = $columnPosition;
-
-// Формируем шапку
-            foreach ($columns as $column) {
-                // Красим ячейку
-                $sheet->getStyleByColumnAndRow($currentColumn, $startLine)
-                    ->getFill()
-                    ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
-                    ->getStartColor()
-                    ->setRGB('4dbf62');
-
-                $sheet->setCellValueByColumnAndRow($currentColumn, $startLine, $column);
-
-                // Смещаемся вправо
-                $currentColumn++;
-            }
-
-// Формируем список
-            foreach ($catList as $key=>$catItem) {
-                // Перекидываем указатель на следующую строку
-                $startLine++;
-                // Указатель на первый столбец
-                $currentColumn = $columnPosition;
-                // Вставляем порядковый номер
-                $sheet->setCellValueByColumnAndRow($currentColumn, $startLine, $key+1);
-
-                // Ставляем информацию об имени и цвете
-                foreach ($catItem as $value) {
-                    $currentColumn++;
-                    $sheet->setCellValueByColumnAndRow($currentColumn, $startLine, $value);
-                }
-            }
-
-            $objWriter = \PHPExcel_IOFactory::createWriter($document, 'Excel5');
-            $objWriter->save("CatList.xls");
-        }
-        makeHeader();
-        makeHeader();
-
-//
-//        $templateFile = './mplate.xlsx';
-//        $fileName = './exported_file.xlsx';
-//
-//        $params = [
-//            '{ruproots-captionru}' => 'RUP RU NAME',
-//            '{ruproots-profile_code}' => 'CODE',
-////            '[qualifications]'=>[1,2],
-//            '{study_form}' => 'StudyForm',
-//            '{study_years}' => 'StudySrok',
-//            '{base}' => 'On base of education'
-//        ];
-//        PhpExcelTemplator::saveToFile($templateFile, $fileName, $params);
-// PhpExcelTemplator::outputToFile($templateFile, $fileName, $params); // to download the file from web page
-
-    }
-
     public function actionTest($rup_id)
     {
         $mainInfo=RupRoot::find()->where(['rup_id'=>$rup_id])->asArray()->all();
@@ -345,7 +134,7 @@ class RupBlockController extends Controller
 
 
         $templateFile = './rup_test.xlsx';
-        $fileName = './exported_file.xlsx';
+        $fileName = './RUP_file.xlsx';
         $params = [
             '{codeProfile}' => $codeProfile,
             '{codeSpec}' => $codeSpec,
@@ -362,6 +151,7 @@ class RupBlockController extends Controller
 
         $callbacks = [
             '{codeProfile}' => function(CallbackParam $param) use ($quals,$rupBlocks,$subjects) {
+                $F1=0;
                 $sheet = $param->sheet;
                 $cellA="A";
                 $cellB="B";
@@ -384,15 +174,48 @@ class RupBlockController extends Controller
                 $cellS="S";
                 $cellT="T";
                 $cellU="U";
+                $G=0;
+                $H=0;
+                $I=0;
+                $J=0;
+                $K=0;
+                $L=0;
+                $M=0;
+                $N=0;
+                $O=0;
+                $P=0;
+                $Q=0;
+                $R=0;
+                $S=0;
+                $T=0;
+                $U=0;
+                $G1=0;
+                $H1=0;
+                $I1=0;
+                $J1=0;
+                $K1=0;
+                $L1=0;
+                $M1=0;
+                $N1=0;
+                $O1=0;
+                $P1=0;
+                $Q1=0;
+                $R1=0;
+                $S1=0;
+                $T1=0;
+                $U1=0;
                 $cell2=15;
+                $cellAll=intval($cell2);
                 $sheet->getStyle($cellA.$cell2)->getAlignment()->setWrapText(true);
                 foreach ($rupBlocks as $b){
+                    $F1=$F1+$b['time'];
                     $sheet->setCellValue($cellA.$cell2,$b['code']);
                     $sheet->setCellValue($cellB.$cell2,$b['name']);
                     $sheet->setCellValue($cellF.$cell2,$b['time']);
                     $sheet->getStyle($cellA.$cell2.":".$cellU.$cell2)->getFill()
                         ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                         ->getStartColor()->setARGB('538DD5');
+                    $sheet->getStyle($cellA.$cell2.":".$cellU.$cell2)->getFont()->setBold( true );
 
                     $cell2++;
                     foreach ($b['rupSubBlock'] as $a){
@@ -421,20 +244,54 @@ class RupBlockController extends Controller
                                 $sheet->setCellValue($cellE.$cell2,$s['control_work']);
                                 $sheet->setCellValue($cellF.$cell2,$s['time']);
                                 $sheet->setCellValue($cellG.$cell2,$s['teory_time']);
+                                $G=$G+$s['teory_time'];
+                                $G1=$G1+$s['teory_time'];
                                 $sheet->setCellValue($cellH.$cell2,$s['lab_time']);
+                                $H=$H+$s['lab_time'];
+                                $H1=$H1+$s['lab_time'];
                                 $sheet->setCellValue($cellI.$cell2,$s['production_practice_time']);
+                                $I=$I+$s['production_practice_time'];
+                                $I1=$I1+$s['production_practice_time'];
                                 $sheet->setCellValue($cellJ.$cell2,$s['one_sem_time']);
+                                $J=$J+$s['one_sem_time'];
+                                $J1=$J1+$s['one_sem_time'];
                                 $sheet->setCellValue($cellK.$cell2,$s['two_sem_time']);
+                                $K=$K+$s['two_sem_time'];
+                                $K1=$K1+$s['two_sem_time'];
                                 $sheet->setCellValue($cellL.$cell2,$s['one_sem_time']+$s['two_sem_time']);
+                                $L=$L+($s['one_sem_time']+$s['two_sem_time']);
+                                $L1=$L1+($s['one_sem_time']+$s['two_sem_time']);
                                 $sheet->setCellValue($cellM.$cell2,$s['three_sem_time']);
+                                $M=$M+$s['three_sem_time'];
+                                $M1=$M1+$s['three_sem_time'];
                                 $sheet->setCellValue($cellN.$cell2,$s['four_sem_time']);
+                                $N=$N+$s['four_sem_time'];
+                                $N1=$N1+$s['four_sem_time'];
                                 $sheet->setCellValue($cellO.$cell2,$s['three_sem_time']+$s['four_sem_time']);
+                                $O=$O+$s['three_sem_time']+$s['four_sem_time'];
+                                $O1=$O1+$s['three_sem_time']+$s['four_sem_time'];
                                 $sheet->setCellValue($cellP.$cell2,$s['five_sem_time']);
+                                $P=$P+$s['five_sem_time'];
+                                $P1=$P1+$s['five_sem_time'];
                                 $sheet->setCellValue($cellQ.$cell2,$s['six_sem_time']);
+                                $Q=$Q+$s['six_sem_time'];
+                                $Q1=$Q1+$s['six_sem_time'];
                                 $sheet->setCellValue($cellR.$cell2,$s['five_sem_time']+$s['six_sem_time']);
+                                $R=$R+$s['five_sem_time']+$s['six_sem_time'];
+                                $R1=$R1+$s['five_sem_time']+$s['six_sem_time'];
                                 $sheet->setCellValue($cellS.$cell2,$s['seven_sem_time']);
+                                $S=$S+$s['seven_sem_time'];
+                                $S1=$S1+$s['seven_sem_time'];
                                 $sheet->setCellValue($cellT.$cell2,$s['eight_sem_time']);
+                                $T=$T+$s['eight_sem_time'];
+                                $T1=$T1+$s['eight_sem_time'];
                                 $sheet->setCellValue($cellU.$cell2,$s['seven_sem_time']+$s['eight_sem_time']);
+                                $U=$U+$s['seven_sem_time']+$s['eight_sem_time'];
+                                $U1=$U1+$s['seven_sem_time']+$s['eight_sem_time'];
+                                $sheet->getStyle("L".$cell2)->getFont()->setBold( true );
+                                $sheet->getStyle("O".$cell2)->getFont()->setBold( true );
+                                $sheet->getStyle("R".$cell2)->getFont()->setBold( true );
+                                $sheet->getStyle("U".$cell2)->getFont()->setBold( true );
                                 $sheet->getStyle("L".$cell2)->getFill()
                                     ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                                     ->getStartColor()->setARGB('B7DEE8');
@@ -451,9 +308,61 @@ class RupBlockController extends Controller
                             }
                         }
                     }
-                }
-//                $sheet->mergeCells("A17:A21");
+                    $sheet->setCellValue($cellG.$cellAll,$G);
+                    $sheet->setCellValue($cellH.$cellAll,$H);
+                    $sheet->setCellValue($cellI.$cellAll,$I);
+                    $sheet->setCellValue($cellJ.$cellAll,$J);
+                    $sheet->setCellValue($cellK.$cellAll,$K);
+                    $sheet->setCellValue($cellL.$cellAll,$L);
+                    $sheet->setCellValue($cellM.$cellAll,$M);
+                    $sheet->setCellValue($cellN.$cellAll,$N);
+                    $sheet->setCellValue($cellO.$cellAll,$O);
+                    $sheet->setCellValue($cellP.$cellAll,$P);
+                    $sheet->setCellValue($cellQ.$cellAll,$Q);
+                    $sheet->setCellValue($cellR.$cellAll,$R);
+                    $sheet->setCellValue($cellS.$cellAll,$S);
+                    $sheet->setCellValue($cellT.$cellAll,$T);
+                    $sheet->setCellValue($cellU.$cellAll,$U);
+                    $G=0;
+                    $H=0;
+                    $I=0;
+                    $J=0;
+                    $K=0;
+                    $L=0;
+                    $M=0;
+                    $N=0;
+                    $O=0;
+                    $P=0;
+                    $Q=0;
+                    $R=0;
+                    $S=0;
+                    $T=0;
+                    $U=0;
+                    $cellAll=intval($cell2);
 
+                }
+//
+                $sheet->setCellValue($cellB.$cell2,"Итого:");
+                $sheet->setCellValue($cellG.$cell2,$G1);
+                $sheet->setCellValue($cellH.$cell2,$H1);
+                $sheet->setCellValue($cellI.$cell2,$I1);
+                $sheet->setCellValue($cellJ.$cell2,$J1);
+                $sheet->setCellValue($cellK.$cell2,$K1);
+                $sheet->setCellValue($cellL.$cell2,$L1);
+                $sheet->setCellValue($cellM.$cell2,$M1);
+                $sheet->setCellValue($cellN.$cell2,$N1);
+                $sheet->setCellValue($cellO.$cell2,$O1);
+                $sheet->setCellValue($cellP.$cell2,$P1);
+                $sheet->setCellValue($cellQ.$cell2,$Q1);
+                $sheet->setCellValue($cellR.$cell2,$R1);
+                $sheet->setCellValue($cellS.$cell2,$S1);
+                $sheet->setCellValue($cellT.$cell2,$T1);
+                $sheet->setCellValue($cellU.$cell2,$U1);
+                $sheet->setCellValue($cellF.$cell2,$F1);
+                $sheet->getStyle($cellA.$cell2.":".$cellU.$cell2)->getFill()
+                    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB('FFFF00');
+                $sheet->getStyle($cellA.$cell2.":".$cellU.$cell2)->getFont()->setBold( true );
             }
         ];
 
