@@ -15,10 +15,15 @@ use Yii;
     <?php $templates=\frontend\models\rup\RupModule::find()->where(['isTemplate'=>true])->all();?>
     <?php $listData=ArrayHelper::map($templates,'id','name');?>
 
-    <?php $form = ActiveForm::begin(['options'=>['id'=>'addModuleFormAjaxSerialazi']]); ?>
+    <?php $form = ActiveForm::begin(['options'=>['id'=>'addModuleFormAjaxSerialazi'
+        //,'style' => "width: 600px;"
+    
+    ]]); ?>
 
     <?= $form->field($model,'isTemplate')->dropDownList($listData,
-        ['prompt'=>'Выберите шаблон','class'=>'form-control addModuleAjaxForm2isTemplate']);?>
+        ['prompt'=>'Выберите шаблон','class'=>'form-control addModuleAjaxForm2isTemplate'
+         , 'onChange' => "$('.addModuleAjaxForm2isTemplateName').val($(this).find('option:selected').text());"
+        ]);?>
     <?= $form->field($model, 'code')->textInput(['class'=>'form-control addModuleAjaxForm2isTemplateCode']) ?>
     <?= $form->field($model, 'rup_id')->hiddenInput(['value'=>$_GET['id']])->label(false) ?>
     <?= $form->field($model, 'block_id')->hiddenInput(['value'=>Yii::$app->request->get('block_id')])->label(false) ?>
@@ -33,8 +38,8 @@ use Yii;
 
     <script>
         $('#subMModuleAdd').on('click',function (e) {
-            console.log($('.addModuleAjaxForm2isTemplate').val());
-            console.log($('.addModuleAjaxForm2isTemplateCode').val());
+            //console.log($('.addModuleAjaxForm2isTemplate').val());
+            //console.log($('.addModuleAjaxForm2isTemplateCode').val());
             e.preventDefault();
             $.ajax({
                 type: 'POST',
@@ -42,8 +47,8 @@ use Yii;
                 data: {'isTemplate':$('.addModuleAjaxForm2isTemplate').val(),'code':$('.addModuleAjaxForm2isTemplateCode').val(),
                     'name':$('.addModuleAjaxForm2isTemplateName').val(), 'rup_id':$('#rupblock-rup_id').val(),'block_id':$('#rupmodule-block_id').val()},
                 success: function(data){
-                    var url= "/rup/rup/update?id="+$('#ruproots-rup_id').val()+"&active=2";
-                    // window.location = url;
+                    var url= "/rup/rup/update?id="+$('#ruproots-rup_id').val()+"&active=2&block_id="+$('#rupmodule-block_id').val();
+                    window.location = url;
                 }
             });
         })

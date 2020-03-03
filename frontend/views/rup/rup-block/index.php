@@ -31,7 +31,7 @@ Modal::end(); ?>
     <?php
     Modal::begin([
     'header' => '<h2>Добавить блок из шаблона</h2>',
-    'size'=>'modal-sm',
+    'size'=>'modal-lg',
     'toggleButton' => ['label' => 'Добавить блок из шаблона','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
 
 ]);

@@ -158,6 +158,9 @@ class RupModuleController extends Controller
             }
 
         }
+        if ($rupSubjects == null){
+            $rupSubjects = "success";
+        }
         return $rupSubjects;
     }
 

@@ -39,7 +39,7 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
         <?php
         Modal::begin([
             'header' => '<h2>Добавить модуль из шаблона</h2>',
-            'size'=>'modal-sm',
+            'size'=>'modal-lg',
             'toggleButton' => ['label' => 'Добавить модуль из шаблона','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
         ]);
 

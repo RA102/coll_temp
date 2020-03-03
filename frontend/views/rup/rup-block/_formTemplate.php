@@ -20,7 +20,10 @@ $listData=ArrayHelper::map($templates,'id','name');
 
     <?php $form = ActiveForm::begin([ 'options' => ['class'=>'addBlockAjaxForm2','id'=>'addBlockAjaxForm2']]); ?>
     <?= $form->field($model,'isTemplate')->dropDownList($listData,
-        ['prompt'=>'Выберите шаблон','class'=>'form-control addBlockAjaxForm2isTemplate']);?>
+        ['prompt'=>'Выберите шаблон','class'=>'form-control addBlockAjaxForm2isTemplate'
+            , 'onChange' => "$('.addBlockAjaxForm2Name').val($(this).find('option:selected').text());"
+
+        ]);?>
     <?= $form->field($model, 'code')->textInput(['maxlength' => true,'class'=>'form-control addBlockAjaxForm2Code']) ?>
     <?= $form->field($model, 'rup_id')->hiddenInput(['maxlength' => true,'value'=>Yii::$app->request->get('id')])->label(false) ?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true,'class'=>'form-control addBlockAjaxForm2Name']) ?>
@@ -43,7 +46,7 @@ $listData=ArrayHelper::map($templates,'id','name');
                     'name':$('.addBlockAjaxForm2Name').val(), 'rup_id':$('#rupblock-rup_id').val()},
                 success: function(data){
                     var url= "/rup/rup/update?id="+$('#ruproots-rup_id').val()+"&active=2";
-                    // window.location = url;
+                    window.location = url;
                 }
             });
         })
