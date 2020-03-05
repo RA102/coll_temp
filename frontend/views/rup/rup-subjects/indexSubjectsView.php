@@ -56,15 +56,18 @@
     });
     $('.delete_Module').on('click',function () {
         var a = $(this).attr('idd');
+        if (confirm('Вы действительно хотите удалить?')) {
+            $.ajax({
+                url: '/rup/rup-subjects/delete-module?id='+a,
+                success: function(data){
+                    var url= "/rup/rup/update?id="+$('#ruproots-rup_id').val()+"&active=2";
+                    window.location = url;
+                    // console.log(data.lab_time);
+                }
+            });
+        } else {
+        }
 
-        $.ajax({
-            url: '/rup/rup-subjects/delete-module?id='+a,
-            success: function(data){
-                var url= "/rup/rup/update?id="+$('#ruproots-rup_id').val()+"&active=2";
-                window.location = url;
-                // console.log(data.lab_time);
-            }
-        });
 
     });
 </script>

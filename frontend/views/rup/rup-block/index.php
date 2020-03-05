@@ -83,9 +83,14 @@ Modal::end(); ?>
     <div class="moduleDetail">
         <script>
             $('.deleteModelButton').on('click',function () {
-                $.ajax({url: "/rup/rup-block/delete-ajax",data:{'id':$(this).attr('modelid')}, success: function(result){
-                        location.reload();
-                    }});
+                if (confirm("Вы действительно хотите удалить блок?")) {
+                    $.ajax({url: "/rup/rup-block/delete-ajax",data:{'id':$(this).attr('modelid')}, success: function(result){
+                            location.reload();
+                        }});
+                } else {
+                }
+
+
             });
         </script>
 

@@ -15,7 +15,7 @@ use Yii;
 
     <?php $form = ActiveForm::begin(['options'=>['id'=>'addModuleFormAjaxSerialazi']]); ?>
 
-    <?= $form->field($model, 'code')->textInput() ?>
+    <?= $form->field($model, 'code')->textInput(['required'=>true]) ?>
 
     <?= $form->field($model, 'rup_id')->hiddenInput(['value'=>$_GET['id']])->label(false) ?>
 
@@ -36,14 +36,20 @@ use Yii;
     <script>
         $('#subModuleAdd').on('click',function (e) {
             e.preventDefault();
-            $.ajax({
-                type: 'POST',
-                url: '/rup/rup-module/create',
-                data: $('#addModuleFormAjaxSerialazi').serialize(),
-                success: function(data){
-                    // alert('Всё хорошо');
-                }
-            });
+            if($('#rupmodule-code').val()==''){
+                alert('Индекс не может быть пустым!')
+            }
+            else{
+                $.ajax({
+                    type: 'POST',
+                    url: '/rup/rup-module/create',
+                    data: $('#addModuleFormAjaxSerialazi').serialize(),
+                    success: function(data){
+                        location.reload();
+                    }
+                });
+            }
+
         })
     </script>
 </div>

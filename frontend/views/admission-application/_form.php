@@ -291,7 +291,45 @@ $js = <<<JS
         })
     });
 })();
+    $( document ).ready(function() {
+        $(".field-admissionapplicationform-iin").append("<button id='find_by_iin' class='btn btn-success'>Поиск</button>");
+            $("#find_by_iin").on("click",function() {
+        var iin=$("#admissionapplicationform-iin").val();
+        $.ajax({
+                type: "GET",
+                url: "/student/get-student-info",
+                data: {"iin":iin},
+                success: function(data){
+                    if(data!=null){
+                    $("#admissionapplicationform-lastname").val(data.lastname);
+                    $("#admissionapplicationform-firstname").val(data.firstname);
+                    $("#admissionapplicationform-middlename").val(data.middlename);
+                    $("#admissionapplicationform-citizenship_location").val(data.citizenship_location);
+                    $("#admissionapplicationform-citizenship_location").val(data.citizenship_location);
+                    $("#admissionapplicationform-birth_date").val(data.birth_date);
+                    $("#admissionapplicationform-nationality_id").val(data.nationality_id);
+                    $("#admissionapplicationform-sex").val(data.sex);
+                    $("#admissionapplicationform-is_repatriate").val(data.is_repatriate);
+                    }
+                    else{
+                        alert("Человек с данным ИИН отсутствует в базе");
+                    }
+
+                },
+            });
+    });
+    });
+    
+
+
 JS;
 
 $this->registerJs($js);
+
+
 ?>
+<script>
+
+
+</script>
+

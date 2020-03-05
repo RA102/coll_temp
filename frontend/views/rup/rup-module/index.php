@@ -101,7 +101,16 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
                         'idd'=>$model->id,
                         'data-target'=>'#addModalModule',
                         'data-toggle'=>'modal']);},
-            ]
+            ],
+                        [
+                'attribute' => 'Редактирование',
+                'format' => 'raw',
+                'contentOptions' => ['class' => 'abracadabra'],
+                'value' => function ($model) {
+                    return '<button title="Удалить" style="margin-left:3%;" 
+                            class="btn btn-danger deleteModuleButton" modelId="'.$model->id.'"><h7><i class="fas fa-trash"></i></h7></button>'.'</div>';
+                },
+            ],
 
 //            ['class' => 'yii\grid\ActionColumn'],
         ],
