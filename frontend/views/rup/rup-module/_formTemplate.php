@@ -41,6 +41,8 @@ use Yii;
             //console.log($('.addModuleAjaxForm2isTemplate').val());
             //console.log($('.addModuleAjaxForm2isTemplateCode').val());
             e.preventDefault();
+            $('#subMModuleAdd').addClass('hidden');
+            $('.rup-sub-block-form').append('<div class="loader"></div>');
             $.ajax({
                 type: 'POST',
                 url: '/rup/rup-module/createtemplate',

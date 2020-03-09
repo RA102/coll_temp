@@ -16,6 +16,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="rup-roots-form">
+
     <!-- <?= Html::a('Открыть', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
     <?= Html::a('Сохранить в файл', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
     <?= Html::a('Экспорт в Excel', ['create'], ['class' => 'btn btn-light nextVersion']) ?>
@@ -104,6 +105,23 @@ use yii\widgets\ActiveForm;
 <style>
     .btn-margin{
         margin:5px;
+    }
+    .loader {
+        position: fixed;
+        z-index: 99999;
+        top:37%;
+        left:43%;
+        border: 16px solid #464646; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 </style>
 <script>

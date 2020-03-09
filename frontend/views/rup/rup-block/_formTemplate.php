@@ -39,6 +39,8 @@ $listData=ArrayHelper::map($templates,'id','name');
             console.log($('.addBlockAjaxForm2isTemplate').val());
             console.log($('.addBlockAjaxForm2Code').val());
             e.preventDefault();
+            $('#addBlockAjaxSubmit2').addClass('hidden');
+            $('#addBlockAjaxForm2').append('<div class="loader"></div>');
             $.ajax({
                 type: 'POST',
                 url: '/rup/rup-block/createtemplate',
