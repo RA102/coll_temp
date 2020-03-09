@@ -301,13 +301,24 @@ $js = <<<JS
                 data: {"iin":iin},
                 success: function(data){
                     if(data!=null){
+                        var bdate = new Date(data.birth_date);
+                        var day = bdate.getDate(),
+                            month = bdate.getMonth() + 1,
+                            year = bdate.getFullYear(),
+                            month = (month < 10 ? "0" : "") + month;
+                            day = (day < 10 ? "0" : "") + day;
+                        var bdatestr = ''+day+'-'+month+'-'+year;
+
                     $("#admissionapplicationform-lastname").val(data.lastname);
                     $("#admissionapplicationform-firstname").val(data.firstname);
                     $("#admissionapplicationform-middlename").val(data.middlename);
-                    $("#admissionapplicationform-citizenship_location").val(data.citizenship_location);
-                    $("#admissionapplicationform-citizenship_location").val(data.citizenship_location);
-                    $("#admissionapplicationform-birth_date").val(data.birth_date);
-                    $("#admissionapplicationform-nationality_id").val(data.nationality_id);
+                    $("#admissionapplicationform-citizenship_location").data().select2.val('1');
+                    //$("#admissionapplicationform-citizenship_location").find("option")[1].selected = true;
+                    //$("#admissionapplicationform-citizenship_location").option[1].selected = true; // = 1; //val(1); //data.citizenship_location);
+                    //$("#admissionapplicationform-citizenship_location").val(data.citizenship_location);
+                    //$("#admissionapplicationform-birth_date").val(data.birth_date);
+                    $("#admissionapplicationform-birth_date").val(bdatestr);
+                    $("#admissionapplicationform-nationality_id").data().select2.val(''+data.nationality_id);
                     $("#admissionapplicationform-sex").val(data.sex);
                     $("#admissionapplicationform-is_repatriate").val(data.is_repatriate);
                     }

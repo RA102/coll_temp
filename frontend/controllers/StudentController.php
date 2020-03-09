@@ -499,8 +499,7 @@ class StudentController extends Controller
 
     public function actionGetStudentInfo($iin){
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $person = Person::find()->joinWith('getContacts')->where(['iin'=>$iin])->
-        joinWith()->one();
+        $person = Person::find()->where(['iin'=>$iin])->one();
 
         return $person;
     }
