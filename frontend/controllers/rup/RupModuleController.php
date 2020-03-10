@@ -237,6 +237,18 @@ class RupModuleController extends Controller
         }
     }
 
+    public function actionDeleteModule($id)
+    {
+        $module = $this->findModel($id);
+        $module->rup_id=0;
+        if($module->save(false)){
+            return "321";
+        }
+        else{
+            return $module->errors();
+        }
+    }
+
 
     /**
      * Finds the RupSubBlock model based on its primary key value.

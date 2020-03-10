@@ -45,6 +45,8 @@ class RupRoots extends \yii\db\ActiveRecord
             [['rup_year', 'status', 'create_userid', 'delete_userid', 'lastopen_userid', 'lastclose_userid', 'edu_form'], 'integer'],
             [['create_ts', 'delete_ts', 'lastopen_ts', 'lastclose_ts'], 'safe'],
             [['captionRu', 'captionKz', 'profile_code', 'spec_code'], 'string', 'max' => 255],
+            [['captionRu'],'required'],
+            [['captionRu'],'unique'],
             [['lang'], 'string', 'max' => 6],
         ];
     }

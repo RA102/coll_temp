@@ -26,8 +26,15 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([2018=>'2018',2019=>'2019',2020=>'2020',2021=>'2021']) ?>
     <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->dropDownList(ArrayHelper::map(Profile::find()->all(), 'code', 'codecaption'))->label('Профиль')  ?>
     <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная']) ?>
-    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList([ArrayHelper::map(InstitutionSpecialityInfo::find()->all(), 'speciality.code', 'speciality.caption.ru')])->label("Специальность") ?>
+    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList(ArrayHelper::map(InstitutionSpecialityInfo::find()->all(), 'speciality.code', 'fullcaption'))->label("Специальность") ?>
     <?=Html::submitButton('Добавить план', ['class' => 'btn btn-success btn-margin','id'=>'rup_save','style'=>[]]);?>
     <?php ActiveForm::end(); ?>
+    <script>
+        $('#w0').submit(function (e) {
+            e.preventDefault();
+            alert('alo!');
+            return false;
+        });
+    </script>
 
 </div>

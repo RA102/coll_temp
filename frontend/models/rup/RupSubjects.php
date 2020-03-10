@@ -12,9 +12,9 @@ use yii\widgets\Block;
  * @property int $id
  * @property int $id_sub_block
  * @property int $id_block
- * @property int $exam
- * @property int $control_work
- * @property int $offset
+ * @property string $exam
+ * @property string $control_work
+ * @property string $offset
  * @property int $time
  * @property int $teory_time
  * @property int $lab_time
@@ -53,10 +53,11 @@ class RupSubjects extends \yii\db\ActiveRecord
     {
         return [
             [['id_sub_block', 'id_block', 'exam', 'control_work', 'offset', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time', 'rup_id'], 'default', 'value' => null],
-            [['id_sub_block', 'id_block', 'exam', 'control_work', 'offset', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time', 'rup_id'], 'integer'],
+            [['id_sub_block', 'id_block', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time', 'rup_id'], 'integer'],
             [['name'], 'string', 'max' => 400],
-            [['notTime'],'safe'],
+            [['notTime','exam', 'control_work', 'offset'],'safe'],
             [['code'], 'string', 'max' => 20],
+//            [['exam', 'control_work', 'offset', ], 'string', 'max' => 6],
             [['id_sub_block'], 'exist', 'skipOnError' => true, 'targetClass' => RupModule::className(), 'targetAttribute' => ['id_sub_block' => 'id']],
         ];
     }

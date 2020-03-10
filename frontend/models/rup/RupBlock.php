@@ -33,6 +33,11 @@ class RupBlock extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            ['name', 'unique', 'when' => function($model) {
+                return $model->isTemplate == false;
+            }, 'whenClient' => "function (attribute, value) {
+        return $('#isTemplate').val() == false;
+    }"],
             [['code', 'name', 'time','rup_id','isTemplate'], 'required'],
             [['time'], 'default', 'value' => null],
             [['time','rup_id'], 'integer'],

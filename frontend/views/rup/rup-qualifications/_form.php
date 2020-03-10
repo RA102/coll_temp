@@ -1,5 +1,7 @@
 <?php
 
+use common\models\organization\InstitutionSpecialityInfo;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -12,11 +14,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'qualification_name')->textInput(['maxlength' => true])->label('Квалификация') ?>
+    <?= $form->field($model, 'qualification_name')->dropDownList(ArrayHelper::map(InstitutionSpecialityInfo::find()->all(), 'speciality.code', 'fullcaption'))->label("Квалификация") ?>
 
-    <?= $form->field($model, 'q_level')->textInput(['maxlength' => true])->label('Уровень') ?>
+    <?= $form->field($model, 'q_level')->dropDownList(['Специалист среднего звена'=>'Специалист среднего звена','Повышеннный уровень квалификации'=>'Повышеннный уровень квалификации'])->label('Уровень') ?>
 
-    <?= $form->field($model, 'qualification_code')->textInput()->label('Код специальности') ?>
+<!--    --><?//= $form->field($model, 'qualification_code')->textInput()->label('Код специальности') ?>
 
     <?= $form->field($model, 'time_years')->textInput()->label('Количество лет') ?>
 

@@ -137,9 +137,9 @@ else{
                         </div>
                         <div class="row">
                             <div class="col-3" style="font-weight:bold">Форма контроля:</div>
-                            <div class="col-3" >Экзамен: <input class="form-control" id="editModalModuleFormControl1" type="number"></div>
-                            <div class="col-3" >Зачет: <input class="form-control"  id="editModalModuleFormControl2" type="number"></div>
-                            <div class="col-3" >Контрольная: <input class="form-control" id="editModalModuleFormControl3" type="number"></div>
+                            <div class="col-3" >Экзамен: <input class="form-control" id="editModalModuleFormControl1" type="" maxlength="6"></div>
+                            <div class="col-3" >Зачет: <input class="form-control"  id="editModalModuleFormControl2" type="" maxlength="6"></div>
+                            <div class="col-3" >Контрольная: <input class="form-control" id="editModalModuleFormControl3" type="" maxlength="6"></div>
                         </div>
                         <br><br>
                         <div class="row">
@@ -237,9 +237,9 @@ else{
                         </div>
                         <div class="row">
                             <div class="col-3" style="font-weight:bold">Форма контроля:</div>
-                            <div class="col-3" >Экзамен: <input class="form-control" id="addQualModalModuleFormControl1" type="number"></div>
-                            <div class="col-3" >Зачет: <input class="form-control"  id="addQualModalModuleFormControl2" type="number"></div>
-                            <div class="col-3" >Контрольная: <input class="form-control" id="addQualModalModuleFormControl3" type="number"></div>
+                            <div class="col-3" >Экзамен: <input class="form-control" id="addQualModalModuleFormControl1" type="" maxlength="6"></div>
+                            <div class="col-3" >Зачет: <input class="form-control"  id="addQualModalModuleFormControl2" type="" maxlength="6"></div>
+                            <div class="col-3" >Контрольная: <input class="form-control" id="addQualModalModuleFormControl3" type="" maxlength="6"></div>
                         </div>
                         <br><br>
                         <div class="row">
@@ -738,9 +738,6 @@ else{
         function checkFormForAdd() {
             var checkInteger=0;
             var checkBool;
-          if($('#addQualModalModuleModuleIndex').val()!=''){
-              checkInteger++;
-          };
           if ($('#addQualModalModuleModule').val()!=''){
               checkInteger++;
           };
@@ -750,7 +747,7 @@ else{
           if($('#addQualModalModuleAllTimeNeraspred').val()==0){
               checkInteger++;
           };
-          if(checkInteger==4){
+          if(checkInteger==3){
                 checkBool=true;
           }else{checkBool=false};
           return checkBool;
@@ -759,9 +756,9 @@ else{
         function checkFormForEdit() {
             var checkInteger=0;
             var checkBool;
-          if($('#editModalModuleModuleIndex').val()!=''){
-              checkInteger++;
-          };
+          // if($('#editModalModuleModuleIndex').val()!=''){
+          //     checkInteger++;
+          // };
           if ($('#editModalModuleModule').val()!=''){
               checkInteger++;
           };
@@ -771,7 +768,7 @@ else{
           // if($('#editModalModuleAllTimeNeraspred').val()==0){
           //     checkInteger++;
           // };
-          if(checkInteger==3){
+          if(checkInteger==2){
                 checkBool=true;
           }else{checkBool=false};
           return checkBool;
@@ -817,15 +814,15 @@ else{
             $('#sendQual').removeClass('sendBlockButton');
         });
         //////////Theory zapret na string only integer
-        $('#editModalModuleFormControl1').keypress(function(e)
-        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
-            return false;});
-        $('#editModalModuleFormControl2').keypress(function(e)
-        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
-            return false;});
-        $('#editModalModuleFormControl3').keypress(function(e)
-        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
-            return false;});
+        // $('#editModalModuleFormControl1').keypress(function(e)
+        // {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+        //     return false;});
+        // $('#editModalModuleFormControl2').keypress(function(e)
+        // {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+        //     return false;});
+        // $('#editModalModuleFormControl3').keypress(function(e)
+        // {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+        //     return false;});
         $('.semEditEdit').keypress(function(e)
         {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
             return false;});
@@ -843,15 +840,15 @@ else{
             return false;});
         ////////////////////////////////////////////////////
         // ////////Theory zapret na string only integer
-        $('#addQualModalModuleFormControl1').keypress(function(e)
-        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
-            return false;});
-        $('#addQualModalModuleFormControl2').keypress(function(e)
-        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
-            return false;});
-        $('#addQualModalModuleFormControl3').keypress(function(e)
-        {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
-            return false;});
+        // $('#addQualModalModuleFormControl1').keypress(function(e)
+        // {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+        //     return false;});
+        // $('#addQualModalModuleFormControl2').keypress(function(e)
+        // {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+        //     return false;});
+        // $('#addQualModalModuleFormControl3').keypress(function(e)
+        // {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
+        //     return false;});
         $('.semEdit').keypress(function(e)
         {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
             return false;});

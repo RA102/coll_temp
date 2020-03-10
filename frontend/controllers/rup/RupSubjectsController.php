@@ -111,8 +111,11 @@ class RupSubjectsController extends Controller
         $model->exam=Yii::$app->request->post('exam');
         $model->id_block=Yii::$app->request->post('id_block');
         $model->id_sub_block=Yii::$app->request->post('id_sub_block');
-        if($model->save()){
+        if($model->save(false)){
             return "all good saved";
+        }
+        else{
+            die(\yii\helpers\VarDumper::dump(Yii::$app->request->post(), 15, true));
         }
 
     }
@@ -219,6 +222,8 @@ class RupSubjectsController extends Controller
 
         return $this->redirect(['index']);
     }
+
+
     public function actionGetInfo($id)
     {
         $info = RupSubjects::find()

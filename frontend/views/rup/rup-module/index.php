@@ -115,5 +115,23 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
 //            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    <script>
+        $('.deleteModuleButton').on('click',function (e) {
+            e.preventDefault();
+            let moduleDeleteId=$(this).attr('modelid');
+            if (confirm('Вы действительно хотите удалить?')) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/rup/rup-module/delete-module?id='+moduleDeleteId,
+                    success: function(data){
+                        location.reload();
+                    }
+                });
+            }
+            else{}
+
+
+        });
+    </script>
     <?php Pjax::end(); ?>
 </div>

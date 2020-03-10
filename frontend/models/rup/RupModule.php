@@ -32,7 +32,7 @@ class RupModule extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'name','block_id'], 'required'],
+            [['name','block_id'], 'required'],
             [['time','rup_id','block_id'], 'integer'],
             [['code', 'name'], 'string'],
             [['isTemplate'], 'boolean'],
