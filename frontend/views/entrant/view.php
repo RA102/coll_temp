@@ -29,8 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'id',
 //                    'status',
 //                    'nickname',
-                    'firstname',
+                    
                     'lastname',
+                    'firstname',
                     'middlename',
                     'birth_date',
                     [

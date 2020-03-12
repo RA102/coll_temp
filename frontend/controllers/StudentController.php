@@ -50,6 +50,7 @@ class StudentController extends Controller
                             'create',
                             'update', 'update-contacts', 'update-documents', 'update-relatives',
                             'delete', 'fire', 'revert', 'move', 'process',
+                            'get-student-info'
                         ],
                         'allow'   => true,
                         'roles'   => ['@'],
@@ -494,5 +495,12 @@ class StudentController extends Controller
             }
         }
         return $out;
+    }
+
+    public function actionGetStudentInfo($iin){
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $person = Person::find()->where(['iin'=>$iin])->one();
+
+        return $person;
     }
 }

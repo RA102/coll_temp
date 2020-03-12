@@ -1,0 +1,35 @@
+<?php
+
+use common\models\organization\InstitutionSpecialityInfo;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+/* @var $this yii\web\View */
+/* @var $model frontend\models\rup\RupQualifications */
+/* @var $form yii\widgets\ActiveForm */
+?>
+
+<div class="rup-qualifications-form">
+
+    <?php $form = ActiveForm::begin(); ?>
+
+    <?= $form->field($model, 'qualification_name')->dropDownList(ArrayHelper::map(InstitutionSpecialityInfo::find()->all(), 'speciality.code', 'fullcaption'))->label("Квалификация") ?>
+
+    <?= $form->field($model, 'q_level')->dropDownList(['Специалист среднего звена'=>'Специалист среднего звена','Повышеннный уровень квалификации'=>'Повышеннный уровень квалификации'])->label('Уровень') ?>
+
+<!--    --><?//= $form->field($model, 'qualification_code')->textInput()->label('Код специальности') ?>
+
+    <?= $form->field($model, 'time_years')->textInput()->label('Количество лет') ?>
+
+    <?= $form->field($model, 'time_months')->textInput()->label('Количество месяцев') ?>
+
+    <?= $form->field($model, 'rup_id')->hiddenInput()->label(false) ?>
+
+    <div class="form-group">
+        <?= Html::submitButton('Добавить', ['class' => 'btn btn-primary','id'=>'submitQualification']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
+</div>

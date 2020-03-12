@@ -44,7 +44,7 @@ class InstitutionSpecialityInfo extends \yii\db\ActiveRecord
             [['speciality_id', 'institution_id'], 'required'],
             [['speciality_id', 'institution_id', 'status', 'default_grade', 'parent_id', 'academic_year_id', 'oid', 'server_id'], 'default', 'value' => null],
             [['speciality_id', 'institution_id', 'status', 'default_grade', 'parent_id', 'academic_year_id', 'oid', 'server_id'], 'integer'],
-            [['caption', 'create_ts'], 'safe'],
+            [['caption', 'create_ts','fullcation'], 'safe'],
             [['is_deleted'], 'boolean'],
             [['speciality_id'], 'exist', 'skipOnError' => true, 'targetClass' => Speciality::className(), 'targetAttribute' => ['speciality_id' => 'id']],
             [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::className(), 'targetAttribute' => ['institution_id' => 'id']],
@@ -79,4 +79,10 @@ class InstitutionSpecialityInfo extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Speciality::class, ['id' => 'speciality_id']);
     }
+    public function getFullcaption()
+    {
+        return $this->speciality->code.'-'.$this->speciality->caption['ru'];
+    }
+
+
 }

@@ -156,7 +156,9 @@ class AdmissionApplicationService
         }
         $admissionApplication->status = ApplicationHelper::STATUS_ACCEPTED;
 
-        if (Entrant::find()->where(['id' => $admissionApplication->person_id])->one() == null) {
+        $entrant = Entrant::find()->Where(['id' => $admissionApplication->person_id])->orWhere(['iin' => $admissionApplication->properties['iin']])->one();
+
+        if ($entrant == null) {
             $entrant = Entrant::add(
                 null,
                 $admissionApplication->properties['firstname'],
@@ -165,8 +167,8 @@ class AdmissionApplicationService
                 $admissionApplication->properties['iin']
             );
             $entrant->setAttributes($admissionApplication->properties);
-        } else {
-            $entrant = Entrant::find()->where(['id' => $admissionApplication->person_id])->one();
+        // } else {
+        //     $entrant = Entrant::find()->where(['id' => $admissionApplication->person_id])->one();
         }
 
         $this->transactionManager->execute(function () use (
@@ -175,7 +177,8 @@ class AdmissionApplicationService
             &$admissionApplication,
             $reception_group_id
         ) {
-            if (Entrant::find()->where(['id' => $admissionApplication->person_id])->one() == null) {
+            //if (Entrant::find()->where(['id' => $admissionApplication->person_id])->one() == null) {
+            if ($entrant == null) {
                 $person = $this->personService->create(
                     $entrant,
                     $admissionApplication->institution_id,
@@ -185,7 +188,8 @@ class AdmissionApplicationService
                     $user->person_type
                 );
             } else {
-                $person = Entrant::find()->where(['id' => $admissionApplication->person_id])->one();
+                //$person = Entrant::find()->where(['id' => $admissionApplication->person_id])->one();
+                $person = Entrant::find()->where(['id' => $entrant->id])->one();
             }
 
             $admissionApplication->person_id = $person->id;

@@ -31,10 +31,19 @@ use yii\widgets\ActiveForm;
     ]);
     ?>
 
+
+    <?= $form->field($model, "max_class")->dropDownList([1,2,3,4]);?>
+    <?= $form->field($model, "class")->dropDownList([1,2,3,4]
+        //              $years //, [
+                        //'class' => 'form-control active-form-refresh-control',
+                       // 'prompt' => ''
+                        //'id' => 'class'
+                //]
+                );?>
+<!--
     <?= $form->field($model, 'max_class')->textInput() ?>
-
     <?= $form->field($model, 'class')->textInput() ?>
-
+-->
     <?= $form->field($model, 'education_form')->dropDownList(\common\helpers\GroupHelper::getEducationFormList()) ?>
 
     <?= $form->field($model, 'education_pay_form')->dropDownList(\common\helpers\GroupHelper::getEducationPayFormList()) ?>

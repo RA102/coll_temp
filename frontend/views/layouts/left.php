@@ -113,6 +113,10 @@
                                 'visible' => !$person->isSocialTeacher() && !$person->isPsychologist() && $person->institutionAdvanced(),
                                 'items' => [
                                     [
+                                        'label' => 'Рабочие учебные планы',
+                                        'url'   => ['/rup/rup'],
+                                    ],
+                                    [
                                         'label' => 'Обязательные дисциплины',
                                         'url'   => ['/plan/required'],
                                     ],
