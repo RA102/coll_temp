@@ -62,65 +62,75 @@ class PersonService
         }
 
         // TODO: Remove. Probably deprecated, pass to transaction manager $model variable instead of $person
-        $person = Person::find()->andWhere(['iin' => $model->iin, 'type' => $model->type])->one();
+        $person = Person::find()->andWhere(['iin' => $model->iin, 'delete_ts' => null])->one(); //'type' => $model->type,
         if ($person) {
-            if ($person->institution) {
-                throw new \Exception(\Yii::t('app', 'Person exists'));
-            }
+            $inst = $person->institution;
 
-            $person->setAttributes(array_filter($model->getAttributes(), function ($value) {
-                return !is_null($value);
-            }));
+            // if ($inst) {
+            //     throw new \Exception(\Yii::t('app', 'Person exists'));
+            // }
+
+            // $person->setAttributes(array_filter($model->getAttributes(), function ($value) {
+            //     return !is_null($value);
+            // }));
         } else {
             $person = $model;
+
+            $this->transactionManager->execute(function () use (
+                $person,
+                $institution_id,
+                $identity,
+                $credential_type,
+                $accessToken,
+                $role
+            ) {
+                $pdsPerson = $this->pdsService->create(
+                    $person,
+                    $identity,
+                    $credential_type
+                );
+                $person->portal_uid = $pdsPerson->id;
+    
+                if (!$person->save()) {
+                    if (YII_DEBUG) {
+                        $errors = $person->errors;
+                        throw new \RuntimeException(reset($errors)[0]);
+                    }
+                    throw new \RuntimeException('Saving error.');
+                }
+    
+                // TODO: add email to contacts
+                if (!empty($identity)) {
+                    $this->personCredentialService->create(
+                        $person->id,
+                        $identity,
+                        $accessToken,
+                        $role
+                    );
+    
+                    $personCredential = PersonCredential::add($person, $identity);
+                    $personCredential->save();
+    
+                    // TODO: send notifications via queue
+                    $this->notificationService->sendPersonCreatedNotification(
+                        $identity,
+                        $pdsPerson->validation
+                    );
+                }
+
+            });
+        
         }
 
-        $this->transactionManager->execute(function () use (
-            $person,
-            $institution_id,
-            $identity,
-            $credential_type,
-            $accessToken,
-            $role
-        ) {
-            $pdsPerson = $this->pdsService->create(
-                $person,
-                $identity,
-                $credential_type
-            );
-            $person->portal_uid = $pdsPerson->id;
+        //если уже есть в данном УЗ
+        $link = PersonInstitutionLink::find()->andWhere(['person_id' => $person->id, 'institution_id' => $institution_id, 'is_deleted' => false])->one();
 
-            if (!$person->save()) {
-                if (YII_DEBUG) {
-                    $errors = $person->errors;
-                    throw new \RuntimeException(reset($errors)[0]);
-                }
-                throw new \RuntimeException('Saving error.');
-            }
-
-            // TODO: add email to contacts
-            if (!empty($identity)) {
-                $this->personCredentialService->create(
-                    $person->id,
-                    $identity,
-                    $accessToken,
-                    $role
-                );
-
-                $personCredential = PersonCredential::add($person, $identity);
-                $personCredential->save();
-
-                // TODO: send notifications via queue
-                $this->notificationService->sendPersonCreatedNotification(
-                    $identity,
-                    $pdsPerson->validation
-                );
-            }
-
+        //привязка к другому УЗ
+        if (!$link){
             $link = PersonInstitutionLink::add($person->id, $institution_id, $person->is_pluralist);
-            $link->save();
-        });
-
+            $link->save();  
+        }
+       
         return $person;
     }
 
