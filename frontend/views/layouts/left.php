@@ -110,7 +110,7 @@
                                 'label' => Yii::t('app', 'Планирование учебного процесса'),
                                 'icon'  => 'dashboard',
                                 'url'   => ['/plan/index'],
-                                'visible' => !$person->isSocialTeacher() && !$person->isPsychologist() && $person->institutionAdvanced(),
+                                'visible' =>  $person->isAdmin() || $person->isTeacher() || $person->isDirector() || $person->institutionAdvanced(), //!$person->isSocialTeacher() && !$person->isPsychologist() && $person->institutionAdvanced(),
                                 'items' => [
                                     [
                                         'label' => 'Рабочие учебные планы',
