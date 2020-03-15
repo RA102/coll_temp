@@ -28,9 +28,9 @@ class Student extends Person
      */
     public static function find()
     {
-        return parent::find()->andWhere([
-            static::tableName() . '.type' => Person::TYPE_STUDENT,
-        ]);
+        return parent::find(); //->andWhere([
+            //static::tableName() //. '.type' => Person::TYPE_STUDENT,
+        //]);
     }
 
     /**
