@@ -4,6 +4,7 @@ namespace frontend\models;
 use common\models\person\Person;
 use yii\base\InvalidArgumentException;
 use yii\base\Model;
+use Yii;
 
 /**
  * Password reset form
@@ -41,6 +42,17 @@ class ResetPasswordForm extends Model
                 'compare',
                 'compareAttribute' => 'password',
             ],
+        ];
+    }
+
+       /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'password' => Yii::t('app', 'Пароль'),
+            'repassword' => Yii::t('app', 'Повтор пароля'),
         ];
     }
 }
