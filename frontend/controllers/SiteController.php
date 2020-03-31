@@ -154,14 +154,14 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             try {
                 $this->pdsPersonService->resetPassword($model->email);
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                Yii::$app->session->setFlash('success', 'Проверьте свою email-почту для дальнейших инструкций');
                 return $this->goHome();
             } catch (\Exception $e) {
                 if (Yii::$app->request->get('debug')) {
                     Yii::$app->session->setFlash('error', $e->getMessage());
                 } else {
                     Yii::$app->session->setFlash('error',
-                        'Sorry, we are unable to reset password for the provided email address.');
+                        'Извините, для указанного email-адреса процедура невозможна');
                 }
             }
         }
@@ -190,7 +190,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             try {
                 $this->pdsPersonService->changePassword($token, $model->password, $model->repassword);
-                Yii::$app->session->setFlash('success', 'New password saved.');
+                Yii::$app->session->setFlash('success', 'Новый пароль сохранен');
                 return $this->goHome();
             } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error', $e->getMessage() . " : " . $e->getTraceAsString());

@@ -8,6 +8,8 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\organization\Group */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $specialities \common\models\handbook\Speciality[] */
+    $courcesarr = ['1' => '1', '2' => '2', '3' => '3', '4' => '4'];
+
 ?>
 
 <div class="group-form">
@@ -32,8 +34,8 @@ use yii\widgets\ActiveForm;
     ?>
 
 
-    <?= $form->field($model, "max_class")->dropDownList([1,2,3,4]);?>
-    <?= $form->field($model, "class")->dropDownList([1,2,3,4]
+    <?= $form->field($model, "max_class")->dropDownList($courcesarr);?>
+    <?= $form->field($model, "class")->dropDownList($courcesarr //[1,2,3,4]
         //              $years //, [
                         //'class' => 'form-control active-form-refresh-control',
                        // 'prompt' => ''
