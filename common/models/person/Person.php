@@ -231,7 +231,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id]);
+        return static::find()->with('personType')->where(['id' => $id])->one();
     }
 
     /**

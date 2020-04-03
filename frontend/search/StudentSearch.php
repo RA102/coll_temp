@@ -3,6 +3,7 @@
 namespace frontend\search;
 
 use common\models\link\PersonInstitutionLink;
+use common\models\organization\Group;
 use common\models\organization\Institution;
 use common\models\person\Person;
 use yii\base\Model;
@@ -82,19 +83,33 @@ class StudentSearch extends Student
         }
 
         if (!empty($this->institution_id)) {
-            $query->joinWith('institutions');
+            $query->innerjoinWith('institutions');
             $query->andWhere([Institution::tableName().'.id' => $this->institution_id]);
         }
 
         if (!empty($this->group_id)) {
-            $query->joinWith('groups');
+            $query->innerJoinWith('groups');
             $query->andFilterWhere(['link.student_group_link.group_id' => $this->group_id]);
             $query->andWhere(['IS', 'link.student_group_link.delete_ts', new \yii\db\Expression('NULL')]);
+            $query->andWhere([Group::tableName().'.institution_id' => $this->institution_id]);
         }
 
         if ($this->withoutGroup) {
-            $query->joinWith('studentGroupLinks', false, 'LEFT OUTER JOIN');
-            $query->andWhere(['IS', 'link.student_group_link.group_id', new \yii\db\Expression('NULL')]);
+
+            if (empty($this->group_id)) {
+                $query->joinWith(['groups' => function ($q) {
+                    $q->andOnCondition(Group::tableName().'.institution_id =' . $this->institution_id);
+                }]
+            
+                );
+                //$query->Where([Group::tableName().'.institution_id' => $this->institution_id]);
+            }
+            $query->joinWith(['studentGroupLinks as sgl' => function ($q) {
+                $q->andOnCondition('sgl.group_id = ' . Group::tableName().'.id');
+            }], false, 'LEFT OUTER JOIN');
+            //$query->andFilterWhere(['link.student_group_link.institution_id' => $this->institution_id]);
+            
+            $query->andWhere(['IS', 'sgl.id', new \yii\db\Expression('NULL')]);
         }
 
         // grid filtering conditions

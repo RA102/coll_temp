@@ -240,7 +240,8 @@ class PdsGateway implements \yii\base\Configurable
         if ($response->getStatusCode() === 201 || $response->getStatusCode() === 200) {
             return $response;
         }
-
-        throw new \Exception($response->getReasonPhrase());
+        $exmsg = 'Извините. Произошла ошибка отправки данных';
+        //throw new \Exception($response->getReasonPhrase());
+        throw new \Exception($exmsg);
     }
 }
