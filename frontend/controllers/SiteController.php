@@ -193,7 +193,7 @@ class SiteController extends Controller
                 Yii::$app->session->setFlash('success', 'Новый пароль сохранен');
                 return $this->goHome();
             } catch (\Exception $e) {
-                Yii::$app->session->setFlash('error', $e->getMessage() ); //. " : " . $e->getTraceAsString());
+                Yii::$app->session->setFlash('error', $e->getMessage() . " Запросите ссылку обновления снова."); //. " : " . $e->getTraceAsString());
             }
         }
 
