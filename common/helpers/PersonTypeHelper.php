@@ -75,6 +75,23 @@ class PersonTypeHelper
         /* @var $models PersonType[] */
         $models = PersonType::find()
             ->where(['is_deleted' => false])
+            ->andWhere(['not in','name', ['college_superadmin']]) //,'college_admin'
+            ->all();
+        $result = [];
+        foreach ($models as $model) {
+            $caption = json_decode($model->caption, true);
+            $result[$model->name] = $caption['ru'];
+        }
+        asort($result);
+
+        return $result;
+    }
+
+    public static function getListForAdmin()
+    {
+        /* @var $models PersonType[] */
+        $models = PersonType::find()
+            ->where(['is_deleted' => false])
             ->all();
         $result = [];
         foreach ($models as $model) {
