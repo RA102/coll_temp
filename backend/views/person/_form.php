@@ -97,7 +97,7 @@ use yii\widgets\DetailView;
                 ]) ?>
 
                 <?= $activeForm->field($form, 'person_type')->widget(Select2::class, [
-                    'data' => PersonTypeHelper::getList(),
+                    'data' => PersonTypeHelper::getListForAdmin(),
                     'options' => ['placeholder' => ''],
                     'theme' => 'default',
                 ]) ?>

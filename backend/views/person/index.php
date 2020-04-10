@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'attribute' => 'person_type',
-                    'filter' => PersonTypeHelper::getList()
+                    'filter' => PersonTypeHelper::getListForAdmin()
                 ],
                 //'nickname',
                 //'birth_date',
