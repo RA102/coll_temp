@@ -48,7 +48,7 @@ class PersonHelper
     {
         $secret = static::getSecretKey();
         $errorText = "Incorrect token";
-        JWT::$leeway = 60; //сек, исправляет использование раньше времени начала токена
+        JWT::$leeway = 600; //сек, исправляет использование раньше времени начала токена
 
         try {
             $decoded = JWT::decode($token, $secret, [static::getAlgo()]);

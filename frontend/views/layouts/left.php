@@ -5,6 +5,7 @@
         $commissionService = new \common\services\reception\CommissionService;
         $person = \Yii::$app->user->identity;
         $activeCommission = $commissionService->getActiveInstitutionCommission($person->institution);
+        $isInstitutionAdvanced = $person->institutionAdvanced();
         ?>
 
         <?= dmstr\widgets\Menu::widget(
@@ -15,7 +16,7 @@
                         'label' => Yii::t('app', 'Все колледжи'),
                         'icon'  => 'far fa-archway',
                         'url'   => '/institution/all',
-                        'visible' => $person->isSuperadmin() && $person->institutionAdvanced(),
+                        'visible' => $person->isSuperadmin() && $isInstitutionAdvanced,
                     ],
                     [
                         'label' => Yii::t('app', 'Selection committee'),
@@ -90,13 +91,13 @@
                                 'label' => Yii::t('app','Приказы'),
                                 'icon' => 'far fa-building',
                                 'url' => '/order/index',
-                                'visible' => !$person->isDirectorDeputyEconomic() && $person->institutionAdvanced(),
+                                'visible' => !$person->isDirectorDeputyEconomic() && $isInstitutionAdvanced,
                             ],
                             [
                                 'label' => Yii::t('app','Отчеты'),
                                 'icon' => 'far fa-building',
                                 'url' => '/stats/01',
-                                'visible' => !$person->isDirectorDeputyEconomic() && $person->institutionAdvanced(),
+                                'visible' => !$person->isDirectorDeputyEconomic() && $isInstitutionAdvanced,
                             ],
                         ],
                     ],
@@ -110,7 +111,7 @@
                                 'label' => Yii::t('app', 'Планирование учебного процесса'),
                                 'icon'  => 'dashboard',
                                 'url'   => ['/plan/index'],
-                                'visible' =>  $person->isAdmin() || $person->isTeacher() || $person->isDirector() || $person->institutionAdvanced(), //!$person->isSocialTeacher() && !$person->isPsychologist() && $person->institutionAdvanced(),
+                                'visible' =>  $person->isAdmin() || $person->isTeacher() || $person->isDirector() || $isInstitutionAdvanced, //!$person->isSocialTeacher() && !$person->isPsychologist() && $isInstitutionAdvanced,
                                 'items' => [
                                     [
                                         'label' => 'Рабочие учебные планы',
@@ -145,7 +146,7 @@
                             [
                                 'label' => Yii::t('app', 'Работа с инженерно-педагогическими кадрами'),
                                 'icon'  => 'dashboard',
-                                'visible' => !$person->isSocialTeacher() && !$person->isPsychologist() && $person->institutionAdvanced(),
+                                'visible' => !$person->isSocialTeacher() && !$person->isPsychologist() && $isInstitutionAdvanced,
                                 'url'   => ['/personnel/index'],
                             ],
                             [
@@ -202,13 +203,13 @@
                                 'label' => Yii::t('app', 'Учебная практика'), 
                                 'icon' => 'file-code-o', 
                                 'url' => ['/practice/index'],
-                                'visible' => $person->institutionAdvanced(),
+                                'visible' => $isInstitutionAdvanced,
                             ],
                             [
                                 'label' => Yii::t('app', 'Профессиональная практика'), 
                                 'icon' => 'file-code-o', 
                                 'url' => ['/professional-practice/index'],
-                                'visible' => $person->institutionAdvanced(),
+                                'visible' => $isInstitutionAdvanced,
                             ],
 //                            ['label' => Yii::t('app','Учебный процесс'), 'icon' => 'file-code-o', 'url' => ['/']],
                             [
