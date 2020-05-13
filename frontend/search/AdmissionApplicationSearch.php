@@ -4,12 +4,17 @@ namespace frontend\search;
 
 use common\models\reception\AdmissionApplication;
 use common\models\reception\Commission;
+use DateTime;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\Expression;
 
 class AdmissionApplicationSearch extends AdmissionApplication
 {
     public $status;
+    public $iin;
+    public $application_date;
+    public $fio;
 
     protected $commission_id;
 
@@ -49,6 +54,7 @@ class AdmissionApplicationSearch extends AdmissionApplication
     {
         return [
             ['status', 'integer'],
+            [['iin', 'fio', 'application_date'], 'string']
         ];
     }
 
@@ -76,8 +82,22 @@ class AdmissionApplicationSearch extends AdmissionApplication
         }
 
         $query->andFilterWhere([
-            'status' => $this->status
+            'status' => $this->status,
+
         ]);
+
+        if ($this->application_date != null) {
+            $query->andWhere("properties ->> 'application_date' = :DATE", [':DATE' => (new DateTime($this->application_date))->format('d-m-Y')] );            
+        }
+
+        if ($this->iin != null) {
+            $query->andWhere("properties ->> 'iin' = '" . $this->iin . "'");
+        }
+
+        if ($this->fio != null) {
+            $query->andWhere("properties ->> 'lastname' ilike '" . $this->fio . "%'");            
+        }
+
 
         return $dataProvider;
     }
