@@ -255,9 +255,38 @@ use yii\bootstrap\ActiveForm;
                                 </div>
 
                             </div>
-                        </div>                          
+                        </div>
+                        <div class="row" v-show="active_step == 3">
+                            <div class="col-md-12">
+                                <div class="row" >
+                                    <div class="col-md-2" >        
+                                    </div>
+                                    <div class="col-md-2" >Удостоверение личности
+                                    </div>    
+                                    <div class="col-md-4" >
+                                        <label for="file"> {{fdoc_label}}</label>
+                                    </div> 
+                                    <div class="col-md-4" >
+                                        
+                                        <input  type="file" id="file" ref="fdoc" @change="load_doc" accept="image/jpeg, image/png" style="display: none"> </el-input>
+                                    </div>                                     
+                                </div> 
+                                <div class="row" style="margin-top: 6px;">
+                                    <div class="col-md-2" >        
+                                    </div>
+                                    <div class="col-md-2" >Фамилия
+                                    </div>    
+                                    <div class="col-md-4" >
+                                        <el-input  placeholder="Фамилия" v-model="abi_input_phone" clearable> </el-input>
+                                    </div> 
+                                    <div class="col-md-4" >
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>                                                                                  
                     </div>
                 </div> 
+                <!-- кнопки -->
                 <div class="row" style="margin-top: 12px;" >
                         <div class="col-md-4" >        
                         </div>
@@ -271,7 +300,7 @@ use yii\bootstrap\ActiveForm;
                 
                 <div class="row" style="background-color: #79d279; height: 4px; margin-top: 12px;">
                 </div>                
-
+                <!-- Проверка заявки -->
                 <div class="row" style="margin-top: 12px;" >
                         <div class="col-md-1" >        
                         </div>
@@ -341,6 +370,8 @@ use yii\bootstrap\ActiveForm;
                     search_result_status_show: false,
                     search_result_status: 'info', //'warning', 'success',
                     search_result_text: '',
+                    fdoc: '',
+                    fdoc_label:'Загрузить ..',
                 },
 
                 methods: {
@@ -352,6 +383,7 @@ use yii\bootstrap\ActiveForm;
                         if (this.active_step-- < 1) this.active_step = 0;
                     },
 
+                    //проверка заявки
                     search_request_status() {
                         var d = new Date();
                         var n = d.getSeconds();
@@ -366,6 +398,13 @@ use yii\bootstrap\ActiveForm;
                         }
                         this.search_result_status_show = true;
                         
+                    },
+
+                    load_doc(event) {
+                        this.fdoc = this.$refs.fdoc.files[0];
+                        this.fdoc_label = this.fdoc.name;
+                        //console.log(event.target.files);
+                        console.log(this.fdoc);
                     }
                 }
 
