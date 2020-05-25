@@ -14,9 +14,9 @@ use yii\helpers\Json;
  *
  
  */
-class InputMessage extends \yii\db\ActiveRecord
+class MessageStatuses extends \yii\db\ActiveRecord
 {
-
+    const STATE_RECEIVED = 1; //заявка получена
 
    // add the function below:
     public static function getDb() {
@@ -28,7 +28,7 @@ class InputMessage extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'inputmessages';
+        return 'messagestatuses';
     }
 
     /**
@@ -38,10 +38,10 @@ class InputMessage extends \yii\db\ActiveRecord
     {
         return [
             //[['oid', 'status', 'sort'], 'default', 'value' => null],
-            [['id', 'messagestatus', 'recstatus'], 'integer'],
+            [['id', 'messagestatus'], 'integer'],
             
-            [['ts'], 'safe'],
-            [['parsedmessage'], 'string'], //, 'max' => 255],
+            [['statusts'], 'safe'],
+            [['messageid', 'systemid'], 'string'], //, 'max' => 255],
         ];
     }
 
@@ -53,9 +53,9 @@ class InputMessage extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'messagestatus' => Yii::t('app', 'Статус сообщения'),
-            'recstatus' => Yii::t('app', 'Статус записи'),
-            'ts' => Yii::t('app', 'Создано'),
-            'parsedmessage' => Yii::t('app', 'Сообщение'),
+            'messageid' => Yii::t('app', 'ИН сообщения'),
+            'statusts' => Yii::t('app', 'Создано'),
+            'systemid' => Yii::t('app', 'Система-обработчик'),
         ];
     }
 
