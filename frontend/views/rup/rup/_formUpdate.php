@@ -40,9 +40,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'status',['options' => ['class' => 'sem']])->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'captionRu',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([2018=>'2018',2019=>'2019',2020=>'2020',2021=>'2021']) ?>
-    <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->dropDownList(ArrayHelper::map(Profile::find()->all(), 'code', 'codecaption'))->label('Профиль')  ?>
+    <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->dropDownList(ArrayHelper::map(Speciality::find()->where(['type' => '1'])->all(), 'code', 'CaptionWithCode'))->label('Профиль')  ?>
     <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная']) ?>
-    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList(ArrayHelper::map(InstitutionSpecialityInfo::find()->all(), 'speciality.code', 'fullcaption'))->label('Специальность') ?>
+    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList(ArrayHelper::map(null, 'code', 'caption'))->label("Специальность") ?>
+
 
     <?php ActiveForm::end(); ?>
 
@@ -125,6 +126,27 @@ use yii\widgets\ActiveForm;
     }
 </style>
 <script>
+    function get_specialities(){
+        $.ajax({
+            type: 'GET',
+            url: '/rup/rup/get-specialities',
+            data: {'parent_code': $('select[name="RupRoots[profile_code]"]').val()}, 
+            success: function(data){
+                $("#ruproots-spec_code").html( data );
+            }
+        });        
+    };
+
+    $(document).ready(function() {
+        get_specialities(); 
+    });
+
+
+    $('#ruproots-profile_code').on('change',function (e) {
+        e.preventDefault();
+        get_specialities(); 
+    });
+
     $('.delete_qual').on('click',function () {
         if (confirm('Вы действительно хотите удалить?')) {
             $.ajax({
@@ -184,7 +206,10 @@ use yii\widgets\ActiveForm;
             $('#rup_save').hide();
             $('#rup_save').click();
             var url= "/rup/rup/view?id="+$('#ruproots-rup_id').val()+"&active=1";
-            window.location = url;
+            if (url != null){
+                window.location = url;
+            }
+            
         } else {
         }
     })

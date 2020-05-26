@@ -17,6 +17,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use common\models\handbook\Speciality;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+
 /**
  * RupController implements the CRUD actions for RupRoots model.
  */
@@ -32,7 +36,9 @@ class RupController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
-                    'returnjson'=>['POST']
+                    'returnjson'=>['POST'],
+                    'get-specialities'=>['GET'],
+                     
                 ],
             ],
         ];
@@ -172,5 +178,27 @@ class RupController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionGetSpecialities($parent_code){
+        $code = substr($parent_code,0,2) . '%';
+        $sp = Speciality::find()->select(["code", "caption"])->where(['type' => '2'])->andWhere(['like', 'code', $code, false])->all();
+        $data = ArrayHelper::toArray($sp, [
+            'common\models\handbook\Speciality' => [
+                'code',
+                
+                'caption' => function ($Speciality) {
+                    return $Speciality->getCaptionWithCode();
+                },
+            ],
+        ]);
+
+        $result="";
+        //return Json::encode($data);
+        foreach($data as $value=>$spec){
+            $result = $result . '<option value="'. $spec['code'] . '"> ' . $spec['caption'] .'</option>';
+
+        }
+        return $result;
     }
 }
