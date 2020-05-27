@@ -66,7 +66,7 @@ class PersonRelative extends \yii\db\ActiveRecord
             [['residence_address'], 'string', 'max' => 511],
             [['iin'], 'string', 'max' => 12],
             [['email'], 'email'],
-            [['home_phone', 'mobile_phone'], 'string', 'max' => 20],
+            [['home_phone', 'mobile_phone'], 'match', 'pattern' => '/^\+7\s\([0-9]{3}\)\s[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/'],
             [['person_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::class, 'targetAttribute' => ['person_id' => 'id']],
             [['residence_city_id'], 'exist', 'skipOnError' => true, 'targetClass' => CountryUnit::class, 'targetAttribute' => ['residence_city_id' => 'id']],
         ];

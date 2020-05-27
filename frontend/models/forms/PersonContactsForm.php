@@ -72,8 +72,8 @@ class PersonContactsForm extends Model
     public function rules()
     {
         return [
-            [['contact_phone_home'], 'string'],
-            [['contact_phone_mobile'], 'string'],
+            ['contact_phone_home', 'match', 'pattern' => '/^\+7\s\([0-9]{3}\)\s[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/'],
+            ['contact_phone_mobile', 'match', 'pattern' => '/^\+7\s\([0-9]{3}\)\s[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/'],
             [['registration_country_id'], 'required'],
             [['registration_country_id', 'registration_city_ids', 'registration_street_id'], 'safe'],
             [['residence_country_id'], 'required'],
