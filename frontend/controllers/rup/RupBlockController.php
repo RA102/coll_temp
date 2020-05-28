@@ -58,7 +58,7 @@ class RupBlockController extends Controller
     public function actionIndex()
     {
         $searchModel = new RupBlockSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, null);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -119,7 +119,7 @@ class RupBlockController extends Controller
         $codeSpecFind=Speciality::find()->where(['code'=>$mainInfo[0]['spec_code']])->one();
         $codeSpec=$codeSpecFind['caption']['ru'];
 
-        $edu_form;
+        //$edu_form;
 
         $quals=RupQualifications::find()->where(['rup_id'=>$rup_id])->asArray()->all();
 

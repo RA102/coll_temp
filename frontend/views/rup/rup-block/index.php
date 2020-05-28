@@ -20,7 +20,7 @@ $this->title = 'Блоки РУПа';
 <!--    <p>-->
 <?php         Modal::begin([
     'header' => '<h2>Добавить блок</h2>',
-    'size'=>'modal-sm',
+    'size'=>'modal-lg',
     'toggleButton' => ['label' => 'Добавить блок','class'=>'btn btn-success','style'=>['margin-top'=>'5px;']],
 
 ]);

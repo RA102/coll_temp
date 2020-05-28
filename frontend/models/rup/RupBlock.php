@@ -42,7 +42,7 @@ class RupBlock extends \yii\db\ActiveRecord
             [['time'], 'default', 'value' => null],
             [['time','rup_id'], 'integer'],
             [['isTemplate'], 'boolean'],
-            [['code'], 'string', 'max' => 20],
+            [['code', 'qual_code'], 'string', 'max' => 20],
             [['name'], 'string', 'max' => 300],
         ];
     }
@@ -59,6 +59,7 @@ class RupBlock extends \yii\db\ActiveRecord
             'time' => 'Часов всего',
             'rup_id' => 'Айди рупа',
             'isTemplate' => 'Добавить в шаблоны',
+            'qual_code' => 'Квалификация'
         ];
     }
 
