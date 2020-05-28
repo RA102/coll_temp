@@ -38,6 +38,8 @@ class RupController extends Controller
                     'delete' => ['POST'],
                     'returnjson'=>['POST'],
                     'get-specialities'=>['GET'],
+                    'get-qualifications'=>['GET'],
+                    
                      
                 ],
             ],
@@ -125,7 +127,11 @@ class RupController extends Controller
         $searchModelBlock = new RupBlockSearch();
         $dataProviderBlock = $searchModelBlock->search(Yii::$app->request->queryParams,$id);
 
-        $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])->asArray()->all();
+        $specialities = $this->actionGetSpecialities($model->profile_code);
+        $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])
+        //->innerJoin(Speciality::tableName(), Speciality::tableName() . ".code=" . RupQualifications::tableName() . ".qualification_code")
+        //->select([RupQualifications::tableName() . ".qualification_code", RupQualifications::tableName() . ".time_years", RupQualifications::tableName() . ".time_months", Speciality::tableName() . ""])
+        ->asArray()->all();
 
         return $this->render('update', [
             'active'=>$active,
@@ -135,6 +141,7 @@ class RupController extends Controller
             'dataProvider'=>$dataProvider,
             'searchModelBlock'=>$searchModelBlock,
             'dataProviderBlock'=>$dataProviderBlock,
+            'specialities'=>$specialities,
         ]);
     }
 
@@ -201,4 +208,26 @@ class RupController extends Controller
         }
         return $result;
     }
+
+    public function actionGetQualifications($parent_code){
+        $code = substr($parent_code,0,4) . '%';
+        $sp = Speciality::find()->select(["code", "caption"])->where(['type' => '3'])->andWhere(['like', 'code', $code, false])->all();
+        $data = ArrayHelper::toArray($sp, [
+            'common\models\handbook\Speciality' => [
+                'code',
+                
+                'caption' => function ($Speciality) {
+                    return $Speciality->getCaptionWithCode();
+                },
+            ],
+        ]);
+
+        $result="";
+        //return Json::encode($data);
+        foreach($data as $value=>$spec){
+            $result = $result . '<option value="'. $spec['code'] . '"> ' . $spec['caption'] .'</option>';
+
+        }
+        return $result;
+    }    
 }

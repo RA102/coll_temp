@@ -4,25 +4,24 @@ use common\models\organization\InstitutionSpecialityInfo;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use common\models\handbook\Speciality;
 
-/* @var $this yii\web\View */
-/* @var $model frontend\models\rup\RupQualifications */
-/* @var $form yii\widgets\ActiveForm */
+use yii\bootstrap\Modal;
+
 ?>
 
 <div class="rup-qualifications-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(); 
+            $code = substr($parent_code,0,4) . '%';
+            $sp = Speciality::find()->select(["code", "caption"])->where(['type' => '3'])->andWhere(['like', 'code', $code, false])->all();
+    ?>
 
-    <?= $form->field($model, 'qualification_name')->dropDownList(ArrayHelper::map(InstitutionSpecialityInfo::find()->all(), 'speciality.code', 'fullcaption'))->label("Квалификация") ?>
+    <?= $form->field($model, 'qualification_code')->dropDownList(ArrayHelper::map($sp, 'code', 'CaptionWithCode'))->label('Квалификация')  ?>
 
-    <?= $form->field($model, 'q_level')->dropDownList(['Специалист среднего звена'=>'Специалист среднего звена','Повышеннный уровень квалификации'=>'Повышеннный уровень квалификации'])->label('Уровень') ?>
+    <?= $form->field($model, 'time_years')->textInput(['type'=>'number', 'min'=>'0', 'max'=>'5'])->label('Количество лет') ?>
 
-<!--    --><?//= $form->field($model, 'qualification_code')->textInput()->label('Код специальности') ?>
-
-    <?= $form->field($model, 'time_years')->textInput()->label('Количество лет') ?>
-
-    <?= $form->field($model, 'time_months')->textInput()->label('Количество месяцев') ?>
+    <?= $form->field($model, 'time_months')->textInput(['type'=>'number', 'min'=>'0', 'max'=>'11'])->label('Количество месяцев') ?>
 
     <?= $form->field($model, 'rup_id')->hiddenInput()->label(false) ?>
 
@@ -33,3 +32,4 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+

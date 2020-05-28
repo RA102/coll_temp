@@ -30,19 +30,24 @@ use yii\widgets\ActiveForm;
         echo  Html::button('Удалить', ['id'=>'rupEditClose','class' => 'btn btn-danger btn-margin','style'=>[]]);
     ?>
     <?php $form = ActiveForm::begin(['action' => ['/rup/rup/update'],
-    'options' => [
-        'class' => 'comment-form',
-        'style'=>[
-                'width'=>'70%'
-        ]
-    ]]); ?>
+        'options' => [
+            'class' => 'comment-form',
+            'style'=>[
+                    'width'=>'70%'
+            ]
+        ]]); 
+        $code = substr($model->profile_code,0,2) . '%';
+        $sp = Speciality::find()->select(["code", "caption"])->where(['type' => '2'])->andWhere(['like', 'code', $code, false])->all();
+
+    
+    ?>
     <?= $form->field($model, 'rup_id',['options' => ['class' => 'sem']])->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'status',['options' => ['class' => 'sem']])->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'captionRu',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([2018=>'2018',2019=>'2019',2020=>'2020',2021=>'2021']) ?>
+    <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([2020=>'2020',2021=>'2021']) ?>
     <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->dropDownList(ArrayHelper::map(Speciality::find()->where(['type' => '1'])->all(), 'code', 'CaptionWithCode'))->label('Профиль')  ?>
     <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная']) ?>
-    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList(ArrayHelper::map(null, 'code', 'caption'))->label("Специальность") ?>
+    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList(ArrayHelper::map($sp, 'code', 'CaptionWithCode'))->label("Специальность") ?>
 
 
     <?php ActiveForm::end(); ?>
@@ -70,9 +75,9 @@ use yii\widgets\ActiveForm;
 
         'header' => '<h2>Добавить квалификации</h2>',
         'toggleButton' => ['label' => 'Добавить квалификации','class'=>'btn btn-success','style'=>['margin'=>'5px;']],
-        'size'=>'modal-sm',
+        'size'=>'modal-lg',
     ]);
-    echo $this->renderAjax('/rup/rup-qualifications/_form',['model'=> $Model=new RupQualifications()]);
+    echo $this->renderAjax('/rup/rup-qualifications/_form',['model'=> $Model=new RupQualifications(), 'parent_code' => $model->spec_code]);
     Modal::end();
     
     echo "<br><table style='background-color: white; width: 80%; ' class='table table-striped  table-bordered '>
@@ -86,11 +91,12 @@ use yii\widgets\ActiveForm;
 
     foreach ($qualifications as $q){
         $id = $q['id'];
-        $name = $q['qualification_name'];
-        $time = $q['time_years']." года ".$q['time_months']." Месяцев";
-        $level = $q['q_level'];
         $code = $q['qualification_code'];
-        echo " <tr qualId='{$id}'><td>{$code}-{$name}</td><td>{$time}</td><td>{$level}</td><td>
+        $name = $q['qualification_name'];
+        $time = $q['time_years']." год(а) ".$q['time_months']." месяц(ев)";
+        $level = $q['q_level'];
+
+        echo " <tr qualId='{$id}'><td>{$name}</td><td>{$time}</td><td>{$level}</td><td>
                 <button title='Удалить' style='margin-left:5%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_qual' id='{$id}'><span class='glyphicon glyphicon-trash'></button><button title='Изменить' data-target='#editModal' data-toggle='modal' style='margin-left:3%;' class='btn btn-success edit_qual' qualEditButtonId='{$id}'><h7><i class=\"fas fa-edit\"></i></h7></button></td></tr>
         ";
     }
@@ -126,6 +132,19 @@ use yii\widgets\ActiveForm;
     }
 </style>
 <script>
+
+
+    function get_qualifications(){
+        $.ajax({
+            type: 'GET',
+            url: '/rup/rup/get-qualifications',
+            data: {'parent_code': $('select[name="RupRoots[spec_code]"]').val()}, 
+            success: function(data){
+                $("#rupqualifications-qualification_code").html( data );
+            }
+        });        
+    };
+
     function get_specialities(){
         $.ajax({
             type: 'GET',
@@ -137,14 +156,26 @@ use yii\widgets\ActiveForm;
         });        
     };
 
-    $(document).ready(function() {
-        get_specialities(); 
-    });
+    // $(document).ready(function() {
+    //     get_specialities(); 
+    //     get_qualifications()
+    // });
 
+    // $(window).on('load', function() {
+    //     //$('#ruproots-profile_code').onchange();
+    //     get_specialities(); 
+    //          //get_qualifications()
+    // });
 
     $('#ruproots-profile_code').on('change',function (e) {
         e.preventDefault();
         get_specialities(); 
+    });
+
+    $('#ruproots-spec_code').on('change',function (e) {
+        e.preventDefault();
+        get_qualifications(); 
+        
     });
 
     $('.delete_qual').on('click',function () {
@@ -167,10 +198,13 @@ use yii\widgets\ActiveForm;
         var rup_id=$('#ruproots-rup_id').val()
         e.preventDefault();
         $('#rupqualifications-rup_id').val(rup_id);
+        var param = $('#w2').serialize();
+        //console.log(param);
         $.ajax({
             type: 'POST',
             url: '/rup/rup-qualifications/create',
-            data: $('#w2').serialize(),
+            data: param,
+
             success: function(data){
                 location.reload();
             }

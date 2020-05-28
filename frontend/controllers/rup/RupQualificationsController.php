@@ -2,6 +2,7 @@
 
 namespace frontend\controllers\rup;
 
+use common\models\handbook\Speciality;
 use Yii;
 use frontend\models\rup\RupQualifications;
 use frontend\models\rup\RupQualificationsSearch;
@@ -66,12 +67,35 @@ class RupQualificationsController extends Controller
     {
         $model = new RupQualifications();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $loaded = $model->load(Yii::$app->request->post());
+
+        $model->qualification_name = Speciality::find()->where(['code' => $model->qualification_code])->one()->getCaptionWithCode();
+        $strlevel = substr($model->qualification_code, -1, 1);
+        $model->q_level = "Установленный уровень";
+        if ($model->qualification_code != null && $strlevel != null){
+            switch ($strlevel) {
+                case "2":
+                    $model->q_level = "Повышенный уровень квалификации";
+                    break;
+                case "3":
+                    $model->q_level = "Специалист среднего звена";
+                    break;
+                case "4":
+                    $model->q_level = "Прикладной бакалавр";
+                    break;
+                default:
+                    $model->q_level = "Установленный уровень";                
+            }
+        }
+        $saved = $model->save();
+
+        if ($loaded && $saved) {
             return 'CREATED';
         }
 
         return $this->render('create', [
             'model' => $model,
+            //'parent_code' => $parent_code,
         ]);
     }
 
@@ -103,7 +127,7 @@ class RupQualificationsController extends Controller
         $model->qualification_code=Yii::$app->request->post('code');
         $model->q_level=Yii::$app->request->post('level');
         if(Yii::$app->user->id==null){
-            throwException('Not user');
+            //throwException('Not user');
         }
         else{
             $model->save();

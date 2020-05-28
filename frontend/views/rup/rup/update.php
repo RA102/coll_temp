@@ -324,13 +324,15 @@ else{
             $('.rup-sub-block-index').show();
         }
         $( document ).ready(function() {
-            $.ajax({
-                url: '/rup/rup-subjects/get-info',
-                data:{'id':this.id},
-                success: function() {
-                    // alert(data);
-                }
-            });
+            if (this.id != null){
+                $.ajax({
+                    url: '/rup/rup-subjects/get-info',
+                    data:{'id':this.id},
+                    success: function() {
+                        // alert(data);
+                    }
+                });
+            }
         });
 
         $('#sendQual').on('click',function () {

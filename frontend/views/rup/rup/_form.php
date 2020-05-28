@@ -34,8 +34,8 @@ use yii\web\JsExpression;
 
     <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->dropDownList(ArrayHelper::map(Speciality::find()->where(['type' => '1'])->all(), 'code', 'CaptionWithCode'))->label('Профиль')  ?>
     <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная']) ?>
-    
-    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList(ArrayHelper::map(null, 'code', 'caption'))->label("Специальность") ?>
+
+    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList(null)->label("Специальность") ?>
             
             <!--
     
@@ -82,9 +82,9 @@ $js = <<<JS
         });        
     };
 
-    $(document).ready(function() {
-        get_specialities(); 
-    });
+    // $(document).ready(function() {
+    //     get_specialities(); 
+    // });
 
 
     $('#ruproots-profile_code').on('change',function (e) {
