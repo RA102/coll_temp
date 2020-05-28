@@ -97,7 +97,8 @@ use yii\widgets\ActiveForm;
         $level = $q['q_level'];
 
         echo " <tr qualId='{$id}'><td>{$name}</td><td>{$time}</td><td>{$level}</td><td>
-                <button title='Удалить' style='margin-left:5%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_qual' id='{$id}'><span class='glyphicon glyphicon-trash'></button><button title='Изменить' data-target='#editModal' data-toggle='modal' style='margin-left:3%;' class='btn btn-success edit_qual' qualEditButtonId='{$id}'><h7><i class=\"fas fa-edit\"></i></h7></button></td></tr>
+                <button title='Удалить' style='margin-left:5%; margin-top: 1%;margin-bottom: 1%;' class='btn btn-danger delete_qual' id='{$id}'><span class='glyphicon glyphicon-trash'></button>
+                </td></tr>
         ";
     }
 
@@ -262,38 +263,6 @@ use yii\widgets\ActiveForm;
 
 
 
-    $('.edit_qual').on('click',function () {
-        $('#editModalBody').html("<form id='editedFormQual'>");
-        var id = $(this).attr('qualeditbuttonid');
-        $('tr[qualid='+id+']').find('td').each (function( column, td) {
-        if (column==0){
-            var qual = td.innerHTML.split('-');
-            $('#editModalBody').append("<div class='hidden'><input id='editQualID' class='form-control' type='text' value='"+id+"'></input></div>");
-            $('#editModalBody').append("<div><b>Код</b><input id='editQualQualCode' class='form-control' type='text' value='"+qual[0]+"'></input></div>");
-            $('#editModalBody').append("<div><b>Квалификация</b><input id='editQualQual' class='form-control' type='text' value='"+qual[1]+"'></input></div>");
-        }
-        else if(column==1){
-            var nums = td.innerHTML.match(/\d+/g);
-            var years = nums[0];
-            var month=nums[1];
-
-            // var thenum2=td.innerHTML.match(/\d+/)[0];
-            // var thenum3=td.innerHTML.match(/\d\d+/)[0];
-            //
-            // (thenum2!=null) ? month=thenum2 : month=thenum3;
-            // console.log(month);
-            $('#editModalBody').append("<div><b>Срок обучения лет:</b><input id='editQualYear' class='form-control' type='text' value='"+years+"'></input><b>Срок обучения месяцев:</b><input id='editQualMonth' class='form-control' type='text' value='"+month+"'></input></div>");
-
-        }
-        else if(column==2){
-            $('#editModalBody').append("<div><b>Уровень</b><input id='editQualLevel' class='form-control' type='text' value='"+td.innerHTML+"'></input></div>");
-
-            }
-
-        });
-
-        $('#editModalBody').append("</form>");
-    });
 
     $('.nextVersion').on('click',function (e) {
         e.preventDefault();
