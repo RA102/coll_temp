@@ -14,7 +14,7 @@ use common\models\reception\AdmissionApplication;
 
 use frontend\models\forms\AdmissionApplicationForm;
 use common\models\person\Person;
-
+use common\models\reception\AdmissionFiles;
 use common\services\reception\AdmissionApplicationService;
 use common\services\reception\CommissionService;
 
@@ -60,6 +60,29 @@ class GospService
         
         return $msgs;
     }
+
+
+    private function uploadFile($file, $fileName)
+    {
+        $post = [
+            'Upload[file]'=> new \CURLFile(
+                $file,
+                mime_content_type($file),
+                $fileName
+            ),
+            'Upload[name]' => $fileName
+        ];
+        $ch = curl_init('https://ff.bilimal.kz/upload');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($ch);    
+        $response = json_decode($result, true);
+        if ($response !== null && isset($response['host']) && isset($response['url'])) {
+            return $response;
+        }    return false;
+    }
+
 
     private function mapMessageToAdmApp(String $msg){
         $person_iin="";
@@ -132,10 +155,12 @@ class GospService
         
 
         $aapp->status =0;
-        $aapp->institution_id = $institution_id; 
+        $aapp->institution_id = $institution_id;
+        //$person_id = $person->id; 
 
         if ($person != null && $person->id>0 ) {
             $aapp->person_id = $person->id;
+            //$person_id = $person->id; 
 
             $aaForm->iin = $person_iin;
             
@@ -178,12 +203,71 @@ class GospService
                     //update message status
                     $aapp = $admissionApplication;
                 }
-                
 
             }
     
         }
 
+        //обработка файлов
+        foreach($jsarr as $js){
+            $dbfilename = null;
+            $filebody = null;
+            $doc_type = "unknown";
+            $file_meta = "";
+            $url = "";
+
+            //вид документа
+            if ($js['name'] == "Foto" && $js['datatype'] == "fileData"){
+                $doc_type = AdmissionFiles::DOC_TYPE_PHOTO;
+
+                $farr = explode(';', $js['value']);
+                if ($farr[0] != null){
+                    $dbfilename = $farr[0];
+
+                }
+                if ($farr[1] != null){
+                    $filebody = base64_decode($farr[1]);
+                }
+            }
+
+            if ($dbfilename != null && $filebody != null){
+                $file = \Yii::getAlias('@runtime') . '/' . time();
+                file_put_contents($file, $filebody);
+                $extension = pathinfo($dbfilename, PATHINFO_EXTENSION);
+                $fileName = $dbfilename . ($extension ? '' : '.jpg');
+
+                ///upload file
+                $responce = $this->uploadFile($file, $fileName);
+                // if (!$result) {
+                //     throw new \ErrorException('Can\'t upload file');
+                // }
+                //$responce = true;
+
+                if ($responce){
+                    //succedd upload,  save record
+                    $aa_id = null;
+                    $person_id = null;
+
+                    if ($aapp != null){
+                        $aa_id = $aapp->id;
+                        $person_id = $aapp->person_id;
+                    }
+
+                    $file_meta = json_encode($responce);
+                    if ($responce['url'] != null){
+                        $url = $responce['url'];
+                    }
+
+                    $dbf = AdmissionFiles::add($doc_type, $file_meta, $url, $aa_id, $person_id);
+                    if ($dbf->getIsNew()){
+                        $sv = $dbf->save();
+                    }
+                    
+                }
+            }
+
+
+        }
 
         return $aapp->id;
 
