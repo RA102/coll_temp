@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <div class="card-body">
-        <?= GridView::widget([
+        <?=GridView::widget([
             'layout'       => "{items}\n{pager}",
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
@@ -130,8 +130,41 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
                 [
+                    'attribute' => 'online',
+                    'filter' => false,
+                    'format'    => 'html',
+                    'value'     => function (AdmissionApplication $admissionApplication) {
+                        $labelText = ApplicationHelper::getAdmissionApplicationOnlineLabels()[$admissionApplication->online];
+                        $onlineClass = (function () use ($admissionApplication) {
+                            if ($admissionApplication->online === ApplicationHelper::ONLINE_NO) {
+                                return 'label label-info';
+                            }
+                            if ($admissionApplication->online === ApplicationHelper::ONLINE_EGOV) {
+                                return 'label label-success';
+                            }
+                            if ($admissionApplication->online === ApplicationHelper::ONLINE_BILIMAL) {
+                                return 'label label-primary';
+                            }
+                            return 'label label-info';
+                        })();
+
+                        return "<span class='{$onlineClass}'>{$labelText}</span>";
+                    }
+                ],                
+                [
                     'class'    => 'yii\grid\ActionColumn',
-                    'template' => '{view} {update}',
+                    'template' => '{view}  {update}',
+                    'visibleButtons' => [
+                        'view' => true,
+                        'update' => function (AdmissionApplication $admissionApplication) {
+                            $res = true;
+                            if ($admissionApplication->online != null && $admissionApplication->online > 0){
+                                $res = false;
+                            }
+                            return $res;
+                        },
+                    ],                    
+
                 ]
             ],
         ]); ?>

@@ -255,9 +255,15 @@ class AdmissionApplicationForm extends Model
         }
 
         foreach ($value as $i => $social_status) {
-            if (empty($social_status['name'])) {
-                $this->addError("{$attribute}[{$i}][name]", 'Некоректное наименование для льгот');
+            if (empty($social_status['name']) && empty($social_status['document_number'])) {
+                $this->addError("{$attribute}[{$i}][name]", 'Удалите строки с незаполненными льготами');
             }
+            else {
+                if (empty($social_status['name'])) {
+                    $this->addError("{$attribute}[{$i}][name]", 'Некоректное наименование для льгот');
+                }
+            }
+
         }
     }
 }

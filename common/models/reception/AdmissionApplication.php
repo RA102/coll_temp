@@ -46,11 +46,13 @@ class AdmissionApplication extends \yii\db\ActiveRecord
      * @param array $properties
      * @return AdmissionApplication
      */
-    public static function add(int $commission_id, int $institution_id, array $properties)
+    public static function add(int $commission_id, int $institution_id, int $person_id, array $properties)
     {
         $model = new self();
         $model->commission_id = $commission_id;
         $model->institution_id = $institution_id;
+        
+        $model->person_id = $person_id;
         $model->properties = $properties;
         $model->status = ApplicationHelper::STATUS_CREATED;
         return $model;
@@ -63,7 +65,7 @@ class AdmissionApplication extends \yii\db\ActiveRecord
     {
         return [
             [['status', 'commission_id', 'institution_id', 'person_id'], 'default', 'value' => null],
-            [['status', 'commission_id', 'institution_id', 'person_id'], 'integer'],
+            [['status', 'commission_id', 'institution_id', 'person_id', 'online'], 'integer'],
             [['commission_id', 'institution_id', 'status'], 'required'],
             [['is_deleted'], 'default', 'value' => false],
             [['is_deleted'], 'boolean'],
@@ -135,7 +137,8 @@ class AdmissionApplication extends \yii\db\ActiveRecord
             'create_ts'      => Yii::t('app', 'Create Ts'),
             'update_ts'      => Yii::t('app', 'Update Ts'),
             'reason'         => Yii::t('app', 'Reason'),
-            'history'        => Yii::t('app', 'History')
+            'history'        => Yii::t('app', 'History'),
+            'online'        => Yii::t('app', 'Онлайн'),
         ];
     }
 

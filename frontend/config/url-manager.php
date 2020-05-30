@@ -6,6 +6,7 @@ return [
     'enablePrettyUrl' => true,
     'showScriptName'  => false,
     'rules'           => [
+        //'gos/invite'                                        =>'/gos/invite',
         'student'                                           => '/student/index',
         'employee'                                          => '/employee/index',
         'speciality'                                        => '/speciality/index',

@@ -10,6 +10,7 @@ use common\services\PdfService;
 use common\services\reception\AdmissionApplicationService;
 use common\services\reception\CommissionService;
 use app\models\link\EntrantReceptionGroupLink;
+use common\models\reception\AdmissionFiles;
 use frontend\models\forms\AdmissionApplicationForm;
 use frontend\models\forms\EnlistEntrantForm;
 use frontend\models\reception\admission_application\ChangeStatusForm;
@@ -127,9 +128,12 @@ class AdmissionApplicationController extends Controller
             $receiptForm->setAttributes($model->receipt);
         }
 
+        //$aa_files = AdmissionFiles::find()->where(['aa_id' => $id])->all(); //->limit(20)->all();
+
         return $this->render('view/view', [
             'model'       => $model,
-            'receiptForm' => $receiptForm
+            'receiptForm' => $receiptForm,
+            //'aa_files' => $aa_files
         ]);
     }
 
@@ -170,6 +174,7 @@ class AdmissionApplicationController extends Controller
             $admissionApplication = $this->admissionApplicationService->create(
                 $admissionApplicationForm,
                 $commission->id,
+                0,
                 Yii::$app->user->identity->institution->id
             );
 
@@ -204,6 +209,8 @@ class AdmissionApplicationController extends Controller
             );
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
         }
+
+
 
         return $this->render('update', [
             'admissionApplication'     => $admissionApplication,
