@@ -88,11 +88,13 @@ use yii\widgets\ActiveForm;
                         <div class="row">
                             <div class="col-sm-4">
                                 <?= $activeForm->field($relative, "[{$i}]home_phone")
-                                    ->textInput(['maxlength' => true]) ?>
+                                    ->textInput(['maxlength' => true])
+                                    ->widget(\yii\widgets\MaskedInput::class, ['mask' => '+7 (999) 999-99-99',])?>
                             </div>
                             <div class="col-sm-4">
                                 <?= $activeForm->field($relative, "[{$i}]mobile_phone")
-                                    ->textInput(['maxlength' => true]) ?>
+                                    ->textInput(['maxlength' => true])
+                                    ->widget(\yii\widgets\MaskedInput::class, ['mask' => '+7 (999) 999-99-99',])?>
                             </div>
                             <div class="col-sm-4">
                                 <?= $activeForm->field($relative, "[{$i}]email")
