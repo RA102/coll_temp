@@ -83,6 +83,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'label'   => 'Льготы',
                     'content' => $this->render('_social_statuses', compact('model')),
                 ],
+                [
+                    'label'   => 'Прикрепленные документы',
+                    'content' => $this->render('_docsfiles', compact('model')),
+                ],
             ]
         ])
         ?>

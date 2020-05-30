@@ -110,6 +110,19 @@ class AdmissionFiles extends \yii\db\ActiveRecord
         return $this->is_new;
     }
 
+    public function getDocTypeLabel(){
+        $label = "Не определен";
+        switch ($this->doc_type) {
+            case $this::DOC_TYPE_PHOTO:
+                $label = "Личное фото";
+                break;
+
+            default:
+            $label = "Не определен";
+        };
+        return $label;
+    }
+
     /**
      *
      */

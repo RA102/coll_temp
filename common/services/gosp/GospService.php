@@ -44,7 +44,7 @@ class GospService
     public function getInputMessages()
     {
         // TODO teacherCourse is eager loaded, should it be a separate method?
-        $msgs = InputMessage::find()->limit(1)->orderBy('id DESC')->all();
+        $msgs = InputMessage::find()->limit(1)->orderBy('id ASC')->all();
         foreach($msgs as $msg){
             $ap = $this->mapMessageToAdmApp($msg->parsedmessage);
             
@@ -64,6 +64,7 @@ class GospService
 
     private function uploadFile($file, $fileName)
     {
+        //загрузка  на файл-сервер
         $post = [
             'Upload[file]'=> new \CURLFile(
                 $file,
@@ -156,11 +157,11 @@ class GospService
 
         $aapp->status =0;
         $aapp->institution_id = $institution_id;
-        //$person_id = $person->id; 
+        $person_id = null; 
 
         if ($person != null && $person->id>0 ) {
             $aapp->person_id = $person->id;
-            //$person_id = $person->id; 
+            $person_id = $person->id; 
 
             $aaForm->iin = $person_iin;
             
@@ -196,7 +197,8 @@ class GospService
                 $admissionApplication = $this->admissionApplicationService->create(
                     $aaForm,
                     $commission->id,
-                    $institution->id
+                    $institution->id,
+                    $person_id
                 );
                 
                 if ($admissionApplication != null){
@@ -237,11 +239,8 @@ class GospService
                 $fileName = $dbfilename . ($extension ? '' : '.jpg');
 
                 ///upload file
+                $responce = true; //
                 $responce = $this->uploadFile($file, $fileName);
-                // if (!$result) {
-                //     throw new \ErrorException('Can\'t upload file');
-                // }
-                //$responce = true;
 
                 if ($responce){
                     //succedd upload,  save record

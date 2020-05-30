@@ -27,6 +27,10 @@ class ApplicationHelper
     const BASED_CLASSES_TIPO_CORRESPONDS_TO_PROFILE = 3; // ТиПО соотв. профилю
     const BASED_CLASSES_TIPO_DOES_NOT_MATCH_PROFILE = 4; // ТиПО не соотв. профилю
 
+    const ONLINE_NO = 0;
+    const ONLINE_EGOV = 1;
+    const ONLINE_BILIMAL = 2;
+
     public static $list = [
         self::STATUS_CREATED      => 'Создано',
         self::STATUS_CONFIRMATION => 'Подтверждено',
@@ -82,6 +86,16 @@ class ApplicationHelper
             self::STATUS_DECLINED  => Yii::t('app', 'Отказано (указывается причина)'),
             self::STATUS_WITHDRAWN => Yii::t('app', 'Отозвано (указывается основание)'),
             self::STATUS_DELETED   => Yii::t('app', 'Удалено')
+        ];
+    }
+
+
+    public static function getAdmissionApplicationOnlineLabels()
+    {
+        return [
+            self::ONLINE_NO => Yii::t('app', 'Нет'),
+            self::ONLINE_EGOV => Yii::t('app', 'Гос.портал'),
+            self::ONLINE_BILIMAL => Yii::t('app', 'Bilimal')
         ];
     }
 }
