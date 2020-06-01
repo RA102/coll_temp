@@ -47,6 +47,19 @@ class RupModuleController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    public function actionUpdateInfo($id)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = $this->findModel($id);
+        $model->code = Yii::$app->request->post('code');
+        $model->name = Yii::$app->request->post('name');
+        $model->time = Yii::$app->request->post('time');
+        if ($model->save()) {
+            return "all good saved";
+        } elseif (!$model->save) {
+            return var_dump($model->errors);
+        }
+    }
     public function actionIndexView($rup_id)
     {
         $searchModel = new RupModuleSearch();

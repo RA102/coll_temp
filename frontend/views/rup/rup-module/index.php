@@ -58,6 +58,10 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
         'tableOptions' => [
             'class' => 'table table-bordered table-striped table-hover',
         ],
+        'rowOptions'   => function ($model, $key, $index, $grid) {
+            return ['data-id' => $model->id,'data-rup_id' => $model->rup_id,'data-timemodulededucted'=>$model->timemodulededucted,
+                'data-code'=>$model->code,'data-name'=>$model->name,'data-time'=>$model->time,];
+        },
         'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ''],
 //        'filterModel' => $searchModel,
         'columns' => [
@@ -65,7 +69,7 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
 
 //            'id',
             'code',
-            ['attribute'=>'name'],
+            'name',
             'time',
             //['attribute'=>'block.name','header' => 'Профиль'],
             ['attribute'=>'timemodulededucted','header' => 'Не распределено'],
@@ -107,7 +111,9 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
                 'format' => 'raw',
                 'contentOptions' => ['class' => 'abracadabra'],
                 'value' => function ($model) {
-                    return '<button title="Удалить" style="margin-left:3%;" 
+                    return '<button title="Изменить" data-target="#editModalBlock" data-toggle="modal" style="margin-left:3%;" 
+                            class="btn btn-success edit_qualBlock" qualeditbuttonid="'.$model->id.'"><h7><i class="fas fa-edit"></i></h7></button>'
+                        .'<button title="Удалить" style="margin-left:3%;" 
                             class="btn btn-danger deleteModuleButton" modelId="'.$model->id.'"><h7><i class="fas fa-trash"></i></h7></button>'.'</div>';
                 },
             ],

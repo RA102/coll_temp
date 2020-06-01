@@ -130,7 +130,7 @@ else{
                             <div class="col-2"><input class="form-control" id="editModalModuleModuleIndex" type="text" placeholder="индекс"></div>
                             <div class="col-7"><input class="form-control" id="editModalModuleModule" type="text"></div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-3">Входит в модуль:</div>
                             <div class="col-9"><input class="form-control" id="editModalModuleInModule" type="text" disabled></div>
@@ -148,7 +148,7 @@ else{
                             <div class="col-3"> </div>
                             <div class="col-3" style="font-weight:bold">Не распределено: <input class="form-control" id="editModalModuleAllTimeNeraspred" type="text" disabled="true"></div>
                         </div>
-                        
+
                         <br>
                         <div class="row">
                             <div class="col-3" style="font-weight:bold">Объем учебного времени:</div>
@@ -160,40 +160,40 @@ else{
                         <div class="row">
                             <div class="col-12" style="font-weight:bold">Время по семестрам:</div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">1 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime1" type="number"></div>
-                            
+
                             <div class="col-1">2 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime2" type="number"></div>
-                        </div>               
+                        </div>
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">3 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime3" type="number"></div>
-                            
+
                             <div class="col-1">4 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime4" type="number"></div>
-                        </div>               
+                        </div>
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">5 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime5" type="number"></div>
-                            
+
                             <div class="col-1">6 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime6" type="number"></div>
-                        </div>               
+                        </div>
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">7 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime7" type="number"></div>
-                            
+
                             <div class="col-1">8 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime8" type="number"></div>
-                        </div>               
-                        
+                        </div>
+
                         <br>
 
 
@@ -734,7 +734,7 @@ else{
         $('#addQualModalModuleAllTime').on('keyup',function () {
             $( ".allTimePart" ).prop( "disabled", false );
         });
-        
+
         function checkFormForAdd() {
             var checkInteger=0;
             var checkBool;
@@ -778,7 +778,7 @@ else{
             e.preventDefault();
             var blockIdEdit=$(this).attr('qualeditbuttonid');
             console.log(blockIdEdit);
-            $('#sendQual').addClass('sendBlockButton');
+            $('#sendQualBlock').addClass('sendBlockButton');
            $('#editModalBodyBlock').html('<div class="form-group field-rupblock-code required"><label class="control-label">Индекс блока:</label>');
            $('#editModalBodyBlock').append('<input type="text" class="form-control" id="editQualCodeModalWindow"></div>');
            $('#editModalBodyBlock').append('<div class="form-group field-rupblock-code required"><label class="control-label">Наименование блока:</label></div>');
@@ -794,25 +794,35 @@ else{
             $('#editModalBodyBlock').append('<input type="text" class="hidden" id="editQualTimemoduledeductedModalWindowID" value="'+blockIdEdit+'">');
         });
 
-
         $('#sendQualBlock').on('click',function (e) {
             e.preventDefault();
             var blockButtonId=$('#editQualTimemoduledeductedModalWindowID').val();
             var code = $('#editQualCodeModalWindow').val();
-            var namePlan = $('#editQualNameModalWindow').val();
+            var name = $('#editQualNameModalWindow').val();
             var time = $('#editQualTimeModalWindow').val();
             $.ajax({
                 type: 'POST',
                 url: "/rup/rup-block/update-info?id="+blockButtonId,
                 context: document.body,
-                data:{'code':code,'name':namePlan,'time':time},
+                data:{'code':code,'name':name,'time':time},
                 success: function(data){
                     // console.log(ModalModuleId);
-                location.reload();
+                    location.reload();
                 }
             });
-            $('#sendQual').removeClass('sendBlockButton');
+            $.ajax({
+                type: 'POST',
+                url: "/rup/rup-module/update-info?id="+blockButtonId,
+                context: document.body,
+                data:{'code':code,'name':name,'time':time},
+                success: function(data){
+                    // console.log(ModalModuleId);
+                    location.reload();
+                }
+            });
+            $('#sendQualBlock').removeClass('sendBlockButton');
         });
+
         //////////Theory zapret na string only integer
         // $('#editModalModuleFormControl1').keypress(function(e)
         // {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))

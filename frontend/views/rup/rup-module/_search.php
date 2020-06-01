@@ -24,6 +24,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
+    <?= $form->field($model, 'time') ?>
+
     <?= $form->field($model, 'block_id') ?>
 
     <div class="form-group">
