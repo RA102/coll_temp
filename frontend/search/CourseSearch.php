@@ -62,6 +62,10 @@ class CourseSearch extends Course
             'query' => $query,
         ]);
 
+        /*$dataProvider->setSort(
+
+        );*/
+
         $this->load($params);
 
         if (!$this->validate()) {

@@ -1,11 +1,13 @@
 <?php
 
 use common\models\Course;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $searchModel \frontend\search\CourseSearch */
 
 $this->title = Yii::t('app', 'Courses');
 $this->params['breadcrumbs'][] = $this->title;
@@ -39,6 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'attribute' => 'classes',
+                    'filter' =>  null, //Html::activeDropDownList($searchModel, 'classes', ArrayHelper::map(Course::find()->all(), 'classes', 'classes'), ['prompt' => '', 'class' => 'form-control form-control-sm']),
                     'value' => function (Course $model) {
                         return implode(', ', $model->classes);
                     }
