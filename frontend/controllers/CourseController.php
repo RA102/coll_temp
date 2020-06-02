@@ -85,6 +85,7 @@ class CourseController extends Controller
         $searchModel = new CourseSearch();
         $searchModel->institution_id = $this->institution->id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination = ['pageSize' => 10];
 
         /*$dataProvider = new ActiveDataProvider([
             'query' => Course::find()->joinWith([
