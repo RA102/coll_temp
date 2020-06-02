@@ -18,9 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
 <!--
-<?php /*echo "<pre>";
-var_dump(ArrayHelper::getColumn(Course::find()->all(), 'classes'));
-echo "</pre>"; */?>
+<?php
+//var_dump($searchModel->classes);
+?>
 
 -->
 
@@ -49,7 +49,7 @@ echo "</pre>"; */?>
                 ],
                 [
                     'attribute' => 'classes',
-                    'filter' => Html::dropDownList('classes', ArrayHelper::getColumn(Course::find()->all(), 'classes')),
+                    'filter' => null,
                     'value' => function (Course $model) {
                         return implode(', ', $model->classes);
                     }

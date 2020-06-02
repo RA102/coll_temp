@@ -7,6 +7,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 
 /**
@@ -24,8 +25,8 @@ class CourseSearch extends Course
             [['institution_id', 'status'], 'integer'],
             [['institution_id'], 'safe'],
             ['institution_discipline_id', 'integer'],
-            //['classes', 'integer'],
-            [['classes'], 'each', 'rule' => ['integer']],
+            [['classes'], 'integer'],
+            //[['classes'], 'each', 'rule' => ['integer']],
         ];
     }
 
@@ -52,7 +53,7 @@ class CourseSearch extends Course
      */
     public function search($params)
     {
-//        var_dump($params);
+        //var_dump($params);
         $query = Course::find();
 
         // add conditions that should always apply here
@@ -87,14 +88,14 @@ class CourseSearch extends Course
             'caption_ru' => $this->caption_ru,
             'caption_kk' => $this->caption_kk,
             'caption_current' => $this->caption_current,
-            'classes' => $this->classes,
             'status' => $this->status,
             'create_ts' => $this->create_ts,
             'update_ts' => $this->update_ts,
             'delete_ts' => $this->delete_ts,
         ]);
-
-
+        if ($this->classes) {
+            $query->andWhere(new Expression('classes::int[] @> ARRAY[' . $this->classes . ']::int[]'));
+        }
         $query->andFilterWhere(['ilike', 'caption', $this->caption]);
 
         return $dataProvider;
