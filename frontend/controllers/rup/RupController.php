@@ -2,6 +2,9 @@
 
 namespace frontend\controllers\rup;
 
+use common\models\organization\InstitutionDiscipline;
+use common\services\person\EmployeeService;
+use frontend\controllers\InstitutionDisciplineController;
 use frontend\models\rup\RupBlock;
 use frontend\models\rup\RupBlockSearch;
 use frontend\models\rup\RupQualifications;
@@ -12,6 +15,7 @@ use frontend\models\rup\RupSubjectsSearch;
 use Yii;
 use app\models\rup\RupRoots;
 use app\models\rup\RupRootsSearch;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -22,6 +26,7 @@ use yii\filters\VerbFilter;
  */
 class RupController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
@@ -112,6 +117,10 @@ class RupController extends Controller
             return 'UPDATED';
         }
 
+        $dataInstitutionDiscipline = new InstitutionDiscipline();
+        $templates = InstitutionDiscipline::find()->all();
+        $listData = ArrayHelper::map($templates, 'id', 'caption_ru');
+
 
         $searchModel = new RupModuleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$id,$block_id);
@@ -121,6 +130,11 @@ class RupController extends Controller
 
         $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])->asArray()->all();
 
+        $model_2 = new InstitutionDiscipline();
+        $institution = \Yii::$app->user->identity->institution;
+        $employeeService = new EmployeeService();
+        $temp = $employeeService->getTeachersActive($institution);
+
         return $this->render('update', [
             'active'=>$active,
             'model' => $model,
@@ -129,6 +143,12 @@ class RupController extends Controller
             'dataProvider'=>$dataProvider,
             'searchModelBlock'=>$searchModelBlock,
             'dataProviderBlock'=>$dataProviderBlock,
+            'dataInstitutionDiscipline' => $dataInstitutionDiscipline,
+            'templates' => $templates,
+            'listData' => $listData,
+            'model_2' => $model_2,
+            'teachers' => $employeeService->getTeachersActive($institution),
+
         ]);
     }
 
@@ -156,6 +176,21 @@ class RupController extends Controller
             return Json::encode($html);
         }
 
+    }
+
+    public function actionCreateDiscipline()
+    {
+        $discipline = new InstitutionDisciplineController();
+        $discipline->createAction();
+        $model = new InstitutionDiscipline();
+        $employeeService = new EmployeeService();
+        $institution = \Yii::$app->user->identity->institution;
+
+
+        return $this->renderAjax('createDiscipline', [
+        'model' => $model,
+        'teachers' => $employeeService->getTeachers($institution),
+        ]);
     }
 
     /**

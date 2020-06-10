@@ -36,7 +36,7 @@ class InstitutionDisciplineController extends Controller
                         'actions' => [
                             'index', 'view',
                             'create', 'update',
-                            'delete',
+                            'delete', 'create-ajax'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -52,13 +52,8 @@ class InstitutionDisciplineController extends Controller
         ];
     }
 
-    public function __construct(
-        string $id,
-        Module $module,
-        InstitutionDisciplineService $institutionDisciplineService,
-        EmployeeService $employeeService,
-        array $config = []
-    ) {
+    public function __construct( string $id, Module $module, InstitutionDisciplineService $institutionDisciplineService, EmployeeService $employeeService, array $config = [])
+    {
         $this->institutionDisciplineService = $institutionDisciplineService;
         $this->employeeService = $employeeService;
         parent::__construct($id, $module, $config);
@@ -119,12 +114,21 @@ class InstitutionDisciplineController extends Controller
      */
     public function actionCreate()
     {
+
         $model = new InstitutionDiscipline();
+
+        if (Yii::$app->request->getIsPost()) {
+
+            $model->load(Yii::$app->request->post());
+            $model->institution_id = Yii::$app->user->identity->institution->id;
+            $model->save();
+            return "<p>view</p>";
+        }
 
         if ($model->load(Yii::$app->request->post())) {
             $model->institution_id = Yii::$app->user->identity->institution->id;
             if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                   return $this->redirect(['view', 'id' => $model->id]);
             }
         }
 
@@ -132,6 +136,18 @@ class InstitutionDisciplineController extends Controller
             'model' => $model,
             'teachers' => $this->employeeService->getTeachersActive($this->institution),
         ]);
+    }
+
+    public function actionCreateAjax()
+    {
+        $model = new InstitutionDiscipline();
+
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+            $model->institution_id = Yii::$app->user->identity->institution->id;
+            $model->save();
+        }
+
     }
 
     /**

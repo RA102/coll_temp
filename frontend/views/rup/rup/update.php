@@ -1,14 +1,19 @@
 <?php
 
+use common\models\organization\InstitutionDiscipline;
+use common\services\person\EmployeeService;
 use frontend\models\rup\RupQualifications;
 use kartik\tabs\TabsX;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\rup\RupRoots */
+/* @var $dataInstitutionDiscipline \common\models\organization\InstitutionDiscipline */
 
 $this->title = 'Обновить РУП: ' . $model->captionRu;
 $this->params['breadcrumbs'][] = ['label' => 'РУПы', 'url' => ['index']];
@@ -216,6 +221,7 @@ else{
 
     <!--    <button data-toggle="modal" data-target="#editModalModule"></button>-->
     <!---Big edit window-->
+
     <div id="addModalModule" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-md modal-lg">
             <div class="modal-content">
@@ -224,11 +230,33 @@ else{
                     <h4 class="modal-title">Добавить</h4>
                 </div>
                 <div id='addQualModalBody' class="modal-body">
+
                     <form id="addQualification" >
                         <div class="row">
-                            <div class="col-3" style="font-weight:bold">Модуль/Дисциплина:</div>
+                            <div class="col-2" style="font-weight:bold">Модуль/Дисциплина:</div>
                             <div class="col-2"><input class="form-control" id="addQualModalModuleModuleIndex" type="text" placeholder="индекс"></div>
-                            <div class="col-7"><input class="form-control" id="addQualModalModuleModule" type="text"></div>
+                            <div class="col-5">
+<!--                                <input class="form-control" id="addQualModalModuleModule" type="text">-->
+                                <?php $form = ActiveForm::begin() ?>
+                                <?= $form->field($dataInstitutionDiscipline, 'caption_ru')->label(false)->dropDownList($listData,
+                                    ['prompt' => 'Выберите шаблон', 'class' => 'form-control', 'id' => 'addQualModalModuleModule']);
+                                ?>
+            <?php ActiveForm::end() ?>
+                            </div>
+                            <div class="col-3">
+                                <?php
+                                    Modal::begin([
+                                    'header' => '<h2>Добавить предмет</h2>',
+                                    'size'=>'modal-md',
+                                    'id' => 'add-discipline',
+                                    'toggleButton' => ['label' => 'Добавить','class'=>'btn btn-success'],
+                                    ]);
+                                    echo $this->renderAjax('_formDiscipline',['model'=> new InstitutionDiscipline(), 'teachers' => (new EmployeeService())->getTeachers(\Yii::$app->user->identity->institution)]);
+
+                                    Modal::end();
+                                ?>
+<!--                                --><?//= Html::a('Добавить', ['/rup/rup/createDiscipline'], ['class' => 'btn btn-primary']) ?>
+                            </div>
                         </div>
 
                         <div class="row">
@@ -301,6 +329,7 @@ else{
                         <input type="text" class="hidden" id="moduleAppendId">
                         <input type="submit" class="btn btn-primary" id="addQualModule" value="Добавить" disabled="true"></input>
                     </form>
+
                 </div>
                 <div class="modal-footer">
 
@@ -865,6 +894,23 @@ else{
         {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
             return false;});
         ////////////////////////////////////////////////////
+
+        $('#subject').on('beforeSubmit', function (event) {
+
+            let form = $(this);
+            let data = $(this).serialize();
+
+            $.ajax({
+                url: form.attr("action"),
+                data: data,
+                success: function (data) {
+                    $('#add-discipline').find('.close').trigger('click');
+                }
+            });
+        }).on('submit', function(e){
+            e.preventDefault();
+        });
+
 
     </script>
 </div>
