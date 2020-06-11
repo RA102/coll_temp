@@ -3,6 +3,7 @@
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 
@@ -11,15 +12,14 @@ use yii\widgets\Pjax;
 /* @var $form yii\widgets\ActiveForm */
 
 /** @see Discipline::caption_current $disciplines */
-$disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 'caption_current');
-?>
+$disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 'caption_current');?>
 <?php Pjax::begin() ?>
     <div class="institution-discipline-form">
 
         <?php $form = ActiveForm::begin([
             'id' => 'form-create',
-            'action' => '/institution-discipline/create',
             'options' => ['name' => 'subjects'],
+            'action' => ['/institution-discipline/create'],
         ]); ?>
 
         <?= $form->field($model, 'caption_ru')->textInput() ?>
@@ -48,11 +48,20 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
                 'multiple' => true,
             ],
         ])->label('Преподаватели') ?>
-
         <div class="form-group">
-            <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success', 'id' => 'create-ajax']) ?>
+            <?= Html::a('Добавить', '/institution-discipline/create', ['class' => 'btn btn-success', 'id' => 'create-ajax', 'type' => 'submit']) ?>
         </div>
 
+
+
+<!--        <div class="form-group">-->
+<!--            --><?//= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success', 'id' => 'create-ajax']) ?>
+<!--        </div>-->
+
         <?php ActiveForm::end(); ?>
+
     </div>
 <?php Pjax::end() ?>
+
+
+

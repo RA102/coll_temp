@@ -133,7 +133,7 @@ class RupController extends Controller
         $model_2 = new InstitutionDiscipline();
         $institution = \Yii::$app->user->identity->institution;
         $employeeService = new EmployeeService();
-        $temp = $employeeService->getTeachersActive($institution);
+        $employeeService->getTeachersActive($institution);
 
         return $this->render('update', [
             'active'=>$active,

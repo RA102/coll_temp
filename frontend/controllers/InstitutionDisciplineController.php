@@ -115,14 +115,15 @@ class InstitutionDisciplineController extends Controller
     public function actionCreate()
     {
 
+
         $model = new InstitutionDiscipline();
 
-        if (Yii::$app->request->getIsPost()) {
+        if (Yii::$app->request->isAjax) {
 
             $model->load(Yii::$app->request->post());
             $model->institution_id = Yii::$app->user->identity->institution->id;
             $model->save();
-            return "<p>view</p>";
+            return "$model->id";
         }
 
         if ($model->load(Yii::$app->request->post())) {

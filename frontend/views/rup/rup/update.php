@@ -7,6 +7,7 @@ use kartik\tabs\TabsX;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\View;
 use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
@@ -236,7 +237,7 @@ else{
                             <div class="col-2" style="font-weight:bold">Модуль/Дисциплина:</div>
                             <div class="col-2"><input class="form-control" id="addQualModalModuleModuleIndex" type="text" placeholder="индекс"></div>
                             <div class="col-5">
-<!--                                <input class="form-control" id="addQualModalModuleModule" type="text">-->
+
                                 <?php $form = ActiveForm::begin() ?>
                                 <?= $form->field($dataInstitutionDiscipline, 'caption_ru')->label(false)->dropDownList($listData,
                                     ['prompt' => 'Выберите шаблон', 'class' => 'form-control', 'id' => 'addQualModalModuleModule']);
@@ -424,7 +425,7 @@ else{
         $('#addQualModule').on('click',function (e) {
             e.preventDefault();
             var code = $('#addQualModalModuleModuleIndex').val();
-            var name = $('#addQualModalModuleModule').val();
+            var name = $('#addQualModalModuleModule option:selected').text();//val();
             var rup_id = $('#ruproots-rup_id').val();
             var one_sem_time = $('#addQualModalModuleTime1').val();
             var two_sem_time = $('#addQualModalModuleTime2').val();
@@ -895,21 +896,21 @@ else{
             return false;});
         ////////////////////////////////////////////////////
 
-        $('#subject').on('beforeSubmit', function (event) {
-
-            let form = $(this);
-            let data = $(this).serialize();
-
-            $.ajax({
-                url: form.attr("action"),
-                data: data,
-                success: function (data) {
-                    $('#add-discipline').find('.close').trigger('click');
-                }
-            });
-        }).on('submit', function(e){
-            e.preventDefault();
-        });
+        // $('#subject').on('beforeSubmit', function (event) {
+        //
+        //     let form = $(this);
+        //     let data = $(this).serialize();
+        //
+        //     $.ajax({
+        //         url: form.attr("action"),
+        //         data: data,
+        //         success: function (data) {
+        //             $('#add-discipline').find('.close').trigger('click');
+        //         }
+        //     });
+        // }).on('submit', function(e){
+        //     e.preventDefault();
+        // });
 
 
     </script>
@@ -931,3 +932,38 @@ else{
 
     </style>
 </div>
+
+
+<?php
+$this->registerJs(<<<JS
+    $('#create-ajax').on('click', function (event) {
+        event.preventDefault();
+        let data = $('#form-create').serialize();
+        let name = $('#institutiondiscipline-caption_ru').val();
+        console.log(name);
+        $('#add-discipline').fadeOut();
+        $.ajax({
+            url: window.location.origin +'/institution-discipline/create',
+            type: 'post',
+            data: data,
+            success: function(data, textStatus){
+                    console.log(textStatus);
+                    if (textStatus == 'success'){
+                    $('#addQualModalModuleModule').append($('<option></option>').attr('value', data).text(name));
+                    // $('#addQualModuleButton').trigger('click');
+                    let close = $('#add-discipline').children('.close');
+                    close.click();
+                }
+            },
+            error: function(data){
+                console.log('Ошибка');
+            }
+        })
+    }) 
+JS,
+    View::POS_READY,
+    'my-button-handler'
+);
+
+
+?>
