@@ -426,6 +426,7 @@ else{
             e.preventDefault();
             var code = $('#addQualModalModuleModuleIndex').val();
             var name = $('#addQualModalModuleModule option:selected').text();//val();
+            var id_discipline = $('#addQualModalModuleModule option:selected').val();
             var rup_id = $('#ruproots-rup_id').val();
             var one_sem_time = $('#addQualModalModuleTime1').val();
             var two_sem_time = $('#addQualModalModuleTime2').val();
@@ -448,7 +449,7 @@ else{
                $.ajax({
                    type: 'POST',
                    url: '/rup/rup-subjects/create-ajax',
-                   data: {'code':code,'name':name,'rup_id':rup_id,'one_sem_time':one_sem_time,
+                   data: {'code':code,'name':name, 'id_discipline': id_discipline,'rup_id':rup_id,'one_sem_time':one_sem_time,
                    'two_sem_time':two_sem_time,'three_sem_time':three_sem_time,'four_sem_time':four_sem_time,
                    'five_sem_time':five_sem_time,'six_sem_time':six_sem_time,'seven_sem_time':seven_sem_time,
                    'eight_sem_time':eight_sem_time,'production_practice_time':production_practice_time,

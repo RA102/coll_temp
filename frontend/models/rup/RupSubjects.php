@@ -30,6 +30,7 @@ use yii\widgets\Block;
  * @property string $name
  * @property int $rup_id
  * @property string $code
+ * @property string $id_discipline
  *
  * @property RupModule $subBlock
  */
@@ -52,8 +53,8 @@ class RupSubjects extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_sub_block', 'id_block', 'exam', 'control_work', 'offset', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time', 'rup_id'], 'default', 'value' => null],
-            [['id_sub_block', 'id_block', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time', 'rup_id'], 'integer'],
+            [['id_sub_block', 'id_block', 'exam', 'control_work', 'offset', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time', 'rup_id', 'id_discipline'], 'default', 'value' => null],
+            [['id_sub_block', 'id_block', 'time', 'teory_time', 'lab_time', 'production_practice_time', 'one_sem_time', 'two_sem_time', 'three_sem_time', 'four_sem_time', 'five_sem_time', 'six_sem_time', 'seven_sem_time', 'eight_sem_time', 'rup_id', 'id_discipline'], 'integer'],
             [['name'], 'string', 'max' => 400],
             [['notTime','exam', 'control_work', 'offset'],'safe'],
             [['code'], 'string', 'max' => 20],

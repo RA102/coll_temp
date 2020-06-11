@@ -112,6 +112,7 @@ class RupSubjectsController extends Controller
         $model->exam=Yii::$app->request->post('exam');
         $model->id_block=Yii::$app->request->post('id_block');
         $model->id_sub_block=Yii::$app->request->post('id_sub_block');
+        $model->id_discipline = Yii::$app->request->post('id_discipline');
         if($model->save(false)){
             return "all good saved";
         }
