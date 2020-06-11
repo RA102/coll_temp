@@ -36,6 +36,7 @@ class StudentSearch extends Student
             [['id', 'status', 'sex', 'nationality_id', 'is_pluralist', 'birth_country_id', 'birth_city_id', 'oid', 'alledu_id', 'alledu_server_id', 'pupil_id', 'owner_id', 'server_id', 'portal_uid', 'type'], 'integer'],
             [['nickname', 'firstname', 'lastname', 'middlename', 'birth_date', 'iin', 'birth_place', 'language', 'photo', 'create_ts', 'delete_ts', 'import_ts', 'institution_id'], 'safe'],
             [['is_subscribed'], 'boolean'],
+//            ['group.caption', 'each', 'rule' => ['string']],
         ];
     }
 
@@ -143,6 +144,11 @@ class StudentSearch extends Student
             ->andFilterWhere(['ilike', 'birth_place', $this->birth_place])
             ->andFilterWhere(['ilike', 'language', $this->language])
             ->andFilterWhere(['ilike', 'photo', $this->photo]);
+//            ->andFilterWhere(['like', 'link.student_group_link.group_id.group.id', $this->group->id]);
+
+        $query->JoinWith('link.student_group_link')
+            ->andFilterWhere(['like', 'group', $this->group_id]);
+
 
         return $dataProvider;
     }

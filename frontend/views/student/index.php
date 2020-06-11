@@ -22,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
 -->
 
 <div class="student-index student-block">
-
     <?= Html::beginForm(['process'], 'post'); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="card-header">
@@ -121,6 +120,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'firstname',
                 'middlename',
                 'birth_date:date',
+                [
+                    'attribute' => 'group.caption',
+                    'value' => "group.caption.ru"
+                ],
+//                [
+//                    'attribute' => 'Группа',
+//                    'value' => function ($data) {
+//                        return $data->group->caption['ru'];
+//                    }
+//                ],
                 //'sex',
                 //'nationality_id',
                 'iin',
