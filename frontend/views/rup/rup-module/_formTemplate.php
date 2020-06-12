@@ -4,7 +4,7 @@ use frontend\models\rup\RupBlock;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use Yii;
+//use Yii;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\rup\RupModule */

@@ -1,14 +1,20 @@
 <?php
 
+use common\models\organization\InstitutionDiscipline;
+use common\services\person\EmployeeService;
 use frontend\models\rup\RupQualifications;
 use kartik\tabs\TabsX;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\View;
+use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\rup\RupRoots */
+/* @var $dataInstitutionDiscipline \common\models\organization\InstitutionDiscipline */
 
 $this->title = 'Обновить РУП: ' . $model->captionRu;
 $this->params['breadcrumbs'][] = ['label' => 'РУПы', 'url' => ['index']];
@@ -216,6 +222,7 @@ else{
 
     <!--    <button data-toggle="modal" data-target="#editModalModule"></button>-->
     <!---Big edit window-->
+
     <div id="addModalModule" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-md modal-lg">
             <div class="modal-content">
@@ -224,11 +231,33 @@ else{
                     <h4 class="modal-title">Добавить</h4>
                 </div>
                 <div id='addQualModalBody' class="modal-body">
+
                     <form id="addQualification" >
                         <div class="row">
-                            <div class="col-3" style="font-weight:bold">Модуль/Дисциплина:</div>
+                            <div class="col-2" style="font-weight:bold">Модуль/Дисциплина:</div>
                             <div class="col-2"><input class="form-control" id="addQualModalModuleModuleIndex" type="text" placeholder="индекс"></div>
-                            <div class="col-7"><input class="form-control" id="addQualModalModuleModule" type="text"></div>
+                            <div class="col-5">
+
+                                <?php $form = ActiveForm::begin() ?>
+                                <?= $form->field($dataInstitutionDiscipline, 'caption_ru')->label(false)->dropDownList($listData,
+                                    ['prompt' => 'Выберите шаблон', 'class' => 'form-control', 'id' => 'addQualModalModuleModule']);
+                                ?>
+            <?php ActiveForm::end() ?>
+                            </div>
+                            <div class="col-3">
+                                <?php
+                                    Modal::begin([
+                                    'header' => '<h2>Добавить предмет</h2>',
+                                    'size'=>'modal-md',
+                                    'id' => 'add-discipline',
+                                    'toggleButton' => ['label' => 'Добавить','class'=>'btn btn-success'],
+                                    ]);
+                                    echo $this->renderAjax('_formDiscipline',['model'=> new InstitutionDiscipline(), 'teachers' => (new EmployeeService())->getTeachers(\Yii::$app->user->identity->institution)]);
+
+                                    Modal::end();
+                                ?>
+<!--                                --><?//= Html::a('Добавить', ['/rup/rup/createDiscipline'], ['class' => 'btn btn-primary']) ?>
+                            </div>
                         </div>
 
                         <div class="row">
@@ -301,6 +330,7 @@ else{
                         <input type="text" class="hidden" id="moduleAppendId">
                         <input type="submit" class="btn btn-primary" id="addQualModule" value="Добавить" disabled="true"></input>
                     </form>
+
                 </div>
                 <div class="modal-footer">
 
@@ -397,7 +427,8 @@ else{
         $('#addQualModule').on('click',function (e) {
             e.preventDefault();
             var code = $('#addQualModalModuleModuleIndex').val();
-            var name = $('#addQualModalModuleModule').val();
+            var name = $('#addQualModalModuleModule option:selected').text();//val();
+            var id_discipline = $('#addQualModalModuleModule option:selected').val();
             var rup_id = $('#ruproots-rup_id').val();
             var one_sem_time = $('#addQualModalModuleTime1').val();
             var two_sem_time = $('#addQualModalModuleTime2').val();
@@ -420,7 +451,7 @@ else{
                $.ajax({
                    type: 'POST',
                    url: '/rup/rup-subjects/create-ajax',
-                   data: {'code':code,'name':name,'rup_id':rup_id,'one_sem_time':one_sem_time,
+                   data: {'code':code,'name':name, 'id_discipline': id_discipline,'rup_id':rup_id,'one_sem_time':one_sem_time,
                    'two_sem_time':two_sem_time,'three_sem_time':three_sem_time,'four_sem_time':four_sem_time,
                    'five_sem_time':five_sem_time,'six_sem_time':six_sem_time,'seven_sem_time':seven_sem_time,
                    'eight_sem_time':eight_sem_time,'production_practice_time':production_practice_time,
@@ -878,6 +909,23 @@ else{
             return false;});
         ////////////////////////////////////////////////////
 
+        // $('#subject').on('beforeSubmit', function (event) {
+        //
+        //     let form = $(this);
+        //     let data = $(this).serialize();
+        //
+        //     $.ajax({
+        //         url: form.attr("action"),
+        //         data: data,
+        //         success: function (data) {
+        //             $('#add-discipline').find('.close').trigger('click');
+        //         }
+        //     });
+        // }).on('submit', function(e){
+        //     e.preventDefault();
+        // });
+
+
     </script>
 </div>
     <style>
@@ -897,3 +945,38 @@ else{
 
     </style>
 </div>
+
+
+<?php
+$this->registerJs(<<<JS
+    $('#create-ajax').on('click', function (event) {
+        event.preventDefault();
+        let data = $('#form-create').serialize();
+        let name = $('#institutiondiscipline-caption_ru').val();
+        console.log(name);
+        $('#add-discipline').fadeOut();
+        $.ajax({
+            url: window.location.origin +'/institution-discipline/create',
+            type: 'post',
+            data: data,
+            success: function(data, textStatus){
+                    console.log(textStatus);
+                    if (textStatus == 'success'){
+                    $('#addQualModalModuleModule').append($('<option></option>').attr('value', data).text(name));
+                    // $('#addQualModuleButton').trigger('click');
+                    let close = $('#add-discipline').children('.close');
+                    close.click();
+                }
+            },
+            error: function(data){
+                console.log('Ошибка');
+            }
+        })
+    }) 
+JS,
+    View::POS_READY,
+    'my-button-handler'
+);
+
+
+?>

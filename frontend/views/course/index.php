@@ -1,11 +1,13 @@
 <?php
 
 use common\models\Course;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $searchModel \frontend\search\CourseSearch */
 
 $this->title = Yii::t('app', 'Courses');
 $this->params['breadcrumbs'][] = $this->title;
@@ -15,6 +17,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= $this->title ?></h1>
     <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
 </div>
+<!--
+<?php
+//var_dump($searchModel->classes);
+?>
+
+-->
 
 <div class="group-index skin-white">
 
@@ -22,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
+
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
 
@@ -33,12 +42,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],*/
                 [
                     'attribute' => 'institution_discipline_id',
+                    'filter' => Html::activeDropDownList($searchModel, 'institution_discipline_id', ArrayHelper::map(Course::find()->all(), 'institution_discipline_id', function($model){ return $model->institutionDiscipline->caption_current; }), ['prompt' => '', 'class' => 'form-control form-control-sm']),
                     'value' => function (Course $model) {
                         return $model->institutionDiscipline->caption_current;
                     },
                 ],
                 [
                     'attribute' => 'classes',
+                    'filter' => null,
                     'value' => function (Course $model) {
                         return implode(', ', $model->classes);
                     }

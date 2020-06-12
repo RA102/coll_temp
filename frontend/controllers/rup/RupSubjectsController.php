@@ -2,6 +2,7 @@
 
 namespace frontend\controllers\rup;
 
+use common\models\organization\InstitutionDiscipline;
 use Yii;
 use frontend\models\rup\RupSubjects;
 use frontend\models\rup\RupSubjectsSearch;
@@ -111,6 +112,7 @@ class RupSubjectsController extends Controller
         $model->exam=Yii::$app->request->post('exam');
         $model->id_block=Yii::$app->request->post('id_block');
         $model->id_sub_block=Yii::$app->request->post('id_sub_block');
+        $model->id_discipline = Yii::$app->request->post('id_discipline');
         if($model->save(false)){
             return "all good saved";
         }
@@ -196,6 +198,7 @@ class RupSubjectsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
