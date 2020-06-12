@@ -1,10 +1,8 @@
 <?php
 
-use frontend\models\rup\RupBlock;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use Yii;
+
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\rup\RupModule */
@@ -36,10 +34,6 @@ use Yii;
     <script>
         $('#subModuleAdd').on('click',function (e) {
             e.preventDefault();
-            if($('#rupmodule-code').val()==''){
-                alert('Индекс не может быть пустым!')
-            }
-            else{
                 $.ajax({
                     type: 'POST',
                     url: '/rup/rup-module/create',
@@ -48,8 +42,6 @@ use Yii;
                         location.reload();
                     }
                 });
-            }
-
         })
     </script>
 </div>
