@@ -32,7 +32,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([0=>'2018',1=>'2019',2=>'2020',3=>'2021'], ['disabled' => 'disabled']) ?>
     <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->textInput(['maxlength' => true, 'disabled' => true]) ?>
     <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная'],['disabled' => 'disabled']) ?>
-    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->textInput(['maxlength' => true, 'disabled' => trues]) ?>
+    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->textInput(['maxlength' => true, 'disabled' => true]) ?>
 
     <?=Html::submitButton('Сохранить план', ['class' => 'btn btn-success btn-margin hidden','id'=>'rup_save','style'=>['float'=>'right','margin'=>'10px']]);?>
     <?php ActiveForm::end(); ?>

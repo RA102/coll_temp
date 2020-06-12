@@ -30,10 +30,12 @@ class RupQualifications extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['qualification_name', 'time_years', 'time_months', 'rup_id', 'qualification_code'], 'required'],
+            [['qualification_name', 'time_years', 'time_months', 'rup_id'], 'required'], //, 'qualification_code'
             [['time_years', 'time_months', 'rup_id', 'qualification_code'], 'default', 'value' => null],
-            [['time_years', 'time_months', 'rup_id', 'qualification_code'], 'integer'],
-            [['qualification_name'], 'string', 'max' => 300],
+            [['rup_id', 'qualification_code'], 'integer'],
+            [['time_years'], 'integer', 'max'=>5],
+            [['time_months'], 'integer', 'max'=>11],
+            [['qualification_name', 'q_level'], 'string', 'max' => 300],
         ];
     }
 
@@ -44,11 +46,11 @@ class RupQualifications extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'qualification_name' => 'Qualification Name',
-            'time_years' => 'Time Years',
-            'time_months' => 'Time Months',
+            'qualification_name' => 'Наименование',
+            'time_years' => 'Количество лет',
+            'time_months' => 'Количество месяцев',
             'rup_id' => 'Rup ID',
-            'qualification_code' => 'Qualification Code',
+            'qualification_code' => 'Код',
         ];
     }
 

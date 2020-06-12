@@ -7,5 +7,10 @@ use yii\helpers\Html;
 ?>
 
 <p>
-    <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+    <?php 
+        if ($model->online == null || $model->online < 1){
+            echo Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+        }
+
+    ?>
 </p>

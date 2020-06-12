@@ -117,8 +117,10 @@ $blockPersonalDataEditing = isset($admissionApplication) ?
             <?= $form->field($admissionApplicationForm, 'email')->textInput([
                 'maxlength' => true,
             ]) ?>
-            <?= $form->field($admissionApplicationForm, 'contact_phone_home')->textInput(['maxlength' => true]) ?>
-            <?= $form->field($admissionApplicationForm, 'contact_phone_mobile')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($admissionApplicationForm, 'contact_phone_home')->textInput(['maxlength' => true])
+                ->widget(\yii\widgets\MaskedInput::class, ['mask' => '+7 (999) 999-99-99',])?>
+            <?= $form->field($admissionApplicationForm, 'contact_phone_mobile')->textInput(['maxlength' => true])
+                ->widget(\yii\widgets\MaskedInput::class, ['mask' => '+7 (999) 999-99-99',])?>
         </fieldset>
 
         <fieldset>

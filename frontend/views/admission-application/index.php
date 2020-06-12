@@ -6,6 +6,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -65,23 +66,44 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <div class="card-body">
-        <?= GridView::widget([
+        <?=GridView::widget([
             'layout'       => "{items}\n{pager}",
             'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'formatter' => [
+                'class' => '\yii\i18n\Formatter',
+                'dateFormat' => 'dd.MM.yyyy',
+                'datetimeFormat' => 'dd.MM.yyyy HH:mm::ss',
+            ],            
             'columns'      => [
                 ['class' => 'yii\grid\SerialColumn'],
                 [
+                    'attribute' => 'fio',
                     'label' => Yii::t('app', 'Ф.И.О'),
-                    'value' => 'person.fullname'
+                    'value' => 'person.fullname',
                 ],
                 [
+                    'attribute' => 'application_date',
+                    'filter' => DatePicker::widget([
+                        'model' => $searchModel,
+                        'value' => $searchModel->application_date,
+                        'attribute' => 'application_date',
+                        'type' => 1,
+                    ]),
+                    'filterOptions' => ['style' => 'width: 120px'],
                     'label' => Yii::t('app', 'Дата подачи'),
-                    'value' => 'properties.application_date',
-                    'format' => ['date', 'php: d-m-Y'],
+                    'value' => 'properties.application_date', 
+                    'format' => 'date'
                 ],
-                'person.iin',
+                [
+                    'attribute' => 'iin',
+                    'value' => 'person.iin',
+                    'label' => Yii::t('app', 'ИИН'),
+                    'filterOptions' => ['style' => 'width: 140px'],
+                ],
                 [
                     'attribute' => 'status',
+                    'filter' => false,
                     'format'    => 'html',
                     'value'     => function (AdmissionApplication $admissionApplication) {
                         $labelText = ApplicationHelper::$list[$admissionApplication->status];
@@ -108,8 +130,41 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 ],
                 [
+                    'attribute' => 'online',
+                    'filter' => false,
+                    'format'    => 'html',
+                    'value'     => function (AdmissionApplication $admissionApplication) {
+                        $labelText = ApplicationHelper::getAdmissionApplicationOnlineLabels()[$admissionApplication->online];
+                        $onlineClass = (function () use ($admissionApplication) {
+                            if ($admissionApplication->online === ApplicationHelper::ONLINE_NO) {
+                                return 'label label-info';
+                            }
+                            if ($admissionApplication->online === ApplicationHelper::ONLINE_EGOV) {
+                                return 'label label-success';
+                            }
+                            if ($admissionApplication->online === ApplicationHelper::ONLINE_BILIMAL) {
+                                return 'label label-primary';
+                            }
+                            return 'label label-info';
+                        })();
+
+                        return "<span class='{$onlineClass}'>{$labelText}</span>";
+                    }
+                ],                
+                [
                     'class'    => 'yii\grid\ActionColumn',
-                    'template' => '{view} {update}',
+                    'template' => '{view}  {update}',
+                    'visibleButtons' => [
+                        'view' => true,
+                        'update' => function (AdmissionApplication $admissionApplication) {
+                            $res = true;
+                            if ($admissionApplication->online != null && $admissionApplication->online > 0){
+                                $res = false;
+                            }
+                            return $res;
+                        },
+                    ],                    
+
                 ]
             ],
         ]); ?>

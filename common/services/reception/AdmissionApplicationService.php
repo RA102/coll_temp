@@ -42,12 +42,14 @@ class AdmissionApplicationService
     public function create(
         AdmissionApplicationForm $admissionApplicationForm,
         int $commission_id,
-        int $institution_id
+        int $institution_id, 
+        int $person_id
     ): AdmissionApplication {
         // TODO: add validation of iin and email uniqueness, check existence of similar application
         $admissionApplication = AdmissionApplication::add(
             $commission_id,
             $institution_id,
+            $person_id,
             $admissionApplicationForm->getAttributes()
         );
 
@@ -149,14 +151,15 @@ class AdmissionApplicationService
         if (!$admissionApplication) {
             throw new \Exception('Not Found');
         }
-        if (!\Yii::$app->user->identity->isSuperadmin()) {
+        //$person = \Yii::$app->user->identity;
+        if (!$user->isAdmin()) {
             if ($admissionApplication->status !== ApplicationHelper::STATUS_CREATED && $admissionApplication->status !== ApplicationHelper::STATUS_ACCEPTED) {
                 throw new \Exception('Forbidden');
             }
         }
         $admissionApplication->status = ApplicationHelper::STATUS_ACCEPTED;
 
-        $entrant = Entrant::find()->Where(['id' => $admissionApplication->person_id])->orWhere(['iin' => $admissionApplication->properties['iin']])->one();
+        $entrant = Entrant::find()->where(['id' => $admissionApplication->person_id])->orWhere(['iin' => $admissionApplication->properties['iin']])->one();
 
         if ($entrant == null) {
             $entrant = Entrant::add(
@@ -180,7 +183,7 @@ class AdmissionApplicationService
             //if (Entrant::find()->where(['id' => $admissionApplication->person_id])->one() == null) {
             if ($entrant == null) {
                 $person = $this->personService->create(
-                    $entrant,
+                    $entrant->one(),
                     $admissionApplication->institution_id,
                     $admissionApplication->properties['email'],
                     PersonCredentialHelper::TYPE_EMAIL,

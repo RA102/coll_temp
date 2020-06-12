@@ -152,7 +152,7 @@ class AdmissionApplicationForm extends Model
             //     'on'          => self::SCENARIO_DEFAULT
             // ],
 
-            ['email', 'safe'],
+            ['email', 'email'],
             [
                 'email',
                 'unique',
@@ -160,6 +160,8 @@ class AdmissionApplicationForm extends Model
                 'targetAttribute' => 'indentity',
                 'on'              => self::SCENARIO_DEFAULT
             ],
+            ['contact_phone_home', 'match', 'pattern' => '/^\+7\s\([0-9]{3}\)\s[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/'],
+            ['contact_phone_mobile', 'match', 'pattern' => '/^\+7\s\([0-9]{3}\)\s[0-9]{3}\-[0-9]{2}\-[0-9]{2}$/'],
         ];
     }
 
@@ -255,9 +257,15 @@ class AdmissionApplicationForm extends Model
         }
 
         foreach ($value as $i => $social_status) {
-            if (empty($social_status['name'])) {
-                $this->addError("{$attribute}[{$i}][name]", 'Некоректное наименование для льгот');
+            if (empty($social_status['name']) && empty($social_status['document_number'])) {
+                $this->addError("{$attribute}[{$i}][name]", 'Удалите строки с незаполненными льготами');
             }
+            else {
+                if (empty($social_status['name'])) {
+                    $this->addError("{$attribute}[{$i}][name]", 'Некоректное наименование для льгот');
+                }
+            }
+
         }
     }
 }

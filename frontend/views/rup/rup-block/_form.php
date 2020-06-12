@@ -1,7 +1,10 @@
 <?php
 
+use frontend\models\rup\RupQualifications;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\rup\RupBlock */
@@ -10,14 +13,21 @@ use yii\widgets\ActiveForm;
 
 <div class="rup-block-form">
 
-    <?php $form = ActiveForm::begin([ 'options' => ['class'=>'addBlockAjaxForm']]); ?>
+    <?php $form = ActiveForm::begin([ 'options' => ['class'=>'addBlockAjaxForm']]); 
+        $rup_id = Yii::$app->request->get('id');
+        $quals = RupQualifications::find()->select(['qualification_code', 'qualification_name']) ->where(['rup_id' => $rup_id])->limit(3)->all();
+    
+    ?>
 
     <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'rup_id')->hiddenInput(['maxlength' => true,'value'=>Yii::$app->request->get('id')])->label(false) ?>
+    <?= $form->field($model, 'rup_id')->hiddenInput(['maxlength' => true,'value'=>$rup_id])->label(false) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'time')->textInput() ?>
+
+    
+    <?= $form->field($model, 'qual_code')->dropDownList(ArrayHelper::map($quals, 'qualification_code', 'qualification_name'), ['prompt' => ''])->label('Квалификация')  ?>
+
     <?= $form->field($model, 'isTemplate')->checkbox([
     ])?>
 

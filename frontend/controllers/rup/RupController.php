@@ -21,6 +21,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use common\models\handbook\Speciality;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+
 /**
  * RupController implements the CRUD actions for RupRoots model.
  */
@@ -37,7 +41,11 @@ class RupController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
-                    'returnjson'=>['POST']
+                    'returnjson'=>['POST'],
+                    'get-specialities'=>['GET'],
+                    'get-qualifications'=>['GET'],
+                    
+                     
                 ],
             ],
         ];
@@ -128,7 +136,11 @@ class RupController extends Controller
         $searchModelBlock = new RupBlockSearch();
         $dataProviderBlock = $searchModelBlock->search(Yii::$app->request->queryParams,$id);
 
-        $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])->asArray()->all();
+        $specialities = $this->actionGetSpecialities($model->profile_code);
+        $qualifications = RupQualifications::find()->where(['rup_id'=>$model->rup_id])
+        //->innerJoin(Speciality::tableName(), Speciality::tableName() . ".code=" . RupQualifications::tableName() . ".qualification_code")
+        //->select([RupQualifications::tableName() . ".qualification_code", RupQualifications::tableName() . ".time_years", RupQualifications::tableName() . ".time_months", Speciality::tableName() . ""])
+        ->asArray()->all();
 
         $model_2 = new InstitutionDiscipline();
         $institution = \Yii::$app->user->identity->institution;
@@ -143,12 +155,16 @@ class RupController extends Controller
             'dataProvider'=>$dataProvider,
             'searchModelBlock'=>$searchModelBlock,
             'dataProviderBlock'=>$dataProviderBlock,
+<<<<<<< HEAD
             'dataInstitutionDiscipline' => $dataInstitutionDiscipline,
             'templates' => $templates,
             'listData' => $listData,
             'model_2' => $model_2,
             'teachers' => $employeeService->getTeachersActive($institution),
 
+=======
+            'specialities'=>$specialities,
+>>>>>>> origin/develop
         ]);
     }
 
@@ -208,4 +224,48 @@ class RupController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionGetSpecialities($parent_code){
+        $code = substr($parent_code,0,2) . '%';
+        $sp = Speciality::find()->select(["code", "caption"])->where(['type' => '2'])->andWhere(['like', 'code', $code, false])->all();
+        $data = ArrayHelper::toArray($sp, [
+            'common\models\handbook\Speciality' => [
+                'code',
+                
+                'caption' => function ($Speciality) {
+                    return $Speciality->getCaptionWithCode();
+                },
+            ],
+        ]);
+
+        $result="";
+        //return Json::encode($data);
+        foreach($data as $value=>$spec){
+            $result = $result . '<option value="'. $spec['code'] . '"> ' . $spec['caption'] .'</option>';
+
+        }
+        return $result;
+    }
+
+    public function actionGetQualifications($parent_code){
+        $code = substr($parent_code,0,4) . '%';
+        $sp = Speciality::find()->select(["code", "caption"])->where(['type' => '3'])->andWhere(['like', 'code', $code, false])->all();
+        $data = ArrayHelper::toArray($sp, [
+            'common\models\handbook\Speciality' => [
+                'code',
+                
+                'caption' => function ($Speciality) {
+                    return $Speciality->getCaptionWithCode();
+                },
+            ],
+        ]);
+
+        $result="";
+        //return Json::encode($data);
+        foreach($data as $value=>$spec){
+            $result = $result . '<option value="'. $spec['code'] . '"> ' . $spec['caption'] .'</option>';
+
+        }
+        return $result;
+    }    
 }
