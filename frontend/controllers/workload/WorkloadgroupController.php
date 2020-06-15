@@ -12,6 +12,8 @@ namespace frontend\controllers\workload;
 // use frontend\models\rup\RupModuleSearch;
 // use frontend\models\rup\RupSubjects;
 // use frontend\models\rup\RupSubjectsSearch;
+
+use common\models\Nationality;
 use Yii;
 // use app\models\rup\RupRoots;
 // use app\models\rup\RupRootsSearch;
@@ -44,6 +46,7 @@ class WorkloadgroupController extends Controller
                     'returnjson'=>['POST'],
                     'get-specialities'=>['GET'],
                     'get-qualifications'=>['GET'],
+                    'get-departments'=>['GET'],
                     
                      
                 ],
@@ -67,6 +70,11 @@ class WorkloadgroupController extends Controller
             // 'dataProvider' => $dataProvider,
             // 'subjects'=>$subjects
         ]);
+    }
+
+    public function actionGetDepartments(){
+        $deps = Nationality::find()->limit(10)->asArray()->all();
+        return Json::encode($deps);
     }
 
     

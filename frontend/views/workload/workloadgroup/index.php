@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <!-- import JavaScript -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
     <body class="hold-transition skin-black-light sidebar-mini">
    
@@ -39,12 +40,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Фильтры -->
     <div class="card-body skin-white">
         <div class="row" style="margin-top: 2px;" >
-            <div class="col-md-1" >Кафедра
+            <div class="col-md-1" style="padding: 8px;"> Кафедра
             </div>
             <div class="col-md-5"  >  
-                <el-select v-model="value" clearable placeholder="Выберите" style="width: 100%;" >
+                <el-select v-model="filter_department" clearable placeholder="Выберите" style="width: 100%;" >
                     <el-option
-                    v-for="item in options"
+                    v-for="item in departments"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -52,12 +53,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 </el-select>
             </div>
 
-            <div class="col-md-2" >Форма обучения
+            <div class="col-md-2" style="padding: 8px;"> Форма обучения
             </div>
             <div class="col-md-4"  >  
-                <el-select v-model="value" clearable placeholder="Выберите"  style="width: 100%;" >
+                <el-select v-model="filter_eduform" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
-                    v-for="item in options"
+                    v-for="item in eduforms"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -67,12 +68,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <div class="row" style="margin-top: 12px;" >
-            <div class="col-md-1" >Группа
+            <div class="col-md-1" style="padding: 8px;"> Группа
             </div>
             <div class="col-md-5"  >  
-                <el-select v-model="value" clearable placeholder="Выберите" style="width: 100%;" >
+                <el-select v-model="filter_studentgroup" clearable placeholder="Выберите" style="width: 100%;" >
                     <el-option
-                    v-for="item in options"
+                    v-for="item in studentgroups"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -80,12 +81,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 </el-select>
             </div>
 
-            <div class="col-md-2" >Язык обучения
+            <div class="col-md-2" style="padding: 8px;"> Язык обучения
             </div>
             <div class="col-md-4"  >  
-                <el-select v-model="value" clearable placeholder="Выберите"  style="width: 100%;" >
+                <el-select v-model="filter_edulang" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
-                    v-for="item in options"
+                    v-for="item in edulangs"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -95,12 +96,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <div class="row" style="margin-top: 12px;" >
-            <div class="col-md-1" >Дисциплина
+            <div class="col-md-1" style="padding: 8px;"> Дисциплина
             </div>
             <div class="col-md-5"  >  
-                <el-select v-model="value" clearable placeholder="Выберите" style="width: 100%;" >
+                <el-select v-model="filter_discipline" clearable placeholder="Выберите" style="width: 100%;" >
                     <el-option
-                    v-for="item in options"
+                    v-for="item in disciplines"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -108,12 +109,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 </el-select>
             </div>
 
-            <div class="col-md-2" >Курс
+            <div class="col-md-2" style="padding: 8px;"> Курс
             </div>
             <div class="col-md-4"  >  
-                <el-select v-model="value" clearable placeholder="Выберите"  style="width: 100%;" >
+                <el-select v-model="filter_course" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
-                    v-for="item in options"
+                    v-for="item in courselist"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -123,12 +124,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <div class="row" style="margin-top: 12px;" >
-            <div class="col-md-1" >Год
+            <div class="col-md-1" style="padding: 8px;"> Год
             </div>
             <div class="col-md-1"  >  
-                <el-select v-model="value" clearable placeholder="Выберите" style="width: 100%;" >
+                <el-select v-model="filter_year"  style="width: 100%;" >
                     <el-option
-                    v-for="item in options"
+                    v-for="item in yearlist"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -136,12 +137,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 </el-select>
             </div>
 
-            <div class="col-md-1" >РУП
+            <div class="col-md-1" style="padding: 8px;"> РУП
             </div>
             <div class="col-md-3"  >  
-                <el-select v-model="value" clearable placeholder="Выберите"  style="width: 100%;" >
+                <el-select v-model="filter_rup" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
-                    v-for="item in options"
+                    v-for="item in rups"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -186,10 +187,56 @@ $this->params['breadcrumbs'][] = $this->title;
             </el-table-column>
             <el-table-column label="Объем учебного времени">
                 <el-table-column
-                    label="Объем учебного времени"
-                    prop="name">
+                    label="Всего"
+                    prop="htotal">
                 </el-table-column>
+                <el-table-column
+                    label="1 сем."
+                    prop="hsem1">
+                </el-table-column>                
+                <el-table-column
+                    label="теор."
+                    prop="hteor1">
+                </el-table-column>                
+                <el-table-column
+                    label="прак., лаб."
+                    prop="hprakt1">
+                </el-table-column> 
+                <el-table-column
+                    label="2 сем."
+                    prop="hsem2">
+                </el-table-column>                
+                <el-table-column
+                    label="теор."
+                    prop="hteor2">
+                </el-table-column>                
+                <el-table-column
+                    label="прак., лаб."
+                    prop="hprakt2">
+                </el-table-column>                                
             </el-table-column>
+            <el-table-column label="Форма контроля">
+                <el-table-column
+                    label="Экзамен"
+                    prop="exam1">
+                </el-table-column>
+                <el-table-column
+                    label="Зачет"
+                    prop="exam2">
+                </el-table-column>                
+                <el-table-column
+                    label="Контр."
+                    prop="exam3">
+                </el-table-column>                
+            </el-table-column>
+            <el-table-column
+                label="Практика"
+                prop="hsem1">
+            </el-table-column>                
+            <el-table-column
+                label="Назначенные преподаватели"
+                prop="hteor1">
+            </el-table-column>                
 
         </el-table>
 
@@ -200,37 +247,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <script>
         var startApp = {};
         var init = function () {
-            startApp = new Vue({
+            wlApp = new Vue({
                 el: '#app',
                 data: {
-                    active_step: 0, 
-                    //return { visible: false }
-                    cmb_regions: [
-                        { value: '1', label: 'Карагандинская область' }
-                    ],
-                    cmb_regions_value: '1',
 
-                    cmb_colleges: [
-                        { value: '1', label: 'Абайский многопрофильный колледж' }
-                        , { value: '2', label: 'Аграрный колледж имени Галыма Жарылгапова' }
-                        , { value: '3', label: 'Балхашский гуманитарно-технический колледж' }
-                        , { value: '4', label: 'Балхашский колледж сервиса' }
-                        , { value: '5', label: 'Бухар-Жырауский агротехнический колледж' }
-                        , { value: '6', label: 'Горно-металлургический колледж' }
-                    ],
-                    cmb_colleges_value: '1',
 
-                    abi_input_iin: '',
-                    abi_input_email: '',
-                    abi_input_phone: '',
-
-                    form_is_agreement: false,
-                    search_number: '',
-                    search_result_status_show: false,
-                    search_result_status: 'info', //'warning', 'success',
-                    search_result_text: '',
-                    fdoc: '',
-                    fdoc_label:'Загрузить ..',
+                    currentDate: new Date().toTimeString(),
+                   
 
                     options: [{
                         value: 'Option1',
@@ -249,6 +272,64 @@ $this->params['breadcrumbs'][] = $this->title;
                         label: 'Option5'
                     }],
                     value: '', 
+
+                    //кафедры
+                    departments: [
+                        {   value: '0', label: 'Все' }
+                    ],
+                    filter_department: '0',
+
+                    //группы
+                    studentgroups: [
+                        {   value: '0', label: 'Все' }
+                    ],
+                    filter_studentgroup: '0',
+
+                    //дисциплины
+                    disciplines: [
+                        {   value: '0', label: 'Все' }
+                    ],
+                    filter_discipline: '0',
+                    
+                    //формы обучения
+                    eduforms: [
+                        {   value: '1', label: 'Очная' }
+                        , { value: '2', label: 'Заочная' }
+
+                    ],
+                    filter_eduform: '',  
+
+                    //язык обучения
+                    edulangs: [
+                        {   value: '1', label: 'Казахский' }
+                        , { value: '2', label: 'Русский' }
+                    ],
+                    filter_edulang: '', 
+
+                    //год
+                    yearlist: [
+                        {   value: '2019', label: '2019' }
+                        , { value: '2020', label: '2020' }
+                        , { value: '2021', label: '2021' }
+
+                    ],
+                    filter_year: '2020',
+                    
+                    //курс
+                    courselist: [
+                        {   value: '1', label: '1' }
+                        , { value: '2', label: '2' }
+                        , { value: '3', label: '3' }
+                        , { value: '4', label: '4' }
+                    ],
+                    filter_course: '',
+
+                    //РУПы
+                    rups: [
+                        {   value: '0', label: 'Все' }
+                    ],
+                    filter_rup: '0',
+
                     tableData: [{                        
                         date: '2016-05-06',
                         name: 'Tom',
@@ -270,40 +351,83 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
+                
+                
+                },
+
+                mounted: function () {
+                    // `this` указывает на экземпляр vm
+                    //console.log('Значение a: ' + this.a)
+                    //console.log('load departments');
+                    this.initAppProc()
                 },
 
                 methods: {
-                    step_next() {
-                        if (this.active_step++ > 2) this.active_step = 0;
+
+                    initAppProc(){
+                        this.fetchDepartments();
                     },
 
-                    step_prev() {
-                        if (this.active_step-- < 1) this.active_step = 0;
+                    fetchDepartments() {
+                        //загрузка Кафедр
+
+                        $.ajax({
+                            type: 'GET',
+                            url: '/workload/workloadgroup/get-departments',
+                            data: {
+                                //workorderid: orderId,
+                                //sendercomment: ''
+                            },
+                            success: function (result) {
+                                if (result) {
+                                    wlApp.departments = $.map(JSON.parse(result), function (e) {
+                                        return {
+                                            value: e.id,
+                                            label: e.name
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }                               
+                            },
+                            fail: function (data) {
+                                //console.log(data);
+                                wlApp.$message('Error, request not append');
+                            }
+                        });
+
                     },
 
-                    //проверка заявки
-                    search_request_status() {
-                        var d = new Date();
-                        var n = d.getSeconds();
-                        
-                        if (n<15){
-                            this.search_result_status = 'warning';
-                            this.search_result_text = 'Ваша заявка еще обрабатывается';
-                        }
-                        else {
-                            this.search_result_status = 'success';
-                            this.search_result_text = 'Ваша заявка обработана, результат отправлен вам на эл.почту';
-                        }
-                        this.search_result_status_show = true;
-                        
-                    },
+                    
 
-                    load_doc(event) {
-                        this.fdoc = this.$refs.fdoc.files[0];
-                        this.fdoc_label = this.fdoc.name;
-                        //console.log(event.target.files);
-                        console.log(this.fdoc);
-                    }
+                   
+
+                    
+                    // sendOrderRequestGetExecAccept(orderId) {
+                    //     //console.log(orderId);
+                    //     $.ajax({
+                    //         type: 'POST',
+                    //         url: '/workload/workloadgroup/get-departments',
+                    //         data: {
+                    //             workorderid: orderId,
+                    //             sendercomment: ''
+                    //         },
+                    //         beforeSend: function (xhr) {
+
+                    //             var token = sessionStorage.getItem(startApp.tokenKey);
+                    //             xhr.setRequestHeader("Authorization", "Bearer " + token);
+                    //         },
+                    //         success: function (data) {
+                    //             //console.log(data);
+                    //             startApp.$message('Request append!');
+                    //             startApp.fetchOrderRequests();
+                    //         },
+                    //         fail: function (data) {
+                    //             //console.log(data);
+                    //             startApp.$message('Error, request not append');
+                    //         }
+                    //     });
+                    // },                    
                 }
 
             })
