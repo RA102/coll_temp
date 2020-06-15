@@ -22,7 +22,6 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 use common\models\handbook\Speciality;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /**
@@ -155,16 +154,16 @@ class RupController extends Controller
             'dataProvider'=>$dataProvider,
             'searchModelBlock'=>$searchModelBlock,
             'dataProviderBlock'=>$dataProviderBlock,
-<<<<<<< HEAD
+//<<<<<<< HEAD
             'dataInstitutionDiscipline' => $dataInstitutionDiscipline,
             'templates' => $templates,
             'listData' => $listData,
             'model_2' => $model_2,
             'teachers' => $employeeService->getTeachersActive($institution),
 
-=======
+//=======
             'specialities'=>$specialities,
->>>>>>> origin/develop
+//>>>>>>> origin/develop
         ]);
     }
 

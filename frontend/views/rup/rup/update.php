@@ -234,29 +234,31 @@ else{
 
                     <form id="addQualification" >
                         <div class="row">
-                            <div class="col-2" style="font-weight:bold">Модуль/Дисциплина:</div>
+                            <div class="col-3" style="font-weight:bold">Модуль/Дисциплина:</div>
                             <div class="col-2"><input class="form-control" id="addQualModalModuleModuleIndex" type="text" placeholder="индекс"></div>
-                            <div class="col-5">
+                            <div class="col-7">
+                                <?php
+                                Modal::begin([
+                                    'header' => '<h2>Добавить предмет</h2>',
+                                    'size'=>'modal-md',
+                                    'id' => 'add-discipline',
+                                    'toggleButton' => ['label' => 'Добавить','class'=>'btn btn-success pull-right'],
+                                ]);
+                                echo $this->renderAjax('_formDiscipline',['model'=> new InstitutionDiscipline(), 'teachers' => (new EmployeeService())->getTeachers(\Yii::$app->user->identity->institution)]);
+
+                                Modal::end();
+                                ?>
+                                <!--                                --><?//= Html::a('Добавить', ['/rup/rup/createDiscipline'], ['class' => 'btn btn-primary']) ?>
+                            </div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-9 col-lg-offset-3">
 
                                 <?php $form = ActiveForm::begin() ?>
                                 <?= $form->field($dataInstitutionDiscipline, 'caption_ru')->label(false)->dropDownList($listData,
                                     ['prompt' => 'Выберите шаблон', 'class' => 'form-control', 'id' => 'addQualModalModuleModule']);
                                 ?>
-            <?php ActiveForm::end() ?>
-                            </div>
-                            <div class="col-3">
-                                <?php
-                                    Modal::begin([
-                                    'header' => '<h2>Добавить предмет</h2>',
-                                    'size'=>'modal-md',
-                                    'id' => 'add-discipline',
-                                    'toggleButton' => ['label' => 'Добавить','class'=>'btn btn-success'],
-                                    ]);
-                                    echo $this->renderAjax('_formDiscipline',['model'=> new InstitutionDiscipline(), 'teachers' => (new EmployeeService())->getTeachers(\Yii::$app->user->identity->institution)]);
-
-                                    Modal::end();
-                                ?>
-<!--                                --><?//= Html::a('Добавить', ['/rup/rup/createDiscipline'], ['class' => 'btn btn-primary']) ?>
+                                <?php ActiveForm::end() ?>
                             </div>
                         </div>
 
@@ -962,11 +964,13 @@ $this->registerJs(<<<JS
                 console.log('Ошибка');
             }
         })
-    }) 
+    })
+    $('#editModalModule').find('#editModalModuleModule').attr('disabled', true)
 JS,
     View::POS_READY,
     'my-button-handler'
 );
+
 
 
 ?>

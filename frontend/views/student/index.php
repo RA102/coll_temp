@@ -45,15 +45,16 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 
-        <?php if (intval($searchModel->status) == Student::STATUS_ACTIVE): ?>
-            <div class="card-body">
-                <div style="position: relative;">
-                    <h1><?=$this->title?> (<?=$dataProvider->totalCount?>)</h1>
-                    <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
-                </div>
-            </div>
-        <?php endif; ?>
 
+    <?php if (intval($searchModel->status) == Student::STATUS_ACTIVE): ?>
+        <div class="card-body">
+            <div style="position: relative;">
+                <h1><?=$this->title?> (<?=$dataProvider->totalCount?>)</h1>
+                <?= Html::a('Добавить', ['create'], ['class' => 'title-action btn btn-primary']) ?>
+            </div>
+        </div>
+    <?php endif; ?>
+    <div class="col-12 mb-4">
         <?php if (intval($searchModel->status) !== Student::STATUS_ACTIVE): ?>
             <?= Html::submitButton(
                 'Восстановить',
@@ -96,6 +97,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ); ?>
         <?php endif; ?>
+    </div>
+    <div class="col-12 mt-4">
         <?= GridView::widget([
             'layout' =>  "{items}\n{pager}",
             'dataProvider' => $dataProvider,
@@ -121,8 +124,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'middlename',
                 'birth_date:date',
                 [
-                    'attribute' => 'group.caption',
-                    'value' => "group.caption.ru"
+                    'attribute' => 'group_id',
+//                    'filter' => 'filter',
+                    'value' => "group.caption.ru",
                 ],
 //                [
 //                    'attribute' => 'Группа',
@@ -197,8 +201,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
         ]); ?>
-    </div>
     <?= Html::endForm();?>
+    </div>
 </div>
 
 

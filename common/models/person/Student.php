@@ -23,12 +23,12 @@ class Student extends Person
         $this->type = Person::TYPE_STUDENT;
     }
 
-    public function attributeLabels()
-    {
-        return [
-            'group.caption' => 'Группа',
-        ];
-    }
+//    public function attributes()
+//    {
+//        return [
+//            'group' => 'group_id',
+//        ];
+//    }
 
     /**
      * @return \yii\db\ActiveQuery

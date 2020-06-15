@@ -9,6 +9,7 @@ use common\models\person\Person;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\person\Student;
+use yii\db\Expression;
 use yii\db\ActiveQuery;
 
 /**
@@ -36,7 +37,7 @@ class StudentSearch extends Student
             [['id', 'status', 'sex', 'nationality_id', 'is_pluralist', 'birth_country_id', 'birth_city_id', 'oid', 'alledu_id', 'alledu_server_id', 'pupil_id', 'owner_id', 'server_id', 'portal_uid', 'type'], 'integer'],
             [['nickname', 'firstname', 'lastname', 'middlename', 'birth_date', 'iin', 'birth_place', 'language', 'photo', 'create_ts', 'delete_ts', 'import_ts', 'institution_id'], 'safe'],
             [['is_subscribed'], 'boolean'],
-//            ['group.caption', 'each', 'rule' => ['string']],
+            [['group_id'], 'string']
         ];
     }
 
@@ -134,6 +135,7 @@ class StudentSearch extends Student
             'create_ts' => $this->create_ts,
             'delete_ts' => $this->delete_ts,
             'import_ts' => $this->import_ts,
+            'group' => $this->group_id
         ]);
 
         $query->andFilterWhere(['ilike', 'nickname', $this->nickname])
@@ -146,8 +148,8 @@ class StudentSearch extends Student
             ->andFilterWhere(['ilike', 'photo', $this->photo]);
 //            ->andFilterWhere(['like', 'link.student_group_link.group_id.group.id', $this->group->id]);
 
-        $query->JoinWith('link.student_group_link')
-            ->andFilterWhere(['like', 'group', $this->group_id]);
+        $query->andFilterWhere(['ilike', Group::tableName().'caption', $this->group_id]);
+//        $query->andFilterWhere(new Expression('classes::string[] @> ARRAY[' . $this->classes . ']::string[]'));
 
 
         return $dataProvider;

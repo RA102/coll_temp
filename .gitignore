@@ -33,3 +33,11 @@ phpunit.phar
 
 # vagrant runtime
 /.vagrant
+
+
+# add ignore all log
+*.log
+
+# add ignore all temp(tmp)
+temp.*
+tmp.*
