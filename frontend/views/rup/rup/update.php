@@ -136,7 +136,7 @@ else{
                             <div class="col-2"><input class="form-control" id="editModalModuleModuleIndex" type="text" placeholder="индекс"></div>
                             <div class="col-7"><input class="form-control" id="editModalModuleModule" type="text"></div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-3">Входит в модуль:</div>
                             <div class="col-9"><input class="form-control" id="editModalModuleInModule" type="text" disabled></div>
@@ -154,7 +154,7 @@ else{
                             <div class="col-3"> </div>
                             <div class="col-3" style="font-weight:bold">Не распределено: <input class="form-control" id="editModalModuleAllTimeNeraspred" type="text" disabled="true"></div>
                         </div>
-                        
+
                         <br>
                         <div class="row">
                             <div class="col-3" style="font-weight:bold">Объем учебного времени:</div>
@@ -166,42 +166,41 @@ else{
                         <div class="row">
                             <div class="col-12" style="font-weight:bold">Время по семестрам:</div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">1 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime1" type="number"></div>
-                            
+
                             <div class="col-1">2 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime2" type="number"></div>
-                        </div>               
+                        </div>
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">3 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime3" type="number"></div>
-                            
+
                             <div class="col-1">4 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime4" type="number"></div>
-                        </div>               
+                        </div>
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">5 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime5" type="number"></div>
-                            
+
                             <div class="col-1">6 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime6" type="number"></div>
-                        </div>               
+                        </div>
                         <div class="row">
                             <div class="col-3"> </div>
                             <div class="col-1">7 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime7" type="number"></div>
-                            
+
                             <div class="col-1">8 сем:</div>
                             <div class="col-2"><input class="form-control semEditEdit"  id="editModalModuleTime8" type="number"></div>
-                        </div>               
-                        
-                        <br>
+                        </div>
 
+                        <br>
 
                         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                         <input type="text" class="hidden" id="editModalID">
@@ -239,24 +238,24 @@ else{
                             <div class="col-7">
                                 <?php
                                 Modal::begin([
-                                    'header' => '<h2>Добавить предмет</h2>',
-                                    'size'=>'modal-md',
-                                    'id' => 'add-discipline',
-                                    'toggleButton' => ['label' => 'Добавить','class'=>'btn btn-success pull-right'],
-                                ]);
-                                echo $this->renderAjax('_formDiscipline',['model'=> new InstitutionDiscipline(), 'teachers' => (new EmployeeService())->getTeachers(\Yii::$app->user->identity->institution)]);
-
+                                        'header' => '<h2>Добавить дисциплину</h2>',
+                                        'size'=>'modal-md',
+                                        'id' => 'add-discipline',
+                                        'toggleButton' => ['label' => 'Добавить','class'=>'btn btn-success pull-right'],
+                                    ]);
+                                    echo $this->renderAjax('_formDiscipline', [
+                                        'model' => new InstitutionDiscipline(),
+                                        'teachers' => (new EmployeeService())->getTeachers(\Yii::$app->user->identity->institution)
+                                    ]);
                                 Modal::end();
-                                ?>
-                                <!--                                --><?//= Html::a('Добавить', ['/rup/rup/createDiscipline'], ['class' => 'btn btn-primary']) ?>
+//                                ?>
                             </div>
                         </div>
                         <div class="row pt-2">
-                            <div class="col-9 col-lg-offset-3">
-
+                            <div class="col-9 col-lg-offset-3 col-md-offset-3 col-xs-offset-3">
                                 <?php $form = ActiveForm::begin() ?>
                                 <?= $form->field($dataInstitutionDiscipline, 'caption_ru')->label(false)->dropDownList($listData,
-                                    ['prompt' => 'Выберите шаблон', 'class' => 'form-control', 'id' => 'addQualModalModuleModule']);
+                                    ['prompt' => 'Выбрать дисциплину', 'class' => 'form-control', 'id' => 'addQualModalModuleModule']);
                                 ?>
                                 <?php ActiveForm::end() ?>
                             </div>
@@ -344,7 +343,28 @@ else{
 <!--    END OF BIG UPDATE WINDOW-->
 
 
-    <script>
+</div>
+    <style>
+        body {
+            padding-right: 0 !important;
+        }
+        b{
+            padding: 10px;
+        }
+        tbody tr:hover{
+            !important;
+            background-color: lightgoldenrodyellow;
+        }
+        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+            background-color: lightgoldenrodyellow;
+        }
+
+    </style>
+</div>
+
+
+<?php
+$this->registerJs(<<<JS
         //getParams in GET param;
         var queryDict = {}
         location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]});
@@ -355,7 +375,7 @@ else{
         else{
             $('.rup-sub-block-index').show();
         }
-        $( document ).ready(function() {
+        $(document).ready(function() {
             if (this.id != null){
                 $.ajax({
                     url: '/rup/rup-subjects/get-info',
@@ -475,15 +495,13 @@ else{
 
         $( '#addModalModule' ).on('shown.bs.modal', function(event){
             document.getElementById("addQualification").reset();
-            var button = $(event.relatedTarget);
-            var ModalModuleId=button.attr('moduleid');
+            let ModalModuleId = $(event.relatedTarget).attr('moduleid');
 
 
             $.ajax({
                 url: "/rup/rup-module/getmoduleinfo?id="+ModalModuleId,
                 context: document.body,
                 success: function(data){
-                    // console.log(ModalModuleId);
                     $('#moduleAppendId').val(parseInt(ModalModuleId));
                     $( ".semEdit" ).prop( "disabled", true );
                     $( ".allTimePart" ).prop( "disabled", true );
@@ -873,17 +891,7 @@ else{
         $('#editModalModuleAllTime').keypress(function(e)
         {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
             return false;});
-        ////////////////////////////////////////////////////
-        // ////////Theory zapret na string only integer
-        // $('#addQualModalModuleFormControl1').keypress(function(e)
-        // {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
-        //     return false;});
-        // $('#addQualModalModuleFormControl2').keypress(function(e)
-        // {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
-        //     return false;});
-        // $('#addQualModalModuleFormControl3').keypress(function(e)
-        // {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
-        //     return false;});
+    
         $('.semEdit').keypress(function(e)
         {if(e.which!=8 && e.which!=0 && e.which!=109 && e.which!=188 && e.which!=190 && (e.which<48 || e.which>57))
             return false;});
@@ -901,61 +909,23 @@ else{
             return false;});
         ////////////////////////////////////////////////////
 
-        // $('#subject').on('beforeSubmit', function (event) {
-        //
-        //     let form = $(this);
-        //     let data = $(this).serialize();
-        //
-        //     $.ajax({
-        //         url: form.attr("action"),
-        //         data: data,
-        //         success: function (data) {
-        //             $('#add-discipline').find('.close').trigger('click');
-        //         }
-        //     });
-        // }).on('submit', function(e){
-        //     e.preventDefault();
-        // });
-
-
-    </script>
-</div>
-    <style>
-        body {
-            padding-right: 0 !important;
-        }
-        b{
-            padding: 10px;
-        }
-        tbody tr:hover{
-            !important;
-            background-color: lightgoldenrodyellow;
-        }
-        .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-            background-color: lightgoldenrodyellow;
-        }
-
-    </style>
-</div>
-
-
-<?php
-$this->registerJs(<<<JS
-    $('#create-ajax').on('click', function (event) {
+        
+        $('#create-ajax').on('click', function (event) {
         event.preventDefault();
-        let data = $('#form-create').serialize();
-        let name = $('#institutiondiscipline-caption_ru').val();
-        console.log(name);
+        let caption_ru = $("input[name*='InstitutionDiscipline[caption_ru]']").val();
+        let caption_kk = $("input[name*='InstitutionDiscipline[caption_kk]']").val();
+        console.log(caption_kk);
+
+        // let name = $('#institutiondiscipline-caption_ru').val();
         $('#add-discipline').fadeOut();
         $.ajax({
             url: window.location.origin +'/institution-discipline/create',
             type: 'post',
-            data: data,
+            data: {'InstitutionDiscipline': {'caption_ru': caption_ru, 'caption_kk': caption_kk}},
             success: function(data, textStatus){
-                    console.log(textStatus);
+                    console.log(data);
                     if (textStatus == 'success'){
-                    $('#addQualModalModuleModule').append($('<option></option>').attr('value', data).text(name));
-                    // $('#addQualModuleButton').trigger('click');
+                    $('#addQualModalModuleModule').append($('<option></option>').attr('value', data).text(caption_ru));
                     let close = $('#add-discipline').children('.close');
                     close.click();
                 }
@@ -965,12 +935,11 @@ $this->registerJs(<<<JS
             }
         })
     })
-    $('#editModalModule').find('#editModalModuleModule').attr('disabled', true)
+    $('#editModalModule').find('#editModalModuleModule').attr('disabled', true);
+        
 JS,
-    View::POS_READY,
-    'my-button-handler'
+    View::POS_END,
+    'view-update'
 );
-
-
-
 ?>
+

@@ -6,6 +6,7 @@ use common\models\organization\InstitutionSpecialityInfo;
 use frontend\models\rup\Profile;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
 use kartik\select2\Select2; 
@@ -66,9 +67,7 @@ use yii\web\JsExpression;
 </div>
 
 <?php
-$js = <<<JS
-(function() {
-    
+$this->registerJs(<<<JS
     function get_specialities(){
         //console.log("yes");
         $.ajax({
@@ -81,12 +80,6 @@ $js = <<<JS
             }
         });        
     };
-
-    // $(document).ready(function() {
-    //     get_specialities(); 
-    // });
-
-
     $('#ruproots-profile_code').on('change',function (e) {
         e.preventDefault();
         get_specialities(); 
@@ -94,41 +87,8 @@ $js = <<<JS
 
     });
 
-
-
-
-})();
-JS;
-$this->registerJs($js);
+JS,
+    View::POS_READY,
+    'view-_form'
+);
 ?>
-
-<script>
-        // $(document).ready(function() {
-        //     $.ajax({
-        //         url: '/rup/rup/get-specialities',
-        //         data:{'parent_code':'134567'},
-        //         success: function() {
-        //             // alert(data);
-        //             console.log(data);
-        //         }
-        //     });
-        // });
-        // $('#w0').submit(function (e) {
-        //     e.preventDefault();
-        //     alert('alo!');
-        //     return false;
-        // });
-
-        // $('#ruproots-profile_code').on('change',function (e) {
-        //     e.preventDefault();
-        //     console.log('profile-change!');
-        //     // $.ajax({
-        //     //     type: 'GET',
-        //     //     url: '/rup/rup/get-specialities',
-        //     //     data: 'parent_code=135340', //+ $("input[name='Draw[date]_submit']").val().split("/").join("-") + '&self_id=0', //$('#draw-date').serialize(),
-        //     //     success: function(data){
-        //     //         $("#ruproots-spec_code").html( data );
-        //     //     }
-        //     // });
-        // });
-</script> 

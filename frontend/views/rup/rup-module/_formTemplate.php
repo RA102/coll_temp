@@ -12,12 +12,13 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="rup-sub-block-form">
+
     <?php $templates=\frontend\models\rup\RupModule::find()->where(['isTemplate'=>true])->all();?>
     <?php $listData=ArrayHelper::map($templates,'id','name');?>
 
     <?php $form = ActiveForm::begin(['options'=>['id'=>'addModuleFormAjaxSerialazi'
         //,'style' => "width: 600px;"
-    
+
     ]]); ?>
 
     <?= $form->field($model,'isTemplate')->dropDownList($listData,
