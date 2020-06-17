@@ -137,7 +137,8 @@ class RupController extends Controller
         }
 
         $dataInstitutionDiscipline = new InstitutionDiscipline();
-        $templates = InstitutionDiscipline::find()->all();
+        $institution = \Yii::$app->user->identity->institution;
+        $templates = InstitutionDiscipline::find()->where(['or', ['institution_id'=> 0], ['institution_id' => $institution->id]])->andWhere(['is', 'delete_ts', null ])->limit(200)->all();
         $listData = ArrayHelper::map($templates, 'id', 'caption_ru');
 
 
@@ -154,7 +155,7 @@ class RupController extends Controller
         ->asArray()->all();
 
         $model_2 = new InstitutionDiscipline();
-        $institution = \Yii::$app->user->identity->institution;
+        //$institution = \Yii::$app->user->identity->institution;
         $employeeService = new EmployeeService();
         $employeeService->getTeachersActive($institution);
 
