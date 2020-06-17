@@ -2,8 +2,11 @@
 
     <section class="sidebar">
         <?php
+        use common\models\person\Person;
+
+use yii\web\User;
         $commissionService = new \common\services\reception\CommissionService;
-        $person = \Yii::$app->user->identity;
+        $person = Person::findOne(\Yii::$app->user->identity->getId());
         $activeCommission = $commissionService->getActiveInstitutionCommission($person->institution);
         $isInstitutionAdvanced = $person->institutionAdvanced();
         ?>
@@ -117,30 +120,31 @@
                                         'label' => 'Рабочие учебные планы',
                                         'url'   => ['/rup/rup'],
                                     ],
-                                    [
-                                        'label' => 'Обязательные дисциплины',
-                                        'url'   => ['/plan/required'],
-                                    ],
-                                    [
-                                        'label' => 'Дисциплины по выбору',
-                                        'url'   => ['/plan/optional'],
-                                    ],
-                                    [
-                                        'label' => 'Факультативные курсы',
-                                        'url'   => ['/plan/facultative'],
-                                    ],
-                                    [
-                                        'label' => 'Практика',
-                                        'url' => ['/plan/practice'],
-                                    ],
-                                    [
-                                        'label' => 'Контроль знаний',
-                                        'url' => ['/plan/exams'],
-                                    ],
-                                    [
-                                        'label' => 'Профессиональная практика',
-                                        'url' => ['/plan/professional-practice'],
-                                    ],
+
+                                    // [
+                                    //     'label' => 'Обязательные дисциплины',
+                                    //     'url'   => ['/plan/required'],
+                                    // ],
+                                    // [
+                                    //     'label' => 'Дисциплины по выбору',
+                                    //     'url'   => ['/plan/optional'],
+                                    // ],
+                                    // [
+                                    //     'label' => 'Факультативные курсы',
+                                    //     'url'   => ['/plan/facultative'],
+                                    // ],
+                                    // [
+                                    //     'label' => 'Практика',
+                                    //     'url' => ['/plan/practice'],
+                                    // ],
+                                    // [
+                                    //     'label' => 'Контроль знаний',
+                                    //     'url' => ['/plan/exams'],
+                                    // ],
+                                    // [
+                                    //     'label' => 'Профессиональная практика',
+                                    //     'url' => ['/plan/professional-practice'],
+                                    // ],
                                 ],
                             ],
                             [

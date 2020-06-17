@@ -33,10 +33,10 @@ use yii\web\JsExpression;
     <?= $form->field($model, 'captionRu',['options' => ['class' => 'sem']])->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'rup_year',['options' => ['class' => 'trid']])->dropDownList([2020=>'2020',2021=>'2021']) ?>
 
-    <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->dropDownList(ArrayHelper::map(Speciality::find()->where(['type' => '1'])->all(), 'code', 'CaptionWithCode'))->label('Профиль')  ?>
+    <?= $form->field($model, 'profile_code',['options' => ['class' => 'sem']])->dropDownList(ArrayHelper::map($profiles, 'code', 'CaptionWithCode'))->label('Профиль')  ?>
     <?= $form->field($model, 'edu_form',['options' => ['class' => 'trid']])->dropDownList([0=>'Очная',1=>'Заочная']) ?>
 
-    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList(null)->label("Специальность") ?>
+    <?= $form->field($model, 'spec_code',['options' => ['class' => '']])->dropDownList(ArrayHelper::map($specialities, 'code', 'CaptionWithCode'))->label("Специальность") ?>
             
             <!--
     
@@ -80,12 +80,15 @@ $this->registerJs(<<<JS
             }
         });        
     };
+    
     $('#ruproots-profile_code').on('change',function (e) {
         e.preventDefault();
         get_specialities(); 
         //console.log('profile-change!');
 
     });
+
+
 
 JS,
     View::POS_READY,

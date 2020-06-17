@@ -101,14 +101,12 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
                 'format' => 'raw',
                 'contentOptions' => ['class' => 'abracadabra'],
                 'value' => function ($model) {
-<<<<<<< HEAD
+
                     return '<button title="Изменить" data-target="#editModalBlock" data-toggle="modal" style="margin-left:3%;" 
-                            class="btn btn-success edit_qualBlock" qualeditbuttonid="'.$model->id.'"><h7><i class="fas fa-edit"></i></h7></button>'
-                        .'<button title="Удалить" style="margin-left:3%;" 
-=======
-                    return '<button title="Удалить" style="margin-left:3%" 
->>>>>>> ra
-                            class="btn btn-danger deleteModuleButton" modelId="'.$model->id.'"><h7><i class="fas fa-trash"></i></h7></button>'.'</div>';
+                    class="btn btn-success edit_qualBlock" qualeditbuttonid="'.$model->id.'"><h7><i class="fas fa-edit"></i></h7></button>'
+                .'<button title="Удалить" style="margin-left:3%;" 
+                    class="btn btn-danger deleteModuleButton" modelId="'.$model->id.'"><h7><i class="fas fa-trash"></i></h7></button>'.'</div>';
+        
                 },
             ],
 

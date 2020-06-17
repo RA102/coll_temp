@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
         echo  Html::button('Открыть для редактирования', ['id'=>'rupEditOpen','class' => 'btn btn-light btn-margin','style'=>[]]);
         echo  Html::button('Закрыть для редактирования', ['id'=>'rupEditClose','class' => 'btn btn-light btn-margin','style'=>[]]);
         echo Html::a('Экспорт в Excel', ['/rup/rup-block/test'."?rup_id=".$model->rup_id], ['class' => 'btn btn-success']);
-        echo  Html::button('Удалить', ['id'=>'rupEditClose','class' => 'btn btn-danger btn-margin','style'=>[]]);
+        echo  Html::button('Удалить', ['id'=>'rupEditDelete','class' => 'btn btn-danger btn-margin','style'=>[]]);
     ?>
     <?php $form = ActiveForm::begin(['action' => ['/rup/rup/update'],
         'options' => [
@@ -194,6 +194,27 @@ use yii\widgets\ActiveForm;
 
     });
 
+
+    
+    $('#rupEditDelete').on('click',function (e) {
+        var rup_id=$('#ruproots-rup_id').val()
+        e.preventDefault();
+        //$('#rupqualifications-rup_id').val(rup_id);
+        //var param = $('#w2').serialize();
+        //console.log(param);
+        $.ajax({
+            type: 'POST',
+            url: '/rup/rup/delete'+'?id='+$('#ruproots-rup_id').val(),
+            data: '',
+
+            success: function(data){
+                location.reload();
+            }
+        });
+        //$('#w2').fadeToggle();
+        //$('#w2').css('display:none');
+        //$('.modal-backdrop').remove();
+    });
 
     $('#submitQualification').on('click',function (e) {
         var rup_id=$('#ruproots-rup_id').val()

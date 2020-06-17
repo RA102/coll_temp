@@ -78,6 +78,8 @@ class RupRootsSearch extends RupRoots
             ->andFilterWhere(['ilike', 'profile_code', $this->profile_code])
             ->andFilterWhere(['ilike', 'spec_code', $this->spec_code]);
 
+        $query->andWhere('status < 2'); //неудален
+
         return $dataProvider;
     }
 }
