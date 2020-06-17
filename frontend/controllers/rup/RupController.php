@@ -25,6 +25,7 @@ use common\models\handbook\Speciality;
 
 use yii\helpers\Html;
 
+
 /**
  * RupController implements the CRUD actions for RupRoots model.
  */
@@ -155,12 +156,14 @@ class RupController extends Controller
             'dataProvider'=>$dataProvider,
             'searchModelBlock'=>$searchModelBlock,
             'dataProviderBlock'=>$dataProviderBlock,
-            'specialities'=>$specialities,
+
             'dataInstitutionDiscipline' => $dataInstitutionDiscipline,
             'templates' => $templates,
             'listData' => $listData,
             'model_2' => $model_2,
             'teachers' => $employeeService->getTeachersActive($institution),
+
+            'specialities'=>$specialities,
 
         ]);
     }
