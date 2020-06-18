@@ -12,7 +12,7 @@ class m200618_113201_create_institution_department_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('organization.institution_discipline', [
+        $this->createTable('organization.institution_department', [
             'id' => $this->primaryKey(),
             'institution_id' => $this->integer()->notNull(),
             'create_ts' => $this->dateTime()->notNull()->defaultValue('now()'),
@@ -20,8 +20,7 @@ class m200618_113201_create_institution_department_table extends Migration
             'delete_ts' => $this->dateTime()->null(),
         ]);
 
-        $this->createIndex('unique_institution_discipline', 'organization.institution_discipline', ['institution_id'], true);
-        $this->addForeignKey('fk_institution_discipline_2_institution', 'organization.institution_discipline', 'institution_id', 'organization.institution', 'id');
+        $this->createIndex('unique_institution_department', 'organization.institution_department', ['institution_id'], true);
     }
 
     /**
@@ -29,7 +28,6 @@ class m200618_113201_create_institution_department_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropForeignKey('fk_institution_discipline_2_institution', 'organization.institution_discipline');
 
         $this->dropTable('{{%institution_department}}');
     }
