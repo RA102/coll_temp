@@ -203,12 +203,29 @@ return [
     'Discipline Type ENT' => 'Предметы для ЕНТ',
     'Discipline Type Exam' => 'Экзаменационные',
 
-    'Institution Discipline' => 'Предмет',
-    'Institution Disciplines' => 'Предметы',
-    'Institution Discipline ID' => 'Предмет',
+    'Institution Discipline' => 'Дисциплина',
+    'Institution Disciplines' => 'Дисциплины',
+    'Institution Discipline ID' => 'Дисциплина',
     'Discipline ID' => 'Дисциплина',
     'Create Institution Discipline' => 'Добавление предмета',
     'Update Institution Discipline' => 'Редактирование предмета',
+
+    // DEPARTMENTS
+    'Departments' => 'Кафедры',
+    'Create Department' => 'Добавление кафедры',
+    'Update Department' => 'Редактирование кафедры',
+    'Discipline' => 'Дисциплины',
+    'Department Type Standard' => 'Эталонный',
+    'Department Type Optional' => 'Необязательный',
+    'Department Type Elective' => 'Факультатив',
+    'Department Type ENT' => 'Предметы для ЕНТ',
+    'Department Type Exam' => 'Экзаменационные',
+
+    'Institution Departments' => 'Кафедры',
+    'Institution Department ID' => 'Кафедра',
+    'Department ID' => 'Кафедра',
+    'Create Institution Department' => 'Добавление кафедры',
+    'Update Institution Department' => 'Редактирование кафедры',
 
     // COURSES
     'Courses' => 'Курсы',
