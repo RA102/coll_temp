@@ -18,8 +18,8 @@ class InstitutionDepartmentSearch extends InstitutionDepartment
     public function rules()
     {
         return [
-            [['id', 'status', 'institution_id'], 'integer'],
-            [['slug', 'create_ts', 'update_ts', 'delete_ts', 'institution_id'], 'safe'],
+            [['id',  'institution_id'], 'integer'],
+            [['create_ts', 'update_ts', 'delete_ts', 'institution_id'], 'safe'],
         ];
     }
 
@@ -69,14 +69,14 @@ class InstitutionDepartmentSearch extends InstitutionDepartment
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
+            //'status' => $this->status,
             'create_ts' => $this->create_ts,
             'update_ts' => $this->update_ts,
             'delete_ts' => $this->delete_ts,
         ]);
 
-        $query->andFilterWhere(['ilike', json_encode('caption'), $this->caption])
-            ->andFilterWhere(['ilike', 'slug', $this->slug]);
+        $query->andFilterWhere(['ilike', json_encode('caption'), $this->caption]);
+           // ->andFilterWhere(['ilike', 'slug', $this->slug]);
 
 
         return $dataProvider;

@@ -12,8 +12,7 @@ use yii\helpers\ArrayHelper;
  * @property int $id
  * @property int $institution_id
  * @property array $caption
- * @property string $slug
- * @property int $status
+
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
@@ -62,10 +61,10 @@ class InstitutionDepartment extends \yii\db\ActiveRecord
     {
         return [
             [['institution_id'], 'required'],
-            [['institution_id', 'status'], 'default', 'value' => null],
-            [['institution_id', 'status'], 'integer'],
+            [['institution_id'], 'default', 'value' => null],
+            [['institution_id'], 'integer'],
             [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
-            [['slug'], 'string', 'max' => 255],
+            //[['slug'], 'string', 'max' => 255],
             [['caption_ru', 'caption_kk'], 'string'],
         ];
     }
@@ -82,8 +81,8 @@ class InstitutionDepartment extends \yii\db\ActiveRecord
             'caption_ru' => Yii::t('app', 'Caption Ru'),
             'caption_kk' => Yii::t('app', 'Caption Kk'),
             'caption_current' => Yii::t('app', 'Caption Current'),
-            'slug' => Yii::t('app', 'Slug'),
-            'status' => Yii::t('app', 'Status'),
+            //'slug' => Yii::t('app', 'Slug'),
+            //'status' => Yii::t('app', 'Status'),
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
