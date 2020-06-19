@@ -67,6 +67,20 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
         ]) ?>
 
+<!--        <h4>Кафедра</h4>-->
+<!--        --><?//= \yii\grid\GridView::widget([
+//            'summary'      => false,
+//            'showHeader'   => false,
+//            'dataProvider' => new \yii\data\ArrayDataProvider([
+//                'models' => $model->getDepartment()
+//            ]),
+//            'columns'      => [
+//                'caption'
+//            ]
+//        ]) ?>
+
+
+
     </div>
 <?php $this->endBlock() ?>
 <?= $this->render('_layout') ?>

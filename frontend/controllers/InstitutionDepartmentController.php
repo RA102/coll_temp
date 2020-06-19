@@ -2,15 +2,15 @@
 
 namespace frontend\controllers;
 
-
-
-use common\models\organization\InstitutionDepartment;
-use common\services\organization\InstitutionDisciplineService;
 use common\models\organization\InstitutionDiscipline;
+use common\services\organization\InstitutionDepartmentService;
+use common\models\organization\InstitutionDepartment;
 use common\services\person\EmployeeService;
-use frontend\search\InstitutionDisciplineSearch;
+use frontend\search\InstitutionDepartmentSearch;
+use PhpOffice\PhpSpreadsheet\Calculation\Category;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -19,12 +19,12 @@ use yii\filters\VerbFilter;
 use yii\base\Module;
 
 /**
- * InstitutionDisciplineController implements the CRUD actions for InstitutionDiscipline model.
+ * InstitutionDepartmentController implements the CRUD actions for InstitutionDepartment model.
  */
-class InstitutionDisciplineController extends Controller
+class InstitutionDepartmentController extends Controller
 {
     private $institution;
-    private $institutionDisciplineService;
+    private $institutionDepartmentService;
     private $employeeService;
 
     /**
@@ -40,7 +40,7 @@ class InstitutionDisciplineController extends Controller
                         'actions' => [
                             'index', 'view',
                             'create', 'update',
-                            'delete', 'create-ajax'
+                            'delete',
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -56,9 +56,14 @@ class InstitutionDisciplineController extends Controller
         ];
     }
 
-    public function __construct( string $id, Module $module, InstitutionDisciplineService $institutionDisciplineService, EmployeeService $employeeService, array $config = [])
-    {
-        $this->institutionDisciplineService = $institutionDisciplineService;
+    public function __construct(
+        string $id,
+        Module $module,
+        InstitutionDepartmentService $institutionDepartmentService,
+        EmployeeService $employeeService,
+        array $config = []
+    ) {
+        $this->institutionDepartmentService = $institutionDepartmentService;
         $this->employeeService = $employeeService;
         parent::__construct($id, $module, $config);
     }
@@ -74,18 +79,17 @@ class InstitutionDisciplineController extends Controller
     }
 
     /**
-     * Lists all InstitutionDiscipline models.
+     * Lists all InstitutionDepartment models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new InstitutionDisciplineSearch();
+        $searchModel = new InstitutionDepartmentSearch();
         $searchModel->institution_id = $this->institution->id;
-
         //$dataProvider = new ActiveDataProvider([
-          //  'query' => InstitutionDiscipline::find()->andWhere([
-            //    'institution_id' => $this->institution->id /** TODO @see InstitutionDisciplineService::getInstitutionDisciplines() */
-            //])
+        //  'query' => InstitutionDepartment::find()->andWhere([
+        //    'institution_id' => $this->institution->id /** TODO @see InstitutionDepartmentService::getInstitutionDepartments() */
+        //])
         //]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -96,7 +100,7 @@ class InstitutionDisciplineController extends Controller
     }
 
     /**
-     * Displays a single InstitutionDiscipline model.
+     * Displays a single InstitutionDepartment model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -104,62 +108,42 @@ class InstitutionDisciplineController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        /*$teachers = $model->teachers;
-        var_dump($model->teachers[0]);
-        die();*/
         return $this->render('view', [
             'model' => $model,
         ]);
     }
 
     /**
-     * Creates a new InstitutionDiscipline model.
+     * Creates a new InstitutionDepartment model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
+        $model = new InstitutionDepartment();
+        $disciplines = ArrayHelper::map(InstitutionDiscipline::find()->all(), 'id', 'caption_current');
 
-
-        $model = new InstitutionDiscipline();
-        $departments = ArrayHelper::map(InstitutionDepartment::find()->all(), 'id', 'caption_current');
-
-        if (Yii::$app->request->isAjax) {
-
-            $model->load(Yii::$app->request->post());
-            $model->institution_id = Yii::$app->user->identity->institution->id;
-            $model->save();
-            return "$model->id";
-        }
-
-        if ($model->load(Yii::$app->request->post())) {
-            $model->institution_id = Yii::$app->user->identity->institution->id;
-            if ($model->save()) {
-                   return $this->redirect(['view', 'id' => $model->id]);
+        if(Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post())) {
+                $model->institution_id = Yii::$app->user->identity->institution->id;
+                if ($model->save()) {
+                    return $this->redirect(['index', 'id' => $model->id]);
+                }
+            }
+            $discipline = Yii::$app->request->post('InstitutionDepartment')['disciplines'];
+            if ($model->saveDisciplines($discipline)) {
+                return $this->redirect(['index', 'id' => $model->id]);
             }
         }
 
         return $this->render('create', [
             'model' => $model,
-            'teachers' => $this->employeeService->getTeachersActive($this->institution),
-            'departments' => $departments
+            'disciplines' => $disciplines
         ]);
     }
 
-    public function actionCreateAjax()
-    {
-        $model = new InstitutionDiscipline();
-
-        if (Yii::$app->request->post()) {
-            $model->load(Yii::$app->request->post());
-            $model->institution_id = Yii::$app->user->identity->institution->id;
-            $model->save();
-        }
-
-    }
-
     /**
-     * Updates an existing InstitutionDiscipline model.
+     * Updates an existing InstitutionDepartment model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -168,32 +152,32 @@ class InstitutionDisciplineController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $departments = ArrayHelper::map(InstitutionDepartment::find()->all(), 'id', 'caption_current');
+        $disciplines = ArrayHelper::map(InstitutionDiscipline::find()->all(), 'id', 'caption_current');
         if(Yii::$app->request->isPost)
         {
+            $discipline = Yii::$app->request->post('InstitutionDepartment')['disciplines'];
+            if ($model->saveDisciplines($discipline)) {
+                return $this->redirect(['index', 'id' => $model->id]);
+            }
             if ($model->load(Yii::$app->request->post())) {
                 $model->institution_id = Yii::$app->user->identity->institution->id;
                 if ($model->save()) {
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['index', 'id' => $model->id]);
                 }
             }
-            $department = Yii::$app->request->post('InstitutionDiscipline')['department_id'];
-            if($model->saveDepartment($department)) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-
         }
 
 
         return $this->render('update', [
             'model' => $model,
-            'teachers' => $this->employeeService->getTeachersActive($this->institution),
-            'departments' => $departments,
+            'disciplines' => $disciplines
         ]);
+
+
     }
 
     /**
-     * Deletes an existing InstitutionDiscipline model.
+     * Deletes an existing InstitutionDepartment model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -207,21 +191,21 @@ class InstitutionDisciplineController extends Controller
     }
 
     /**
-     * Finds the InstitutionDiscipline model based on its primary key value.
+     * Finds the InstitutionDepartment model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return InstitutionDiscipline the loaded model
+     * @return InstitutionDepartment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        /** @var InstitutionDiscipline|null $model */
-        $model = InstitutionDiscipline::find()
+        /** @var InstitutionDepartment|null $model */
+        $model = InstitutionDepartment::find()
             ->andWhere([
                 'institution_id' => $this->institution->id,
                 'id' => $id,
             ])
-            ->one(); /** @see InstitutionDisciplineService::getInstitutionDisciplines() */
+            ->one(); /** @see InstitutionDepartmentService::getInstitutionDepartments() */
 
         if ($model !== null) {
             return $model;

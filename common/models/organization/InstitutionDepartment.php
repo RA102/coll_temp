@@ -3,60 +3,40 @@
 namespace common\models\organization;
 
 use common\helpers\SchemeHelper;
-use common\models\Discipline;
-use common\models\person\Employee;
 use Yii;
-use yii\db\ArrayExpression;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "organization.institution_discipline".
+ * This is the model class for table "organization.institution_department".
  *
  * @property int $id
  * @property int $institution_id
  * @property array $caption
  * @property string $slug
- * @property int[] $types
  * @property int $status
  * @property string $create_ts
  * @property string $update_ts
  * @property string $delete_ts
- * @property int[] $teachers
- * @property int $department_id
  *
  * @property Institution $institution
- * @property Discipline $discipline
  */
-class InstitutionDiscipline extends \yii\db\ActiveRecord
+class InstitutionDepartment extends \yii\db\ActiveRecord
 {
-    const TYPE_STANDARD = 1; // эталонный
-    const TYPE_OPTIONAL = 2; // необязательный
-    const TYPE_ELECTIVE = 3; // факультатив
-    const TYPE_ENT = 4; // предметы для ент
-    const TYPE_EXAM = 5; // экзаменационные
-
     public $caption_current;
     public $caption_ru;
     public $caption_kk;
+
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return SchemeHelper::ORGANIZATION . 'institution_discipline';
+        return SchemeHelper::ORGANIZATION . 'institution_department';
     }
 
     public function afterFind()
     {
         parent::afterFind();
-
-        if ($this->types instanceof ArrayExpression) {
-            $this->types = $this->types->getValue();
-        }
-
-        if ($this->teachers instanceof ArrayExpression) {
-            $this->teachers = $this->teachers->getValue();
-        }
 
         $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';
         $this->caption_current = $this->caption[$currentLanguage] ?? $this->caption['ru'];
@@ -74,6 +54,7 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -82,13 +63,7 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
         return [
             [['institution_id'], 'required'],
             [['institution_id', 'status'], 'default', 'value' => null],
-            [['department_id'], 'default', 'value' => []],
-            [['teachers'], 'default', 'value' => []],
-            [['types'], 'default', 'value' => []],
             [['institution_id', 'status'], 'integer'],
-            [['department_id'], 'each', 'rule' => ['integer']],
-            [['teachers'], 'each', 'rule' => ['integer']],
-            [['types'], 'each', 'rule' => ['integer']],
             [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
             [['slug'], 'string', 'max' => 255],
             [['caption_ru', 'caption_kk'], 'string'],
@@ -108,13 +83,11 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
             'caption_kk' => Yii::t('app', 'Caption Kk'),
             'caption_current' => Yii::t('app', 'Caption Current'),
             'slug' => Yii::t('app', 'Slug'),
-            'types' => Yii::t('app', 'Discipline Type'),
             'status' => Yii::t('app', 'Status'),
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
-            'teachers' => Yii::t('app', 'Teachers'),
-            'department_id' => Yii::t('app', 'Department'),
+            'discipline_id' => Yii::t('app', 'Discipline'),
         ];
     }
 
@@ -130,23 +103,30 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
      * @deprecated
      * @return \yii\db\ActiveQuery
      */
-    public function getTeachers()
+
+      public function getDisciplines()
     {
-        return Employee::find()->where(['id' => $this->teachers])->all();
+        return $this->hasMany(InstitutionDiscipline::class, ['department_id' => 'id']);
     }
 
-    public function getDepartment()
+    public function saveDisciplines($discipline_id)
     {
-        return $this->hasOne(InstitutionDepartment::class, ['id' => 'department_id']);
-    }
+        $arr = ArrayHelper::map($this->disciplines, 'id', 'id');
+            foreach ($discipline_id as $one)
+            {
 
-    public function saveDepartment($department_id)
-    {
-        $department = InstitutionDepartment::findOne($department_id);
+              if(!in_array($one,$arr)){
+               $model = InstitutionDiscipline::findOne($one);
+                  $this->link('disciplines', $model);
+              }
 
-        if($department != null) {
-            $this->link('department', $department);
-            return true;
-        }
+            if(isset($arr[$one])){
+                $model = InstitutionDiscipline::findOne($one);
+                $model->department_id = null;
+                return $model->save();
+                unset($arr[$one]);
+            }
+            }
+
     }
 }
