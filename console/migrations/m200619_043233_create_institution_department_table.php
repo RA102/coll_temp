@@ -15,6 +15,7 @@ class m200618_113201_create_institution_department_table extends Migration
         $this->createTable('organization.institution_department', [
             'id' => $this->primaryKey(),
             'institution_id' => $this->integer()->notNull(),
+            'caption' => $this->{},
             'create_ts' => $this->dateTime()->notNull()->defaultValue('now()'),
             'update_ts' => $this->dateTime()->notNull()->defaultValue('now()'),
             'delete_ts' => $this->dateTime()->null(),
