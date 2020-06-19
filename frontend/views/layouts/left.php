@@ -195,6 +195,11 @@
                                 'url'   => ['/institution-discipline']
                             ],
                             [
+                                'label' => Yii::t('app', 'Кафедры'),
+                                'icon'  => 'file-code-o',
+                                'url'   => ['/institution-department']
+                            ],
+                            [
                                 'label' => Yii::t('app', 'Курсы'), 
                                 'icon' => 'file-code-o', 
                                 'url' => ['/course/index']
