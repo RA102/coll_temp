@@ -111,21 +111,24 @@ class InstitutionDepartment extends \yii\db\ActiveRecord
     public function saveDisciplines($discipline_id)
     {
         $arr = ArrayHelper::map($this->disciplines, 'id', 'id');
-            foreach ($discipline_id as $one)
-            {
 
-              if(!in_array($one,$arr)){
-               $model = InstitutionDiscipline::findOne($one);
-                  $this->link('disciplines', $model);
-              }
 
-            if(isset($arr[$one])){
+        $arr = ArrayHelper::map($this->disciplines, 'id', 'id');
+        foreach ($discipline_id as $one)
+        {
+            if(!in_array($one,$arr)){
                 $model = InstitutionDiscipline::findOne($one);
-                $model->department_id = null;
-                return $model->save();
-                unset($arr[$one]);
+                $this->link('disciplines', $model);
             }
-            }
+        }
+
+//            if(isset($arr[$one])){
+//                $model = InstitutionDiscipline::findOne($one);
+//                $model->department_id = null;
+//                return $model->save();
+//                unset($arr[$one]);
+//            }
+
 
     }
 }

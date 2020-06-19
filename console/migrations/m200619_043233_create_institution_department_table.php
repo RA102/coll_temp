@@ -21,7 +21,7 @@ class m200619_043233_create_institution_department_table extends Migration
             'delete_ts' => $this->dateTime()->null(),
         ]);
 
-        $this->createIndex('unique_institution_department', 'organization.institution_department', ['institution_id'], true);
+        $this->createIndex('unique_institution_department', 'organization.institution_department', ['institution_id'], false);
     }
 
     /**

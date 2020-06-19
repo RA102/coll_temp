@@ -124,15 +124,16 @@ class InstitutionDepartmentController extends Controller
         $disciplines = ArrayHelper::map(InstitutionDiscipline::find()->all(), 'id', 'caption_current');
 
         if(Yii::$app->request->isPost) {
+            $discipline = Yii::$app->request->post('InstitutionDepartment')['disciplines'];
+
             if ($model->load(Yii::$app->request->post())) {
                 $model->institution_id = Yii::$app->user->identity->institution->id;
                 if ($model->save()) {
+                    if ($model->saveDisciplines($discipline)) {
+                        return $this->redirect(['index', 'id' => $model->id]);
+                    }
                     return $this->redirect(['index', 'id' => $model->id]);
                 }
-            }
-            $discipline = Yii::$app->request->post('InstitutionDepartment')['disciplines'];
-            if ($model->saveDisciplines($discipline)) {
-                return $this->redirect(['index', 'id' => $model->id]);
             }
         }
 
