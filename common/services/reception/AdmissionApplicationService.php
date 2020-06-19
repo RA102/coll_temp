@@ -183,7 +183,7 @@ class AdmissionApplicationService
             //if (Entrant::find()->where(['id' => $admissionApplication->person_id])->one() == null) {
             if ($entrant == null) {
                 $person = $this->personService->create(
-                    $entrant->one(),
+                    $entrant[0], //$entrant->one(),
                     $admissionApplication->institution_id,
                     $admissionApplication->properties['email'],
                     PersonCredentialHelper::TYPE_EMAIL,
