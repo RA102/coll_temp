@@ -76,6 +76,7 @@ class Person extends \yii\db\ActiveRecord implements IdentityInterface
     const STATUS_ACTIVE = 1;
     const STATUS_FIRED = 2;
     const STATUS_DELETED = 0;
+    const STATUS_PLURALIST = 4;
 
     /**
      * {@inheritdoc}

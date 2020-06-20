@@ -167,10 +167,12 @@ class AdmissionApplicationController extends Controller
     public function actionCreate()
     {
         $admissionApplicationForm = new AdmissionApplicationForm();
+        $institution = Yii::$app->user->identity->institution;
 
         if ($admissionApplicationForm->load(Yii::$app->request->post()) && $admissionApplicationForm->validate()) {
+
             $commission = $this->commissionService->getActiveInstitutionCommission(
-                Yii::$app->user->identity->institution
+                $institution
             );
             if (!$commission) {
                 Yii::$app->session->setFlash('error',
@@ -180,8 +182,9 @@ class AdmissionApplicationController extends Controller
             $admissionApplication = $this->admissionApplicationService->create(
                 $admissionApplicationForm,
                 $commission->id,
-                0,
-                Yii::$app->user->identity->institution->id
+                $institution->id, 
+                0
+                
             );
 
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
@@ -189,7 +192,7 @@ class AdmissionApplicationController extends Controller
 
         return $this->render('create', [
             'admissionApplicationForm' => $admissionApplicationForm,
-            'specialities'             => Yii::$app->user->identity->institution->specialities
+            'specialities'             => $institution->specialities
         ]);
     }
 
