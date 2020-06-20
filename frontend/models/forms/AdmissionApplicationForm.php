@@ -96,11 +96,11 @@ class AdmissionApplicationForm extends Model
                     'iin',
                     'firstname',
                     'lastname',
-                    'sex',
+                    //'sex',
                     'birth_date',
                     'application_date',
-                    'nationality_id',
-                    'citizenship_location',
+                    //'nationality_id',
+                    //'citizenship_location',
 
                     'filing_form',
                     'education_form',
@@ -110,7 +110,8 @@ class AdmissionApplicationForm extends Model
                     'needs_dormitory',
 
                     'education_pay_form',
-                    'based_classes'
+                    'based_classes',
+                    'email'
                 ],
                 'required'
             ],

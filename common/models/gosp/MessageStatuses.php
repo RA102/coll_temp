@@ -16,7 +16,12 @@ use yii\helpers\Json;
  */
 class MessageStatuses extends \yii\db\ActiveRecord
 {
+    const STATE_CREATED = 0; //заявка создана
     const STATE_RECEIVED = 1; //заявка получена
+    const STATE_NOTIFICATED = 2; //заявка (IN_PROCESS) обрабатывается
+    const STATE_SUCCESS = 3; //студент зачислен
+    const STATE_REJECTED = 4; //заявка отклонена
+
 
    // add the function below:
     public static function getDb() {
@@ -41,7 +46,7 @@ class MessageStatuses extends \yii\db\ActiveRecord
             [['id', 'messagestatus'], 'integer'],
             
             [['statusts'], 'safe'],
-            [['messageid', 'systemid'], 'string'], //, 'max' => 255],
+            [['messageid', 'systemid', 'status_body'], 'string'], //, 'max' => 255],
         ];
     }
 

@@ -52,9 +52,13 @@ class AdmissionApplication extends \yii\db\ActiveRecord
         $model->commission_id = $commission_id;
         $model->institution_id = $institution_id;
         
-        $model->person_id = $person_id;
+        if ($person_id>0) {
+            $model->person_id = $person_id;
+        }
+        
         $model->properties = $properties;
         $model->status = ApplicationHelper::STATUS_CREATED;
+        $model->is_deleted = false;
         return $model;
     }
 

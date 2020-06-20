@@ -10,7 +10,9 @@ use common\services\PdfService;
 use common\services\reception\AdmissionApplicationService;
 use common\services\reception\CommissionService;
 use app\models\link\EntrantReceptionGroupLink;
+use common\models\person\Person;
 use common\models\reception\AdmissionFiles;
+use common\services\gosp\GospService;
 use frontend\models\forms\AdmissionApplicationForm;
 use frontend\models\forms\EnlistEntrantForm;
 use frontend\models\reception\admission_application\ChangeStatusForm;
@@ -23,6 +25,7 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
+
 /**
  * AdmissionApplicationController implements the CRUD actions for AdmissionApplication model.
  */
@@ -31,6 +34,7 @@ class AdmissionApplicationController extends Controller
     public $admissionApplicationService;
     public $commissionService;
     public $pdfService;
+    public $gospService;
 
     /**
      * AdmissionApplicationController constructor.
@@ -47,6 +51,7 @@ class AdmissionApplicationController extends Controller
         AdmissionApplicationService $admissionApplicationService,
         CommissionService $commissionService,
         PdfService $pdfService,
+        GospService $gospService,
         array $config = []
     ) {
         parent::__construct($id, $module, $config);
@@ -54,6 +59,7 @@ class AdmissionApplicationController extends Controller
         $this->admissionApplicationService = $admissionApplicationService;
         $this->commissionService = $commissionService;
         $this->pdfService = $pdfService;
+        $this->gospService = $gospService;
     }
 
     /**
@@ -161,10 +167,12 @@ class AdmissionApplicationController extends Controller
     public function actionCreate()
     {
         $admissionApplicationForm = new AdmissionApplicationForm();
+        $institution = Yii::$app->user->identity->institution;
 
         if ($admissionApplicationForm->load(Yii::$app->request->post()) && $admissionApplicationForm->validate()) {
+
             $commission = $this->commissionService->getActiveInstitutionCommission(
-                Yii::$app->user->identity->institution
+                $institution
             );
             if (!$commission) {
                 Yii::$app->session->setFlash('error',
@@ -174,8 +182,9 @@ class AdmissionApplicationController extends Controller
             $admissionApplication = $this->admissionApplicationService->create(
                 $admissionApplicationForm,
                 $commission->id,
-                0,
-                Yii::$app->user->identity->institution->id
+                $institution->id, 
+                0
+                
             );
 
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
@@ -183,7 +192,7 @@ class AdmissionApplicationController extends Controller
 
         return $this->render('create', [
             'admissionApplicationForm' => $admissionApplicationForm,
-            'specialities'             => Yii::$app->user->identity->institution->specialities
+            'specialities'             => $institution->specialities
         ]);
     }
 
@@ -264,15 +273,29 @@ class AdmissionApplicationController extends Controller
         }
 
         if ($changeStatusForm->load(Yii::$app->request->post()) && $changeStatusForm->validate()) {
+            $user = Yii::$app->user->identity; 
             //if ($admissionApplication->status != $changeStatusForm->status) {
                 $this->admissionApplicationService->changeStatus(
                     $id,
                     $changeStatusForm->status,
-                    Yii::$app->user->identity,
+                    $user,
                     $changeStatusForm->reception_group_id,
                     $changeStatusForm->reason
                 );
             //}
+            if ($admissionApplication->online > 0){
+                //отправляем оповещение
+                $entrant = new Person(); //::findOne($admissionApplication->person_id);
+                $entrant->lastname  = $admissionApplication->properties['lastname'];
+                $entrant->firstname  = $admissionApplication->properties['firstname'];
+                $entrant->middlename  = $admissionApplication->properties['middlename'];
+                $entrant->iin  = $admissionApplication->properties['iin'];
+
+                $status = $changeStatusForm->status;
+                $this->gospService->sendNotification($admissionApplication->online_msg_id, $entrant, $user, $status);
+            }
+
+
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
         }
 
