@@ -54,7 +54,7 @@ class GospService
             if ($ap != null && $ap>0){
                 //update status to accepted
                 $ms = new MessageStatuses();
-                $ms->systemid = "college";
+                $ms->systemid = $this::SYSTEMID;
                 $ms->messageid = $msg->messageid;
                 $ms->messagestatus = MessageStatuses::STATE_RECEIVED;
                 $ms->save();
@@ -277,25 +277,36 @@ class GospService
 
     public function sendNotification(MessageStatusBody $body, String $status){
         //$entrant = Person::findOne($entrant_id);
-        
+        $result = "";
         $db_msg = new MessageStatuses();
         $db_msg->messagestatus = MessageStatuses::STATE_NOTIFICATED;
         $db_msg->messageid = $body->messageId;
-        $db_msg->systemid = $this->SYSTEMID;
+        $db_msg->systemid = $this::SYSTEMID;
         $db_msg->status_body = json_encode($body);
+        if (!$db_msg->save()){
+            $result = "Ошибка сохранения оповещения заявки";
+        }
 
-        return "ok";
+        return $result;
     }
 
     public function sendResponse(MessageStatusBody $body, String $status){
-        //$entrant = Person::findOne($entrant_id);
+        $result = "";
         
         $db_msg = new MessageStatuses();
-        $db_msg->messagestatus = MessageStatuses::STATE_NOTIFICATED;
+        $db_msg->messagestatus = MessageStatuses::STATE_SUCCESS;
+        if ($body->resolutionType == "NEGATIVE"){
+            $db_msg->messagestatus = MessageStatuses::STATE_REJECTED;
+        }
+
         $db_msg->messageid = $body->messageId;
-        $db_msg->systemid = $this->SYSTEMID;
+        $db_msg->systemid = $this::SYSTEMID;
         $db_msg->status_body = json_encode($body);
 
-        return "ok";
+        if (!$db_msg->save()){
+            $result = "Ошибка сохранения ответа заявки";
+        }
+
+        return $result;
     }    
 }

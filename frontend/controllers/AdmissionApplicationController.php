@@ -308,7 +308,7 @@ class AdmissionApplicationController extends Controller
                 $status = $changeStatusForm->status;
                 $sendresp = $this->gospService->sendNotification($msb, $status);
 
-                if ($admissionApplication->status == ApplicationHelper::STATUS_ACCEPTED){
+                if ($changeStatusForm->status == ApplicationHelper::STATUS_ACCEPTED){
                     $cur_edu_form = $admissionApplication->properties['education_form'];
                     // const EDUCATION_FORM_FULL_TIME = 1; //очное
                     // const EDUCATION_FORM_EXTRAMURAL = 2; // заочное
@@ -332,6 +332,31 @@ class AdmissionApplicationController extends Controller
                     
                 }
 
+                if ($changeStatusForm->status == ApplicationHelper::STATUS_DECLINED){
+                    $cur_edu_form = $admissionApplication->properties['education_form'];
+                    // const EDUCATION_FORM_FULL_TIME = 1; //очное
+                    // const EDUCATION_FORM_EXTRAMURAL = 2; // заочное
+                    // const EDUCATION_FORM_EVENING = 3; // вечернее
+                    $str_edu_form = "0";
+                    if ($cur_edu_form == EducationHelper::EDUCATION_FORM_FULL_TIME){
+                        $str_edu_form = "0";                        
+                    }
+                    $msb->study_form = $str_edu_form;                   //0-очная
+
+                    $msb->orderNo_tipo = strval($admissionApplication->id);
+                    $msb->date_orderNo_tipo = date('c'); //текущая
+                    $msb->Output_Type_doc = "1";              //1 - Уведомление о приеме документов в ТиПО
+                    $spec = Speciality::findOne($admissionApplication->properties['speciality_id']);
+                    $msb->postSecondary_spec_code = $spec->code;       //1001022
+                    $msb->postSecondary_spec_nameru = $spec->caption_ru;     //100102 2 - Шөміш
+                    $msb->postSecondary_spec_namekz = $spec->caption_kk;     //2 - Ковшевой
+                    
+                    $msb->negativeResolutionReasonTextRu = $changeStatusForm->reason;
+                    $msb->negativeResolutionReasonTextKk = $changeStatusForm->reason;
+                    //send COMPLITED
+                    $sendresp =$this->gospService->sendResponse($msb, $status);
+                    
+                }
 
 
             }

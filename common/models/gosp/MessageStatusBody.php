@@ -46,7 +46,7 @@ class MessageStatusBody
         //, "correlationId": "2516637"
         //, "orderNo_school": 1
         //, "resolutionDate": "2020-06-11T17:22:05.428+06:00"
-        //, "resolutionType": "NEGATIVE"
+    public $resolutionType = "POSITIVE"; //, "resolutionType": "NEGATIVE"
         //, "supervisor_fio": null
         //, "AreaCode_applic": 351013100
         
@@ -60,7 +60,7 @@ class MessageStatusBody
         //, "supervisor_position": null
         //, "externalRequestChainId": null
         //, "negativeResolutionReason": null
-        //, "negativeResolutionReasonTextKk": "Ваши документы не приняты"
-        //, "negativeResolutionReasonTextRu": "Ваши документы не приняты"}
+    public $negativeResolutionReasonTextKk="";        //, "negativeResolutionReasonTextKk": "Ваши документы не приняты"
+    public $negativeResolutionReasonTextRu="";        //, "negativeResolutionReasonTextRu": "Ваши документы не приняты"}
 
 }
