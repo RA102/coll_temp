@@ -10,6 +10,8 @@ use common\services\PdfService;
 use common\services\reception\AdmissionApplicationService;
 use common\services\reception\CommissionService;
 use app\models\link\EntrantReceptionGroupLink;
+use common\helpers\EducationHelper;
+use common\models\gosp\MessageStatusBody;
 use common\models\person\Person;
 use common\models\reception\AdmissionFiles;
 use common\services\gosp\GospService;
@@ -285,14 +287,53 @@ class AdmissionApplicationController extends Controller
             //}
             if ($admissionApplication->online > 0){
                 //отправляем оповещение
-                $entrant = new Person(); //::findOne($admissionApplication->person_id);
-                $entrant->lastname  = $admissionApplication->properties['lastname'];
-                $entrant->firstname  = $admissionApplication->properties['firstname'];
-                $entrant->middlename  = $admissionApplication->properties['middlename'];
-                $entrant->iin  = $admissionApplication->properties['iin'];
+                $msb = new MessageStatusBody();
+
+                $msb->Child_iin = $admissionApplication->properties['iin'];
+                $msb->child_name = $admissionApplication->properties['firstname'];
+                $msb->child_surname = $admissionApplication->properties['lastname'];
+                $msb->child_middlename = $admissionApplication->properties['middlename'];
+                
+                $msb->messageId = $admissionApplication->online_msg_id;     //, "messageId": "171469959"
+                $msb->messageDate = date('c');                              // 2019-03-16T17:55:09+03:00 //"messageDate": "2020-06-11T17:22:05.428+06:00"
+                $msb->messageType = "NOTIFICATION";                         // "messageType": "RESPONSE"
+                //$body->answer_type_doc = "";     //, "answer_type_doc": 3
+                
+                $msb->user_name = "SECRET";             // $user->firstname;   //, "user_name": "МАДИНА"
+                $msb->user_surname = "USER";            //$user->lastname; 
+        
+                
+
 
                 $status = $changeStatusForm->status;
-                $this->gospService->sendNotification($admissionApplication->online_msg_id, $entrant, $user, $status);
+                $sendresp = $this->gospService->sendNotification($msb, $status);
+
+                if ($admissionApplication->status == ApplicationHelper::STATUS_ACCEPTED){
+                    $cur_edu_form = $admissionApplication->properties['education_form'];
+                    // const EDUCATION_FORM_FULL_TIME = 1; //очное
+                    // const EDUCATION_FORM_EXTRAMURAL = 2; // заочное
+                    // const EDUCATION_FORM_EVENING = 3; // вечернее
+                    $str_edu_form = "0";
+                    if ($cur_edu_form == EducationHelper::EDUCATION_FORM_FULL_TIME){
+                        $str_edu_form = "0";                        
+                    }
+                    $msb->study_form = $str_edu_form;                   //0-очная
+
+                    $msb->orderNo_tipo = strval($admissionApplication->id);
+                    $msb->date_orderNo_tipo = date('c'); //текущая
+                    $msb->Output_Type_doc = "1";              //1 - Уведомление о приеме документов в ТиПО
+                    $spec = Speciality::findOne($admissionApplication->properties['speciality_id']);
+                    $msb->postSecondary_spec_code = $spec->code;       //1001022
+                    $msb->postSecondary_spec_nameru = $spec->caption_ru;     //100102 2 - Шөміш
+                    $msb->postSecondary_spec_namekz = $spec->caption_kk;     //2 - Ковшевой
+                    
+                    //send COMPLITED
+                    $sendresp =$this->gospService->sendResponse($msb, $status);
+                    
+                }
+
+
+
             }
 
 

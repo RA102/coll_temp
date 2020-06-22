@@ -275,40 +275,27 @@ class GospService
 
     }
 
-    public function sendNotification(String $msg_id, Person $entrant, Person $user, String $status){
+    public function sendNotification(MessageStatusBody $body, String $status){
         //$entrant = Person::findOne($entrant_id);
         
-        $body = new MessageStatusBody();
-        if ($entrant->iin != null){
-            $body->Child_iin = $entrant->iin;   //"Child_iin": "151005634064"
-        }
-        if ($entrant->firstname != null){
-            $body->child_name = $entrant->firstname;  // "child_name": "СЕРҒАЗЫ"
-        }
-        if ($entrant->lastname != null){
-            $body->child_surname = $entrant->lastname;   //"child_surname": "СЕРҒАЗЫ"
-        }
-        $body->child_middlename = "";
-        if ($entrant->middlename != null){
-            $body->child_middlename = $entrant->middlename;    //, "child_middlename": "СЕНБЕКҰЛЫ"
-        }
-        
-        //    , "Class_edu": "03"
-        $body->messageId = $msg_id; //    , "messageId": "171469959"
-        $body->messageDate = date('c'); // 2019-03-16T17:55:09+03:00 //"messageDate": "2020-06-11T17:22:05.428+06:00"
-        $body->messageType = "NOTIFICATION";     //"messageType": "RESPONSE"
-        $body->answer_type_doc = "";     //, "answer_type_doc": 3
-        //, "serviceId": null
-        $body->user_name = "SECRET"; // $user->firstname;   //, "user_name": "МАДИНА"
-        $body->user_surname = "USER"; //$user->lastname; 
-
         $db_msg = new MessageStatuses();
         $db_msg->messagestatus = MessageStatuses::STATE_NOTIFICATED;
-        $db_msg->messageid = $msg_id;
+        $db_msg->messageid = $body->messageId;
         $db_msg->systemid = $this->SYSTEMID;
         $db_msg->status_body = json_encode($body);
 
-
         return "ok";
     }
+
+    public function sendResponse(MessageStatusBody $body, String $status){
+        //$entrant = Person::findOne($entrant_id);
+        
+        $db_msg = new MessageStatuses();
+        $db_msg->messagestatus = MessageStatuses::STATE_NOTIFICATED;
+        $db_msg->messageid = $body->messageId;
+        $db_msg->systemid = $this->SYSTEMID;
+        $db_msg->status_body = json_encode($body);
+
+        return "ok";
+    }    
 }
