@@ -111,9 +111,6 @@ class InstitutionDepartment extends \yii\db\ActiveRecord
     public function saveDisciplines($discipline_id)
     {
         $arr = ArrayHelper::map($this->disciplines, 'id', 'id');
-
-
-        $arr = ArrayHelper::map($this->disciplines, 'id', 'id');
         foreach ($discipline_id as $one)
         {
             if(!in_array($one,$arr)){

@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 
 /** @see Department::caption_current $department */
-$department = ArrayHelper::map(\common\models\Department::find()->all(), 'id', 'caption_current');
+//$department = ArrayHelper::map(\common\models\Department::find()->all(), 'id', 'caption_current');
 ?>
 
 <div class="institution-department-form">

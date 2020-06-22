@@ -121,13 +121,14 @@ class InstitutionDepartmentController extends Controller
     public function actionCreate()
     {
         $model = new InstitutionDepartment();
-        $disciplines = ArrayHelper::map(InstitutionDiscipline::find()->all(), 'id', 'caption_current');
+        $institution_id = Yii::$app->user->identity->institution->id;
+        
 
         if(Yii::$app->request->isPost) {
             $discipline = Yii::$app->request->post('InstitutionDepartment')['disciplines'];
 
             if ($model->load(Yii::$app->request->post())) {
-                $model->institution_id = Yii::$app->user->identity->institution->id;
+                $model->institution_id = $institution_id;
                 if ($model->save()) {
                     if ($model->saveDisciplines($discipline)) {
                         return $this->redirect(['index', 'id' => $model->id]);
@@ -136,7 +137,8 @@ class InstitutionDepartmentController extends Controller
                 }
             }
         }
-
+        
+        $disciplines = ArrayHelper::map(InstitutionDiscipline::find()->where(['institution_id' => $institution_id])->all(), 'id', 'caption_current');
         return $this->render('create', [
             'model' => $model,
             'disciplines' => $disciplines
