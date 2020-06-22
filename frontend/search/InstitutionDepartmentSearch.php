@@ -78,6 +78,7 @@ class InstitutionDepartmentSearch extends InstitutionDepartment
         $query->andFilterWhere(['ilike', json_encode('caption'), $this->caption]);
            // ->andFilterWhere(['ilike', 'slug', $this->slug]);
 
+        $query->andWhere(['is', 'delete_ts', null]);
 
         return $dataProvider;
     }
