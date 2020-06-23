@@ -186,41 +186,44 @@ $this->params['breadcrumbs'][] = $this->title;
             style="width: 100%">
             <el-table-column type="expand">
                 <div  slot-scope="props">
-                    <div v-for="(teacher,index) in props.row.teachers" :key="index" >
+                    <div v-for="(group,index) in props.row.groups" :key="index" >
                     <div class="row" >
                         <div class="col-md-2 column-name">
-                            {{teacher.name}}
+                            {{getGroupName(group.groupId).name}}
                         </div>
                         <div class="col-md-1 column">
-                            {{teacher.total}}
+                            {{group.total}}
                         </div>
-                        <template v-for="(grades,gradeIndex) in teacher.semester" >
+                        <template v-for="(grades,gradeIndex) in group.semester" >
                             <div class="col-md-1 column" :key="gradeIndex">
-                                {{teacher.semester[gradeIndex]}}
+                                {{group.semester[gradeIndex]}}
                             </div>
                             <div class="col-md-1 column">
-                                {{teacher.theory[gradeIndex]}}
+                                {{group.theory[gradeIndex]}}
                             </div>
                             <div class="col-md-1 column">
-                                {{teacher.laboratory[gradeIndex]}}
+                                {{group.laboratory[gradeIndex]}}
                             </div>
                         </template>
                         <template class="col-md-2">
                             <div class="col-md-1 mr-4">
                             <v-btn 
-                                @click="updateTeacherData(props.row.id,teacher.num)"
+                                @click="updateGroupData(props.row.id,group.num)"
                                 type="success" 
                                  rounded >Изменить</v-btn>
                             </div>
                             <div class="col-md-1 ml-4">
                             <v-btn                                 
                                 type="error" 
-                                @click="openDialogDelete(props.row.id,teacher.num)"
+                                @click="openDialogDelete(props.row.id,group.num)"
                                 rounded >Удалить</v-btn>
                             </div>
                         </template>
                         
                     </div>
+                   </div>
+                   <div class="col-md-1">
+                        <v-btn class="success" @click="createGroupData(props.row.id)">+</v-btn>
                    </div>
                 </div>
             </el-table-column>
@@ -297,16 +300,21 @@ $this->params['breadcrumbs'][] = $this->title;
       max-width="550"
     >
       <v-card>
-        <v-card-title class="headline">Изменение данных учителя</v-card-title>
+        <v-card-title class="headline">Изменение данных группы</v-card-title>
 
         <v-form
             ref="form" 
             v-model="valid"
             class="pl-6 pr-6 d-flex flex-wrap justify-space-around align-center">
-            <span class="d-flex justify-space-around align-center teacherName">
+            <span class="d-flex justify-space-around align-center groupName">
                 Имя:
-                <v-text-field v-model="name" class="ml-4">
-                </v-text-field>
+                <v-select
+                    v-model="selectedGroup"
+                    :items="groupSelect"
+                    item-text="name"
+                    item-value="id"
+                    class="ml-4"
+                ></v-select>
             </span>
             <span v-for="(semesterTemp,index) in semester"  :key="'semester'+index">
                 Семестер номер {{index+1}}
@@ -363,8 +371,10 @@ $this->params['breadcrumbs'][] = $this->title;
             </v-card>
         </v-dialog>
 
+
+<!-- Dialog окно для потверждения удаления -->
         <v-dialog
-            v-model="dialogDeleteTeacher"
+            v-model="dialogDeleteGroup"
             max-width="400"
             >
             <v-card class="dialogDelete">
@@ -390,7 +400,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return{
                     valid:true,
 
-                    dialogDeleteTeacher:false,
+                    dialogDeleteGroup:false,
                     dialogWindow:false,
 
                     currentDate: new Date().toTimeString(),
@@ -475,14 +485,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         id:1,                    
                         date: '2016-05-06',
                         name: 'Tom',
-                        state: 'California',
-                        city: 'Los Angeles',
-                        address: 'No. 189, Grove St, Los Angeles',
-                        zip: 'CA 90036',
-                        teachers:[
+                        groups:[
                             {
                                 num:1,
-                                name:"Омарова С.К.",
+                                groupId:1,
                                 total:20,
                                 semester:[10,10],
                                 theory:[10,10],
@@ -490,7 +496,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                             {
                                 num:2,
-                                name:"Komarov R.X.",
+                                groupId:2,
                                 total:20,
                                 semester:[20,30],
                                 theory:[50,20],
@@ -507,10 +513,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         city: 'Los Angeles',
                         address: 'No. 189, Grove St, Los Angeles',
                         zip: 'CA 90036',
-                        teachers:[
+                        groups:[
                             {
                                 num:1,
-                                name:"Омарова С.К.",
+                                groupId:4,
                                 total:20,
                                 semester:[10,10],
                                 theory:[10,10],
@@ -520,15 +526,50 @@ $this->params['breadcrumbs'][] = $this->title;
                     }],
                     
 
-                    name:"",
                     semester:[0,0],
                     theory:[0,0],
                     laboratory:[0,0],
-                    teacherNum:0,
+                    groupNum:0,
                     tableDataId:0,
+                    
+                    groups:[
+                        {
+                            id:1,
+                            name:"rr-12-2",
+                            disciplineId:1,
+                            selected:1,
+                        },
+                        {
+                            id:2,
+                            name:"cc-11-44",
+                            disciplineId:1,
+                            selected:1,
+                        },
+                        {
+                            id:3,
+                            name:"tt-42-6",
+                            disciplineId:1,
+                            selected:0,
+                        },
+                        {
+                            id:4,
+                            name:"qr-89-32",
+                            disciplineId:2,
+                            selected:1,
+                        },
+
+                    ],
 
                     textFieldRules:[
                         v=>v<101 && v>=0||"Значение от 0 до 100"
+                    ],
+                    selectedGroup:{},
+                    groupSelect:[
+                        {
+                            id:0,
+                            name:"",
+                            disciplineId:0
+                        }
                     ]
 
                 
@@ -577,60 +618,89 @@ $this->params['breadcrumbs'][] = $this->title;
                         });
 
                     },
-                    updateTeacherData(id,num){
-                        //Изменить учительские данные
+                    updateGroupData(id,num){
+                        //Изменить данные группы
+                        this.clearDialogWindow();
                         this.tableDataId=id;
-                        this.teacherNum=num;
+                        this.groupNum=num;
                         this.updateOrGetTecherData(id,num,0);
+                        this.groupSelect=this.getGroupsByDiscipline(id);
+                        this.groupSelect.unshift(this.selectedGroup);
                         //отобразить окно
                         this.dialogWindow=true;
                         
                     },
+                    createGroupData(id){
+                        //Создаем новую
+                        this.clearDialogWindow();
+                        this.tableDataId=id;
+                        this.groupSelect=this.getGroupsByDiscipline(id);
+
+
+                        this.dialogWindow=true;
+
+                    },
                     clearDialogWindow(){
                         //Закрваем диалоговое окно с кнопки отмена
                         this.dialogWindow=false;
-                        this.name="";
                         this.semester=[0,0];
                         this.theory=[0,0];
                         this.laboratory=[0,0];
                         this.tableDataId=0;
-                        this.teacherNum=0;
+                        this.groupNum=0;
+                        this.groupSelect=[];
                     },
                     updateOrGetTecherData(id,num,type){
-                        //type 0=получить 1=сохранить 2=удалить
+                        //type 0=получить 1=сохранить изменение  2=удалить 3-сохранить новое
                         for(let i=0;i<this.tableData.length;i++){
                             if(this.tableData[i].id==id){
                                
-                                for(let j=0;j<this.tableData[i].teachers.length;j++){
-                                    if(this.tableData[i].teachers[j].num==num){
-                                        if(type==0){                                         
-                                            
-                                            this.name=this.tableData[i].teachers[j].name;
+                                for(let j=0;j<this.tableData[i].groups.length;j++){
+                                    if(this.tableData[i].groups[j].num==num){
+                                        if(type==0){                                        
+                                            this.selectedGroup=this.getGroupName(this.tableData[i].groups[j].groupId).id;
 
-                                            this.semester[0]=this.tableData[i].teachers[j].semester[0];
-                                            this.semester[1]=this.tableData[i].teachers[j].semester[1];
+                                            this.semester[0]=this.tableData[i].groups[j].semester[0];
+                                            this.semester[1]=this.tableData[i].groups[j].semester[1];
                                             
-                                            this.theory[0]=this.tableData[i].teachers[j].theory[0];
-                                            this.theory[1]=this.tableData[i].teachers[j].theory[1];
+                                            this.theory[0]=this.tableData[i].groups[j].theory[0];
+                                            this.theory[1]=this.tableData[i].groups[j].theory[1];
 
-                                            this.laboratory[0]=this.tableData[i].teachers[j].laboratory[0];
-                                            this.laboratory[1]=this.tableData[i].teachers[j].laboratory[1];
+                                            this.laboratory[0]=this.tableData[i].groups[j].laboratory[0];
+                                            this.laboratory[1]=this.tableData[i].groups[j].laboratory[1];
 
 
                                         }else if(type==1){
 
-                                            this.tableData[i].teachers[j].name=this.name;
-                                            this.tableData[i].teachers[j].semester=this.semester;
-                                            this.tableData[i].teachers[j].theory=this.theory;
-                                            this.tableData[i].teachers[j].laboratory=this.laboratory;
+                                            this.deniedSelected(this.tableData[i].groups[j].groupId,0);
+                                            this.deniedSelected(this.selectedGroup,1);
+
+                                            this.tableData[i].groups[j].groupId=this.selectedGroup;
+
+                                            this.tableData[i].groups[j].semester=this.semester;
+                                            this.tableData[i].groups[j].theory=this.theory;
+                                            this.tableData[i].groups[j].laboratory=this.laboratory;
 
                                         }else if(type==2){
-                                            
-                                            this.tableData[i].teachers.splice(j,1);
+                                            this.deniedSelected(this.tableData[i].groups[j].groupId,0);
+                                            this.tableData[i].groups.splice(j,1);
                                            
 
                                         }break;
                                     }
+                                    
+                                }
+                                if(type==3){
+                                    //Это временно
+                                    let lastNum=this.tableData[i].groups[this.tableData[i].groups.length-1].num;
+                                    this.tableData[i].groups.push({
+                                                num:lastNum=lastNum+1,
+                                                groupId:this.selectedGroup,
+                                                total:20,
+                                                semester:this.semester,
+                                                theory:this.theory,
+                                                laboratory:this.laboratory
+                                        });
                                 }break;                                
                             }
                         }
@@ -639,23 +709,53 @@ $this->params['breadcrumbs'][] = $this->title;
                     saveDialogData(){
                         //сохраняем данные
                         if(this.$refs.form.validate()){
-                            this.updateOrGetTecherData(this.tableDataId,this.teacherNum,1);
+                            if(this.groupNum!=0){ //если есть groupNum значит происходить изменения
+                                this.updateOrGetTecherData(this.tableDataId,this.groupNum,1);                                
+                            }else{
+                                //Нужно отправять на сервер ждать ответ потом добавлять groupNum
+                                this.updateOrGetTecherData(this.tableDataId,this.groupNum,3);
+                            }
                             this.clearDialogWindow();
                         }
                     },
                     confirmDelete(){
-                        this.dialogDeleteTeacher=false;
-                        this.updateOrGetTecherData(this.tableDataId,this.teacherNum,2)
+                        this.dialogDeleteGroup=false;
+                        this.updateOrGetTecherData(this.tableDataId,this.groupNum,2)
                     },
                     openDialogDelete(id,num){
                         this.tableDataId=id;
-                        this.teacherNum=num;                        
-                        this.dialogDeleteTeacher=true;
+                        this.groupNum=num;                        
+                        this.dialogDeleteGroup=true;
                     },
                     cancelDialogDelete(){
-                        this.dialogDeleteTeacher=false;
+                        this.dialogDeleteGroup=false;
                         this.tableDataId=0;
-                        this.teacherNum=0;
+                        this.groupNum=0;
+                    },
+                    getGroupsByDiscipline(disciplineId){
+                        let answer=[];
+                        for(let i=0;i<this.groups.length;i++){
+                            if(this.groups[i].disciplineId==disciplineId && this.groups[i].selected==0){
+                                answer.push(this.groups[i]);
+                            }
+                        }
+                        return answer;
+                    },
+                    getGroupName(id){
+                        for(let i=0;i<this.groups.length;i++){
+                            if(this.groups[i].id==id){
+                                return this.groups[i];
+                            }
+                        }
+                    },
+                    deniedSelected(id,type){
+                        //type 0 == selected =0 
+                        for(let i=0;i<this.groups.length;i++){
+                            if(this.groups[i].id==id){
+                                this.groups[i].selected=type;
+                                break;
+                            }
+                        }
                     }
 
 
@@ -703,7 +803,7 @@ $this->params['breadcrumbs'][] = $this->title;
     .dialogDelete{
         height:150px;
     }
-    .teacherName{
+    .groupName{
         width:400px;
     }
     .column-name{
