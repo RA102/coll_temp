@@ -121,21 +121,24 @@ class InstitutionDepartmentController extends Controller
     public function actionCreate()
     {
         $model = new InstitutionDepartment();
-        $disciplines = ArrayHelper::map(InstitutionDiscipline::find()->all(), 'id', 'caption_current');
+        $institution_id = Yii::$app->user->identity->institution->id;
+        
 
         if(Yii::$app->request->isPost) {
+            $discipline = Yii::$app->request->post('InstitutionDepartment')['disciplines'];
+
             if ($model->load(Yii::$app->request->post())) {
-                $model->institution_id = Yii::$app->user->identity->institution->id;
+                $model->institution_id = $institution_id;
                 if ($model->save()) {
+                    if ($model->saveDisciplines($discipline)) {
+                        return $this->redirect(['index', 'id' => $model->id]);
+                    }
                     return $this->redirect(['index', 'id' => $model->id]);
                 }
             }
-            $discipline = Yii::$app->request->post('InstitutionDepartment')['disciplines'];
-            if ($model->saveDisciplines($discipline)) {
-                return $this->redirect(['index', 'id' => $model->id]);
-            }
         }
-
+        
+        $disciplines = ArrayHelper::map(InstitutionDiscipline::find()->where(['institution_id' => $institution_id])->all(), 'id', 'caption_current');
         return $this->render('create', [
             'model' => $model,
             'disciplines' => $disciplines
@@ -185,7 +188,10 @@ class InstitutionDepartmentController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($id);
+        $model = InstitutionDepartment::findOne($id);
+        $model->delete_ts = date('d.m.Y H:i:s');
+        $model->save();
 
         return $this->redirect(['index']);
     }

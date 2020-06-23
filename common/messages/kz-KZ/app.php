@@ -175,6 +175,7 @@ return [
     'Update Institution Discipline' => 'Редактирование предмета',
 
     // DEPARTMENTS
+    'Department' => 'Кафедра',
     'Departments' => 'Кафедры',
     'Create Department' => 'Добавление кафедры',
     'Update Department' => 'Редактирование кафедры',
@@ -190,6 +191,7 @@ return [
     'Department ID' => 'Кафедра',
     'Create Institution Department' => 'Добавление кафедры',
     'Update Institution Department' => 'Редактирование кафедры',
+    'Back' => 'Назад',
 
     // COURSES
     'Courses' => 'Курсы',

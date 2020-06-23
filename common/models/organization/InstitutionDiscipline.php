@@ -115,6 +115,7 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
             'delete_ts' => Yii::t('app', 'Delete Ts'),
             'teachers' => Yii::t('app', 'Teachers'),
             'department_id' => Yii::t('app', 'Department'),
+            'department.caption_current' => Yii::t('app', 'Department'),
         ];
     }
 

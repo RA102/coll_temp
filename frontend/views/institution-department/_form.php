@@ -1,6 +1,5 @@
 <?php
 
-use common\models\organization\InstitutionDiscipline;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -10,8 +9,6 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\organization\InstitutionDepartment */
 /* @var $form yii\widgets\ActiveForm */
 
-/** @see Department::caption_current $department */
-$department = ArrayHelper::map(\common\models\Department::find()->all(), 'id', 'caption_current');
 ?>
 
 <div class="institution-department-form">
@@ -34,6 +31,8 @@ $department = ArrayHelper::map(\common\models\Department::find()->all(), 'id', '
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+
+        <?= Html::submitButton(Yii::t('app', 'Back'), ['class' => 'btn btn-danger']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

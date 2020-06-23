@@ -86,7 +86,6 @@ class InstitutionDepartment extends \yii\db\ActiveRecord
             'create_ts' => Yii::t('app', 'Create Ts'),
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
-            'discipline_id' => Yii::t('app', 'Discipline'),
         ];
     }
 
@@ -111,21 +110,23 @@ class InstitutionDepartment extends \yii\db\ActiveRecord
     public function saveDisciplines($discipline_id)
     {
         $arr = ArrayHelper::map($this->disciplines, 'id', 'id');
-            foreach ($discipline_id as $one)
-            {
-
-              if(!in_array($one,$arr)){
-               $model = InstitutionDiscipline::findOne($one);
-                  $this->link('disciplines', $model);
-              }
-
-            if(isset($arr[$one])){
-                $model = InstitutionDiscipline::findOne($one);
-                $model->department_id = null;
-                return $model->save();
-                unset($arr[$one]);
+        if(is_array($discipline_id)) {
+            foreach ($discipline_id as $one) {
+                if (!in_array($one, $arr)) {
+                    $model = InstitutionDiscipline::findOne($one);
+                    $this->link('disciplines', $model);
+                }
+                if (isset($arr[$one])) {
+                    unset($arr[$one]);
+                }
             }
+        }
+            foreach ($arr as $one) {
+                if (!empty($arr)) {
+                    $model = InstitutionDiscipline::findOne($one);
+                    $model->department_id = null;
+                    $model->save();
+                }
             }
-
     }
 }

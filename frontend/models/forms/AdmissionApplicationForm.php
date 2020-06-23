@@ -111,7 +111,7 @@ class AdmissionApplicationForm extends Model
 
                     'education_pay_form',
                     'based_classes',
-                    'email'
+                    //'email'
                 ],
                 'required'
             ],
