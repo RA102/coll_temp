@@ -188,7 +188,10 @@ class InstitutionDepartmentController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($id);
+        $model = InstitutionDepartment::findOne($id);
+        $model->delete_ts = date('d.m.Y H:i:s');
+        $model->save();
 
         return $this->redirect(['index']);
     }

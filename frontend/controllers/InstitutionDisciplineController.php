@@ -157,7 +157,6 @@ class InstitutionDisciplineController extends Controller
         }
 
     }
-
     /**
      * Updates an existing InstitutionDiscipline model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -168,7 +167,7 @@ class InstitutionDisciplineController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $departments = ArrayHelper::map(InstitutionDepartment::find()->all(), 'id', 'caption_current');
+        $departments = ArrayHelper::map(InstitutionDepartment::find()->where(['is', 'delete_ts', null])->all(), 'id', 'caption_current');
         if(Yii::$app->request->isPost)
         {
             if ($model->load(Yii::$app->request->post())) {
