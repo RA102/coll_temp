@@ -18,6 +18,7 @@ use common\models\person\Person;
 use common\models\reception\AdmissionFiles;
 use common\services\reception\AdmissionApplicationService;
 use common\services\reception\CommissionService;
+use yii\helpers\ArrayHelper;
 
 
 
@@ -282,7 +283,7 @@ class GospService
         $db_msg->messagestatus = MessageStatuses::STATE_NOTIFICATED;
         $db_msg->messageid = $body->messageId;
         $db_msg->systemid = $this::SYSTEMID;
-        $db_msg->status_body = json_encode($body);
+        $db_msg->status_body = ArrayHelper::toArray($body); //json_encode(ArrayHelper::toArray($body));
         if (!$db_msg->save()){
             $result = "Ошибка сохранения оповещения заявки";
         }
@@ -301,7 +302,7 @@ class GospService
 
         $db_msg->messageid = $body->messageId;
         $db_msg->systemid = $this::SYSTEMID;
-        $db_msg->status_body = json_encode($body);
+        $db_msg->status_body = ArrayHelper::toArray($body);
 
         if (!$db_msg->save()){
             $result = "Ошибка сохранения ответа заявки";

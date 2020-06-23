@@ -309,6 +309,7 @@ class AdmissionApplicationController extends Controller
                 $sendresp = $this->gospService->sendNotification($msb, $status);
 
                 if ($changeStatusForm->status == ApplicationHelper::STATUS_ACCEPTED){
+                    $msb->resolutionType = "POSITIVE";
                     $cur_edu_form = $admissionApplication->properties['education_form'];
                     // const EDUCATION_FORM_FULL_TIME = 1; //очное
                     // const EDUCATION_FORM_EXTRAMURAL = 2; // заочное
@@ -333,6 +334,8 @@ class AdmissionApplicationController extends Controller
                 }
 
                 if ($changeStatusForm->status == ApplicationHelper::STATUS_DECLINED){
+                    $msb->resolutionType = "NEGATIVE";
+                    
                     $cur_edu_form = $admissionApplication->properties['education_form'];
                     // const EDUCATION_FORM_FULL_TIME = 1; //очное
                     // const EDUCATION_FORM_EXTRAMURAL = 2; // заочное

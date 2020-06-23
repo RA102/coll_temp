@@ -45,8 +45,8 @@ class MessageStatuses extends \yii\db\ActiveRecord
             //[['oid', 'status', 'sort'], 'default', 'value' => null],
             [['id', 'messagestatus'], 'integer'],
             
-            [['statusts'], 'safe'],
-            [['messageid', 'systemid', 'status_body'], 'string'], //, 'max' => 255],
+            [['statusts', 'status_body'], 'safe'],
+            [['messageid', 'systemid'], 'string'] //, 'max' => 255],
         ];
     }
 
