@@ -302,13 +302,14 @@ class AdmissionApplicationController extends Controller
                 $msb->user_name = "SECRET";             // $user->firstname;   //, "user_name": "МАДИНА"
                 $msb->user_surname = "USER";            //$user->lastname; 
         
-                
+                $msb->resolutionDate = date('c');
 
 
                 $status = $changeStatusForm->status;
                 $sendresp = $this->gospService->sendNotification($msb, $status);
 
                 if ($changeStatusForm->status == ApplicationHelper::STATUS_ACCEPTED){
+                    $msb->messageType = "RESPONSE";
                     $msb->resolutionType = "POSITIVE";
                     $cur_edu_form = $admissionApplication->properties['education_form'];
                     // const EDUCATION_FORM_FULL_TIME = 1; //очное
@@ -334,6 +335,7 @@ class AdmissionApplicationController extends Controller
                 }
 
                 if ($changeStatusForm->status == ApplicationHelper::STATUS_DECLINED){
+                    $msb->messageType = "RESPONSE";
                     $msb->resolutionType = "NEGATIVE";
                     
                     $cur_edu_form = $admissionApplication->properties['education_form'];
@@ -348,7 +350,7 @@ class AdmissionApplicationController extends Controller
 
                     $msb->orderNo_tipo = strval($admissionApplication->id);
                     $msb->date_orderNo_tipo = date('c'); //текущая
-                    $msb->Output_Type_doc = "1";              //1 - Уведомление о приеме документов в ТиПО
+                    $msb->Output_Type_doc = "2";              //2 - Отрицательно
                     $spec = Speciality::findOne($admissionApplication->properties['speciality_id']);
                     $msb->postSecondary_spec_code = $spec->code;       //1001022
                     $msb->postSecondary_spec_nameru = $spec->caption_ru;     //100102 2 - Шөміш

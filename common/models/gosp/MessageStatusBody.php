@@ -45,7 +45,7 @@ class MessageStatusBody
 
         //, "correlationId": "2516637"
         //, "orderNo_school": 1
-        //, "resolutionDate": "2020-06-11T17:22:05.428+06:00"
+    public $resolutionDate = "";    //, "resolutionDate": "2020-06-11T17:22:05.428+06:00"
     public $resolutionType = "POSITIVE"; //, "resolutionType": "NEGATIVE"
         //, "supervisor_fio": null
         //, "AreaCode_applic": 351013100
@@ -54,7 +54,7 @@ class MessageStatusBody
         //, "Class_letter_edu": "А"
         
         //, "externalRequestId": null
-        //, "processing_status": "COMPLETED"
+    public $processing_status = "COMPLETED";
         //, "serviceProviderBin": null
         //, "date_orderNo_school": "2020-06-11T17:22:05.427+06:00"
         //, "supervisor_position": null

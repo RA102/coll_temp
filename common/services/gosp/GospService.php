@@ -3,6 +3,7 @@
 namespace common\services\gosp;
 
 use Codeception\Lib\Console\Message;
+use common\helpers\ApplicationHelper;
 use yii\db\ActiveQuery;
 use Karriere\JsonDecoder\JsonDecoder;
 use common\models\gosp;
@@ -19,12 +20,17 @@ use common\models\reception\AdmissionFiles;
 use common\services\reception\AdmissionApplicationService;
 use common\services\reception\CommissionService;
 use yii\helpers\ArrayHelper;
-
-
+use yii\httpclient\Client;
+use yii\base\Exception;
+use common\helpers\EducationHelper;
+use common\models\handbook\Speciality;
 
 class GospService
 {
     const SYSTEMID = "college"; //заявка создана
+    const SHEP_URL_SERVICE = "https://api.bilimal.kz/gosr/restservice/";
+    const SHEP_NOTIF_CONFIG = "mnp-prod";
+    const SRV_TYPE_COLLEGE = "RR_S109";
 
     private $jsonDecoder;
     private $admissionApplicationService;
@@ -48,7 +54,9 @@ class GospService
     public function getInputMessages()
     {
         // TODO teacherCourse is eager loaded, should it be a separate method?
-        $msgs = InputMessage::find()->limit(1)->orderBy('id ASC')->all();
+        $msgs = InputMessage::find()->where(['servicetype' => self::SRV_TYPE_COLLEGE, 'messagestatus' => 0, 'recstatus' => 0])
+        ->andWhere(['is not', 'serviceproviderbin', null])
+        ->limit(20)->orderBy('id ASC')->all();
         foreach($msgs as $msg){
             $ap = $this->mapMessageToAdmApp($msg->parsedmessage);
             
@@ -88,6 +96,15 @@ class GospService
         }    return false;
     }
 
+    private function getInstitutionByBin(String $bin){
+        $result = 24; //хогвардс
+        $institution = Institution::find()->where(['bin' => $bin]);
+        if ($institution != null){
+            $result = $institution->id;
+        }
+
+        return $result;
+    }
 
     private function mapMessageToAdmApp(String $msg){
         $person_iin="";
@@ -95,6 +112,13 @@ class GospService
         $person_surname="";
         $person_middlename="";
         $person_birthdate="";
+        $serviceProviderBin="";
+        $education_form = 1;          //Основа обучения очное/заочное
+        $speciality_id = 0;        //Специальность
+        $dormitory_info_tipo="";
+        $needs_dormitory = false;     //Необходимость в общежитии да/нет
+        $language = 'ru';                //Язык обучения
+        $lang_edu_tipo ="";
 
         $person = new Person();
         
@@ -115,20 +139,52 @@ class GospService
             if ($js['name'] == "child_birthday"){
                 $person_birthdate = $js['value'];
                 $person_birthdate = substr($person_birthdate, 0, 10);
-            }                                     
+            }  
+            if ($js['name'] == "serviceProviderBin"){
+                $serviceProviderBin = $js['value'];
+            }            
+            if ($js['name'] == "edu_form_tipo"){
+                $education_form = EducationHelper::EDUCATION_FORM_FULL_TIME;
+                $str_edu_form = $js['value'];
+                if ($str_edu_form == "1"){
+                    $education_form == EducationHelper::EDUCATION_FORM_EXTRAMURAL; //заочная
+                } 
+                if ($str_edu_form == "2"){
+                    $education_form == EducationHelper::EDUCATION_FORM_EVENING; //вечерняя
+                } 
+            }       
+
+            if ($js['name'] == "postSecondary_spec_code"){
+                $scode = $js['value'];
+                $sp = Speciality::find()->where(['code' => $scode])->one();
+                if ($sp != null){
+                    $speciality_id = $sp->id;
+                }
+            }
+            if ($js['name'] == "dormitory_info_tipo"){
+                $dormitory_info_tipo = $js['value'];
+                if ($dormitory_info_tipo == 'true'){
+                    $needs_dormitory = true;     //Необходимость в общежитии да/нет
+                }
+                
+            }   
+            if ($js['name'] == "lang_edu_tipo"){
+                $lang_edu_tipo = $js['value'];
+                if ($lang_edu_tipo == '01'){
+                    $language = 'kk';     //казахский
+                }
+                if ($lang_edu_tipo == '02'){
+                    $language = 'ru';     //казахский
+                }                
+            }                                   
 
         }
 
-        $institution_id = 1;          //тут подбор университета
+        $institution_id = $this->getInstitutionByBin($serviceProviderBin);          //тут подбор университета
         $filing_form = 2;             //Заявка подана Онлайн
-        $education_form = 1;          //Основа обучения очное/заочное
-        $speciality_id = 1552;        //Специальность
-        $language = 1;                //Язык обучения
 
-        $needs_dormitory = false;     //Необходимость в общежитии да/нет
-
-        $education_pay_form = 1;      //Форма оплаты
-        $based_classes = 1;           //На базе 9 классов/11 классов
+        $education_pay_form = EducationHelper::EDUCATION_PAY_FORM_CONTRACT;      //Форма оплаты
+        $based_classes = ApplicationHelper::BASED_CLASSES_ELEVEN;           //На базе 9 классов/11 классов
 
 
         //=========== обработка person
@@ -287,7 +343,8 @@ class GospService
         if (!$db_msg->save()){
             $result = "Ошибка сохранения оповещения заявки";
         }
-
+        
+        //$this->sendApiResponse($body->messageId);
         return $result;
     }
 
@@ -308,6 +365,25 @@ class GospService
             $result = "Ошибка сохранения ответа заявки";
         }
 
+        //$this->sendApiResponse($body->messageId);
         return $result;
-    }    
+    }
+    
+    private function sendApiResponse(String $msg_id){
+        $client = new Client(['baseUrl' => self::SHEP_URL_SERVICE]);
+        $response = $client->createRequest()
+            ->setOptions([
+                'timeout' => 120,
+            ])
+            ->setMethod('POST')
+            ->setFormat(Client::FORMAT_JSON)
+            ->setUrl('sendXMLMessageResponse')
+            ->setData([
+                'config' => self::SHEP_NOTIF_CONFIG,
+                'messageId' => $msg_id,
+            ])
+            ->send();    if (!$response->isOk) {
+            throw new Exception($response->getContent());
+        }        
+    }
 }
