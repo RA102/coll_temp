@@ -433,9 +433,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                     //формы обучения
                     eduforms: [
-                        // {   value: '1', label: 'Очная' }
-                        // , { value: '2', label: 'Заочная' }
-                        { value: '0', label: 'Все' }
+                        { value: '0', label: 'Все' },
 
                     ],
                     filter_eduform: '',  
@@ -546,7 +544,12 @@ $this->params['breadcrumbs'][] = $this->title;
                   filter_department: function() {
                       this.fetchGroups();
                       this.fetchDisciplines();
+                  },
+
+                  filter_eduform: function() {
+                      this.fetchGroups();
                   }
+
                 },
 
                 methods: {
@@ -592,7 +595,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     fetchGroups() {
                         $.ajax({
                             type: 'GET',
-                            url: '/workload/workloadgroup/get-groups?id=' + this.filter_department,
+                            url: '/workload/workloadgroup/get-groups?id=' + this.filter_department + '&'+ 'edu_form=' + this.filter_eduform,
                             data: {},
                             success: function (data) {
                                 if (data) {

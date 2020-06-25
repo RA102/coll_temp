@@ -80,11 +80,17 @@ class WorkloadgroupController extends Controller
         return Json::encode($deps);
     }
 
-    public function actionGetGroups($id = null)
+    /**
+     * @param null $id
+     * @param $edu_form
+     * @return string
+     */
+
+    public function actionGetGroups($id = null, $edu_form = null)
     {
-        if (!empty($id)) {
-            $groups = Group::find()
-                ->filterWhere(['department_id' => $id])
+        if (!empty($id) || !empty($edu_form)) {
+            $groups = Group::find();
+            $groups->filterWhere(['department_id' => $id, 'education_form' => $edu_form])
                 ->asArray()
                 ->all();
             return Json::encode($groups);
