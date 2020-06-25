@@ -2,6 +2,7 @@
 
 use common\helpers\InstitutionDisciplineHelper;
 use common\models\organization\InstitutionDiscipline;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -27,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 [
-                    'attribute' => 'caption',
+                    'attribute' => 'caption_ru',
                     'value' => function(InstitutionDiscipline $model) {
                         return $model->caption_current;
                     },
@@ -35,7 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 [
                     'attribute' => 'types',
-                    'value' => function(InstitutionDiscipline $model) {
+                    'filter' => Html::activeDropDownList($searchModel, 'types', InstitutionDisciplineHelper::getTypeList(), ['prompt' => '', 'class' => 'form-control form-control-sm']),
+                    'value' => function (InstitutionDiscipline $model) {
                         if ($model->types) {
                             return implode(', ', array_map(function ($item) {
                                 if (array_key_exists($item, InstitutionDisciplineHelper::getTypeList())) {
@@ -45,7 +47,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                         return null;
                     },
-                    //'filter' => \common\helpers\InstitutionDisciplineHelper::getTypeList(),
                 ],
                 //'create_ts',
                 //'update_ts',

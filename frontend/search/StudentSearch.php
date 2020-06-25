@@ -90,8 +90,8 @@ class StudentSearch extends Student
         }
 
         if (!empty($this->group_id)) {
-            $query->innerJoinWith('groups');
-            $query->andFilterWhere(['link.student_group_link.group_id' => $this->group_id]);
+            $query->innerJoinWith('group');
+            $query->andWhere(new Expression('caption::json->>\'ru\' ilike \'%' . $this->group_id . '%\''));
             $query->andWhere(['IS', 'link.student_group_link.delete_ts', new \yii\db\Expression('NULL')]);
             $query->andWhere([Group::tableName().'.institution_id' => $this->institution_id]);
         }
@@ -135,7 +135,6 @@ class StudentSearch extends Student
             'create_ts' => $this->create_ts,
             'delete_ts' => $this->delete_ts,
             'import_ts' => $this->import_ts,
-            'group' => $this->group_id
         ]);
 
         $query->andFilterWhere(['ilike', 'nickname', $this->nickname])
@@ -146,11 +145,6 @@ class StudentSearch extends Student
             ->andFilterWhere(['ilike', 'birth_place', $this->birth_place])
             ->andFilterWhere(['ilike', 'language', $this->language])
             ->andFilterWhere(['ilike', 'photo', $this->photo]);
-//            ->andFilterWhere(['like', 'link.student_group_link.group_id.group.id', $this->group->id]);
-
-        $query->andFilterWhere(['ilike', Group::tableName().'caption', $this->group_id]);
-//        $query->andFilterWhere(new Expression('classes::string[] @> ARRAY[' . $this->classes . ']::string[]'));
-
 
         return $dataProvider;
     }

@@ -125,7 +125,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'birth_date:date',
                 [
                     'attribute' => 'group_id',
-//                    'filter' => 'filter',
                     'value' => "group.caption.ru",
                 ],
 //                [

@@ -6,6 +6,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\organization\InstitutionDiscipline;
 use common\models\organization\Institution;
+use yii\db\Expression;
 
 /**
  * DisciplineSearch represents the model behind the search form of `common\models\Discipline`.
@@ -18,8 +19,9 @@ class InstitutionDisciplineSearch extends InstitutionDiscipline
     public function rules()
     {
         return [
-            [['id', 'status', 'institution_id'], 'integer'],
+            [['id', 'status', 'institution_id', 'types'], 'integer'],
             [['slug', 'create_ts', 'update_ts', 'delete_ts', 'institution_id'], 'safe'],
+            ['caption_ru', 'string'],
         ];
     }
 
@@ -74,9 +76,15 @@ class InstitutionDisciplineSearch extends InstitutionDiscipline
             'delete_ts' => $this->delete_ts,
         ]);
 
-        $query->andFilterWhere(['ilike', json_encode('caption'), $this->caption])
-            ->andFilterWhere(['ilike', 'slug', $this->slug]);
+        if ($this->caption_ru) {
 
+            $query->andWhere(new Expression('caption::json->>\'ru\' ilike \'%'. $this->caption_ru.'%\''));
+                // new Expression('classes::int[] @> ARRAY[' . $this->classes . ']::int[]'
+//        andFilterWhere(['ilike', 'caption::json->>\'ru\'', '%' . $this->caption_ru . '%'])
+
+        }
+
+        $query->andFilterWhere(['ilike', 'slug', $this->slug]);
 
         return $dataProvider;
     }
