@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Фильтры -->
     <div class="card-body skin-white">
         <div class="row" style="margin-top: 2px;" >
-            <div class="col-md-1" style="padding: 8px;"> Кафедра
+            <div class="col-md-1 label-center" style="padding: 8px;"> Кафедра
             </div>
             <div class="col-md-5"  >  
                 <el-select v-model="filter_department" clearable placeholder="Выберите" style="width: 100%;" >
@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </el-select>
             </div>
 
-            <div class="col-md-2" style="padding: 8px;"> Форма обучения
+            <div class="col-md-2 label-center" style="padding: 8px;"> Форма обучения
             </div>
             <div class="col-md-4"  >  
                 <el-select v-model="filter_eduform" clearable placeholder="Выберите"  style="width: 100%;" >
@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <div class="row" style="margin-top: 12px;" >
-            <div class="col-md-1" style="padding: 8px;"> Группа
+            <div class="col-md-1 label-center" style="padding: 8px;"> Преподаватель
             </div>
             <div class="col-md-5"  >  
                 <el-select v-model="filter_studentgroup" clearable placeholder="Выберите" style="width: 100%;" >
@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </el-select>
             </div>
 
-            <div class="col-md-2" style="padding: 8px;"> Язык обучения
+            <div class="col-md-2 label-center" style="padding: 8px;"> Язык обучения
             </div>
             <div class="col-md-4"  >  
                 <el-select v-model="filter_edulang" clearable placeholder="Выберите"  style="width: 100%;" >
@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <div class="row" style="margin-top: 12px;" >
-            <div class="col-md-1" style="padding: 8px;"> Дисциплина
+            <div class="col-md-1 label-center" style="padding: 8px;"> Дисциплина
             </div>
             <div class="col-md-5"  >  
                 <el-select v-model="filter_discipline" clearable placeholder="Выберите" style="width: 100%;" >
@@ -124,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </el-select>
             </div>
 
-            <div class="col-md-2" style="padding: 8px;"> Курс
+            <div class="col-md-2 label-center" style="padding: 8px;"> Курс
             </div>
             <div class="col-md-4"  >  
                 <el-select v-model="filter_course" clearable placeholder="Выберите"  style="width: 100%;" >
@@ -139,9 +139,9 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <div class="row" style="margin-top: 12px;" >
-            <div class="col-md-1" style="padding: 8px;"> Год
+            <div class="col-md-1 label-center" style="padding: 8px;"> Год
             </div>
-            <div class="col-md-1"  >  
+            <div class="col-md-1 yearDiv"  >  
                 <el-select v-model="filter_year"  style="width: 100%;" >
                     <el-option
                     v-for="item in yearlist"
@@ -152,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </el-select>
             </div>
 
-            <div class="col-md-1" style="padding: 8px;"> РУП
+            <div class="col-md-1 label-center" style="padding: 8px;"> РУП
             </div>
             <div class="col-md-3"  >  
                 <el-select v-model="filter_rup" clearable placeholder="Выберите"  style="width: 100%;" >
@@ -205,25 +205,28 @@ $this->params['breadcrumbs'][] = $this->title;
                                 {{group.laboratory[gradeIndex]}}
                             </div>
                         </template>
-                        <template class="col-md-2">
-                            <div class="col-md-1 mr-4">
-                            <v-btn 
-                                @click="updateGroupData(props.row.id,group.num)"
-                                type="success" 
-                                 rounded >Изменить</v-btn>
+                        <template >
+                            <div class="col-md-1 mr-6  ">                            
+                                <el-button 
+                                    type="warning"
+                                    @click="updateGroupData(props.row.id,group.num)" 
+                                    icon="el-icon-edit" round>Изменить</el-button>
                             </div>
-                            <div class="col-md-1 ml-4">
-                            <v-btn                                 
-                                type="error" 
-                                @click="openDialogDelete(props.row.id,group.num)"
-                                rounded >Удалить</v-btn>
+                            <div class="col-md-1 ml-6 ">
+                            <el-button 
+                                    type="danger"
+                                    @click="openDialogDelete(props.row.id,group.num)" 
+                                    icon="el-icon-delete" round>Удалить</el-button>
                             </div>
                         </template>
                         
                     </div>
                    </div>
                    <div class="col-md-1">
-                        <v-btn class="success" @click="createGroupData(props.row.id)">+</v-btn>
+                             <el-button 
+                                    type="primary"
+                                    @click="createGroupData(props.row.id)" 
+                                    icon="el-icon-plus" plain></el-button>
                    </div>
                 </div>
             </el-table-column>
@@ -322,8 +325,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     :rules="textFieldRules"
                     type="number"
                     v-model="semester[index]"
-                    max="100"
-
+                    class="dialogInput"
                  ></v-text-field>
             </span>
             <span v-for="(item,index) in theory" :key="'theory'+index">
@@ -332,7 +334,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     :rules="textFieldRules"
                     v-model="theory[index]" 
                     type="number"
-                    max="100"
+                    class="dialogInput"
                     
                     >
                 </v-text-field>
@@ -343,7 +345,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     :rules="textFieldRules"
                     v-model="laboratory[index]" 
                     type="number"
-                    max="100"
+                    class="dialogInput"
                     >
                 </v-text-field>
             </span>
@@ -379,9 +381,18 @@ $this->params['breadcrumbs'][] = $this->title;
             >
             <v-card class="dialogDelete">
                 <v-card-title class="headline">Подтвердите удаление</v-card-title>
-                <v-card-actions class="ml-4 mt-2">
-                    <v-btn class="mr-6" color="error" @click="confirmDelete()">Подтвердить</v-btn>
-                    <v-btn color="success" @click="cancelDialogDelete()">Отмена</v-btn>
+                <v-card-text class="pb-1">
+                    Это удалит информацию о группе.Продолжать?
+                </v-card-text>
+                <v-card-actions class="ml-4 mt-2 d-flex justify-end">
+                <el-button 
+                    type="primary"
+                    @click="cancelDialogDelete()"
+                    icon="el-icon-edit" plain>Отмена</el-button>
+                <el-button 
+                    type="primary"
+                    @click="confirmDelete()"
+                    icon="el-icon-edit" >Подтвердить</el-button>
                 <v-card-actions>
             </v-card>
         </v-dialog>
@@ -564,13 +575,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         v=>v<101 && v>=0||"Значение от 0 до 100"
                     ],
                     selectedGroup:{},
-                    groupSelect:[
-                        {
-                            id:0,
-                            name:"",
-                            disciplineId:0
-                        }
-                    ]
+                    groupSelect:[]
 
                 
                     }
@@ -621,11 +626,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     updateGroupData(id,num){
                         //Изменить данные группы
                         this.clearDialogWindow();
+                        
                         this.tableDataId=id;
                         this.groupNum=num;
                         this.updateOrGetTecherData(id,num,0);
                         this.groupSelect=this.getGroupsByDiscipline(id);
-                        this.groupSelect.unshift(this.selectedGroup);
+                        this.groupSelect.unshift(this.getGroupName(this.selectedGroup));
                         //отобразить окно
                         this.dialogWindow=true;
                         
@@ -633,11 +639,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     createGroupData(id){
                         //Создаем новую
                         this.clearDialogWindow();
-                        this.tableDataId=id;
                         this.groupSelect=this.getGroupsByDiscipline(id);
-
-
-                        this.dialogWindow=true;
+                        if(this.groupSelect.length!=0){                            
+                            this.tableDataId=id;                      
+                            this.dialogWindow=true;
+                        }else{
+                            const h = this.$createElement;
+                            this.$notify.info({
+                                title: 'Ошибка создания',
+                                message: h('i', { style: 'color: danger' }, 'Все группы заполнены'),
+                                duration:2000
+                            });
+                        }
+                        
 
                     },
                     clearDialogWindow(){
@@ -683,9 +697,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                         }else if(type==2){
                                             this.deniedSelected(this.tableData[i].groups[j].groupId,0);
-                                            this.tableData[i].groups.splice(j,1);
-                                           
-
+                                            this.tableData[i].groups.splice(j,1);                                          
                                         }break;
                                     }
                                     
@@ -693,6 +705,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 if(type==3){
                                     //Это временно
                                     let lastNum=this.tableData[i].groups[this.tableData[i].groups.length-1].num;
+                                    this.deniedSelected(this.selectedGroup,1);
                                     this.tableData[i].groups.push({
                                                 num:lastNum=lastNum+1,
                                                 groupId:this.selectedGroup,
@@ -706,7 +719,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
 
                     },
-                    saveDialogData(){
+                    saveDialogData(){//TODO нужно что бы при открывания правильно группу показывал 
                         //сохраняем данные
                         if(this.$refs.form.validate()){
                             if(this.groupNum!=0){ //если есть groupNum значит происходить изменения
@@ -741,14 +754,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                         return answer;
                     },
-                    getGroupName(id){
+                    getGroupName(id){//Получит название группы по id
                         for(let i=0;i<this.groups.length;i++){
                             if(this.groups[i].id==id){
                                 return this.groups[i];
                             }
                         }
                     },
-                    deniedSelected(id,type){
+                    deniedSelected(id,type){//Указать используемую  группу или наоборот
                         //type 0 == selected =0 
                         for(let i=0;i<this.groups.length;i++){
                             if(this.groups[i].id==id){
@@ -800,8 +813,11 @@ $this->params['breadcrumbs'][] = $this->title;
     </script>
 
     <style>
+    .dialogInput{
+        width:200px;
+    }
     .dialogDelete{
-        height:150px;
+        height:155px;
     }
     .groupName{
         width:400px;
@@ -809,11 +825,14 @@ $this->params['breadcrumbs'][] = $this->title;
     .column-name{
         display:flex;
         justify-content:center;
+        align-items:center;
+
     }
     .column {
         padding-right:10px;
         display:flex;
         justify-content:flex-start;
+        align-items:center;
     }
     .nameDisciplines{
         width:300px;
@@ -821,6 +840,14 @@ $this->params['breadcrumbs'][] = $this->title;
     .demo-input-label {
         display: inline-block;
         width: 40px;
+    }
+
+    .label-center{
+        display:flex;
+        align-items:center;
+    }
+    .yearDiv{
+        min-width:105px;
     }
     </style>    
 
