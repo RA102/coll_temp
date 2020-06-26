@@ -112,6 +112,19 @@ $arrivalLocationCountry = $model->properties['arrival_location']
                 return ApplicationHelper::getBasedClassesLabel($admissionApplication->properties['based_classes']);
             }
         ],
+        [
+            'label' => Yii::t('app', 'Нуждается с общежитии'),
+            'value' => function (AdmissionApplication $admissionApplication) {
+                $res = Yii::t('app', 'Нет');
+                if ($admissionApplication->properties['needs_dormitory'] == 'true'){
+                    $res = Yii::t('app', 'Да');
+                }
+                return $res;
+            }
+        ],
+
+
+        
     ],
 ]); ?>
 

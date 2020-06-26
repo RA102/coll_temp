@@ -31,7 +31,8 @@ class MessageStatusBody
     //, "serviceId": null
     public $user_name="";   //, "user_name": "МАДИНА"
     public $user_surname="";    //, "user_surname": "БОШТАЕВА"
-        //, "user_middlename": "БОГЕНБАЕВНА"
+    public $user_middlename=""; //": "БОГЕНБАЕВНА"
+    public $user_birthday="";
         //, "Language_edu": "03"
         //, "requesterIin": "860717450455"
         
@@ -62,5 +63,8 @@ class MessageStatusBody
         //, "negativeResolutionReason": null
     public $negativeResolutionReasonTextKk="";        //, "negativeResolutionReasonTextKk": "Ваши документы не приняты"
     public $negativeResolutionReasonTextRu="";        //, "negativeResolutionReasonTextRu": "Ваши документы не приняты"}
+
+    public $kk_name="";
+    public $ru_name="";
 
 }

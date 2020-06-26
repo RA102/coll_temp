@@ -57,6 +57,9 @@ class AdmissionApplication extends \yii\db\ActiveRecord
         }
         
         $model->properties = $properties;
+        $model->online = $properties['online'];
+        $model->online_msg_id = $properties['online_msg_id'];
+
         $model->status = ApplicationHelper::STATUS_CREATED;
         $model->is_deleted = false;
         return $model;
@@ -74,7 +77,7 @@ class AdmissionApplication extends \yii\db\ActiveRecord
             [['is_deleted'], 'default', 'value' => false],
             [['is_deleted'], 'boolean'],
             [['delete_ts', 'create_ts', 'update_ts', 'properties', 'history', 'receipt'], 'safe'],
-            [['reason'], 'string'],
+            [['reason', 'online_msg_id'], 'string'],
 
             [
                 'commission_id',

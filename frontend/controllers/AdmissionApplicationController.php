@@ -289,20 +289,23 @@ class AdmissionApplicationController extends Controller
                 //отправляем оповещение
                 $msb = new MessageStatusBody();
 
-                $msb->Child_iin = $admissionApplication->properties['iin'];
-                $msb->child_name = $admissionApplication->properties['firstname'];
-                $msb->child_surname = $admissionApplication->properties['lastname'];
-                $msb->child_middlename = $admissionApplication->properties['middlename'];
+                //$msb->Child_iin = $admissionApplication->properties['iin'];
+                $msb->user_name = $admissionApplication->properties['firstname'];
+                $msb->user_surname = $admissionApplication->properties['lastname'];
+                $msb->user_middlename = $admissionApplication->properties['middlename'];
+                $msb->user_birthday = $admissionApplication->properties['birth_date'];
                 
                 $msb->messageId = $admissionApplication->online_msg_id;     //, "messageId": "171469959"
                 $msb->messageDate = date('c');                              // 2019-03-16T17:55:09+03:00 //"messageDate": "2020-06-11T17:22:05.428+06:00"
                 $msb->messageType = "NOTIFICATION";                         // "messageType": "RESPONSE"
                 //$body->answer_type_doc = "";     //, "answer_type_doc": 3
                 
-                $msb->user_name = "SECRET";             // $user->firstname;   //, "user_name": "МАДИНА"
-                $msb->user_surname = "USER";            //$user->lastname; 
+                //$msb->user_name = "SECRET";             // $user->firstname;   //, "user_name": "МАДИНА"
+                //$msb->user_surname = "USER";            //$user->lastname; 
         
                 $msb->resolutionDate = date('c');
+                $msb->kk_name = $admissionApplication->properties['kk_name'];
+                $msb->ru_name = $admissionApplication->properties['ru_name'];
 
 
                 $status = $changeStatusForm->status;
@@ -323,7 +326,12 @@ class AdmissionApplicationController extends Controller
 
                     $msb->orderNo_tipo = strval($admissionApplication->id);
                     $msb->date_orderNo_tipo = date('c'); //текущая
+                    
                     $msb->Output_Type_doc = "1";              //1 - Уведомление о приеме документов в ТиПО
+                    if ($admissionApplication->properties['needs_dormitory'] == 'true'){
+                        $msb->Output_Type_doc = "4";          // Уведомление о приеме документов в ТиПО и общежития обучающимся в ТиПО
+                    }
+                    
                     $spec = Speciality::findOne($admissionApplication->properties['speciality_id']);
                     $msb->postSecondary_spec_code = $spec->code;       //1001022
                     $msb->postSecondary_spec_nameru = $spec->caption_ru;     //100102 2 - Шөміш
@@ -350,7 +358,8 @@ class AdmissionApplicationController extends Controller
 
                     $msb->orderNo_tipo = strval($admissionApplication->id);
                     $msb->date_orderNo_tipo = date('c'); //текущая
-                    $msb->Output_Type_doc = "2";              //2 - Отрицательно
+                    $msb->Output_Type_doc = "3";              //3-Уведомление об отказе в оказании услуги
+
                     $spec = Speciality::findOne($admissionApplication->properties['speciality_id']);
                     $msb->postSecondary_spec_code = $spec->code;       //1001022
                     $msb->postSecondary_spec_nameru = $spec->caption_ru;     //100102 2 - Шөміш
