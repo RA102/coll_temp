@@ -36,6 +36,7 @@ phpunit.phar
 .htaccess
 access.log
 Nginx_1.17_vhost.conf
+Nginx_1.14_vhost.conf
 backend/web/.htaccess
 error.log
 backend/web/.htaccess

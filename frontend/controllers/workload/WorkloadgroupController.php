@@ -14,9 +14,11 @@ namespace frontend\controllers\workload;
 // use frontend\models\rup\RupSubjectsSearch;
 
 use common\helpers\GroupHelper;
+use common\helpers\LanguageHelper;
 use common\models\Nationality;
 use common\models\organization\Group;
 use common\models\organization\InstitutionDiscipline;
+use frontend\search\GroupSearch;
 use Yii;
 // use app\models\rup\RupRoots;
 // use app\models\rup\RupRootsSearch;
@@ -80,22 +82,13 @@ class WorkloadgroupController extends Controller
         return Json::encode($deps);
     }
 
-    /**
-     * @param null $id
-     * @param $edu_form
-     * @return string
-     */
-
-    public function actionGetGroups($id = null, $edu_form = null)
+    public function actionGetGroups($department_id = "", $edu_form = '', $edu_lang = "", $curs = "")
     {
-        if (!empty($id) || !empty($edu_form)) {
-            $groups = Group::find();
-            $groups->filterWhere(['department_id' => $id, 'education_form' => $edu_form])
-                ->asArray()
-                ->all();
-            return Json::encode($groups);
-        }
-        $groups = Group::find()->asArray()->all();
+        $groups = Group::find()
+            ->filterWhere(['institution_id' => Yii::$app->user->identity->institution->id])
+            ->andFilterWhere(['department_id' => $department_id, 'education_form' => $edu_form, "language" => $edu_lang, "class" => $curs])
+            ->asArray()
+            ->all();
         return Json::encode($groups);
 
     }
@@ -116,6 +109,11 @@ class WorkloadgroupController extends Controller
     {
         $eduForm = GroupHelper::getEducationFormList();
         return Json::encode($eduForm);
+    }
+
+    public function actionGetEduLangs()
+    {
+        return Json::encode(LanguageHelper::getLanguageList());
     }
 
     

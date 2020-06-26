@@ -128,6 +128,9 @@ class Group extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
 
+/*
+ * FIXME: исправить
+*/
     public static function find()
     {
         // some group were moved from old project
@@ -139,7 +142,9 @@ class Group extends \yii\db\ActiveRecord
             ['organization.group.type' => null] // groups created in college.bilimal.kz
         ]);
     }
-
+/*
+ * TODO: ?
+ */
     public function afterFind()
     {
         $currentLanguage = \Yii::$app->language == 'kz-KZ' ? 'kk' : 'ru';

@@ -412,36 +412,35 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     //кафедры
                     departments: [
-                        {value: '0', label: 'Все' },
+                        {value: '', label: 'Все' },
                         {value: 36, label: 'Департамент №1'},
                         {value: 24, label: 'Департамент №2'},
                     ],
                     // filter_department: '',
-                    filter_department: '0',
+                    filter_department: '',
 
                     //группы
                     studentgroups: [
-                        {   value: '0', label: 'Все' }
+                        {   value: '', label: 'Все' }
                     ],
-                    filter_studentgroup: '0',
+                    filter_studentgroup: '',
 
                     //дисциплины
                     disciplines: [
-                        {   value: '0', label: 'Все' }
+                        {   value: '', label: 'Все' }
                     ],
-                    filter_discipline: '0',
+                    filter_discipline: '',
                     
                     //формы обучения
                     eduforms: [
-                        { value: '0', label: 'Все' },
+                        { value: '', label: 'Все' },
 
                     ],
                     filter_eduform: '',  
 
                     //язык обучения
                     edulangs: [
-                        {   value: '1', label: 'Казахский' }
-                        , { value: '2', label: 'Русский' }
+                        { value: '', label: 'Все' },
                     ],
                     filter_edulang: '', 
 
@@ -548,7 +547,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                   filter_eduform: function() {
                       this.fetchGroups();
-                  }
+                  },
+
+                  filter_edulang: function() {
+                    this.fetchGroups();
+                  },
+                  filter_course: function() {
+                    this.fetchGroups();
+                  },
 
                 },
 
@@ -558,6 +564,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         this.fetchGroups();
                         this.fetchDisciplines();
                         this.getEducationForm();
+                        this.getEduLangs();
                         this.console();
                     },
 
@@ -595,7 +602,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     fetchGroups() {
                         $.ajax({
                             type: 'GET',
-                            url: '/workload/workloadgroup/get-groups?id=' + this.filter_department + '&'+ 'edu_form=' + this.filter_eduform,
+                            url: '/workload/workloadgroup/get-groups?department_id=' + this.filter_department + '&edu_form=' + this.filter_eduform + '&edu_lang=' + this.filter_edulang + '&curs=' + this.filter_course,
                             data: {},
                             success: function (data) {
                                 if (data) {
@@ -653,6 +660,27 @@ $this->params['breadcrumbs'][] = $this->title;
                               }
                             },
                         });
+                    },
+
+                    getEduLangs() {
+                      $.ajax({
+                        type: 'GET',
+                        url:'/workload/workloadgroup/get-edu-langs',
+                        data: {},
+                        success: function(data) {
+                          if(data) {
+                            wlApp.edulangs =  $.map(JSON.parse(data), function (value, key) {
+                              return {
+                                value: key,
+                                label: value,
+                              }
+                            });
+                          } else {
+                            return [];
+                          }
+                        },
+                      });
+
                     },
 
                     console() {
