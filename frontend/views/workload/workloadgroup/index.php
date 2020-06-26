@@ -3,9 +3,11 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use frontend\models\workload\WorkloadDiscipline;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\rup\RupRootsSearch */
+/* @var $searchModel frontend\models\workload\WorkloadDiscipline */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $model frontend\models\workload\WorkloadTeacher */
 
 $this->title = 'Нагрузка по группам';
 $this->params['breadcrumbs'][] = $this->title;
@@ -30,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
     <body class="hold-transition skin-black-light sidebar-mini">
-   
+
     <?php $this->beginBody() ?>
 
 
@@ -42,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row" style="margin-top: 2px;" >
             <div class="col-md-1" style="padding: 8px;"> Кафедра
             </div>
-            <div class="col-md-5"  >  
+            <div class="col-md-5"  >
                 <el-select v-model="filter_department" clearable placeholder="Выберите" style="width: 100%;" >
                     <el-option
                     v-for="item in departments"
@@ -55,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="col-md-2" style="padding: 8px;"> Форма обучения
             </div>
-            <div class="col-md-4"  >  
+            <div class="col-md-4"  >
                 <el-select v-model="filter_eduform" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
                     v-for="item in eduforms"
@@ -70,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row" style="margin-top: 12px;" >
             <div class="col-md-1" style="padding: 8px;"> Группа
             </div>
-            <div class="col-md-5"  >  
+            <div class="col-md-5"  >
                 <el-select v-model="filter_studentgroup" clearable placeholder="Выберите" style="width: 100%;" >
                     <el-option
                     v-for="item in studentgroups"
@@ -83,7 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="col-md-2" style="padding: 8px;"> Язык обучения
             </div>
-            <div class="col-md-4"  >  
+            <div class="col-md-4"  >
                 <el-select v-model="filter_edulang" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
                     v-for="item in edulangs"
@@ -98,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row" style="margin-top: 12px;" >
             <div class="col-md-1" style="padding: 8px;"> Дисциплина
             </div>
-            <div class="col-md-5"  >  
+            <div class="col-md-5"  >
                 <el-select v-model="filter_discipline" clearable placeholder="Выберите" style="width: 100%;" >
                     <el-option
                     v-for="item in disciplines"
@@ -111,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="col-md-2" style="padding: 8px;"> Курс
             </div>
-            <div class="col-md-4"  >  
+            <div class="col-md-4"  >
                 <el-select v-model="filter_course" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
                     v-for="item in courselist"
@@ -126,7 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row" style="margin-top: 12px;" >
             <div class="col-md-1" style="padding: 8px;"> Год
             </div>
-            <div class="col-md-1"  >  
+            <div class="col-md-1"  >
                 <el-select v-model="filter_year"  style="width: 100%;" >
                     <el-option
                     v-for="item in yearlist"
@@ -139,7 +141,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="col-md-1" style="padding: 8px;"> РУП
             </div>
-            <div class="col-md-3"  >  
+            <div class="col-md-3"  >
                 <el-select v-model="filter_rup" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
                     v-for="item in rups"
@@ -152,14 +154,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="col-md-4" >
             </div>
-            <div class="col-md-1"  >  
+            <div class="col-md-1"  >
                 <el-button type="primary" icon="el-icon-search" round>Обновить</el-button>
-            </div>            
-        </div>     
-        
-        
-        
-        
+            </div>
+        </div>
+
+
+
+
     </div>
     <div>&nbsp;
     </div>
@@ -193,27 +195,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 <el-table-column
                     label="1 сем."
                     prop="hsem1">
-                </el-table-column>                
+                </el-table-column>
                 <el-table-column
                     label="теор."
                     prop="hteor1">
-                </el-table-column>                
+                </el-table-column>
                 <el-table-column
                     label="прак., лаб."
                     prop="hprakt1">
-                </el-table-column> 
+                </el-table-column>
                 <el-table-column
                     label="2 сем."
                     prop="hsem2">
-                </el-table-column>                
+                </el-table-column>
                 <el-table-column
                     label="теор."
                     prop="hteor2">
-                </el-table-column>                
+                </el-table-column>
                 <el-table-column
                     label="прак., лаб."
                     prop="hprakt2">
-                </el-table-column>                                
+                </el-table-column>
             </el-table-column>
             <el-table-column label="Форма контроля">
                 <el-table-column
@@ -223,20 +225,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 <el-table-column
                     label="Зачет"
                     prop="exam2">
-                </el-table-column>                
+                </el-table-column>
                 <el-table-column
                     label="Контр."
                     prop="exam3">
-                </el-table-column>                
+                </el-table-column>
             </el-table-column>
             <el-table-column
                 label="Практика"
                 prop="hsem1">
-            </el-table-column>                
+            </el-table-column>
             <el-table-column
                 label="Назначенные преподаватели"
                 prop="hteor1">
-            </el-table-column>                
+            </el-table-column>
 
         </el-table>
 
@@ -244,16 +246,41 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 
+<!--    $name = \frontend\models\rup\RupSubjects::find()->where('rup_id=11')->all();-->
+
+<!--    $name = \yii\helpers\ArrayHelper::map(\frontend\models\rup\RupSubjects::find()->all(), 'rup_id', 'name');-->
+
+<!--    $tableData = \frontend\models\rup\RupSubjects::findOne([$searchModel->subjects => 2]);-->
+
+    <?php
+//            $tableData = \frontend\models\rup\RupSubjects::findOne(['rup_id' => 2]);
+//    $date = \yii\helpers\ArrayHelper::getValue($tableData, 'code');
+//    $name = \yii\helpers\ArrayHelper::getValue($tableData, 'name');
+//    $htotal = \yii\helpers\ArrayHelper::getValue($tableData, 'time');
+//    $hsem1 = \yii\helpers\ArrayHelper::getValue($tableData, 'one_sem_time');
+//    $hteor1 = \yii\helpers\ArrayHelper::getValue($tableData, 'teory_time');
+//    $hprakt1 = \yii\helpers\ArrayHelper::getValue($tableData, 'lab_time');
+//    $hsem2 = \yii\helpers\ArrayHelper::getValue($tableData, 'two_sem_time');
+//    $hteor2 = \yii\helpers\ArrayHelper::getValue($tableData, 'teory_time');
+//    $hprakt2 = \yii\helpers\ArrayHelper::getValue($tableData, 'lab_time');
+//    $exam1 = \yii\helpers\ArrayHelper::getValue($tableData, 'exam');
+//    $exam2 = \yii\helpers\ArrayHelper::getValue($tableData, 'offset');
+//    $exam3 = \yii\helpers\ArrayHelper::getValue($tableData, 'control_work');
+
+    echo $row = WorkloadDiscipline::find()->where($searchModel->workloadRow)->limit(10)->asArray()->all();
+    var_dump($row);
+    ?>
+
 <script>
+        var subjects_array = JSON.parse('<?php echo $json; ?>');
         var startApp = {};
         var init = function () {
             wlApp = new Vue({
                 el: '#app',
                 data: {
 
-
                     currentDate: new Date().toTimeString(),
-                   
+
 
                     options: [{
                         value: 'Option1',
@@ -271,7 +298,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         value: 'Option5',
                         label: 'Option5'
                     }],
-                    value: '', 
+                    value: '',
 
                     //кафедры
                     departments: [
@@ -290,21 +317,21 @@ $this->params['breadcrumbs'][] = $this->title;
                         {   value: '0', label: 'Все' }
                     ],
                     filter_discipline: '0',
-                    
+
                     //формы обучения
                     eduforms: [
                         {   value: '1', label: 'Очная' }
                         , { value: '2', label: 'Заочная' }
 
                     ],
-                    filter_eduform: '',  
+                    filter_eduform: '',
 
                     //язык обучения
                     edulangs: [
                         {   value: '1', label: 'Казахский' }
                         , { value: '2', label: 'Русский' }
                     ],
-                    filter_edulang: '', 
+                    filter_edulang: '',
 
                     //год
                     yearlist: [
@@ -314,7 +341,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     ],
                     filter_year: '2020',
-                    
+
                     //курс
                     courselist: [
                         {   value: '1', label: '1' }
@@ -330,29 +357,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     filter_rup: '0',
 
-                    tableData: [{                        
-                        date: '2016-05-06',
-                        name: 'Tom',
-                        state: 'California',
-                        city: 'Los Angeles',
-                        address: 'No. 189, Grove St, Los Angeles',
-                        zip: 'CA 90036'
-                        }, {
-                        date: '2016-05-07',
-                        name: 'Tom',
-                        state: 'California',
-                        city: 'Los Angeles',
-                        address: 'No. 189, Grove St, Los Angeles',
-                        zip: 'CA 90036'
-                        }],
-                    
 
-
-
-
-
-                
-                
+                    tableData: [{
+                        date:'asda';
+                   }],
                 },
 
                 mounted: function () {
@@ -388,7 +396,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     });
                                 } else {
                                     return [];
-                                }                               
+                                }
                             },
                             fail: function (data) {
                                 //console.log(data);
@@ -398,11 +406,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     },
 
-                    
 
-                   
 
-                    
+
+
+
                     // sendOrderRequestGetExecAccept(orderId) {
                     //     //console.log(orderId);
                     //     $.ajax({
@@ -427,7 +435,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     //             startApp.$message('Error, request not append');
                     //         }
                     //     });
-                    // },                    
+                    // },
                 }
 
             })
@@ -436,15 +444,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </script>
 
+
+
     <style>
     .demo-input-label {
         display: inline-block;
         width: 40px;
     }
-    </style>    
+    </style>
 
 
     <?php $this->endBody() ?>
     </body>
     </html>
-    <?php $this->endPage() ?>   
+    <?php $this->endPage() ?>
