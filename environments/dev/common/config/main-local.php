@@ -8,6 +8,13 @@ return [
             'password' => 'B1t3fahrenvu',
             'charset' => 'utf8',
         ],
+        'gospdb' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'pgsql:host=pg3.vpn;dbname=db_gosin',
+            'username' => 'gosin',
+            'password' => 'g0s1ntowa4',
+            'charset' => 'utf8',
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',

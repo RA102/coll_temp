@@ -104,7 +104,7 @@ class GospService
             $institution = Institution::findOne(1);
         }
         if ($institution == null){
-            $result = Institution::findOne(1);
+            $result = Institution::findOne(24);
         }
 
         return $result;
