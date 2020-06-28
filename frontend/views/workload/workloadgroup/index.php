@@ -232,7 +232,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </el-table-column>
             <el-table-column
                 label="Индекс"
-                prop="date">
+                prop="index">
             </el-table-column>
             <el-table-column
                 label="Найменования дисциплина"
@@ -241,31 +241,31 @@ $this->params['breadcrumbs'][] = $this->title;
             <el-table-column label="Объем учебного времени">
                 <el-table-column
                     label="Всего"
-                    prop="htotal">
+                    prop="total">
                 </el-table-column>
                 <el-table-column
                     label="1 сем."
-                    prop="hsem1">
+                    prop="semester[0]">
                 </el-table-column>                
                 <el-table-column
                     label="теор."
-                    prop="hteor1">
+                    prop="theory[0]">
                 </el-table-column>                
                 <el-table-column
                     label="прак., лаб."
-                    prop="hprakt1">
+                    prop="laboratory[0]">
                 </el-table-column> 
                 <el-table-column
                     label="2 сем."
-                    prop="hsem2">
+                    prop="semester[1]">
                 </el-table-column>                
                 <el-table-column
                     label="теор."
-                    prop="hteor2">
+                    prop="theory[1]">
                 </el-table-column>                
                 <el-table-column
                     label="прак., лаб."
-                    prop="hprakt2">
+                    prop="laboratory[1]">
                 </el-table-column>                                
             </el-table-column>
             <el-table-column label="Форма контроля">
@@ -287,8 +287,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 prop="hsem1">
             </el-table-column>                
             <el-table-column
-                label="Назначенные преподаватели"
-                prop="hteor1">
+                label="Группы"
+                prop="groupsName">
             </el-table-column>                
 
         </el-table>
@@ -354,21 +354,14 @@ $this->params['breadcrumbs'][] = $this->title;
             <v-card-actions>
                 <v-spacer></v-spacer>
 
-                <v-btn
-                  color="green darken-1"
-                  text
-                  @click="saveDialogData()"
-                >
-                  Сохранить
-                </v-btn>
-
-                <v-btn
-                color="yellow darken-1"
-                text
-                @click="clearDialogWindow()"
-                 >
-                    Отмена
-                </v-btn>
+                <el-button 
+                    type="primary"
+                    @click="clearDialogWindow()"
+                    plain>Отмена</el-button>
+                <el-button 
+                    type="primary"
+                    @click="saveDialogData()"
+                    >Сохранить</el-button>
             </v-card-actions>
             </v-card>
         </v-dialog>
@@ -494,8 +487,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     tableData: [{    
                         id:1,                    
-                        date: '2016-05-06',
-                        name: 'Tom',
+                        index: 'gg12',
+                        name: 'GG-12-2',
+                        groupsName:"",
+                        total:40,
+                        semester:[61,33],
+                        theory:[94,52],
+                        laboratory:[2,1],
                         groups:[
                             {
                                 num:1,
@@ -518,12 +516,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         }, 
                         {
                         id:2,
-                        date: '2016-05-07',
+                        index: '2016-05-07',
                         name: 'Tom',
-                        state: 'California',
-                        city: 'Los Angeles',
-                        address: 'No. 189, Grove St, Los Angeles',
-                        zip: 'CA 90036',
+                        groupsName:"",
+                        total:30,
+                        semester:[10,10],
+                        theory:[10,10],
+                        laboratory:[0,0],
+                        
                         groups:[
                             {
                                 num:1,
@@ -592,6 +592,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     initAppProc(){
                         this.fetchDepartments();
+                        this.countAgainAllFields();
                     },
 
                     fetchDepartments() {
@@ -641,7 +642,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         this.clearDialogWindow();
                         this.groupSelect=this.getGroupsByDiscipline(id);
                         if(this.groupSelect.length!=0){                            
-                            this.tableDataId=id;                      
+                            this.tableDataId=id;     
                             this.dialogWindow=true;
                         }else{
                             const h = this.$createElement;
@@ -689,11 +690,17 @@ $this->params['breadcrumbs'][] = $this->title;
                                             this.deniedSelected(this.tableData[i].groups[j].groupId,0);
                                             this.deniedSelected(this.selectedGroup,1);
 
-                                            this.tableData[i].groups[j].groupId=this.selectedGroup;
+                                            this.tableData[i].groups[j].groupId=Number(this.selectedGroup);
 
-                                            this.tableData[i].groups[j].semester=this.semester;
-                                            this.tableData[i].groups[j].theory=this.theory;
-                                            this.tableData[i].groups[j].laboratory=this.laboratory;
+                                            this.tableData[i].groups[j].semester[0]=Number(this.semester[0]);
+                                            this.tableData[i].groups[j].semester[1]=Number(this.semester[1]);
+
+                                            this.tableData[i].groups[j].theory[0]=Number(this.theory[0]);
+                                            this.tableData[i].groups[j].theory[1]=Number(this.theory[1]);
+
+
+                                            this.tableData[i].groups[j].laboratory[0]=Number(this.laboratory[0]);
+                                            this.tableData[i].groups[j].laboratory[1]=Number(this.laboratory[1]);
 
                                         }else if(type==2){
                                             this.deniedSelected(this.tableData[i].groups[j].groupId,0);
@@ -703,16 +710,24 @@ $this->params['breadcrumbs'][] = $this->title;
                                     
                                 }
                                 if(type==3){
-                                    //Это временно
-                                    let lastNum=this.tableData[i].groups[this.tableData[i].groups.length-1].num;
+                                    //Это временно пока не начну получать сервера id 
+                                    let lastNum=0;
+                                    if(this.tableData[i].groups.length!=0){
+                                        lastNum=this.tableData[i].groups[this.tableData[i].groups.length-1].num;
+                                    }
                                     this.deniedSelected(this.selectedGroup,1);
+
+                                    let tempSemester=[Number(this.semester[0]),Number(this.semester[1])]
+                                    let tempTheory=[Number(this.theory[0]),Number(this.theory[1])]
+                                    let tempLaboratory=[Number(this.laboratory[0]),Number(this.laboratory[1])]
+
                                     this.tableData[i].groups.push({
                                                 num:lastNum=lastNum+1,
                                                 groupId:this.selectedGroup,
                                                 total:20,
-                                                semester:this.semester,
-                                                theory:this.theory,
-                                                laboratory:this.laboratory
+                                                semester:tempSemester,
+                                                theory:tempTheory,
+                                                laboratory:tempLaboratory
                                         });
                                 }break;                                
                             }
@@ -728,12 +743,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 //Нужно отправять на сервер ждать ответ потом добавлять groupNum
                                 this.updateOrGetTecherData(this.tableDataId,this.groupNum,3);
                             }
+                            this.countAgainAllFields();
                             this.clearDialogWindow();
                         }
                     },
                     confirmDelete(){
-                        this.dialogDeleteGroup=false;
-                        this.updateOrGetTecherData(this.tableDataId,this.groupNum,2)
+                        this.dialogDeleteGroup=false;                        
+                        this.updateOrGetTecherData(this.tableDataId,this.groupNum,2);
+                        this.countAgainAllFields();
                     },
                     openDialogDelete(id,num){
                         this.tableDataId=id;
@@ -769,7 +786,49 @@ $this->params['breadcrumbs'][] = $this->title;
                                 break;
                             }
                         }
-                    }
+                    },
+                    countAgainAllFields(){
+                        for(let i=0;i<this.tableData.length;i++){
+                            let total=0;
+                            let semester=[0,0];
+                            let theory=[0,0];
+                            let laboratory=[0,0];
+                            let groupsName="";
+
+                            for(let j=0;j<this.tableData[i].groups.length;j++){
+                                total+=this.tableData[i].groups[j].total;
+
+
+                                semester[0]+=this.tableData[i].groups[j].semester[0];
+                                semester[1]+=this.tableData[i].groups[j].semester[1];
+                                // console.log("sem[0]:"+semester[0]+"    type:"+typeof semester[0]);
+                                // console.log("this.sem[0]:"+this.tableData[i].groups[j].semester[0]+"    type:"+typeof this.tableData[i].groups[j].semester[0]);
+
+
+                                theory[0]+=this.tableData[i].groups[j].theory[0];
+                                theory[1]+=this.tableData[i].groups[j].theory[1];
+
+                                laboratory[0]+=this.tableData[i].groups[j].laboratory[0];
+                                laboratory[1]+=this.tableData[i].groups[j].laboratory[1];
+                            }
+                            for(let j=0;j<this.groups.length;j++){
+                                if(this.groups[j].disciplineId==this.tableData[i].id && this.groups[j].selected==1){
+                                    if(j!=this.groups.length){
+                                        groupsName+=this.groups[j].name+",";
+                                    }else{
+                                        groupsName+=this.groups[j].name;
+                                    }
+                                }
+                            }
+                            this.tableData[i].groupsName=groupsName;
+                            this.tableData[i].total=total;
+                            this.tableData[i].semester=semester;
+                            this.tableData[i].theory=theory;
+                            this.tableData[i].laboratory=laboratory;
+                        }
+                    },
+                 
+
 
 
 
