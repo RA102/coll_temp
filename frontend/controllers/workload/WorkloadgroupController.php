@@ -13,6 +13,7 @@ namespace frontend\controllers\workload;
 // use frontend\models\rup\RupSubjects;
 // use frontend\models\rup\RupSubjectsSearch;
 
+use app\models\rup\RupRoots;
 use common\helpers\GroupHelper;
 use common\helpers\LanguageHelper;
 use common\models\Nationality;
@@ -114,6 +115,11 @@ class WorkloadgroupController extends Controller
     public function actionGetEduLangs()
     {
         return Json::encode(LanguageHelper::getLanguageList());
+    }
+
+    public function actionGetRups()
+    {
+        return Json::encode(RupRoots::find()->asArray()->all());
     }
 
     

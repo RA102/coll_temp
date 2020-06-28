@@ -421,13 +421,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     //группы
                     studentgroups: [
-                        {   value: '', label: 'Все' }
+                        { value: '', label: 'Все' }
                     ],
                     filter_studentgroup: '',
 
                     //дисциплины
                     disciplines: [
-                        {   value: '', label: 'Все' }
+                        { value: '', label: 'Все' }
                     ],
                     filter_discipline: '',
                     
@@ -446,27 +446,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     //год
                     yearlist: [
-                        {   value: '2019', label: '2019' }
-                        , { value: '2020', label: '2020' }
-                        , { value: '2021', label: '2021' }
-
+                      { value: '2019', label: '2019' },
+                      { value: '2020', label: '2020' },
+                      { value: '2021', label: '2021' }
                     ],
                     filter_year: '2020',
                     
                     //курс
                     courselist: [
-                        {   value: '1', label: '1' }
-                        , { value: '2', label: '2' }
-                        , { value: '3', label: '3' }
-                        , { value: '4', label: '4' }
+                      { value: '1', label: '1' },
+                      { value: '2', label: '2' },
+                      { value: '3', label: '3' },
+                      { value: '4', label: '4' }
                     ],
                     filter_course: '',
 
                     //РУПы
                     rups: [
-                        {   value: '0', label: 'Все' }
+                        { value: '', label: 'Все' }
                     ],
-                    filter_rup: '0',
+                    filter_rup: '',
 
                     tableData: [{    
                         id:1,                    
@@ -565,6 +564,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         this.fetchDisciplines();
                         this.getEducationForm();
                         this.getEduLangs();
+                        this.getRups();
                         this.console();
                     },
 
@@ -681,6 +681,26 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                       });
 
+                    },
+
+                    getRups() {
+                      $.ajax({
+                        type: 'GET',
+                        url:'/workload/workloadgroup/get-rups',
+                        data: {},
+                        success: function(data) {
+                          if(data) {
+                            wlApp.rups =  $.map(JSON.parse(data), function (e) {
+                              return {
+                                value: e.id,
+                                label: e.captionRu
+                              }
+                            });
+                          } else {
+                            return [];
+                          }
+                        },
+                      });
                     },
 
                     console() {
