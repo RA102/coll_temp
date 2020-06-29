@@ -50,20 +50,6 @@ class WorkloadgroupController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'actions' => [
-                            'index', 'view',
-                            'create', 'update',
-                            'delete'
-                        ],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -72,6 +58,8 @@ class WorkloadgroupController extends Controller
                     'get-specialities'=>['GET'],
                     'get-qualifications'=>['GET'],
                     'get-departments'=>['GET'],
+                    
+                     
                 ],
             ],
         ];
@@ -85,46 +73,19 @@ class WorkloadgroupController extends Controller
      */
     public function actionIndex()
     {
-
-         $searchModel = new WorkloadDiscipline();
-
-
+        // $searchModel = new RupRootsSearch();
         // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         // $subjects = RupSubjects::find()->joinWith('subBlock')->joinWith('block')->orderBy('rup_block.id')->all();
         return $this->render('index', [
-             'searchModel' => $searchModel,
-//             'dataProvider' => $dataProvider,
-//             'subjects'=>$subjects
+            // 'searchModel' => $searchModel,
+            // 'dataProvider' => $dataProvider,
+            // 'subjects'=>$subjects
         ]);
     }
 
     public function actionGetDepartments(){
-//        $deps = WorkloadDiscipline::find()->limit(10)->asArray()->all();
-//        return Json::encode($deps);
-    }
-
-    /**
-     * Creates a new InstitutionDiscipline model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new WorkloadTeacher();
-
-        $subjectRow = Yii::$app->request->post();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()) {
-                if ($model->saveSubRow($subjectRow)) {
-                    return $this->redirect(['index', 'id' => $model->id]);
-                }
-                return $this->redirect(['index', 'id' => $model->id]);
-            }
-        }
-
-        return $this->render('index', [
-            'model' => $model,
-        ]);
+        $deps = Nationality::find()->limit(10)->asArray()->all();
+        return Json::encode($deps);
     }
 
     public function actionGetGroups($department_id = "", $edu_form = '', $edu_lang = "", $curs = "")
@@ -188,22 +149,22 @@ class WorkloadgroupController extends Controller
     }
 
 
-
+    
     /**
      * Finds the RupRoots model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return WorkloadTeacher the loaded model
+     * @return RupRoots the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-     protected function findModel($id)
-     {
-         if (($model = WorkloadTeacher::findOne($id)) !== null) {
-             return $model;
-         }
+    // protected function findModel($id)
+    // {
+    //     if (($model = RupRoots::findOne($id)) !== null) {
+    //         return $model;
+    //     }
 
-         throw new NotFoundHttpException('The requested page does not exist.');
-     }
+    //     throw new NotFoundHttpException('The requested page does not exist.');
+    // }
 
     
 }
