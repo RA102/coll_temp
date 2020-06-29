@@ -41,7 +41,7 @@ class RupModuleController extends Controller
     public function actionIndex($rup_id)
     {
         $searchModel = new RupModuleSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$rup_id);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $rup_id, null);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -63,7 +63,7 @@ class RupModuleController extends Controller
     public function actionIndexView($rup_id)
     {
         $searchModel = new RupModuleSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$rup_id);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $rup_id, null);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -81,7 +81,7 @@ class RupModuleController extends Controller
 //        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         $searchModel = new RupModuleSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams,$rup_id);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $rup_id, null);
         return $this->renderPartial('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

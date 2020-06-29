@@ -20,6 +20,11 @@ use common\models\Nationality;
 use common\models\organization\Group;
 use common\models\organization\InstitutionDiscipline;
 
+use frontend\search\GroupSearch;
+//use common\models\Nationality;
+
+use frontend\models\workload\WorkloadDiscipline;
+use frontend\models\workload\WorkloadTeacher;
 use Yii;
 
 use yii\helpers\Json;
@@ -44,7 +49,7 @@ class WorkloadgroupController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                     'returnjson'=>['POST'],
@@ -52,7 +57,11 @@ class WorkloadgroupController extends Controller
                     'get-qualifications'=>['GET'],
                     'get-departments'=>['GET'],
                     
-                     
+                    'get-discipline-load-row'=>['GET'],
+                    'get-group-load-row'=>['GET'],
+                    'get-teacher-load-row'=>['GET'],
+
+
                 ],
             ],
         ];
@@ -66,20 +75,143 @@ class WorkloadgroupController extends Controller
      */
     public function actionIndex()
     {
-        // $searchModel = new RupRootsSearch();
+
+         //$searchModel = new WorkloadDiscipline();
+
+
         // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         // $subjects = RupSubjects::find()->joinWith('subBlock')->joinWith('block')->orderBy('rup_block.id')->all();
-        return $this->render('index', [
-            // 'searchModel' => $searchModel,
-            // 'dataProvider' => $dataProvider,
-            // 'subjects'=>$subjects
-        ]);
+        return $this->render('index');
+        //, [
+          //   'searchModel' => $searchModel,
+//             'dataProvider' => $dataProvider,
+//             'subjects'=>$subjects
+       // ]);
     }
 
     public function actionGetDepartments(){
-        $deps = Nationality::find()->limit(10)->asArray()->all();
-        return Json::encode($deps);
+       $deps = Nationality::find()->limit(10)->asArray()->all();
+       return Json::encode($deps);
     }
+
+
+
+
+    public function actionGetDisciplineLoadRow($rup_id, $disc_id, $group_id, $rup_block_id = null, $rup_module_id = null){
+        $groups = RupSubjects::find()->where(['rup_id' => $rup_id])
+        ->limit(3)->asArray()->all();
+
+        return Json::encode($groups);
+    }
+
+    public function actionGetGroupLoadRow($rup_id, $disc_id, $group_id, $rup_block_id = null, $rup_module_id = null){
+        $groups = RupSubjects::find()->where(['rup_id' => $rup_id])
+        ->limit(10)->asArray()->all();
+
+        return Json::encode($groups);
+    }
+
+    public function actionTeacherLoadRow($rup_id, $disc_id, $group_id, $rup_block_id = null, $rup_module_id = null){
+        $groups = RupSubjects::find()->where(['rup_id' => $rup_id])
+        ->limit(10)->asArray()->all();
+
+        return Json::encode($groups);
+    }
+
+    /**
+     * Creates a new InstitutionDiscipline model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    // public function actionCreate()
+    // {
+    //     $model = new WorkloadTeacher();
+
+    //     $subjectRow = Yii::$app->request->post();
+    //     if ($model->load(Yii::$app->request->post())) {
+    //         if ($model->save()) {
+    //             if ($model->saveSubRow($subjectRow)) {
+    //                 return $this->redirect(['index', 'id' => $model->id]);
+    //             }
+    //             return $this->redirect(['index', 'id' => $model->id]);
+    //         }
+    //     }
+
+    //     return $this->render('index', [
+    //         'model' => $model,
+    //     ]);
+    // }
+
+    // /**
+    //  * Updates an existing InstitutionDiscipline model.
+    //  * If update is successful, the browser will be redirected to the 'view' page.
+    //  * @param integer $id
+    //  * @return mixed
+    //  * @throws NotFoundHttpException if the model cannot be found
+    //  */
+    // public function actionUpdate($id)
+    // {
+    //     $model = $this->findModel($id);
+
+    //     if(Yii::$app->request->isPost)
+    //     {
+    //         $subjectRow = Yii::$app->request->post();
+    //         if ($model->saveSubRow($subjectRow)) {
+    //             return $this->redirect(['index', 'id' => $model->id]);
+    //         }
+    //         if ($model->load(Yii::$app->request->post())) {
+    //             $model->institution_id = Yii::$app->user->identity->institution->id;
+    //             if ($model->save()) {
+    //                 return $this->redirect(['index', 'id' => $model->id]);
+    //             }
+    //         }
+    //     }
+
+    //     return $this->render('index', [
+    //         'model' => $model,
+    //     ]);
+    // }
+    // /**
+    //  * Deletes an existing InstitutionDiscipline model.
+    //  * If deletion is successful, the browser will be redirected to the 'index' page.
+    //  * @param integer $id
+    //  * @return mixed
+    //  * @throws NotFoundHttpException if the model cannot be found
+    //  */
+    // public function actionDelete($id)
+    // {
+    //     $this->findModel($id);
+    //     return $this->redirect(['index']);
+    // }
+    // /**
+    //  * Finds the RupRoots model based on its primary key value.
+    //  * If the model is not found, a 404 HTTP exception will be thrown.
+    //  * @param integer $id
+    //  * @return WorkloadTeacher the loaded model
+    //  * @throws NotFoundHttpException if the model cannot be found
+    //  */
+    //  protected function findModel($id)
+    //  {
+    //      if (($model = WorkloadTeacher::findOne($id)) !== null) {
+    //          return $model;
+    //      }
+
+    //      throw new NotFoundHttpException('The requested page does not exist.');
+    //  }
+        // $searchModel = new RupRootsSearch();
+        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // $subjects = RupSubjects::find()->joinWith('subBlock')->joinWith('block')->orderBy('rup_block.id')->all();
+    //     return $this->render('index', [
+    //         // 'searchModel' => $searchModel,
+    //         // 'dataProvider' => $dataProvider,
+    //         // 'subjects'=>$subjects
+    //     ]);
+    // }
+
+    // public function actionGetDepartments(){
+    //     $deps = Nationality::find()->limit(10)->asArray()->all();
+    //     return Json::encode($deps);
+    // }
 
     public function actionGetGroups($department_id = "", $edu_form = '', $edu_lang = "", $curs = "")
     {

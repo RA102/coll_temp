@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\exceptions\ValidationException;
+use common\models\person\PersonCredential;
 use common\services\pds\PersonCredentialService;
 use frontend\models\forms\PersonCredentialForm;
 use Yii;
@@ -89,4 +90,13 @@ class CredentialController extends Controller
 
         return $this->redirect(Yii::$app->request->referrer);
     }
+
+    public function actionDelete($id)
+    {
+        $pc = PersonCredential::findOne($id);
+        $pc->delete_ts = date('Y-m-d H:i:s');
+        $pc->save();
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }    
 }

@@ -10,7 +10,11 @@ use common\services\PdfService;
 use common\services\reception\AdmissionApplicationService;
 use common\services\reception\CommissionService;
 use app\models\link\EntrantReceptionGroupLink;
+use common\helpers\EducationHelper;
+use common\models\gosp\MessageStatusBody;
+use common\models\person\Person;
 use common\models\reception\AdmissionFiles;
+use common\services\gosp\GospService;
 use frontend\models\forms\AdmissionApplicationForm;
 use frontend\models\forms\EnlistEntrantForm;
 use frontend\models\reception\admission_application\ChangeStatusForm;
@@ -23,6 +27,7 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
+
 /**
  * AdmissionApplicationController implements the CRUD actions for AdmissionApplication model.
  */
@@ -31,6 +36,7 @@ class AdmissionApplicationController extends Controller
     public $admissionApplicationService;
     public $commissionService;
     public $pdfService;
+    public $gospService;
 
     /**
      * AdmissionApplicationController constructor.
@@ -47,6 +53,7 @@ class AdmissionApplicationController extends Controller
         AdmissionApplicationService $admissionApplicationService,
         CommissionService $commissionService,
         PdfService $pdfService,
+        GospService $gospService,
         array $config = []
     ) {
         parent::__construct($id, $module, $config);
@@ -54,6 +61,7 @@ class AdmissionApplicationController extends Controller
         $this->admissionApplicationService = $admissionApplicationService;
         $this->commissionService = $commissionService;
         $this->pdfService = $pdfService;
+        $this->gospService = $gospService;
     }
 
     /**
@@ -161,10 +169,12 @@ class AdmissionApplicationController extends Controller
     public function actionCreate()
     {
         $admissionApplicationForm = new AdmissionApplicationForm();
+        $institution = Yii::$app->user->identity->institution;
 
         if ($admissionApplicationForm->load(Yii::$app->request->post()) && $admissionApplicationForm->validate()) {
+
             $commission = $this->commissionService->getActiveInstitutionCommission(
-                Yii::$app->user->identity->institution
+                $institution
             );
             if (!$commission) {
                 Yii::$app->session->setFlash('error',
@@ -174,8 +184,9 @@ class AdmissionApplicationController extends Controller
             $admissionApplication = $this->admissionApplicationService->create(
                 $admissionApplicationForm,
                 $commission->id,
-                0,
-                Yii::$app->user->identity->institution->id
+                $institution->id, 
+                0
+                
             );
 
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
@@ -183,7 +194,7 @@ class AdmissionApplicationController extends Controller
 
         return $this->render('create', [
             'admissionApplicationForm' => $admissionApplicationForm,
-            'specialities'             => Yii::$app->user->identity->institution->specialities
+            'specialities'             => $institution->specialities
         ]);
     }
 
@@ -264,15 +275,107 @@ class AdmissionApplicationController extends Controller
         }
 
         if ($changeStatusForm->load(Yii::$app->request->post()) && $changeStatusForm->validate()) {
+            $user = Yii::$app->user->identity; 
             //if ($admissionApplication->status != $changeStatusForm->status) {
                 $this->admissionApplicationService->changeStatus(
                     $id,
                     $changeStatusForm->status,
-                    Yii::$app->user->identity,
+                    $user,
                     $changeStatusForm->reception_group_id,
                     $changeStatusForm->reason
                 );
             //}
+            if ($admissionApplication->online > 0){
+                //отправляем оповещение
+                $msb = new MessageStatusBody();
+
+                //$msb->Child_iin = $admissionApplication->properties['iin'];
+                $msb->user_name = $admissionApplication->properties['firstname'];
+                $msb->user_surname = $admissionApplication->properties['lastname'];
+                $msb->user_middlename = $admissionApplication->properties['middlename'];
+                $msb->user_birthday = $admissionApplication->properties['birth_date'];
+                
+                $msb->messageId = $admissionApplication->online_msg_id;     //, "messageId": "171469959"
+                $msb->messageDate = date('c');                              // 2019-03-16T17:55:09+03:00 //"messageDate": "2020-06-11T17:22:05.428+06:00"
+                $msb->messageType = "NOTIFICATION";                         // "messageType": "RESPONSE"
+                //$body->answer_type_doc = "";     //, "answer_type_doc": 3
+                
+                //$msb->user_name = "SECRET";             // $user->firstname;   //, "user_name": "МАДИНА"
+                //$msb->user_surname = "USER";            //$user->lastname; 
+        
+                $msb->resolutionDate = date('c');
+                $msb->kk_name = $admissionApplication->properties['kk_name'];
+                $msb->ru_name = $admissionApplication->properties['ru_name'];
+
+
+                $status = $changeStatusForm->status;
+                $sendresp = $this->gospService->sendNotification($msb, $status);
+
+                if ($changeStatusForm->status == ApplicationHelper::STATUS_ACCEPTED){
+                    $msb->messageType = "RESPONSE";
+                    $msb->resolutionType = "POSITIVE";
+                    $cur_edu_form = $admissionApplication->properties['education_form'];
+                    // const EDUCATION_FORM_FULL_TIME = 1; //очное
+                    // const EDUCATION_FORM_EXTRAMURAL = 2; // заочное
+                    // const EDUCATION_FORM_EVENING = 3; // вечернее
+                    $str_edu_form = "0";
+                    if ($cur_edu_form == EducationHelper::EDUCATION_FORM_FULL_TIME){
+                        $str_edu_form = "0";                        
+                    }
+                    $msb->study_form = $str_edu_form;                   //0-очная
+
+                    $msb->orderNo_tipo = strval($admissionApplication->id);
+                    $msb->date_orderNo_tipo = date('c'); //текущая
+                    
+                    $msb->Output_Type_doc = "1";              //1 - Уведомление о приеме документов в ТиПО
+                    if ($admissionApplication->properties['needs_dormitory'] == 'true'){
+                        $msb->Output_Type_doc = "4";          // Уведомление о приеме документов в ТиПО и общежития обучающимся в ТиПО
+                    }
+                    
+                    $spec = Speciality::findOne($admissionApplication->properties['speciality_id']);
+                    $msb->postSecondary_spec_code = $spec->code;       //1001022
+                    $msb->postSecondary_spec_nameru = $spec->caption_ru;     //100102 2 - Шөміш
+                    $msb->postSecondary_spec_namekz = $spec->caption_kk;     //2 - Ковшевой
+                    
+                    //send COMPLITED
+                    $sendresp =$this->gospService->sendResponse($msb, $status);
+                    
+                }
+
+                if ($changeStatusForm->status == ApplicationHelper::STATUS_DECLINED){
+                    $msb->messageType = "RESPONSE";
+                    $msb->resolutionType = "NEGATIVE";
+                    
+                    $cur_edu_form = $admissionApplication->properties['education_form'];
+                    // const EDUCATION_FORM_FULL_TIME = 1; //очное
+                    // const EDUCATION_FORM_EXTRAMURAL = 2; // заочное
+                    // const EDUCATION_FORM_EVENING = 3; // вечернее
+                    $str_edu_form = "0";
+                    if ($cur_edu_form == EducationHelper::EDUCATION_FORM_FULL_TIME){
+                        $str_edu_form = "0";                        
+                    }
+                    $msb->study_form = $str_edu_form;                   //0-очная
+
+                    $msb->orderNo_tipo = strval($admissionApplication->id);
+                    $msb->date_orderNo_tipo = date('c'); //текущая
+                    $msb->Output_Type_doc = "3";              //3-Уведомление об отказе в оказании услуги
+
+                    $spec = Speciality::findOne($admissionApplication->properties['speciality_id']);
+                    $msb->postSecondary_spec_code = $spec->code;       //1001022
+                    $msb->postSecondary_spec_nameru = $spec->caption_ru;     //100102 2 - Шөміш
+                    $msb->postSecondary_spec_namekz = $spec->caption_kk;     //2 - Ковшевой
+                    
+                    $msb->negativeResolutionReasonTextRu = $changeStatusForm->reason;
+                    $msb->negativeResolutionReasonTextKk = $changeStatusForm->reason;
+                    //send COMPLITED
+                    $sendresp =$this->gospService->sendResponse($msb, $status);
+                    
+                }
+
+
+            }
+
+
             return $this->redirect(['view', 'id' => $admissionApplication->id]);
         }
 

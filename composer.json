@@ -37,7 +37,8 @@
         "kartik-v/yii2-tabs-x": "dev-master",
         "phpoffice/phpexcel": "^1.8",
         "phpoffice/phpspreadsheet": "^1.10",
-        "alhimik1986/php-excel-templator": "^1.0"
+        "alhimik1986/php-excel-templator": "^1.0",
+        "yiisoft/yii2-httpclient": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

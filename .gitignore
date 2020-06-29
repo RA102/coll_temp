@@ -40,5 +40,10 @@ backend/web/.htaccess
 error.log
 backend/web/.htaccess
 
+
+# add ignore all log
+*.log
+
+# add ignore all temp(tmp)
 temp.*
 tmp.*

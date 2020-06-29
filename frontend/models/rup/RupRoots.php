@@ -27,6 +27,11 @@ use Yii;
  */
 class RupRoots extends \yii\db\ActiveRecord
 {
+    
+    public const STATUS_CLOSED = 0;
+    public const STATUS_OPENED = 1;
+    public const STATUS_DELETED = 2;
+
     /**
      * {@inheritdoc}
      */
@@ -75,5 +80,21 @@ class RupRoots extends \yii\db\ActiveRecord
             'spec_code' => 'Специальность',
             'edu_form' => 'Форма обучения',
         ];
+    }
+
+    public function getStatusText(){
+        $result = "";
+
+        if ($this->status == RupRoots::STATUS_OPENED){
+            $result = "Открыт для редактирования";
+        }
+        if ($this->status == RupRoots::STATUS_CLOSED){
+            $result = "Закрыт для редактирования";
+        }
+        if ($this->status == RupRoots::STATUS_DELETED){
+            $result = "Удален";
+        }
+
+        return $result;        
     }
 }

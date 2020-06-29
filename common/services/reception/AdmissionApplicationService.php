@@ -157,9 +157,11 @@ class AdmissionApplicationService
                 throw new \Exception('Forbidden');
             }
         }
+        
         $admissionApplication->status = ApplicationHelper::STATUS_ACCEPTED;
 
         $entrant = Entrant::find()->where(['id' => $admissionApplication->person_id])->orWhere(['iin' => $admissionApplication->properties['iin']])->one();
+        //$person = null;
 
         if ($entrant == null) {
             $entrant = Entrant::add(
@@ -170,9 +172,18 @@ class AdmissionApplicationService
                 $admissionApplication->properties['iin']
             );
             $entrant->setAttributes($admissionApplication->properties);
-        // } else {
-        //     $entrant = Entrant::find()->where(['id' => $admissionApplication->person_id])->one();
+            $entrant->save();
+            // $person = $this->personService->create(
+            //     $entrant, //$entrant->one(),
+            //     $admissionApplication->institution_id,
+            //     $admissionApplication->properties['email'],
+            //     PersonCredentialHelper::TYPE_EMAIL,
+            //     $user->activeAccessToken->token,
+            //     $user->person_type
+            // );
+
         }
+
 
         $this->transactionManager->execute(function () use (
             $entrant,
@@ -180,20 +191,11 @@ class AdmissionApplicationService
             &$admissionApplication,
             $reception_group_id
         ) {
-            //if (Entrant::find()->where(['id' => $admissionApplication->person_id])->one() == null) {
-            if ($entrant == null) {
-                $person = $this->personService->create(
-                    $entrant->one(),
-                    $admissionApplication->institution_id,
-                    $admissionApplication->properties['email'],
-                    PersonCredentialHelper::TYPE_EMAIL,
-                    $user->activeAccessToken->token,
-                    $user->person_type
-                );
-            } else {
-                //$person = Entrant::find()->where(['id' => $admissionApplication->person_id])->one();
-                $person = Entrant::find()->where(['id' => $entrant->id])->one();
+            $person = $entrant;
+            if ($person == null){
+                $person = Person::find()->where(['id' => $entrant->id])->orWhere(['iin' => $admissionApplication->properties['iin']])->one();
             }
+            
 
             $admissionApplication->person_id = $person->id;
             if (!$admissionApplication->save()) {

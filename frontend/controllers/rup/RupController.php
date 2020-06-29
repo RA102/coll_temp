@@ -25,6 +25,7 @@ use common\models\handbook\Speciality;
 
 use yii\helpers\Html;
 
+
 /**
  * RupController implements the CRUD actions for RupRoots model.
  */
@@ -104,9 +105,19 @@ class RupController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->rup_id]);
         }
+        $profiles = Speciality::find()->where(['type' => '1'])->limit(200)->all();
+        $code = '13';
+        if ($profiles != null && count($profiles)>0){
+            $code = $profiles[0]->code;
+            $code = substr($code,0,2) . '%';
+        }
+        $specialities = Speciality::find()->select(["code", "caption"])->where(['type' => '3'])->andWhere(['like', 'code', $code, false])->all();
+        //$specialities = $this->actionGetSpecialities('1300');
 
         return $this->render('create', [
             'model' => $model,
+            'specialities'=>$specialities,
+            'profiles' => $profiles,
         ]);
     }
 
@@ -126,7 +137,8 @@ class RupController extends Controller
         }
 
         $dataInstitutionDiscipline = new InstitutionDiscipline();
-        $templates = InstitutionDiscipline::find()->all();
+        $institution = \Yii::$app->user->identity->institution;
+        $templates = InstitutionDiscipline::find()->where(['or', ['institution_id'=> 0], ['institution_id' => $institution->id]])->andWhere(['is', 'delete_ts', null ])->limit(200)->all();
         $listData = ArrayHelper::map($templates, 'id', 'caption_ru');
 
 
@@ -143,7 +155,7 @@ class RupController extends Controller
         ->asArray()->all();
 
         $model_2 = new InstitutionDiscipline();
-        $institution = \Yii::$app->user->identity->institution;
+        //$institution = \Yii::$app->user->identity->institution;
         $employeeService = new EmployeeService();
         $employeeService->getTeachersActive($institution);
 
@@ -155,12 +167,14 @@ class RupController extends Controller
             'dataProvider'=>$dataProvider,
             'searchModelBlock'=>$searchModelBlock,
             'dataProviderBlock'=>$dataProviderBlock,
-            'specialities'=>$specialities,
+
             'dataInstitutionDiscipline' => $dataInstitutionDiscipline,
             'templates' => $templates,
             'listData' => $listData,
             'model_2' => $model_2,
             'teachers' => $employeeService->getTeachersActive($institution),
+
+            'specialities'=>$specialities,
 
         ]);
     }
@@ -174,7 +188,10 @@ class RupController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        //$this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $model->status = RupRoots::STATUS_DELETED;
+        $model->save();
 
         return $this->redirect(['index']);
     }

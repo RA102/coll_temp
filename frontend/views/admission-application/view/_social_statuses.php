@@ -5,13 +5,17 @@
 /* @var $model common\models\reception\AdmissionApplication */
 
 use app\models\handbook\PersonSocialStatus;
+    $soc_arr = $model->properties['social_statuses'];
+    if (isset($soc_arr) && count($soc_arr)>0 && strlen($soc_arr[0]['name'])<1){
+        $soc_arr = null;
+    }
 
 ?>
 
 <?= \yii\grid\GridView::widget([
     'summary'      => false,
     'dataProvider' => new \yii\data\ArrayDataProvider([
-        'models' => $model->properties['social_statuses'] ?: []
+        'models' => $soc_arr ?: []
     ]),
     'columns'      => [
         [

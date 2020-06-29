@@ -83,12 +83,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <div class="row" style="margin-top: 12px;" >
-            <div class="col-md-1 label-center" style="padding: 8px;"> Преподаватель
+            <div class="col-md-1 label-center" style="padding: 8px;"> Курс
             </div>
             <div class="col-md-5"  >  
-                <el-select v-model="filter_studentgroup" clearable placeholder="Выберите" style="width: 100%;" >
+                <el-select v-model="filter_course" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
-                    v-for="item in studentgroups"
+                    v-for="item in courselist"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -111,6 +111,46 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <div class="row" style="margin-top: 12px;" >
+            <div class="col-md-1 label-center" style="padding: 8px;"> Группа
+            </div>
+            <div class="col-md-5"  >  
+                <el-select v-model="filter_studentgroup" clearable placeholder="Выберите" style="width: 100%;" >
+                    <el-option
+                    v-for="item in studentgroups"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+
+            <div class="col-md-1 label-center" style="padding: 8px;"> Год
+            </div>
+            <div class="col-md-1 yearDiv"  >
+                <el-select v-model="filter_year"  style="width: 100%;" >
+                    <el-option
+                    v-for="item in yearlist"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+            <div class="col-md-1 label-center" style="padding: 8px;"> РУП
+            </div>
+            <div class="col-md-3"  >  
+                <el-select v-model="filter_rup" clearable placeholder="Выберите"  style="width: 100%;" >
+                    <el-option
+                    v-for="item in rups"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 12px;" >
             <div class="col-md-1 label-center" style="padding: 8px;"> Дисциплина
             </div>
             <div class="col-md-5"  >  
@@ -124,57 +164,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 </el-select>
             </div>
 
-            <div class="col-md-2 label-center" style="padding: 8px;"> Курс
-            </div>
-            <div class="col-md-4"  >  
-                <el-select v-model="filter_course" clearable placeholder="Выберите"  style="width: 100%;" >
-                    <el-option
-                    v-for="item in courselist"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-        </div>
-
-        <div class="row" style="margin-top: 12px;" >
-            <div class="col-md-1 label-center" style="padding: 8px;"> Год
-            </div>
-            <div class="col-md-1 yearDiv"  >
-                <el-select v-model="filter_year"  style="width: 100%;" >
-                    <el-option
-                    v-for="item in yearlist"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-
-            <div class="col-md-1 label-center" style="padding: 8px;"> РУП
-            </div>
-            <div class="col-md-3"  >  
-                <el-select v-model="filter_rup" clearable placeholder="Выберите"  style="width: 100%;" >
-                    <el-option
-                    v-for="item in rups"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-
             <div class="col-md-4" >
             </div>
             <div class="col-md-1"  >  
-                <el-button type="primary" icon="el-icon-search" round>Обновить</el-button>
-            </div>            
+                <el-button type="primary" icon="el-icon-search" round @click="btn_search_click()">Обновить</el-button>
+            </div> 
+
         </div>
 
-
-
-
+   
+        
+        
+        
+        
     </div>
     <div>&nbsp;
     </div>
@@ -235,57 +237,75 @@ $this->params['breadcrumbs'][] = $this->title;
                 prop="index">
             </el-table-column>
             <el-table-column
-                label="Найменования дисциплина"
+                label="Дисциплина"
                 prop="name">
             </el-table-column>
-            <el-table-column label="Объем учебного времени">
-                <el-table-column
+            <el-table-column
                     label="Всего"
                     prop="total">
-                </el-table-column>
+            </el-table-column>            
+            <el-table-column label="Объем учебного времени и формы контроля 1 полугодие">
                 <el-table-column
-                    label="1 сем."
-                    prop="semester[0]">
+                    label="УЧЧ"
+                    prop="hours1">
                 </el-table-column>                
                 <el-table-column
-                    label="теор."
-                    prop="theory[0]">
+                    label="ТЕО"
+                    prop="theory1">
                 </el-table-column>                
                 <el-table-column
-                    label="прак., лаб."
-                    prop="laboratory[0]">
+                    label="ЛАБ"
+                    prop="lab1">
                 </el-table-column> 
                 <el-table-column
-                    label="2 сем."
-                    prop="semester[1]">
+                    label="ЭКЗ"
+                    prop="ekz1">
                 </el-table-column>                
                 <el-table-column
-                    label="теор."
-                    prop="theory[1]">
+                    label="ЗАЧ"
+                    prop="zac1">
                 </el-table-column>                
                 <el-table-column
-                    label="прак., лаб."
-                    prop="laboratory[1]">
+                    label="КНТ"
+                    prop="knt1">
                 </el-table-column>                                
+                <el-table-column
+                    label="ПРК"
+                    prop="prk1">
+                </el-table-column>                                
+
             </el-table-column>
-            <el-table-column label="Форма контроля">
+            <el-table-column label="Объем учебного времени и формы контроля 2 полугодие">
                 <el-table-column
-                    label="Экзамен"
-                    prop="exam1">
-                </el-table-column>
-                <el-table-column
-                    label="Зачет"
-                    prop="exam2">
+                    label="УЧЧ"
+                    prop="hours2">
                 </el-table-column>                
                 <el-table-column
-                    label="Контр."
-                    prop="exam3">
+                    label="ТЕО"
+                    prop="theory2">
                 </el-table-column>                
-            </el-table-column>
-            <el-table-column
-                label="Практика"
-                prop="hsem1">
-            </el-table-column>                
+                <el-table-column
+                    label="ЛАБ"
+                    prop="lab2">
+                </el-table-column> 
+                <el-table-column
+                    label="ЭКЗ"
+                    prop="ekz2">
+                </el-table-column>                
+                <el-table-column
+                    label="ЗАЧ"
+                    prop="zac2">
+                </el-table-column>                
+                <el-table-column
+                    label="КНТ"
+                    prop="knt2">
+                </el-table-column>                                
+                <el-table-column
+                    label="ПРК"
+                    prop="prk2">
+                </el-table-column>                                
+
+            </el-table-column>             
             <el-table-column
                 label="Группы"
                 prop="groupsName">
@@ -485,56 +505,57 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         filter_rup: '',
 
-                    tableData: [{
-                        id:1,
-                        index: 'gg12',
-                        name: 'GG-12-2',
-                        groupsName:"",
-                        total:40,
-                        semester:[61,33],
-                        theory:[94,52],
-                        laboratory:[2,1],
-                        groups:[
-                            {
-                                num:1,
-                                groupId:1,
-                                total:20,
-                                semester:[10,10],
-                                theory:[10,10],
-                                laboratory:[0,0]
-                            },
-                            {
-                                num:2,
-                                groupId:2,
-                                total:20,
-                                semester:[20,30],
-                                theory:[50,20],
-                                laboratory:[1,5]
-                            }
-                        ]
+                    tableData: [
+                        //{
+                        // id:1,
+                        // index: 'gg12',
+                        // name: 'GG-12-2',
+                        // groupsName:"",
+                        // total:40,
+                        // semester:[61,33],
+                        // theory:[94,52],
+                        // laboratory:[2,1],
+                        // groups:[
+                        //     {
+                        //         num:1,
+                        //         groupId:1,
+                        //         total:20,
+                        //         semester:[10,10],
+                        //         theory:[10,10],
+                        //         laboratory:[0,0]
+                        //     },
+                        //     {
+                        //         num:2,
+                        //         groupId:2,
+                        //         total:20,
+                        //         semester:[20,30],
+                        //         theory:[50,20],
+                        //         laboratory:[1,5]
+                        //     }
+                        // ]
 
-                        },
-                        {
-                        id:2,
-                        index: '2016-05-07',
-                        name: 'Tom',
-                        groupsName:"",
-                        total:30,
-                        semester:[10,10],
-                        theory:[10,10],
-                        laboratory:[0,0],
+                        // },
+                        // {
+                        // id:2,
+                        // index: '2016-05-07',
+                        // name: 'Tom',
+                        // groupsName:"",
+                        // total:30,
+                        // semester:[10,10],
+                        // theory:[10,10],
+                        // laboratory:[0,0],
 
-                        groups:[
-                            {
-                                num:1,
-                                groupId:4,
-                                total:20,
-                                semester:[10,10],
-                                theory:[10,10],
-                                laboratory:[0,0]
-                            }
-                        ]
-                    }],
+                        // groups:[
+                        //     {
+                        //         num:1,
+                        //         groupId:4,
+                        //         total:20,
+                        //         semester:[10,10],
+                        //         theory:[10,10],
+                        //         laboratory:[0,0]
+                        //     }
+                        // ]                    }
+                    ],
 
 
                     semester:[0,0],
@@ -630,34 +651,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         this.countAgainAllFields();
                     },
 
-                    // fetchDepartments() {
-                    //     //загрузка Кафедр
-                    //
-                    //     $.ajax({
-                    //         type: 'GET',
-                    //         url: '/workload/workloadgroup/get-departments',
-                    //         data: {
-                    //
-                    //         },
-                    //         success: function (result) {
-                    //             if (result) {
-                    //                 wlApp.departments = $.map(JSON.parse(result), function (e) {
-                    //                     return {
-                    //                         value: e.id,
-                    //                         label: e.name
-                    //                     }
-                    //                 });
-                    //             } else {
-                    //                 return [];
-                    //             }
-                    //         },
-                    //         fail: function (data) {
-                    //             //console.log(data);
-                    //             wlApp.$message('Error, request not append');
-                    //         }
-                    //     });
-                    //
-                    // },
+                    btn_search_click(){
+                        this.fetchDisciplineRow();
+                    },
+
+
 
                     // Загрузить группы
                     fetchGroups() {
@@ -745,28 +743,53 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     },
 
-                    getRups() {
+                    fetchDisciplineRow() {
+
                         $.ajax({
                             type: 'GET',
-                            url:'/workload/workloadgroup/get-rups?year=' + this.filter_year + '&discipline=' + this.filter_discipline,
-                            data: {},
-                            success: function(data) {
-                                if(data) {
-                                    wlApp.rups =  $.map(JSON.parse(data), function (e) {
+                            url: '/workload/workloadgroup/get-discipline-load-row',
+                            data: {
+                                rup_id: 2,
+                                disc_id: 0,
+                                group_id: 0,
+                            },
+                            success: function (result) {
+                                if (result) {
+                                    console.log(result);
+                                    wlApp.tableData = $.map(JSON.parse(result), function (e) {
                                         return {
-                                            value: e.id,
-                                            label: e.captionRu
+                                            id: e.id,
+                                            index: e.code,
+                                            name: e.name,
+                                            total: "" + e.time + "/" + e.time,
+                                            hours1: "" + e.one_sem_time + "/ 0",
+                                            theory1: "" + e.one_sem_teory_time + "/ 0",
+                                            lab1: "" + e.one_sem_teory_time + "/ 0",
+                                            ekz1: "" + e.one_sem_teory_time + "/ 0",
+                                            zac1: "" + e.one_sem_teory_time + "/ 0",
+                                            knt1: "" + e.one_sem_teory_time + "/ 0",
+                                            prk1: "" + e.one_sem_teory_time + "/ 0",
+                                            hours2: "" + e.two_sem_time + "/ 0",
+                                            theory2: "" + e.one_sem_teory_time + "/ 0",
+                                            lab2: "" + e.one_sem_teory_time + "/ 0",
+                                            ekz2: "" + e.one_sem_teory_time + "/ 0",
+                                            zac2: "" + e.one_sem_teory_time + "/ 0",
+                                            knt2: "" + e.one_sem_teory_time + "/ 0",
+                                            prk2: "" + e.one_sem_teory_time + "/ 0"
+                                   
                                         }
                                     });
                                 } else {
                                     return [];
-                                }
+                                }                               
                             },
+                            fail: function (data) {
+                                //console.log(data);
+                                wlApp.$message('Error, request not append');
+                            }
                         });
-                    },
 
-                    console() {
-                        console.log(this.eduforms);
+
                     },
 
                     updateGroupData(id,num){
