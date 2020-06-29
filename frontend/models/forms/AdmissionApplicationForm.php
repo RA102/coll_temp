@@ -53,6 +53,10 @@ class AdmissionApplicationForm extends Model
     public $based_classes;
 
     public $social_statuses;
+    public $online;
+    public $online_msg_id;
+    public $kk_name;
+    public $ru_name;
 
     /**
      * AdmissionApplicationForm constructor.
@@ -96,11 +100,11 @@ class AdmissionApplicationForm extends Model
                     'iin',
                     'firstname',
                     'lastname',
-                    'sex',
+                    //'sex',
                     'birth_date',
                     'application_date',
-                    'nationality_id',
-                    'citizenship_location',
+                    //'nationality_id',
+                    //'citizenship_location',
 
                     'filing_form',
                     'education_form',
@@ -110,7 +114,8 @@ class AdmissionApplicationForm extends Model
                     'needs_dormitory',
 
                     'education_pay_form',
-                    'based_classes'
+                    'based_classes',
+                    //'email'
                 ],
                 'required'
             ],
@@ -134,13 +139,14 @@ class AdmissionApplicationForm extends Model
 
             [['iin'], 'string', 'length' => 12],
             [['iin'], 'match', 'pattern' => '/^\d{12}$/'],
-            [['firstname', 'lastname', 'middlename'], 'string', 'max' => 100],
+            [['firstname', 'lastname', 'middlename', 'online_msg_id'], 'string', 'max' => 100],
             [['sex'], 'in', 'range' => [Entrant::SEX_NONE, Entrant::SEX_MALE, Entrant::SEX_FEMALE]],
             [['language'], 'string', 'min' => 2, 'max' => 2],
+            [['kk_name', 'ru_name'], 'string'], 
 
             ['contract_number', 'string', 'max' => '20'],
             [['contract_date'], 'date', 'format' => 'php:Y-m-d'],
-            ['contract_sum', 'integer'],
+            [['contract_sum','online'], 'integer'],
             ['contract_duration', 'integer', 'min' => 0],
 
             ['social_statuses', 'validateSocialStatuses', 'skipOnEmpty' => true],

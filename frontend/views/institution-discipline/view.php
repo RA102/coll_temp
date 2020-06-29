@@ -32,10 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                'id',
-                [
-                    'attribute' => 'caption_current',
-                ],
+                    'department.caption_current',
                 /*[
                     'attribute' => 'types',
                     'value' => function(InstitutionDiscipline $model) {
@@ -66,6 +63,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'fullName'
             ]
         ]) ?>
+
+<!--        <h4>Кафедра</h4>-->
+<!--        --><?//= \yii\grid\GridView::widget([
+//            'summary'      => false,
+//            'showHeader'   => false,
+//            'dataProvider' => new \yii\data\ArrayDataProvider([
+//                'models' => $model->departmentAsString,
+//            ]),
+//            'columns'      => [
+//                'caption_current'
+//            ]
+//        ]) ?>
+
+
 
     </div>
 <?php $this->endBlock() ?>

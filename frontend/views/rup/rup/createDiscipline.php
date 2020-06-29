@@ -1,5 +1,6 @@
 <?php
 
+use common\models\organization\InstitutionDiscipline;
 use common\services\person\EmployeeService;
 use yii\helpers\Html;
 
@@ -15,10 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $this->beginBlock('content') ?>
 <div class="institution-discipline-create">
 
-<!--    --><?//= $this->renderAjax('_formDiscipline', [
-//        'model' => new \common\models\organization\InstitutionDiscipline(),
-//        'teachers' => (new EmployeeService())->getTeachers(\Yii::$app->user->identity->institution),
-//    ]) ?>
+    <?= $this->renderAjax('_formDiscipline', [
+        'model' => new InstitutionDiscipline(),
+        'teachers' => (new EmployeeService())->getTeachers(\Yii::$app->user->identity->institution),
+    ]) ?>
 
 </div>
 <?php $this->endBlock() ?>

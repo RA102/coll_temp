@@ -7,6 +7,7 @@ use common\models\person\Person;
 use common\models\person\Student;
 use common\models\PersonRelative;
 use common\models\link\StudentGroupLink;
+use common\models\person\PersonCredential;
 use common\services\person\PersonContactService;
 use common\services\person\PersonInfoService;
 use common\services\person\PersonLocationService;
@@ -22,6 +23,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\data\ActiveDataProvider;
 
 /**
  * StudentController implements the CRUD actions for Student model.
@@ -168,8 +170,16 @@ class StudentController extends Controller
      */
     public function actionViewAuthorization($id)
     {
+        $query = PersonCredential::find()->where(['person_id' => $id]); //->andWhere(['is', 'delete_ts', null]); //->all();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        
         return $this->render('view/view_authorization', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider
         ]);
     }
 

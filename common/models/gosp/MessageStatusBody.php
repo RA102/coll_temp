@@ -27,19 +27,27 @@ class MessageStatusBody
     public $messageId=""; //    , "messageId": "171469959"
     public $messageDate="";     //"messageDate": "2020-06-11T17:22:05.428+06:00"
     public $messageType="";     //"messageType": "RESPONSE"
-    public $answer_type_doc="";     //, "answer_type_doc": 3
+    //public $answer_type_doc="";     //, "answer_type_doc": 3
     //, "serviceId": null
     public $user_name="";   //, "user_name": "МАДИНА"
     public $user_surname="";    //, "user_surname": "БОШТАЕВА"
-        //, "user_middlename": "БОГЕНБАЕВНА"
+    public $user_middlename=""; //": "БОГЕНБАЕВНА"
+    public $user_birthday="";
         //, "Language_edu": "03"
         //, "requesterIin": "860717450455"
         
-        
+    public $study_form="";                  //0-очная
+    public $orderNo_tipo="";
+    public $date_orderNo_tipo="";
+    public $Output_Type_doc="";             //1 - Уведомление о приеме документов в ТиПО
+    public $postSecondary_spec_code="";     //1001022
+    public $postSecondary_spec_nameru="";   //100102 2 - Шөміш
+    public $postSecondary_spec_namekz="";   //2 - Ковшевой
+
         //, "correlationId": "2516637"
         //, "orderNo_school": 1
-        //, "resolutionDate": "2020-06-11T17:22:05.428+06:00"
-        //, "resolutionType": "NEGATIVE"
+    public $resolutionDate = "";    //, "resolutionDate": "2020-06-11T17:22:05.428+06:00"
+    public $resolutionType = "POSITIVE"; //, "resolutionType": "NEGATIVE"
         //, "supervisor_fio": null
         //, "AreaCode_applic": 351013100
         
@@ -47,13 +55,16 @@ class MessageStatusBody
         //, "Class_letter_edu": "А"
         
         //, "externalRequestId": null
-        //, "processing_status": "COMPLETED"
+    public $processing_status = "COMPLETED";
         //, "serviceProviderBin": null
         //, "date_orderNo_school": "2020-06-11T17:22:05.427+06:00"
         //, "supervisor_position": null
         //, "externalRequestChainId": null
         //, "negativeResolutionReason": null
-        //, "negativeResolutionReasonTextKk": "Ваши документы не приняты"
-        //, "negativeResolutionReasonTextRu": "Ваши документы не приняты"}
+    public $negativeResolutionReasonTextKk="";        //, "negativeResolutionReasonTextKk": "Ваши документы не приняты"
+    public $negativeResolutionReasonTextRu="";        //, "negativeResolutionReasonTextRu": "Ваши документы не приняты"}
+
+    public $kk_name="";
+    public $ru_name="";
 
 }

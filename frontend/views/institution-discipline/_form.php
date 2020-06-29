@@ -5,6 +5,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
+
 /* @var $this yii\web\View */
 /* @var $model common\models\organization\InstitutionDiscipline */
 /* @var $form yii\widgets\ActiveForm */
@@ -26,11 +27,11 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
         'options' => [
             'placeholder' => '...',
             'class' => 'active-form-refresh-control',
-            'multiple' => true,
         ],
         'theme' => 'default',
         'pluginOptions' => [
             'allowClear' => true,
+            'multiple' => true,
         ],
     ]) ?>
 
@@ -40,9 +41,18 @@ $disciplines = ArrayHelper::map(\common\models\Discipline::find()->all(), 'id', 
         'theme' => 'default',
         'pluginOptions' => [
             'allowClear' => true,
-            'multiple' => true,
+            'multiple' => true
         ],
     ])->label('Преподаватели') ?>
+
+    <?= $form->field($model, 'department_id')->widget(Select2::class, [
+        'data' => $departments,
+        'options' => ['placeholder' => '...', 'class' => 'active-form-refresh-control'],
+        'theme' => 'default',
+        'pluginOptions' => [
+            'allowClear' => true,
+        ],
+    ])->label('Кафедра') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

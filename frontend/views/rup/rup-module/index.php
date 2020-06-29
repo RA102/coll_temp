@@ -49,10 +49,6 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
 
 
         ?>
-<!--        <button moduleId="--><?php //echo $module_ID?><!--" title='Добавить' style='' data-target="#addModalModule" data-toggle="modal" class='btn btn-success edit_qual addQualModuleButton' idd="--><?//= $al['id'] ?><!--">-->
-<!--            <h7>Добавить дисциплину без модуля<i class='fas fa-edit'></i></h7>-->
-<!--        </button>-->
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'tableOptions' => [
@@ -87,34 +83,30 @@ $blockname=RupBlock::findOne($_GET['block_id']); ?>
                 'headerOptions' => ['class' => 'kartik-sheet-style'] ,
                 'expandOneOnly' => true,
             ],
-//            ['attribute'=>'123','value'=>function(){
-//
-//                return '<button moduleId='.$model->id."' title='Добавить' style='margin-left:10%;'
-//                data-target='#addModalModule' data-toggle='modal'
-//                class='btn btn-success edit_qual addQualModuleButton' idd=".$model->id.">
-//                <h7>Добавить</h7>
-//            </button>";
-//            }],
             [
-                    'attribute'=>'123',
+                'attribute' => '123',
                 'label' => 'Добавить',
                 'format' => 'raw',
-                'value' => function($model){return Html::button('Добавить',[
+                'value' => function ($model) {
+                    return Html::button('Добавить', [
                         'class' => 'btn btn-success btn-xs edit_qual addQualModuleButton',
-                        'moduleId'=>$model->id,
-                        'idd'=>$model->id,
-                        'data-target'=>'#addModalModule',
-                        'data-toggle'=>'modal']);},
+                        'moduleId' => $model->id,
+                        'idd' => $model->id,
+                        'data-target' => '#addModalModule',
+                        'data-toggle' => 'modal']);
+                },
             ],
-                        [
+            [
                 'attribute' => 'Редактирование',
                 'format' => 'raw',
                 'contentOptions' => ['class' => 'abracadabra'],
                 'value' => function ($model) {
+
                     return '<button title="Изменить" data-target="#editModalBlock" data-toggle="modal" style="margin-left:3%;" 
-                            class="btn btn-success edit_qualBlock" qualeditbuttonid="'.$model->id.'"><h7><i class="fas fa-edit"></i></h7></button>'
-                        .'<button title="Удалить" style="margin-left:3%;" 
-                            class="btn btn-danger deleteModuleButton" modelId="'.$model->id.'"><h7><i class="fas fa-trash"></i></h7></button>'.'</div>';
+                    class="btn btn-success edit_qualBlock" qualeditbuttonid="'.$model->id.'"><h7><i class="fas fa-edit"></i></h7></button>'
+                .'<button title="Удалить" style="margin-left:3%;" 
+                    class="btn btn-danger deleteModuleButton" modelId="'.$model->id.'"><h7><i class="fas fa-trash"></i></h7></button>'.'</div>';
+        
                 },
             ],
 

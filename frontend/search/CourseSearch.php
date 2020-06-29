@@ -25,8 +25,8 @@ class CourseSearch extends Course
             [['institution_id', 'status'], 'integer'],
             [['institution_id'], 'safe'],
             ['institution_discipline_id', 'integer'],
-            [['classes'], 'integer'],
-            //[['classes'], 'each', 'rule' => ['integer']],
+            [['classes'], 'safe'],
+//            [['classes'], 'each', 'rule' => ['integer']],
         ];
     }
 
@@ -96,7 +96,7 @@ class CourseSearch extends Course
         if ($this->classes) {
             $query->andWhere(new Expression('classes::int[] @> ARRAY[' . $this->classes . ']::int[]'));
         }
-        $query->andFilterWhere(['ilike', 'caption', $this->caption]);
+//        $query->andFilterWhere(['ilike', 'caption', $this->caption]);
 
         return $dataProvider;
     }

@@ -1,5 +1,6 @@
 <?php
 
+use app\models\rup\RupRoots;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -37,13 +38,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'rup_year',
             ['attribute'=>'status',
             'value'=>function($model){
-                if($model->status==1){
-                    return "Открыт для редактирования";
-                }
-                elseif ($model->status==0){
-                    return "Закрыт для редактирования";
-                }
-                            }],
+                return $model->getStatusText();
+                // if($model->status== RupRoots::STATUS_OPENED){
+                //     return "Открыт для редактирования";
+                // }
+                // elseif ($model->status== RupRoots::STATUS_CLOSED){
+                //     return "Закрыт для редактирования";
+                // }
+                            }
+                        ],
 //            'create_ts',
 //            'delete_ts',
             //'lastopen_ts',
@@ -92,7 +95,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     <?php Pjax::end(); ?>
-    <?php
-    ?>
+
 </div>
 </div>

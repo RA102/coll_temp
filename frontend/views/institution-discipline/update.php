@@ -1,5 +1,5 @@
 <?php
-
+use kartik\tabs\TabsX;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -15,10 +15,14 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 <?php $this->beginBlock('content') ?>
     <div class="institution-discipline-update">
 
+
+
         <?= $this->render('_form', [
             'model' => $model,
-            'teachers' => $teachers
+            'teachers' => $teachers,
+            'departments' => $departments,
         ]) ?>
+
 
     </div>
 <?php $this->endBlock() ?>

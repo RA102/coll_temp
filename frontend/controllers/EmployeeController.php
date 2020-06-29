@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\components\Model;
 use common\models\link\PersonInstitutionLink;
 use common\models\person\Employee;
 use common\models\person\Person;
@@ -22,6 +23,7 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
+use common\models\person\PersonCredential;
 
 /**
  * EmployeeController implements the CRUD actions for Employee model.
@@ -102,7 +104,7 @@ class EmployeeController extends Controller
      */
     public function actionIndex()
     {
-        if (!\Yii::$app->user->identity->isAble('employee-index')) {
+        if (!Person::findOne(\Yii::$app->user->identity->getId())->isAble('employee-index')) {
             throw new NotFoundHttpException(Yii::t('app', 'Access denied'));
         }
 
@@ -204,8 +206,15 @@ class EmployeeController extends Controller
      */
     public function actionViewAuthorization($id)
     {
+        $query = PersonCredential::find()->where(['person_id' => $id]); //->andWhere(['is', 'delete_ts', null]); //->all();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
         return $this->render('view/view_authorization', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider
         ]);
     }
 

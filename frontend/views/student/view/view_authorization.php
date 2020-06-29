@@ -14,13 +14,44 @@ use yii\widgets\ActiveForm;
 
 <?= GridView::widget([
     'layout'       => "{items}\n{pager}",
-    'dataProvider' => new \yii\data\ArrayDataProvider([
-        'key'       => 'id',
-        'allModels' => $model->personCredentials
-    ]),
+    // 'dataProvider' => new \yii\data\ArrayDataProvider([
+    //     'key'       => 'id',
+    //     'allModels' => $model->personCredentials
+    // ]),
+    'dataProvider' => $dataProvider,
+
     'showHeader'   => false,
     'columns'      => [
-        'indentity'
+        'indentity',
+        [
+            'contentOptions' =>['class' => 'table_class','style'=>'display:block;'],
+            'content'=>function($model){
+                $res="";
+                if ($model->delete_ts != null){
+                    $res = "удалена "; // . $model->delete_ts;
+                }
+                return $res;
+            }
+        ],
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{delete}',
+            'buttons' => [
+                'delete' => function ($model) {
+                    return Html::a('<span class="glyphicon glyphicon-trash"></span>',
+                        ['/credential/delete', 'id' => $model->id], [
+                            'data-confirm' => Yii::t('app', 'Are you sure?'),
+                            'data-method' => 'post',
+                            'title' => Yii::t('app', 'Delete'),
+                        ]);
+                }
+            ],
+            'visibleButtons' => [
+                'delete' => function ($model) {
+                    return $model->delete_ts == null;
+                },
+            ],
+        ],
     ],
 ]); ?>
 

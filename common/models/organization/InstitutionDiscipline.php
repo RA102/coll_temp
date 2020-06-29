@@ -7,6 +7,7 @@ use common\models\Discipline;
 use common\models\person\Employee;
 use Yii;
 use yii\db\ArrayExpression;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "organization.institution_discipline".
@@ -21,6 +22,7 @@ use yii\db\ArrayExpression;
  * @property string $update_ts
  * @property string $delete_ts
  * @property int[] $teachers
+ * @property int $department_id
  *
  * @property Institution $institution
  * @property Discipline $discipline
@@ -36,7 +38,6 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
     public $caption_current;
     public $caption_ru;
     public $caption_kk;
-
     /**
      * {@inheritdoc}
      */
@@ -81,11 +82,13 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
         return [
             [['institution_id'], 'required'],
             [['institution_id', 'status'], 'default', 'value' => null],
-            [['types'], 'default', 'value' => []],
+            [['department_id'], 'default', 'value' => []],
             [['teachers'], 'default', 'value' => []],
+            [['types'], 'default', 'value' => []],
             [['institution_id', 'status'], 'integer'],
-            [['types'], 'each', 'rule' => ['integer']],
+            [['department_id'], 'each', 'rule' => ['integer']],
             [['teachers'], 'each', 'rule' => ['integer']],
+            [['types'], 'each', 'rule' => ['integer']],
             [['institution_id'], 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
             [['slug'], 'string', 'max' => 255],
             [['caption_ru', 'caption_kk'], 'string'],
@@ -111,6 +114,8 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
             'update_ts' => Yii::t('app', 'Update Ts'),
             'delete_ts' => Yii::t('app', 'Delete Ts'),
             'teachers' => Yii::t('app', 'Teachers'),
+            'department_id' => Yii::t('app', 'Department'),
+            'department.caption_current' => Yii::t('app', 'Department'),
         ];
     }
 
@@ -126,18 +131,23 @@ class InstitutionDiscipline extends \yii\db\ActiveRecord
      * @deprecated
      * @return \yii\db\ActiveQuery
      */
-    public function getDiscipline()
-    {
-        return $this->hasOne(Discipline::class, ['id' => 'discipline_id']);
-    }
-
-
-    /**
-     * @deprecated
-     * @return \yii\db\ActiveQuery
-     */
     public function getTeachers()
     {
         return Employee::find()->where(['id' => $this->teachers])->all();
+    }
+
+    public function getDepartment()
+    {
+        return $this->hasOne(InstitutionDepartment::class, ['id' => 'department_id']);
+    }
+
+    public function saveDepartment($department_id)
+    {
+        $department = InstitutionDepartment::findOne($department_id);
+
+        if($department != null) {
+            $this->link('department', $department);
+            return true;
+        }
     }
 }
