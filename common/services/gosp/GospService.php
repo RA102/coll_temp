@@ -101,7 +101,7 @@ class GospService
         $institution = Institution::find()->where(['bin' => $bin])->one();
         if ($institution != null){
             $result = $institution;
-            $institution = Institution::findOne(1);
+            //$institution = Institution::findOne(1);
         }
         if ($institution == null){
             $result = Institution::findOne(24);
