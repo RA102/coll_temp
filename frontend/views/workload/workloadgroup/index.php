@@ -3,9 +3,13 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\widgets\ActiveForm;
+use frontend\models\workload\WorkloadDiscipline;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\rup\RupRootsSearch */
+/* @var $searchModel frontend\models\workload\WorkloadDiscipline */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $model frontend\models\workload\WorkloadTeacher */
+/* @var $form yii\widgets\ActiveForm */
 
 $this->title = 'Нагрузка по группам';
 $this->params['breadcrumbs'][] = $this->title;
@@ -13,13 +17,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php $this->beginPage() ?>
     <!DOCTYPE html>
-
     <html lang="<?= Yii::$app->language ?>">
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
@@ -41,8 +42,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- import JavaScript -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-
-
 
     <body class="hold-transition skin-black-light sidebar-mini">
    
@@ -141,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row" style="margin-top: 12px;" >
             <div class="col-md-1 label-center" style="padding: 8px;"> Год
             </div>
-            <div class="col-md-1 yearDiv"  >  
+            <div class="col-md-1 yearDiv"  >
                 <el-select v-model="filter_year"  style="width: 100%;" >
                     <el-option
                     v-for="item in yearlist"
@@ -202,26 +201,26 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                         </template>
                         <template >
-                            <div class="col-md-1 mr-6  ">                            
-                                <el-button 
+                            <div class="col-md-1 mr-6  ">
+                                <el-button
                                     type="warning"
-                                    @click="updateGroupData(props.row.id,group.num)" 
+                                    @click="updateGroupData(props.row.id,group.num)"
                                     icon="el-icon-edit" round>Изменить</el-button>
                             </div>
                             <div class="col-md-1 ml-6 ">
-                            <el-button 
+                            <el-button
                                     type="danger"
-                                    @click="openDialogDelete(props.row.id,group.num)" 
+                                    @click="openDialogDelete(props.row.id,group.num)"
                                     icon="el-icon-delete" round>Удалить</el-button>
                             </div>
                         </template>
-                        
+
                     </div>
                    </div>
                    <div class="col-md-1">
-                             <el-button 
+                             <el-button
                                     type="primary"
-                                    @click="createGroupData(props.row.id)" 
+                                    @click="createGroupData(props.row.id)"
                                     icon="el-icon-plus" plain></el-button>
                    </div>
                 </div>
@@ -249,7 +248,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </el-table-column>                
                 <el-table-column
                     label="прак., лаб."
-                    prop="laboratory[0]">
+                    prop="hprakt1">
                 </el-table-column> 
                 <el-table-column
                     label="2 сем."
@@ -290,7 +289,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </el-table>
 
         </template>
-        
+
 
 
            <!-- Dialog window -->
@@ -302,7 +301,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <v-card-title class="headline">Изменение данных группы</v-card-title>
 
         <v-form
-            ref="form" 
+            ref="form"
             v-model="valid"
             class="pl-6 pr-6 d-flex flex-wrap justify-space-around align-center">
             <span class="d-flex justify-space-around align-center groupName">
@@ -326,20 +325,20 @@ $this->params['breadcrumbs'][] = $this->title;
             </span>
             <span v-for="(item,index) in theory" :key="'theory'+index">
                 Теория {{index+1}} семестр
-                <v-text-field 
+                <v-text-field
                     :rules="textFieldRules"
-                    v-model="theory[index]" 
+                    v-model="theory[index]"
                     type="number"
                     class="dialogInput"
-                    
+
                     >
                 </v-text-field>
             </span>
             <span v-for="(item,index) in laboratory " :key="'laboratory'+index">
                 Практическая работа {{index+1}} семестр
-                <v-text-field 
+                <v-text-field
                     :rules="textFieldRules"
-                    v-model="laboratory[index]" 
+                    v-model="laboratory[index]"
                     type="number"
                     class="dialogInput"
                     >
@@ -350,11 +349,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <v-card-actions>
                 <v-spacer></v-spacer>
 
-                <el-button 
+                <el-button
                     type="primary"
                     @click="clearDialogWindow()"
                     plain>Отмена</el-button>
-                <el-button 
+                <el-button
                     type="primary"
                     @click="saveDialogData()"
                     >Сохранить</el-button>
@@ -374,11 +373,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     Это удалит информацию о группе.Продолжать?
                 </v-card-text>
                 <v-card-actions class="ml-4 mt-2 d-flex justify-end">
-                <el-button 
+                <el-button
                     type="primary"
                     @click="cancelDialogDelete()"
                     icon="el-icon-edit" plain>Отмена</el-button>
-                <el-button 
+                <el-button
                     type="primary"
                     @click="confirmDelete()"
                     icon="el-icon-edit" >Подтвердить</el-button>
@@ -386,7 +385,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </v-card>
         </v-dialog>
     </div>
- 
+
 </v-app>
 
 
@@ -482,8 +481,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     filter_rup: '',
 
-                    tableData: [{    
-                        id:1,                    
+                    tableData: [{
+                        id:1,
                         index: 'gg12',
                         name: 'GG-12-2',
                         groupsName:"",
@@ -509,8 +508,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 laboratory:[1,5]
                             }
                         ]
-            
-                        }, 
+
+                        },
                         {
                         id:2,
                         index: '2016-05-07',
@@ -520,7 +519,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         semester:[10,10],
                         theory:[10,10],
                         laboratory:[0,0],
-                        
+
                         groups:[
                             {
                                 num:1,
@@ -532,14 +531,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ]
                     }],
-                    
+
 
                     semester:[0,0],
                     theory:[0,0],
                     laboratory:[0,0],
                     groupNum:0,
                     tableDataId:0,
-                    
+
                     groups:[
                         {
                             id:1,
@@ -574,7 +573,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     selectedGroup:{},
                     groupSelect:[]
 
-                
+
                     }
                 },
 
@@ -775,7 +774,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     updateGroupData(id,num){
                         //Изменить данные группы
                         this.clearDialogWindow();
-                        
+
+
 
                         this.tableDataId=id;
                         this.groupNum=num;
@@ -784,14 +784,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         this.groupSelect.unshift(this.getGroupName(this.selectedGroup));
                         //отобразить окно
                         this.dialogWindow=true;
-                        
+
                     },
                     createGroupData(id){
                         //Создаем новую
                         this.clearDialogWindow();
                         this.groupSelect=this.getGroupsByDiscipline(id);
-                        if(this.groupSelect.length!=0){                            
-                            this.tableDataId=id;     
+                        if(this.groupSelect.length!=0){
+                            this.tableDataId=id;
                             this.dialogWindow=true;
                         }else{
                             const h = this.$createElement;
@@ -801,7 +801,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 duration:2000
                             });
                         }
-                        
+
 
                     },
                     clearDialogWindow(){
@@ -818,15 +818,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         //type 0=получить 1=сохранить изменение  2=удалить 3-сохранить новое
                         for(let i=0;i<this.tableData.length;i++){
                             if(this.tableData[i].id==id){
-                               
+
                                 for(let j=0;j<this.tableData[i].groups.length;j++){
                                     if(this.tableData[i].groups[j].num==num){
-                                        if(type==0){                                        
+                                        if(type==0){
                                             this.selectedGroup=this.getGroupName(this.tableData[i].groups[j].groupId).id;
 
                                             this.semester[0]=this.tableData[i].groups[j].semester[0];
                                             this.semester[1]=this.tableData[i].groups[j].semester[1];
-                                            
+
                                             this.theory[0]=this.tableData[i].groups[j].theory[0];
                                             this.theory[1]=this.tableData[i].groups[j].theory[1];
 
@@ -853,13 +853,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                         }else if(type==2){
                                             this.deniedSelected(this.tableData[i].groups[j].groupId,0);
-                                            this.tableData[i].groups.splice(j,1);                                          
+                                            this.tableData[i].groups.splice(j,1);
                                         }break;
                                     }
-                                    
+
                                 }
                                 if(type==3){
-                                    //Это временно пока не начну получать сервера id 
+                                    //Это временно пока не начну получать сервера id
                                     let lastNum=0;
                                     if(this.tableData[i].groups.length!=0){
                                         lastNum=this.tableData[i].groups[this.tableData[i].groups.length-1].num;
@@ -878,16 +878,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 theory:tempTheory,
                                                 laboratory:tempLaboratory
                                         });
-                                }break;                                
+                                }break;
                             }
                         }
 
                     },
-                    saveDialogData(){//TODO нужно что бы при открывания правильно группу показывал 
+                    saveDialogData(){//TODO нужно что бы при открывания правильно группу показывал
                         //сохраняем данные
                         if(this.$refs.form.validate()){
                             if(this.groupNum!=0){ //если есть groupNum значит происходить изменения
-                                this.updateOrGetTecherData(this.tableDataId,this.groupNum,1);                                
+                                this.updateOrGetTecherData(this.tableDataId,this.groupNum,1);
                             }else{
                                 //Нужно отправять на сервер ждать ответ потом добавлять groupNum
                                 this.updateOrGetTecherData(this.tableDataId,this.groupNum,3);
@@ -897,13 +897,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     },
                     confirmDelete(){
-                        this.dialogDeleteGroup=false;                        
+                        this.dialogDeleteGroup=false;
                         this.updateOrGetTecherData(this.tableDataId,this.groupNum,2);
                         this.countAgainAllFields();
                     },
                     openDialogDelete(id,num){
                         this.tableDataId=id;
-                        this.groupNum=num;                        
+                        this.groupNum=num;
                         this.dialogDeleteGroup=true;
                     },
                     cancelDialogDelete(){
@@ -928,7 +928,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     },
                     deniedSelected(id,type){//Указать используемую  группу или наоборот
-                        //type 0 == selected =0 
+                        //type 0 == selected =0
                         for(let i=0;i<this.groups.length;i++){
                             if(this.groups[i].id==id){
                                 this.groups[i].selected=type;
@@ -976,7 +976,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             this.tableData[i].laboratory=laboratory;
                         }
                     },
-                 
+
 
 
 
@@ -1057,7 +1057,7 @@ $this->params['breadcrumbs'][] = $this->title;
     .yearDiv{
         min-width:105px;
     }
-    </style>    
+    </style>
 
 
     <?php $this->endBody() ?>
