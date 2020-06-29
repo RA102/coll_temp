@@ -3,13 +3,9 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use yii\widgets\ActiveForm;
-use frontend\models\workload\WorkloadDiscipline;
 /* @var $this yii\web\View */
-/* @var $searchModel frontend\models\workload\WorkloadDiscipline */
+/* @var $searchModel app\models\rup\RupRootsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $model frontend\models\workload\WorkloadTeacher */
-/* @var $form yii\widgets\ActiveForm */
 
 $this->title = 'Нагрузка по группам';
 $this->params['breadcrumbs'][] = $this->title;
@@ -17,10 +13,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php $this->beginPage() ?>
     <!DOCTYPE html>
+
     <html lang="<?= Yii::$app->language ?>">
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
@@ -42,6 +41,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- import JavaScript -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+
 
     <body class="hold-transition skin-black-light sidebar-mini">
    
@@ -445,64 +446,64 @@ $this->params['breadcrumbs'][] = $this->title;
                         value: 'Option5',
                         label: 'Option5'
                     }],
-                    value: '', 
+                    value: '',
 
-                    //кафедры
-                    departments: [
-                        {   value: '0', label: 'Все' }
-                    ],
-                    filter_department: '0',
+                        departments: [
+                            {value: '', label: 'Все' },
+                            {value: 36, label: 'Департамент №1'},
+                            {value: 24, label: 'Департамент №2'},
+                        ],
+                        // filter_department: '',
+                        filter_department: '',
 
-                    //группы
-                    studentgroups: [
-                        {   value: '0', label: 'Все' }
-                    ],
-                    filter_studentgroup: '0',
+                        //группы
+                        studentgroups: [
+                            { value: '', label: 'Все' }
+                        ],
+                        filter_studentgroup: '',
 
-                    //дисциплины
-                    disciplines: [
-                        {   value: '0', label: 'Все' }
-                    ],
-                    filter_discipline: '0',
-                    
-                    //формы обучения
-                    eduforms: [
-                        {   value: '1', label: 'Очная' }
-                        , { value: '2', label: 'Заочная' }
+                        //дисциплины
+                        disciplines: [
+                            { value: '', label: 'Все' }
+                        ],
+                        filter_discipline: '',
 
-                    ],
-                    filter_eduform: '',  
+                        //формы обучения
+                        eduforms: [
+                            { value: '', label: 'Все' },
 
-                    //язык обучения
-                    edulangs: [
-                        {   value: '1', label: 'Казахский' }
-                        , { value: '2', label: 'Русский' }
-                    ],
-                    filter_edulang: '', 
+                        ],
+                        filter_eduform: '',
 
-                    //год
-                    yearlist: [
-                        {   value: '2019', label: '2019' }
-                        , { value: '2020', label: '2020' }
-                        , { value: '2021', label: '2021' }
+                        //язык обучения
+                        edulangs: [
+                            { value: '', label: 'Все' },
+                        ],
+                        filter_edulang: '',
 
-                    ],
-                    filter_year: '2020',
-                    
-                    //курс
-                    courselist: [
-                        {   value: '1', label: '1' }
-                        , { value: '2', label: '2' }
-                        , { value: '3', label: '3' }
-                        , { value: '4', label: '4' }
-                    ],
-                    filter_course: '',
+                        //год
+                        yearlist: [
+                            { value: '', label: 'Все'    },
+                            {value: '2019', label: '2019'},
+                            {value: '2020', label: '2020'},
+                            {value: '2021', label: '2021'}
+                        ],
+                        filter_year: '',
 
-                    //РУПы
-                    rups: [
-                        {   value: '0', label: 'Все' }
-                    ],
-                    filter_rup: '0',
+                        //курс
+                        courselist: [
+                            { value: '1', label: '1' },
+                            { value: '2', label: '2' },
+                            { value: '3', label: '3' },
+                            { value: '4', label: '4' }
+                        ],
+                        filter_course: '',
+
+                        //РУПы
+                        rups: [
+                            { value: '', label: 'Все' }
+                        ],
+                        filter_rup: '',
 
                     tableData: [
                         //{
@@ -608,10 +609,45 @@ $this->params['breadcrumbs'][] = $this->title;
                     this.initAppProc()
                 },
 
+                watch: {
+                    filter_department: function () {
+                        this.fetchGroups();
+                        this.fetchDisciplines();
+                    },
+
+                    filter_eduform: function () {
+                        this.fetchGroups();
+                    },
+
+                    filter_edulang: function () {
+                        this.fetchGroups();
+                    },
+                    filter_course: function () {
+                        this.fetchGroups();
+                    },
+
+                    filter_year: function () {
+                        this.getRups();
+                    },
+
+                    filter_discipline: function() {
+                        this.getRups();
+                    },
+
+                },
+
                 methods: {
 
                     initAppProc(){
-                        this.fetchDepartments();
+                        //this.fetchDepartments();
+                        this.fetchGroups();
+                        this.fetchDisciplines();
+                        this.getEducationForm();
+                        this.getEduLangs();
+                        this.getRups();
+
+                        this.console();
+
                         this.countAgainAllFields();
                     },
 
@@ -619,32 +655,90 @@ $this->params['breadcrumbs'][] = $this->title;
                         this.fetchDisciplineRow();
                     },
 
-                    fetchDepartments() {
-                        //загрузка Кафедр
 
+
+                    // Загрузить группы
+                    fetchGroups() {
                         $.ajax({
                             type: 'GET',
-                            url: '/workload/workloadgroup/get-departments',
-                            data: {
-                                //workorderid: orderId,
-                                //sendercomment: ''
-                            },
-                            success: function (result) {
-                                if (result) {
-                                    wlApp.departments = $.map(JSON.parse(result), function (e) {
+                            url: '/workload/workloadgroup/get-groups?department_id=' + this.filter_department + '&edu_form=' + this.filter_eduform + '&edu_lang=' + this.filter_edulang + '&curs=' + this.filter_course,
+                            data: {},
+                            success: function (data) {
+                                if (data) {
+                                    wlApp.studentgroups = $.map(JSON.parse(data), function(e) {
                                         return {
                                             value: e.id,
-                                            label: e.name
+                                            label: JSON.parse(e.caption).ru
                                         }
                                     });
                                 } else {
                                     return [];
-                                }                               
+                                }
+
                             },
-                            fail: function (data) {
-                                //console.log(data);
-                                wlApp.$message('Error, request not append');
-                            }
+                        });
+                    },
+
+                    // получить дисциплины
+                    fetchDisciplines() {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/workload/workloadgroup/get-disciplines?id=' + this.filter_department,
+                            data: {},
+                            success: function (data) {
+                                if (data) {
+                                    wlApp.disciplines = $.map(JSON.parse(data), function (e) {
+                                        return {
+                                            value: e.id,
+                                            label: JSON.parse(e.caption).ru
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }
+
+                            },
+                        });
+                    },
+
+                    getEducationForm() {
+                        $.ajax({
+                            type: 'GET',
+                            url:'/workload/workloadgroup/get-education-form',
+                            data: {},
+                            success: function(data) {
+                                if(data) {
+                                    wlApp.eduforms =  $.map(JSON.parse(data), function (value, key) {
+                                        return {
+                                            value: key,
+                                            label: value,
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }
+                            },
+                        });
+                    },
+
+
+                    getEduLangs() {
+                        $.ajax({
+                            type: 'GET',
+                            url:'/workload/workloadgroup/get-edu-langs',
+                            data: {},
+                            success: function(data) {
+                                if(data) {
+                                    wlApp.edulangs =  $.map(JSON.parse(data), function (value, key) {
+                                        return {
+                                            value: key,
+                                            label: value,
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }
+                            },
                         });
 
                     },

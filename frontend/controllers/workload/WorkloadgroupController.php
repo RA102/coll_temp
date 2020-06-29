@@ -13,9 +13,15 @@ namespace frontend\controllers\workload;
 // use frontend\models\rup\RupSubjects;
 // use frontend\models\rup\RupSubjectsSearch;
 
+use app\models\rup\RupRoots;
+use common\helpers\GroupHelper;
+use common\helpers\LanguageHelper;
+use common\models\Nationality;
+use common\models\organization\Group;
+use common\models\organization\InstitutionDiscipline;
+use frontend\search\GroupSearch;
 //use common\models\Nationality;
 
-use common\models\Nationality;
 use frontend\models\workload\WorkloadDiscipline;
 use frontend\models\workload\WorkloadTeacher;
 use Yii;
@@ -73,6 +79,7 @@ class WorkloadgroupController extends Controller
                     'get-group-load-row'=>['GET'],
                     'get-teacher-load-row'=>['GET'],
                     
+                     
                 ],
             ],
         ];
@@ -209,6 +216,98 @@ class WorkloadgroupController extends Controller
 
     //      throw new NotFoundHttpException('The requested page does not exist.');
     //  }
+        // $searchModel = new RupRootsSearch();
+        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // $subjects = RupSubjects::find()->joinWith('subBlock')->joinWith('block')->orderBy('rup_block.id')->all();
+    //     return $this->render('index', [
+    //         // 'searchModel' => $searchModel,
+    //         // 'dataProvider' => $dataProvider,
+    //         // 'subjects'=>$subjects
+    //     ]);
+    // }
+
+    // public function actionGetDepartments(){
+    //     $deps = Nationality::find()->limit(10)->asArray()->all();
+    //     return Json::encode($deps);
+    // }
+
+    public function actionGetGroups($department_id = "", $edu_form = '', $edu_lang = "", $curs = "")
+    {
+        $groups = Group::find()
+            ->filterWhere(['institution_id' => Yii::$app->user->identity->institution->id])
+            ->andFilterWhere(['department_id' => $department_id, 'education_form' => $edu_form, "language" => $edu_lang, "class" => $curs])
+            ->asArray()
+            ->all();
+        return Json::encode($groups);
+
+    }
+
+    public function actionGetDisciplines($id = null)
+    {
+        $disciplines = InstitutionDiscipline::find()
+            ->filterWhere(['institution_id' => Yii::$app->user->identity->institution->id, 'department_id' => $id])
+            ->asArray()
+            ->all();
+        return Json::encode($disciplines);
+    }
+
+    /**
+     * @param $id => group_id
+     */
+    public function actionGetEducationForm()
+    {
+        $eduForm = GroupHelper::getEducationFormList();
+        return Json::encode($eduForm);
+    }
+
+    public function actionGetEduLangs()
+    {
+        return Json::encode(LanguageHelper::getLanguageList());
+    }
+
+
+    /**
+     * @param string $year
+     * @param null $discipline
+     * @return string
+     *
+     * сейчас фильтр только по годам
+     */
+
+    public function actionGetRups($year ='', $discipline = null)
+    {
+//        $disc = InstitutionDiscipline::find()->where(['institution_id' => Yii::$app->user->identity->institution->id, 'id' => $discipline])->;
+//        if (!empty($discipline)) {
+//            $disciplineRow = InstitutionDiscipline::findOne([
+//                'institution_id' => Yii::$app->user->identity->institution->id,
+//                'id' => $discipline,
+//            ]);
+//
+//            $disciplineName = $disciplineRow->caption_ru;
+//        }
+
+
+        $rup = RupRoots::find()->filterWhere(['=', 'rup_year', $year])->asArray()->all();
+        return Json::encode($rup);
+    }
+
+
+    
+    /**
+     * Finds the RupRoots model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return RupRoots the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    // protected function findModel($id)
+    // {
+    //     if (($model = RupRoots::findOne($id)) !== null) {
+    //         return $model;
+    //     }
+
+    //     throw new NotFoundHttpException('The requested page does not exist.');
+    // }
 
     
 }
