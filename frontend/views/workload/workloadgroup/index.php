@@ -426,64 +426,64 @@ $this->params['breadcrumbs'][] = $this->title;
                         value: 'Option5',
                         label: 'Option5'
                     }],
-                    value: '', 
+                    value: '',
 
-                    //кафедры
-                    departments: [
-                        {   value: '0', label: 'Все' }
-                    ],
-                    filter_department: '0',
+                        departments: [
+                            {value: '', label: 'Все' },
+                            {value: 36, label: 'Департамент №1'},
+                            {value: 24, label: 'Департамент №2'},
+                        ],
+                        // filter_department: '',
+                        filter_department: '',
 
-                    //группы
-                    studentgroups: [
-                        {   value: '0', label: 'Все' }
-                    ],
-                    filter_studentgroup: '0',
+                        //группы
+                        studentgroups: [
+                            { value: '', label: 'Все' }
+                        ],
+                        filter_studentgroup: '',
 
-                    //дисциплины
-                    disciplines: [
-                        {   value: '0', label: 'Все' }
-                    ],
-                    filter_discipline: '0',
-                    
-                    //формы обучения
-                    eduforms: [
-                        {   value: '1', label: 'Очная' }
-                        , { value: '2', label: 'Заочная' }
+                        //дисциплины
+                        disciplines: [
+                            { value: '', label: 'Все' }
+                        ],
+                        filter_discipline: '',
 
-                    ],
-                    filter_eduform: '',  
+                        //формы обучения
+                        eduforms: [
+                            { value: '', label: 'Все' },
 
-                    //язык обучения
-                    edulangs: [
-                        {   value: '1', label: 'Казахский' }
-                        , { value: '2', label: 'Русский' }
-                    ],
-                    filter_edulang: '', 
+                        ],
+                        filter_eduform: '',
 
-                    //год
-                    yearlist: [
-                        {   value: '2019', label: '2019' }
-                        , { value: '2020', label: '2020' }
-                        , { value: '2021', label: '2021' }
+                        //язык обучения
+                        edulangs: [
+                            { value: '', label: 'Все' },
+                        ],
+                        filter_edulang: '',
 
-                    ],
-                    filter_year: '2020',
-                    
-                    //курс
-                    courselist: [
-                        {   value: '1', label: '1' }
-                        , { value: '2', label: '2' }
-                        , { value: '3', label: '3' }
-                        , { value: '4', label: '4' }
-                    ],
-                    filter_course: '',
+                        //год
+                        yearlist: [
+                            { value: '', label: 'Все'    },
+                            {value: '2019', label: '2019'},
+                            {value: '2020', label: '2020'},
+                            {value: '2021', label: '2021'}
+                        ],
+                        filter_year: '',
 
-                    //РУПы
-                    rups: [
-                        {   value: '0', label: 'Все' }
-                    ],
-                    filter_rup: '0',
+                        //курс
+                        courselist: [
+                            { value: '1', label: '1' },
+                            { value: '2', label: '2' },
+                            { value: '3', label: '3' },
+                            { value: '4', label: '4' }
+                        ],
+                        filter_course: '',
+
+                        //РУПы
+                        rups: [
+                            { value: '', label: 'Все' }
+                        ],
+                        filter_rup: '',
 
                     tableData: [{
                         id:1,
@@ -588,40 +588,185 @@ $this->params['breadcrumbs'][] = $this->title;
                     this.initAppProc()
                 },
 
+                watch: {
+                    filter_department: function () {
+                        this.fetchGroups();
+                        this.fetchDisciplines();
+                    },
+
+                    filter_eduform: function () {
+                        this.fetchGroups();
+                    },
+
+                    filter_edulang: function () {
+                        this.fetchGroups();
+                    },
+                    filter_course: function () {
+                        this.fetchGroups();
+                    },
+
+                    filter_year: function () {
+                        this.getRups();
+                    },
+
+                    filter_discipline: function() {
+                        this.getRups();
+                    },
+
+                },
+
                 methods: {
 
                     initAppProc(){
-                        this.fetchDepartments();
+                        //this.fetchDepartments();
+                        this.fetchGroups();
+                        this.fetchDisciplines();
+                        this.getEducationForm();
+                        this.getEduLangs();
+                        this.getRups();
+
+                        this.console();
+
                         this.countAgainAllFields();
                     },
 
-                    fetchDepartments() {
-                        //загрузка Кафедр
+                    // fetchDepartments() {
+                    //     //загрузка Кафедр
+                    //
+                    //     $.ajax({
+                    //         type: 'GET',
+                    //         url: '/workload/workloadgroup/get-departments',
+                    //         data: {
+                    //
+                    //         },
+                    //         success: function (result) {
+                    //             if (result) {
+                    //                 wlApp.departments = $.map(JSON.parse(result), function (e) {
+                    //                     return {
+                    //                         value: e.id,
+                    //                         label: e.name
+                    //                     }
+                    //                 });
+                    //             } else {
+                    //                 return [];
+                    //             }
+                    //         },
+                    //         fail: function (data) {
+                    //             //console.log(data);
+                    //             wlApp.$message('Error, request not append');
+                    //         }
+                    //     });
+                    //
+                    // },
 
+                    // Загрузить группы
+                    fetchGroups() {
                         $.ajax({
                             type: 'GET',
-                            url: '/workload/workloadgroup/get-departments',
-                            data: {
-
-                            },
-                            success: function (result) {
-                                if (result) {
-                                    wlApp.departments = $.map(JSON.parse(result), function (e) {
+                            url: '/workload/workloadgroup/get-groups?department_id=' + this.filter_department + '&edu_form=' + this.filter_eduform + '&edu_lang=' + this.filter_edulang + '&curs=' + this.filter_course,
+                            data: {},
+                            success: function (data) {
+                                if (data) {
+                                    wlApp.studentgroups = $.map(JSON.parse(data), function(e) {
                                         return {
                                             value: e.id,
-                                            label: e.name
+                                            label: JSON.parse(e.caption).ru
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }
+
+                            },
+                        });
+                    },
+
+                    // получить дисциплины
+                    fetchDisciplines() {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/workload/workloadgroup/get-disciplines?id=' + this.filter_department,
+                            data: {},
+                            success: function (data) {
+                                if (data) {
+                                    wlApp.disciplines = $.map(JSON.parse(data), function (e) {
+                                        return {
+                                            value: e.id,
+                                            label: JSON.parse(e.caption).ru
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }
+
+                            },
+                        });
+                    },
+
+                    getEducationForm() {
+                        $.ajax({
+                            type: 'GET',
+                            url:'/workload/workloadgroup/get-education-form',
+                            data: {},
+                            success: function(data) {
+                                if(data) {
+                                    wlApp.eduforms =  $.map(JSON.parse(data), function (value, key) {
+                                        return {
+                                            value: key,
+                                            label: value,
                                         }
                                     });
                                 } else {
                                     return [];
                                 }
                             },
-                            fail: function (data) {
-                                //console.log(data);
-                                wlApp.$message('Error, request not append');
-                            }
+                        });
+                    },
+
+
+                    getEduLangs() {
+                        $.ajax({
+                            type: 'GET',
+                            url:'/workload/workloadgroup/get-edu-langs',
+                            data: {},
+                            success: function(data) {
+                                if(data) {
+                                    wlApp.edulangs =  $.map(JSON.parse(data), function (value, key) {
+                                        return {
+                                            value: key,
+                                            label: value,
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }
+                            },
                         });
 
+                    },
+
+                    getRups() {
+                        $.ajax({
+                            type: 'GET',
+                            url:'/workload/workloadgroup/get-rups?year=' + this.filter_year + '&discipline=' + this.filter_discipline,
+                            data: {},
+                            success: function(data) {
+                                if(data) {
+                                    wlApp.rups =  $.map(JSON.parse(data), function (e) {
+                                        return {
+                                            value: e.id,
+                                            label: e.captionRu
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }
+                            },
+                        });
+                    },
+
+                    console() {
+                        console.log(this.eduforms);
                     },
 
                     updateGroupData(id,num){
