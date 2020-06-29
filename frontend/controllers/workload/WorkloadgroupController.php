@@ -19,24 +19,17 @@ use common\helpers\LanguageHelper;
 use common\models\Nationality;
 use common\models\organization\Group;
 use common\models\organization\InstitutionDiscipline;
-use frontend\search\GroupSearch;
-//use common\models\Nationality;
-use frontend\models\workload\WorkloadDiscipline;
-use frontend\models\workload\WorkloadTeacher;
+
 use Yii;
-// use app\models\rup\RupRoots;
-// use app\models\rup\RupRootsSearch;
-use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
+
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\models\rup\RupSubjects;
 
-//use common\models\handbook\Speciality;
 
-use yii\helpers\Html;
+
 
 /**
  * RupController implements the CRUD actions for RupRoots model.
@@ -133,15 +126,11 @@ class WorkloadgroupController extends Controller
 
     public function actionGetRups($year ='', $discipline = null)
     {
-//        $disc = InstitutionDiscipline::find()->where(['institution_id' => Yii::$app->user->identity->institution->id, 'id' => $discipline])->;
-//        if (!empty($discipline)) {
-//            $disciplineRow = InstitutionDiscipline::findOne([
-//                'institution_id' => Yii::$app->user->identity->institution->id,
-//                'id' => $discipline,
-//            ]);
-//
-//            $disciplineName = $disciplineRow->caption_ru;
-//        }
+        $disciplineRow = InstitutionDiscipline::find()->filterWhere(['id' => $discipline])->one();
+        $disciplineCaptionRu = $disciplineRow->caption_ru??null;
+
+        $rowRupSubject = RupSubjects::find()->filterWhere(['ilike', 'name', $disciplineCaptionRu])->all();
+
 
 
         $rup = RupRoots::find()->filterWhere(['=', 'rup_year', $year])->asArray()->all();
