@@ -80,6 +80,8 @@ class WorkloadgroupController extends Controller
     {
 
          $searchModel = new WorkloadDiscipline();
+
+
         // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         // $subjects = RupSubjects::find()->joinWith('subBlock')->joinWith('block')->orderBy('rup_block.id')->all();
         return $this->render('index', [
@@ -101,10 +103,14 @@ class WorkloadgroupController extends Controller
      */
     public function actionCreate()
     {
-        $model = new WorkloadDiscipline();
+        $model = new WorkloadTeacher();
 
+        $subjectRow = Yii::$app->request->post();
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
+                if ($model->saveSubRow($subjectRow)) {
+                    return $this->redirect(['index', 'id' => $model->id]);
+                }
                 return $this->redirect(['index', 'id' => $model->id]);
             }
         }
@@ -125,14 +131,14 @@ class WorkloadgroupController extends Controller
     {
         $model = $this->findModel($id);
 
-
         if(Yii::$app->request->isPost)
         {
-//            $print_row = Yii::$app->request->post('InstitutionDepartment')['disciplines'];
-//            if ($model->saveDisciplines($print_row)) {
-//                return $this->redirect(['index', 'id' => $model->id]);
-//            }
+            $subjectRow = Yii::$app->request->post();
+            if ($model->saveSubRow($subjectRow)) {
+                return $this->redirect(['index', 'id' => $model->id]);
+            }
             if ($model->load(Yii::$app->request->post())) {
+                $model->institution_id = Yii::$app->user->identity->institution->id;
                 if ($model->save()) {
                     return $this->redirect(['index', 'id' => $model->id]);
                 }
@@ -153,19 +159,18 @@ class WorkloadgroupController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id);
-
         return $this->redirect(['index']);
     }
     /**
      * Finds the RupRoots model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return WorkloadDiscipline the loaded model
+     * @return WorkloadTeacher the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
      protected function findModel($id)
      {
-         if (($model = WorkloadDiscipline::findOne($id)) !== null) {
+         if (($model = WorkloadTeacher::findOne($id)) !== null) {
              return $model;
          }
 

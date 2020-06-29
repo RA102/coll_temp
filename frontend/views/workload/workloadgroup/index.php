@@ -3,11 +3,13 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\widgets\ActiveForm;
 use frontend\models\workload\WorkloadDiscipline;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\models\workload\WorkloadDiscipline */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $model frontend\models\workload\WorkloadTeacher */
+/* @var $form yii\widgets\ActiveForm */
 
 $this->title = 'Нагрузка по группам';
 $this->params['breadcrumbs'][] = $this->title;
@@ -173,10 +175,7 @@ $this->params['breadcrumbs'][] = $this->title;
             style="width: 100%">
             <el-table-column type="expand">
                 <template slot-scope="props">
-                    <p>State: {{ props.row.state }}</p>
-                    <p>City: {{ props.row.city }}</p>
-                    <p>Address: {{ props.row.address }}</p>
-                    <p>Zip: {{ props.row.zip }}</p>
+
                 </template>
             </el-table-column>
             <el-table-column
@@ -266,13 +265,12 @@ $this->params['breadcrumbs'][] = $this->title;
 //    $exam1 = \yii\helpers\ArrayHelper::getValue($tableData, 'exam');
 //    $exam2 = \yii\helpers\ArrayHelper::getValue($tableData, 'offset');
 //    $exam3 = \yii\helpers\ArrayHelper::getValue($tableData, 'control_work');
-
-    echo $row = WorkloadDiscipline::find()->where($searchModel->workloadRow)->limit(10)->asArray()->all();
+    $name = \frontend\models\rup\RupSubjects::find()->where('rup_id=2')->one();
+    $row = WorkloadDiscipline::find()->where($searchModel->workloadRow)->asArray()->all();
     var_dump($row);
     ?>
 
 <script>
-        var subjects_array = JSON.parse('<?php echo $json; ?>');
         var startApp = {};
         var init = function () {
             wlApp = new Vue({
@@ -358,9 +356,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     filter_rup: '0',
 
 
-                    tableData: [{
-                        date:'asda';
-                   }],
+
+
+                    tableData:[
+                        //таблица
+                        {
+                            index: '2016-05-06',// индекс
+                            name: 'Tom',//название таблицы
+                        }
+
+
+                    ]
                 },
 
                 mounted: function () {

@@ -53,6 +53,7 @@ class WorkloadDiscipline extends \frontend\models\rup\RupSubjects
         return 'workload_discipline';
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -111,11 +112,49 @@ class WorkloadDiscipline extends \frontend\models\rup\RupSubjects
     {
             $rows = RupSubjects::find()
             ->where('rup_id=2')
+            ->limit(10)
             ->all();
             foreach ($rows as $one) {
-                foreach ($one as $nano)
-                    echo $nano;
+                echo $codeRow = ArrayHelper::getValue($one, 'code');
+                echo $nameRow = ArrayHelper::getValue($one, 'name');
+                echo $timeRow = ArrayHelper::getValue($one, 'time');
+
+
+
             }
+//            foreach ($rows as $one) {
+//                $rup_timeRow = ArrayHelper::getValue($one, 'rup_time');
+//                $pol1_timeRow = ArrayHelper::getValue($one, 'pol1_time');
+//                $rup_pol1_timeRow = ArrayHelper::getValue($one, 'rup_pol1_time');
+//                $pol1_teory_timeRow = ArrayHelper::getValue($one, 'pol1_teory_time');
+//                $rup_pol1_teory_timeRow = ArrayHelper::getValue($one, 'rup_pol1_teory_time');
+//                $pol1_lab_timeRow = ArrayHelper::getValue($one, 'pol1_lab_time');
+//                $rup_pol1_lab_timeRow = ArrayHelper::getValue($one, 'rup_pol1_lab_time');
+//                $pol1_production_practice_timeRow = ArrayHelper::getValue($one, 'pol1_production_practice_time');
+//                $rup_pol1_production_practice_timeRow = ArrayHelper::getValue($one, 'rup_pol1_production_practice_time');
+//                $pol1_examRow = ArrayHelper::getValue($one, 'pol1_exam');
+//                $rup_pol1_examRow = ArrayHelper::getValue($one, 'rup_pol1_exam');
+//                $pol1_offsetRow = ArrayHelper::getValue($one, 'pol1_offset');
+//                $rup_pol1_offsetRow = ArrayHelper::getValue($one, 'rup_pol1_offset');
+//                $pol1_control_workRow = ArrayHelper::getValue($one, 'pol1_control_work');
+//                $rup_pol1_control_workRow = ArrayHelper::getValue($one, 'rup_pol1_control_work');
+//                $pol2_timeRow = ArrayHelper::getValue($one, 'pol2_time');
+//                $rup_pol2_timeRow = ArrayHelper::getValue($one, 'rup_pol2_time');
+//                $pol2_teory_timeRow = ArrayHelper::getValue($one, 'pol2_teory_time');
+//                $rup_pol2_teory_timeRow = ArrayHelper::getValue($one, 'rup_pol2_teory_time');
+//                $pol2_lab_timeRow = ArrayHelper::getValue($one, 'pol2_lab_time');
+//                $rup_pol2_lab_timeRow = ArrayHelper::getValue($one, 'rup_pol2_lab_time');
+//                $pol2_production_practice_timeRow = ArrayHelper::getValue($one, 'pol2_production_practice_time');
+//                $rup_pol2_production_practice_timeRow = ArrayHelper::getValue($one, 'rup_pol2_production_practice_time');
+//                $pol2_examRow = ArrayHelper::getValue($one, 'pol2_exam');
+//                $rup_pol2_examRow = ArrayHelper::getValue($one, 'rup_pol2_exam');
+//                $pol2_offsetRow = ArrayHelper::getValue($one, 'pol2_offset');
+//                $rup_pol2_offsetRow = ArrayHelper::getValue($one, 'rup_pol2_offset');
+//                $pol2_control_workRow = ArrayHelper::getValue($one, 'pol2_control_work');
+//                $rup_pol2_control_workRow = ArrayHelper::getValue($one, 'rup_pol2_control_work');
+//
+//                echo $nameRow;
+//            }
 
     }
 

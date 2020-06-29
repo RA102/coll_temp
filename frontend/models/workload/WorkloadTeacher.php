@@ -2,7 +2,10 @@
 
 namespace frontend\models\workload;
 
+use common\models\organization\InstitutionDiscipline;
+use frontend\models\rup\RupSubjects;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "workload_teacher".
@@ -89,9 +92,19 @@ class WorkloadTeacher extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getWorkloadRowObjects()
+    public function getRowObjects()
     {
         return $this->hasOne(WorkloadDiscipline::class, ['id' => 'workload_discipline_id']);
+    }
+
+    public function saveSubRow()
+    {
+
+        if($this->course == 1) {
+            $model = WorkloadDiscipline::findOne($this->id = 'rup_id');
+            $model->one_sem_time = $this->pol1_time;
+            $this->link('rowObjects', $model);
+        }
     }
 
 }
