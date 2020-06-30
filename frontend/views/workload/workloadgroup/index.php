@@ -483,12 +483,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         //год
                         yearlist: [
-                            { value: '', label: 'Все'    },
                             {value: '2019', label: '2019'},
                             {value: '2020', label: '2020'},
                             {value: '2021', label: '2021'}
                         ],
-                        filter_year: '',
+                        filter_year: '2020',
 
                         //курс
                         courselist: [
@@ -701,6 +700,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         });
                     },
 
+                    // форма обучения
+                    // [
+                    //      очная
+                    //      заочная
+                    //      вечернее
+                    //  ]
                     getEducationForm() {
                         $.ajax({
                             type: 'GET',
@@ -741,6 +746,28 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                         });
 
+                    },
+
+                    // РУПы
+
+                    getRups() {
+                        $.ajax({
+                            type: 'GET',
+                            url:'/workload/workloadgroup/get-rups?year=' + this.filter_year + '&discipline=' + this.filter_discipline,
+                            data: {},
+                            success: function(data) {
+                                if(data) {
+                                    wlApp.rups =  $.map(JSON.parse(data), function (e) {
+                                        return {
+                                            value: e.id,
+                                            label: e.captionRu
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }
+                            },
+                        });
                     },
 
                     fetchDisciplineRow() {
@@ -791,6 +818,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                     },
+
+
 
                     updateGroupData(id,num){
                         //Изменить данные группы

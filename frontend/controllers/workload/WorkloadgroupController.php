@@ -263,9 +263,7 @@ class WorkloadgroupController extends Controller
 
         $rowRupSubject = RupSubjects::find()->filterWhere(['ilike', 'name', $disciplineCaptionRu])->all();
 
-
-
-        $rup = RupRoots::find()->filterWhere(['=', 'rup_year', $year])->asArray()->all();
+        $rup = RupRoots::find()->filterWhere(['IN', 'rup_year', $year])->asArray()->all();
         return Json::encode($rup);
     }
 
