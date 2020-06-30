@@ -20,6 +20,7 @@ use common\models\Nationality;
 use common\models\organization\Group;
 use common\models\organization\InstitutionDiscipline;
 
+use common\models\person\Person;
 use frontend\models\rup\RupBlock;
 use frontend\models\rup\RupModule;
 use frontend\search\GroupSearch;
@@ -52,12 +53,13 @@ class WorkloadgroupController extends Controller
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
+                    'teacher' => ['GET', 'POST'],
                     'delete' => ['POST'],
                     'returnjson'=>['POST'],
                     'get-specialities'=>['GET'],
                     'get-qualifications'=>['GET'],
                     'get-departments'=>['GET'],
-                    
+
                     'get-discipline-load-row'=>['GET'],
                     'get-group-load-row'=>['GET'],
                     'get-teacher-load-row'=>['GET'],
@@ -90,11 +92,11 @@ class WorkloadgroupController extends Controller
        // ]);
     }
 
-//    public function actionGetDepartments(){
-//       $deps = Nationality::find()->limit(10)->asArray()->all();
-//       return Json::encode($deps);
-//    }
 
+    public function actionTeacher()
+    {
+        return $this->render('teacher');
+    }
 
 
 
@@ -274,6 +276,19 @@ class WorkloadgroupController extends Controller
     {
         $rupModules = RupModule::find()->filterWhere(['rup_id' => $rup_id, 'block_id' => $block_id])->asArray()->all();
         return Json::encode($rupModules);
+    }
+
+    public function actionGetTeachers() : string
+    {
+        $teachers = Person::find()
+            ->join('LEFT JOIN', 'link.person_institution_link', 'person.id=person_institution_link.person_id')
+            ->where([
+                'person_institution_link.institution_id' => Yii::$app->user->identity->institution->id,
+                'person.person_type' => 'teacher'
+            ])
+            ->asArray()
+            ->all();
+        return Json::encode($teachers);
     }
 
 

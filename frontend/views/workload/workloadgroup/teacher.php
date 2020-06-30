@@ -60,10 +60,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-5"  >
                 <el-select v-model="filter_department" clearable placeholder="Выберите" style="width: 100%;" >
                     <el-option
-                        v-for="item in departments"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                            v-for="item in departments"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
                     </el-option>
                 </el-select>
             </div>
@@ -73,10 +73,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-4"  >
                 <el-select v-model="filter_eduform" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
-                        v-for="item in eduforms"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                            v-for="item in eduforms"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
                     </el-option>
                 </el-select>
             </div>
@@ -88,10 +88,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-5"  >
                 <el-select v-model="filter_course" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
-                        v-for="item in courselist"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                            v-for="item in courselist"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
                     </el-option>
                 </el-select>
             </div>
@@ -101,25 +101,25 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-4"  >
                 <el-select v-model="filter_edulang" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
-                        v-for="item in edulangs"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                            v-for="item in edulangs"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
                     </el-option>
                 </el-select>
             </div>
         </div>
 
         <div class="row" style="margin-top: 12px;" >
-            <div class="col-md-1 label-center" style="padding: 8px;"> Группа
+            <div class="col-md-1 label-center" style="padding: 8px;"> Преподаватель
             </div>
             <div class="col-md-5"  >
-                <el-select v-model="filter_studentgroup" clearable placeholder="Выберите" style="width: 100%;" >
+                <el-select v-model="filter_teacher" clearable placeholder="Выберите" style="width: 100%;" >
                     <el-option
-                        v-for="item in studentgroups"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                            v-for="item in teachers"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
                     </el-option>
                 </el-select>
             </div>
@@ -129,10 +129,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-1 yearDiv"  >
                 <el-select v-model="filter_year"  style="width: 100%;" >
                     <el-option
-                        v-for="item in yearlist"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                            v-for="item in yearlist"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
                     </el-option>
                 </el-select>
             </div>
@@ -141,10 +141,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-3"  >
                 <el-select v-model="filter_rup" clearable placeholder="Выберите"  style="width: 100%;" >
                     <el-option
-                        v-for="item in rups"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                            v-for="item in rups"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
                     </el-option>
                 </el-select>
             </div>
@@ -155,10 +155,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="col-md-3"  >
                         <el-select v-model="filter_rup_block" clearable placeholder="Выберите"  style="width: 100%;" >
                             <el-option
-                                v-for="item in rup_blocks"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                    v-for="item in rup_blocks"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
                             </el-option>
                         </el-select>
                     </div>
@@ -168,10 +168,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="col-md-3"  >
                         <el-select v-model="filter_rup_module" clearable placeholder="Выберите"  style="width: 100%;" >
                             <el-option
-                                v-for="item in rup_modules"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                    v-for="item in rup_modules"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
                             </el-option>
                         </el-select>
                     </div>
@@ -185,10 +185,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-5"  >
                 <el-select v-model="filter_discipline" clearable placeholder="Выберите" style="width: 100%;" >
                     <el-option
-                        v-for="item in disciplines"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                            v-for="item in disciplines"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
                     </el-option>
                 </el-select>
             </div>
@@ -214,8 +214,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card-body skin-white" >
         <template>
             <el-table
-                :data="tableData"
-                style="width: 100%">
+                    :data="tableData"
+                    style="width: 100%">
                 <el-table-column type="expand">
                     <div  slot-scope="props">
                         <div v-for="(group,index) in props.row.groups" :key="index" >
@@ -240,15 +240,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <template >
                                     <div class="col-md-1 mr-6  ">
                                         <el-button
-                                            type="warning"
-                                            @click="updateGroupData(props.row.id,group.num)"
-                                            icon="el-icon-edit" round>Изменить</el-button>
+                                                type="warning"
+                                                @click="updateGroupData(props.row.id,group.num)"
+                                                icon="el-icon-edit" round>Изменить</el-button>
                                     </div>
                                     <div class="col-md-1 ml-6 ">
                                         <el-button
-                                            type="danger"
-                                            @click="openDialogDelete(props.row.id,group.num)"
-                                            icon="el-icon-delete" round>Удалить</el-button>
+                                                type="danger"
+                                                @click="openDialogDelete(props.row.id,group.num)"
+                                                icon="el-icon-delete" round>Удалить</el-button>
                                     </div>
                                 </template>
 
@@ -256,89 +256,89 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                         <div class="col-md-1">
                             <el-button
-                                type="primary"
-                                @click="createGroupData(props.row.id)"
-                                icon="el-icon-plus" plain></el-button>
+                                    type="primary"
+                                    @click="createGroupData(props.row.id)"
+                                    icon="el-icon-plus" plain></el-button>
                         </div>
                     </div>
                 </el-table-column>
                 <el-table-column
-                    label="Индекс"
-                    prop="index">
+                        label="Индекс"
+                        prop="index">
                 </el-table-column>
                 <el-table-column
-                    label="Дисциплина"
-                    prop="name">
+                        label="Дисциплина"
+                        prop="name">
                 </el-table-column>
                 <el-table-column
-                    label="Всего"
-                    prop="total">
+                        label="Всего"
+                        prop="total">
                 </el-table-column>
                 <el-table-column label="Объем учебного времени и формы контроля 1 полугодие">
                     <el-table-column
-                        label="УЧЧ"
-                        prop="hours1">
+                            label="УЧЧ"
+                            prop="hours1">
                     </el-table-column>
                     <el-table-column
-                        label="ТЕО"
-                        prop="theory1">
+                            label="ТЕО"
+                            prop="theory1">
                     </el-table-column>
                     <el-table-column
-                        label="ЛАБ"
-                        prop="lab1">
+                            label="ЛАБ"
+                            prop="lab1">
                     </el-table-column>
                     <el-table-column
-                        label="ЭКЗ"
-                        prop="ekz1">
+                            label="ЭКЗ"
+                            prop="ekz1">
                     </el-table-column>
                     <el-table-column
-                        label="ЗАЧ"
-                        prop="zac1">
+                            label="ЗАЧ"
+                            prop="zac1">
                     </el-table-column>
                     <el-table-column
-                        label="КНТ"
-                        prop="knt1">
+                            label="КНТ"
+                            prop="knt1">
                     </el-table-column>
                     <el-table-column
-                        label="ПРК"
-                        prop="prk1">
+                            label="ПРК"
+                            prop="prk1">
                     </el-table-column>
 
                 </el-table-column>
                 <el-table-column label="Объем учебного времени и формы контроля 2 полугодие">
                     <el-table-column
-                        label="УЧЧ"
-                        prop="hours2">
+                            label="УЧЧ"
+                            prop="hours2">
                     </el-table-column>
                     <el-table-column
-                        label="ТЕО"
-                        prop="theory2">
+                            label="ТЕО"
+                            prop="theory2">
                     </el-table-column>
                     <el-table-column
-                        label="ЛАБ"
-                        prop="lab2">
+                            label="ЛАБ"
+                            prop="lab2">
                     </el-table-column>
                     <el-table-column
-                        label="ЭКЗ"
-                        prop="ekz2">
+                            label="ЭКЗ"
+                            prop="ekz2">
                     </el-table-column>
                     <el-table-column
-                        label="ЗАЧ"
-                        prop="zac2">
+                            label="ЗАЧ"
+                            prop="zac2">
                     </el-table-column>
                     <el-table-column
-                        label="КНТ"
-                        prop="knt2">
+                            label="КНТ"
+                            prop="knt2">
                     </el-table-column>
                     <el-table-column
-                        label="ПРК"
-                        prop="prk2">
+                            label="ПРК"
+                            prop="prk2">
                     </el-table-column>
 
                 </el-table-column>
                 <el-table-column
-                    label="Группы"
-                    prop="groupsName">
+                        label="Группы"
+                        prop="groupsName">
                 </el-table-column>
 
             </el-table>
@@ -349,42 +349,42 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <!-- Dialog window -->
         <v-dialog
-            v-model="dialogWindow"
-            max-width="550"
+                v-model="dialogWindow"
+                max-width="550"
         >
             <v-card>
                 <v-card-title class="headline">Изменение данных группы</v-card-title>
 
                 <v-form
-                    ref="form"
-                    v-model="valid"
-                    class="pl-6 pr-6 d-flex flex-wrap justify-space-around align-center">
+                        ref="form"
+                        v-model="valid"
+                        class="pl-6 pr-6 d-flex flex-wrap justify-space-around align-center">
             <span class="d-flex justify-space-around align-center groupName">
                 Имя:
                 <v-select
-                    v-model="selectedGroup"
-                    :items="groupSelect"
-                    item-text="name"
-                    item-value="id"
-                    class="ml-4"
+                        v-model="selectedGroup"
+                        :items="groupSelect"
+                        item-text="name"
+                        item-value="id"
+                        class="ml-4"
                 ></v-select>
             </span>
                     <span v-for="(semesterTemp,index) in semester"  :key="'semester'+index">
                 Семестер номер {{index+1}}
                 <v-text-field
-                    :rules="textFieldRules"
-                    type="number"
-                    v-model="semester[index]"
-                    class="dialogInput"
+                        :rules="textFieldRules"
+                        type="number"
+                        v-model="semester[index]"
+                        class="dialogInput"
                 ></v-text-field>
             </span>
                     <span v-for="(item,index) in theory" :key="'theory'+index">
                 Теория {{index+1}} семестр
                 <v-text-field
-                    :rules="textFieldRules"
-                    v-model="theory[index]"
-                    type="number"
-                    class="dialogInput"
+                        :rules="textFieldRules"
+                        v-model="theory[index]"
+                        type="number"
+                        class="dialogInput"
 
                 >
                 </v-text-field>
@@ -392,10 +392,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     <span v-for="(item,index) in laboratory " :key="'laboratory'+index">
                 Практическая работа {{index+1}} семестр
                 <v-text-field
-                    :rules="textFieldRules"
-                    v-model="laboratory[index]"
-                    type="number"
-                    class="dialogInput"
+                        :rules="textFieldRules"
+                        v-model="laboratory[index]"
+                        type="number"
+                        class="dialogInput"
                 >
                 </v-text-field>
             </span>
@@ -405,12 +405,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <v-spacer></v-spacer>
 
                     <el-button
-                        type="primary"
-                        @click="clearDialogWindow()"
-                        plain>Отмена</el-button>
+                            type="primary"
+                            @click="clearDialogWindow()"
+                            plain>Отмена</el-button>
                     <el-button
-                        type="primary"
-                        @click="saveDialogData()"
+                            type="primary"
+                            @click="saveDialogData()"
                     >Сохранить</el-button>
                 </v-card-actions>
             </v-card>
@@ -419,8 +419,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <!-- Dialog окно для потверждения удаления -->
         <v-dialog
-            v-model="dialogDeleteGroup"
-            max-width="400"
+                v-model="dialogDeleteGroup"
+                max-width="400"
         >
             <v-card class="dialogDelete">
                 <v-card-title class="headline">Подтвердите удаление</v-card-title>
@@ -429,13 +429,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 </v-card-text>
                 <v-card-actions class="ml-4 mt-2 d-flex justify-end">
                     <el-button
-                        type="primary"
-                        @click="cancelDialogDelete()"
-                        icon="el-icon-edit" plain>Отмена</el-button>
+                            type="primary"
+                            @click="cancelDialogDelete()"
+                            icon="el-icon-edit" plain>Отмена</el-button>
                     <el-button
-                        type="primary"
-                        @click="confirmDelete()"
-                        icon="el-icon-edit" >Подтвердить</el-button>
+                            type="primary"
+                            @click="confirmDelete()"
+                            icon="el-icon-edit" >Подтвердить</el-button>
                     <v-card-actions>
             </v-card>
         </v-dialog>
@@ -478,6 +478,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }],
                     value: '',
 
+                    // кафедры
                     departments: [
                         {value: '', label: 'Все' },
                         {value: 36, label: 'Департамент №1'},
@@ -486,19 +487,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     // filter_department: '',
                     filter_department: '',
 
-                    //группы
-                    studentgroups: [
+                    // преподаватели
+                    teachers: [
                         { value: '', label: 'Все' }
                     ],
-                    filter_studentgroup: '',
+                    filter_teacher: '',
 
-                    //дисциплины
+                    // дисциплины
                     disciplines: [
                         { value: '', label: 'Все' }
                     ],
                     filter_discipline: '',
 
-                    //формы обучения
+                    // формы обучения
                     eduforms: [
                         { value: '', label: 'Все' },
 
@@ -547,55 +548,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     filter_rup_module: '',
 
                     tableData: [
-                        //{
-                        // id:1,
-                        // index: 'gg12',
-                        // name: 'GG-12-2',
-                        // groupsName:"",
-                        // total:40,
-                        // semester:[61,33],
-                        // theory:[94,52],
-                        // laboratory:[2,1],
-                        // groups:[
-                        //     {
-                        //         num:1,
-                        //         groupId:1,
-                        //         total:20,
-                        //         semester:[10,10],
-                        //         theory:[10,10],
-                        //         laboratory:[0,0]
-                        //     },
-                        //     {
-                        //         num:2,
-                        //         groupId:2,
-                        //         total:20,
-                        //         semester:[20,30],
-                        //         theory:[50,20],
-                        //         laboratory:[1,5]
-                        //     }
-                        // ]
 
-                        // },
-                        // {
-                        // id:2,
-                        // index: '2016-05-07',
-                        // name: 'Tom',
-                        // groupsName:"",
-                        // total:30,
-                        // semester:[10,10],
-                        // theory:[10,10],
-                        // laboratory:[0,0],
-
-                        // groups:[
-                        //     {
-                        //         num:1,
-                        //         groupId:4,
-                        //         total:20,
-                        //         semester:[10,10],
-                        //         theory:[10,10],
-                        //         laboratory:[0,0]
-                        //     }
-                        // ]                    }
                     ],
 
 
@@ -605,33 +558,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     groupNum:0,
                     tableDataId:0,
 
-                    groups:[
-                        {
-                            id:1,
-                            name:"rr-12-2",
-                            disciplineId:1,
-                            selected:1,
-                        },
-                        {
-                            id:2,
-                            name:"cc-11-44",
-                            disciplineId:1,
-                            selected:1,
-                        },
-                        {
-                            id:3,
-                            name:"tt-42-6",
-                            disciplineId:1,
-                            selected:0,
-                        },
-                        {
-                            id:4,
-                            name:"qr-89-32",
-                            disciplineId:2,
-                            selected:1,
-                        },
-
-                    ],
 
                     textFieldRules:[
                         v=>v<101 && v>=0||"Значение от 0 до 100"
@@ -689,7 +615,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 initAppProc(){
                     //this.fetchDepartments();
-                    this.fetchGroups();
+                    this.getTeachers();
                     this.fetchDisciplines();
                     this.getEducationForm();
                     this.getEduLangs();
@@ -736,17 +662,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 /**
                  * Группы
                  */
-                fetchGroups() {
+                getTeachers() {
                     $.ajax({
                         type: 'GET',
-                        url: '/workload/workloadgroup/get-groups?department_id=' + this.filter_department + '&edu_form=' + this.filter_eduform + '&edu_lang=' + this.filter_edulang + '&curs=' + this.filter_course,
+                        url: '/workload/workloadgroup/get-teachers?',
                         data: {},
                         success: function (data) {
                             if (data) {
-                                wlApp.studentgroups = $.map(JSON.parse(data), function(e) {
+                                wlApp.teachers = $.map(JSON.parse(data), function(e) {
                                     return {
                                         value: e.id,
-                                        label: JSON.parse(e.caption).ru
+                                        label: e.firstname + e.lastname
                                     }
                                 });
                             } else {
@@ -1068,7 +994,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
 
                 },
-                saveDialogData(){//TODO нужно что бы при открывания правильно группу показывал
+                saveDialogData(){
                     //сохраняем данные
                     if(this.$refs.form.validate()){
                         if(this.groupNum!=0){ //если есть groupNum значит происходить изменения
