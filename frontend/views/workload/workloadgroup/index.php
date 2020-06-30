@@ -654,9 +654,38 @@ $this->params['breadcrumbs'][] = $this->title;
                         this.fetchDisciplineRow();
                     },
 
+                    /**
+                     * Кафедры
+                     */
 
+                    getDepartments() {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/workload/workloadgroup/get-departments',
+                            data: {},
+                            success: function (result) {
+                                if (result) {
+                                    wlApp.departments = $.map(JSON.parse(result), function (e) {
+                                        return {
+                                            value: e.id,
+                                            label: e.name
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }
+                            },
+                            fail: function (data) {
+                                //console.log(data);
+                                wlApp.$message('Error, request not append');
+                            }
+                        });
 
-                    // Загрузить группы
+                    },
+
+                    /**
+                     * Группы
+                     */
                     fetchGroups() {
                         $.ajax({
                             type: 'GET',
@@ -678,7 +707,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         });
                     },
 
-                    // получить дисциплины
+                    /**
+                     *  Дисциплины
+                     */
                     fetchDisciplines() {
                         $.ajax({
                             type: 'GET',
@@ -700,12 +731,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         });
                     },
 
-                    // форма обучения
-                    // [
-                    //      очная
-                    //      заочная
-                    //      вечернее
-                    //  ]
+                    /**
+                     * форма обучения
+                     * [
+                     *   очная
+                     *   заочная
+                     *   вечернее
+                     * ]
+                     */
                     getEducationForm() {
                         $.ajax({
                             type: 'GET',
@@ -727,6 +760,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
 
 
+                    /**
+                     * Язык обучения
+                     *  [
+                     *      русский
+                     *      казахский
+                     *  ]
+                     */
                     getEduLangs() {
                         $.ajax({
                             type: 'GET',
@@ -748,8 +788,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     },
 
-                    // РУПы
-
+                    /**
+                     * РУПы
+                     */
                     getRups() {
                         $.ajax({
                             type: 'GET',
