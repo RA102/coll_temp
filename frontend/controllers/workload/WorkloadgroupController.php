@@ -20,6 +20,8 @@ use common\models\Nationality;
 use common\models\organization\Group;
 use common\models\organization\InstitutionDiscipline;
 
+use frontend\models\rup\RupBlock;
+use frontend\models\rup\RupModule;
 use frontend\search\GroupSearch;
 //use common\models\Nationality;
 
@@ -32,8 +34,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\models\rup\RupSubjects;
-
-
+use function GuzzleHttp\Promise\all;
 
 
 /**
@@ -89,10 +90,10 @@ class WorkloadgroupController extends Controller
        // ]);
     }
 
-    public function actionGetDepartments(){
-       $deps = Nationality::find()->limit(10)->asArray()->all();
-       return Json::encode($deps);
-    }
+//    public function actionGetDepartments(){
+//       $deps = Nationality::find()->limit(10)->asArray()->all();
+//       return Json::encode($deps);
+//    }
 
 
 
@@ -208,10 +209,10 @@ class WorkloadgroupController extends Controller
     //     ]);
     // }
 
-    // public function actionGetDepartments(){
-    //     $deps = Nationality::find()->limit(10)->asArray()->all();
-    //     return Json::encode($deps);
-    // }
+     public function actionGetDepartments(){
+         $deps = Nationality::find()->limit(10)->asArray()->all();
+         return Json::encode($deps);
+     }
 
     public function actionGetGroups($department_id = "", $edu_form = '', $edu_lang = "", $curs = "")
     {
@@ -250,21 +251,29 @@ class WorkloadgroupController extends Controller
 
     /**
      * @param string $year
-     * @param null $discipline
      * @return string
      *
-     * сейчас фильтр только по годам
+     * фильтр только по годам
      */
 
-    public function actionGetRups($year ='', $discipline = null)
+    public function actionGetRups($year ='')
     {
-        $disciplineRow = InstitutionDiscipline::find()->filterWhere(['id' => $discipline])->one();
-        $disciplineCaptionRu = $disciplineRow->caption_ru??null;
-
-        $rowRupSubject = RupSubjects::find()->filterWhere(['ilike', 'name', $disciplineCaptionRu])->all();
 
         $rup = RupRoots::find()->filterWhere(['IN', 'rup_year', $year])->asArray()->all();
         return Json::encode($rup);
+    }
+
+
+    public function actionGetRupBlocks($rup_id = null) : string
+    {
+        $rupBlocks = RupBlock::find()->filterWhere(['rup_id' => $rup_id])->asArray()->all();
+        return Json::encode($rupBlocks);
+    }
+
+    public function actionGetRupModules($rup_id = null, $block_id = null) : string
+    {
+        $rupModules = RupModule::find()->filterWhere(['rup_id' => $rup_id, 'block_id' => $block_id])->asArray()->all();
+        return Json::encode($rupModules);
     }
 
 

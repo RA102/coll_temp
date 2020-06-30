@@ -148,6 +148,35 @@ $this->params['breadcrumbs'][] = $this->title;
                     </el-option>
                 </el-select>
             </div>
+            <div class="col-md-12">
+                <div class="col-6 pull-right">
+                    <div class="col-md-1 label-center" style="padding: 8px;"> Блок
+                    </div>
+                    <div class="col-md-3"  >
+                        <el-select v-model="filter_rup_block" clearable placeholder="Выберите"  style="width: 100%;" >
+                            <el-option
+                                    v-for="item in rup_blocks"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+
+                    <div class="col-md-1 label-center" style="padding: 8px;"> Модуль
+                    </div>
+                    <div class="col-md-3"  >
+                        <el-select v-model="filter_rup_module" clearable placeholder="Выберите"  style="width: 100%;" >
+                            <el-option
+                                    v-for="item in rup_modules"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="row" style="margin-top: 12px;" >
@@ -165,6 +194,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
             <div class="col-md-4" >
+
             </div>
             <div class="col-md-1"  >  
                 <el-button type="primary" icon="el-icon-search" round @click="btn_search_click()">Обновить</el-button>
@@ -256,7 +286,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <el-table-column
                     label="ЛАБ"
                     prop="lab1">
-                </el-table-column> 
+                </el-table-column>
                 <el-table-column
                     label="ЭКЗ"
                     prop="ekz1">
@@ -504,6 +534,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         filter_rup: '',
 
+                        // Руп блок
+                        rup_blocks: [
+                            { value:'', label:'Все'},
+                        ],
+                        filter_rup_block: '',
+
+                        // РУП модули
+                        rup_modules: [
+                            {value: '', label: 'Все'},
+                        ],
+                        filter_rup_module: '',
+
                     tableData: [
                         //{
                         // id:1,
@@ -633,6 +675,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         this.getRups();
                     },
 
+                    filter_rup: function () {
+                        this.getRupBlocks();
+                    },
+
+                    filter_rup_block: function () {
+                        this.getRupModules();
+                    },
+
                 },
 
                 methods: {
@@ -644,8 +694,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         this.getEducationForm();
                         this.getEduLangs();
                         this.getRups();
-
-                        this.console();
+                        this.getRupBlocks();
+                        this.getRupModules();
 
                         this.countAgainAllFields();
                     },
@@ -794,7 +844,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     getRups() {
                         $.ajax({
                             type: 'GET',
-                            url:'/workload/workloadgroup/get-rups?year=' + this.filter_year + '&discipline=' + this.filter_discipline,
+                            url:'/workload/workloadgroup/get-rups?year=' + this.filter_year + '&discipline=',
                             data: {},
                             success: function(data) {
                                 if(data) {
@@ -809,6 +859,53 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
                             },
                         });
+                    },
+
+                    /**
+                     * РУП блок
+                     */
+                    getRupBlocks() {
+                        $.ajax({
+                            type: 'GET',
+                            url:'/workload/workloadgroup/get-rup-blocks?id_rup=' + this.filter_rup,
+                            data: {},
+                            success: function(data) {
+                                if(data) {
+                                    wlApp.rup_blocks =  $.map(JSON.parse(data), function (e) {
+                                        return {
+                                            value: e.id,
+                                            label: e.name
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }
+                            },
+                        });
+                    },
+
+                    /**
+                     * РУП модули
+                     */
+                    getRupModules() {
+                        $.ajax({
+                            type: 'GET',
+                            url:'/workload/workloadgroup/get-rup-modules?rup_id=' + this.filter_rup + '&block_id=' + this.filter_rup_block,
+                            data: {},
+                            success: function(data) {
+                                if(data) {
+                                    wlApp.rup_modules =  $.map(JSON.parse(data), function (e) {
+                                        return {
+                                            value: e.id,
+                                            label: e.name
+                                        }
+                                    });
+                                } else {
+                                    return [];
+                                }
+                            },
+                        });
+
                     },
 
                     fetchDisciplineRow() {
@@ -859,7 +956,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                     },
-
 
 
                     updateGroupData(id,num){
